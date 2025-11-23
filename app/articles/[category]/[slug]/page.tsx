@@ -3,6 +3,8 @@ import { getRequestContext } from '@cloudflare/next-on-pages'
 import { renderMarkdown } from '@/lib/markdown'
 
 export const runtime = 'edge'
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 interface Article {
   id: number

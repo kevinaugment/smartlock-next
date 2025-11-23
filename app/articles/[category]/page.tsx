@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { getRequestContext } from '@cloudflare/next-on-pages'
 
 export const runtime = 'edge'
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 interface Article {
   id: number

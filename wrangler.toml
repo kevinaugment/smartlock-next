@@ -5,15 +5,19 @@ compatibility_date = "2024-01-01"
 # Pages build output
 pages_build_output_dir = ".vercel/output/static"
 
-# D1数据库绑定
-[[d1_databases]]
-binding = "DB"
-database_name = "smartlock-production"
-database_id = "a6ecde29-4a32-4085-bdd6-a390ed453eec"
-
 # Pages配置
 [env.production]
 vars = { ENVIRONMENT = "production" }
 
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "smartlock-production"
+database_id = "a6ecde29-4a32-4085-bdd6-a390ed453eec"
+
 [env.preview]
 vars = { ENVIRONMENT = "preview" }
+
+[[env.preview.d1_databases]]
+binding = "DB"
+database_name = "smartlock-production"
+database_id = "a6ecde29-4a32-4085-bdd6-a390ed453eec"

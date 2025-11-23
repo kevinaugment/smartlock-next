@@ -1,6 +1,9 @@
 # Cloudflare Pages配置
-name = "smartlock-next"
+name = "smartlock-hub"
 compatibility_date = "2024-01-01"
+
+# Pages build output
+pages_build_output_dir = ".vercel/output/static"
 
 # D1数据库绑定
 [[d1_databases]]

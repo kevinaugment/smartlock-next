@@ -2,6 +2,14 @@ import Link from 'next/link'
 
 const calculators = [
   {
+    name: 'TCO Calculator',
+    slug: 'lock-tco',
+    icon: '💰',
+    description: 'Calculate total cost of ownership for smart lock deployments. Compare protocols, battery costs, and hub investments over time',
+    features: ['Multi-year TCO analysis', 'Protocol comparison', 'Battery cost projection', 'ROI calculation'],
+    complexity: 'Simple',
+  },
+  {
     name: 'Battery Life Calculator',
     slug: 'battery-life',
     icon: '🔋',

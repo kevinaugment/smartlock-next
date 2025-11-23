@@ -8,13 +8,10 @@ export default function Home() {
           {/* Hero Section */}
           <div className="space-y-4">
             <h1 className="text-5xl font-bold text-gray-900">
-              Smart Lock Hub v2.0
+              Smart Lock Hub
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Complete guides for protocols, security, installation, and troubleshooting
-            </p>
-            <p className="text-sm text-red-600 font-bold">
-              BUILD ID: {new Date().toISOString()}
             </p>
           </div>
 

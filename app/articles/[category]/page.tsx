@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { getRequestContext } from '@cloudflare/next-on-pages'
+import { mockDb, isDevelopment } from '@/lib/mock-db'
 
 export const runtime = 'edge'
 
@@ -30,29 +31,37 @@ export default async function CategoryPage({
   let error = null
 
   try {
-    const context = getRequestContext()
-    const db = (context.env as any).DB
-
-    if (db) {
-      // 获取分类信息
-      const categoryResult = await db
-        .prepare('SELECT id, name, slug, icon, description FROM categories WHERE slug = ?')
-        .bind(params.category)
-        .first()
-      category = categoryResult as Category | null
-
+    // 本地开发使用Mock数据
+    if (isDevelopment || process.env.NEXT_PUBLIC_USE_MOCK === 'true') {
+      category = await mockDb.getCategory(params.category)
       if (category) {
-        // 获取该分类下的文章
-        const articlesResult = await db
-          .prepare(`
-            SELECT id, title, slug, description, reading_time, published_at
-            FROM articles
-            WHERE category_id = ? AND status = 'published'
-            ORDER BY published_at DESC
-          `)
-          .bind(category.id)
-          .all()
+        const articlesResult = await mockDb.getArticlesByCategory(category.id)
         articles = articlesResult.results || []
+      }
+    } else {
+      // 生产环境使用真实D1数据库
+      const context = getRequestContext()
+      const db = (context.env as any).DB
+
+      if (db) {
+        const categoryResult = await db
+          .prepare('SELECT id, name, slug, icon, description FROM categories WHERE slug = ?')
+          .bind(params.category)
+          .first()
+        category = categoryResult as Category | null
+
+        if (category) {
+          const articlesResult = await db
+            .prepare(`
+              SELECT id, title, slug, description, reading_time, published_at
+              FROM articles
+              WHERE category_id = ? AND status = 'published'
+              ORDER BY published_at DESC
+            `)
+            .bind(category.id)
+            .all()
+          articles = articlesResult.results || []
+        }
       }
     }
   } catch (e) {

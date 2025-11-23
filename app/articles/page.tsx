@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { getRequestContext } from '@cloudflare/next-on-pages'
+import { mockDb, isDevelopment } from '@/lib/mock-db'
 
 export const runtime = 'edge'
 
@@ -28,31 +29,39 @@ export default async function ArticlesPage() {
   let error = null
 
   try {
-    const context = getRequestContext()
-    const db = (context.env as any).DB
-
-    if (db) {
-      // 获取所有分类
-      const categoriesResult = await db
-        .prepare('SELECT id, name, slug, icon, description FROM categories ORDER BY display_order')
-        .all()
+    // 本地开发使用Mock数据
+    if (isDevelopment || process.env.NEXT_PUBLIC_USE_MOCK === 'true') {
+      const categoriesResult = await mockDb.getCategories()
       categories = categoriesResult.results || []
-
-      // 获取最新文章（带分类信息）
-      const articlesResult = await db
-        .prepare(`
-          SELECT 
-            a.id, a.title, a.slug, a.description, 
-            a.reading_time, a.published_at,
-            c.slug as category_slug, c.name as category_name
-          FROM articles a
-          JOIN categories c ON a.category_id = c.id
-          WHERE a.status = 'published'
-          ORDER BY a.published_at DESC
-          LIMIT 50
-        `)
-        .all()
+      
+      const articlesResult = await mockDb.getArticles(50)
       articles = articlesResult.results || []
+    } else {
+      // 生产环境使用真实D1数据库
+      const context = getRequestContext()
+      const db = (context.env as any).DB
+
+      if (db) {
+        const categoriesResult = await db
+          .prepare('SELECT id, name, slug, icon, description FROM categories ORDER BY display_order')
+          .all()
+        categories = categoriesResult.results || []
+
+        const articlesResult = await db
+          .prepare(`
+            SELECT 
+              a.id, a.title, a.slug, a.description, 
+              a.reading_time, a.published_at,
+              c.slug as category_slug, c.name as category_name
+            FROM articles a
+            JOIN categories c ON a.category_id = c.id
+            WHERE a.status = 'published'
+            ORDER BY a.published_at DESC
+            LIMIT 50
+          `)
+          .all()
+        articles = articlesResult.results || []
+      }
     }
   } catch (e) {
     error = e instanceof Error ? e.message : 'Failed to load data'

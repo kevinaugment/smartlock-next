@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { getRequestContext } from '@cloudflare/next-on-pages'
+import { mockDb, isDevelopment } from '@/lib/mock-db'
 
 export const runtime = 'edge'
 
@@ -36,45 +37,53 @@ export default async function ArticlePage({
   let error = null
 
   try {
-    const context = getRequestContext()
-    const db = (context.env as any).DB
-
-    if (db) {
-      // 获取文章详情
-      const articleResult = await db
-        .prepare(`
-          SELECT 
-            a.id, a.title, a.slug, a.description, a.content,
-            a.category_id, a.reading_time, a.word_count,
-            a.published_at, a.updated_at,
-            c.name as category_name, c.slug as category_slug,
-            u.name as author_name
-          FROM articles a
-          JOIN categories c ON a.category_id = c.id
-          LEFT JOIN users u ON a.author_id = u.id
-          WHERE a.slug = ? AND c.slug = ? AND a.status = 'published'
-          LIMIT 1
-        `)
-        .bind(params.slug, params.category)
-        .first()
-
-      article = articleResult as Article | null
-
-      // 获取相关文章
+    // 本地开发使用Mock数据
+    if (isDevelopment || process.env.NEXT_PUBLIC_USE_MOCK === 'true') {
+      article = await mockDb.getArticle(params.slug, params.category)
       if (article) {
-        const relatedResult = await db
+        const relatedResult = await mockDb.getRelatedArticles(article.category_id, article.id, 3)
+        relatedArticles = relatedResult.results as RelatedArticle[]
+      }
+    } else {
+      // 生产环境使用真实D1数据库
+      const context = getRequestContext()
+      const db = (context.env as any).DB
+
+      if (db) {
+        const articleResult = await db
           .prepare(`
-            SELECT a.title, a.slug, a.description, c.slug as category_slug
+            SELECT 
+              a.id, a.title, a.slug, a.description, a.content,
+              a.category_id, a.reading_time, a.word_count,
+              a.published_at, a.updated_at,
+              c.name as category_name, c.slug as category_slug,
+              u.name as author_name
             FROM articles a
             JOIN categories c ON a.category_id = c.id
-            WHERE a.category_id = ? AND a.id != ? AND a.status = 'published'
-            ORDER BY a.published_at DESC
-            LIMIT 3
+            LEFT JOIN users u ON a.author_id = u.id
+            WHERE a.slug = ? AND c.slug = ? AND a.status = 'published'
+            LIMIT 1
           `)
-          .bind(article.category_id, article.id)
-          .all()
+          .bind(params.slug, params.category)
+          .first()
 
-        relatedArticles = relatedResult.results as RelatedArticle[]
+        article = articleResult as Article | null
+
+        if (article) {
+          const relatedResult = await db
+            .prepare(`
+              SELECT a.title, a.slug, a.description, c.slug as category_slug
+              FROM articles a
+              JOIN categories c ON a.category_id = c.id
+              WHERE a.category_id = ? AND a.id != ? AND a.status = 'published'
+              ORDER BY a.published_at DESC
+              LIMIT 3
+            `)
+            .bind(article.category_id, article.id)
+            .all()
+
+          relatedArticles = relatedResult.results as RelatedArticle[]
+        }
       }
     }
   } catch (e) {

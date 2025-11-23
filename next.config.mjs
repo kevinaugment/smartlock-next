@@ -1,10 +1,3 @@
-import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev'
-
-// Setup Cloudflare bindings for local development
-if (process.env.NODE_ENV === 'development') {
-  await setupDevPlatform()
-}
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Cloudflare Pages 配置
@@ -16,11 +9,20 @@ const nextConfig = {
   },
   
   // 排除不需要编译的文件
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     config.externals = config.externals || []
     config.externals.push({
       'gray-matter': 'gray-matter',
     })
+    
+    // Cloudflare Pages环境注入
+    if (isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        '@cloudflare/next-on-pages': '@cloudflare/next-on-pages',
+      }
+    }
+    
     return config
   },
 }

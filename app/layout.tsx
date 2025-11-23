@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import './globals.css'
+// import './globals.css'  // 暂时禁用以诊断问题
 
 export const metadata: Metadata = {
   title: 'Smart Lock Hub - Expert Guides & Tools',
@@ -13,7 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body style={{ margin: 0, padding: 0, fontFamily: 'system-ui, sans-serif' }}>
+        {children}
+      </body>
     </html>
   )
 }

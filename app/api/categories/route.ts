@@ -1,25 +1,26 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
+import { getRequestContext } from '@cloudflare/next-on-pages'
 
 export const runtime = 'edge'
 
-interface CloudflareEnv {
-  DB: any // D1Database type
-}
-
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    // 获取D1数据库实例
-    const env = process.env as unknown as CloudflareEnv
+    // 使用@cloudflare/next-on-pages的正确方式获取D1绑定
+    const { env } = getRequestContext()
+    const db = env.DB
     
-    if (!env.DB) {
+    if (!db) {
       return NextResponse.json(
-        { error: 'D1 database not available' },
+        { 
+          error: 'D1 database not configured',
+          message: 'DB binding not found. Please configure D1 binding in Cloudflare Pages.'
+        },
         { status: 500 }
       )
     }
 
     // 查询所有分类
-    const { results } = await env.DB.prepare(
+    const { results } = await db.prepare(
       'SELECT * FROM categories ORDER BY display_order ASC'
     ).all()
 
@@ -27,13 +28,15 @@ export async function GET(request: NextRequest) {
       success: true,
       count: results?.length || 0,
       categories: results || [],
+      timestamp: new Date().toISOString(),
     })
   } catch (error) {
-    console.error('Database error:', error)
+    console.error('API Error:', error)
     return NextResponse.json(
       { 
         error: 'Failed to fetch categories',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        details: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined
       },
       { status: 500 }
     )

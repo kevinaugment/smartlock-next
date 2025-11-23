@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static",
     "db:migrate": "wrangler d1 execute smartlock-production --remote --file=./database/schema.sql",
     "db:seed": "wrangler d1 execute smartlock-production --remote --file=./database/seed.sql"
   },

@@ -152,11 +152,11 @@ export default function Footer() {
               <Link href="/sitemap" className="text-gray-400 hover:text-white transition-colors">
                 Sitemap
               </Link>
-              <Link href="/rss" className="text-gray-400 hover:text-white transition-colors">
-                RSS Feed
+              <Link href="/status" className="text-gray-400 hover:text-white transition-colors">
+                System Status
               </Link>
               <Link href="/api/health" className="text-gray-400 hover:text-white transition-colors">
-                Status
+                API Health
               </Link>
             </div>
           </div>

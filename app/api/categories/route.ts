@@ -3,7 +3,7 @@ import { getRequestContext } from '@cloudflare/next-on-pages'
 
 export const runtime = 'edge'
 
-interface CloudflareEnv {
+interface CloudflareEnv extends Record<string, unknown> {
   DB: any  // D1Database
 }
 

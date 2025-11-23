@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getRequestContext } from '@cloudflare/next-on-pages'
+import { query, queryOne } from '@/lib/db'
 import { renderMarkdown } from '@/lib/markdown'
 
 export const runtime = 'edge'
@@ -39,62 +39,39 @@ export default async function ArticlePage({
   let error = null
 
   try {
-    const { env } = getRequestContext()
-    const db = (env as any).DB
-
-    if (!db) {
-      throw new Error('Database not available')
-    }
-
-    const articleResult = await db
-      .prepare(`
-        SELECT 
-          a.id, a.title, a.slug, a.description, a.content,
-          a.category_id, a.reading_time, a.word_count,
-          a.published_at, a.updated_at,
-          c.name as category_name, c.slug as category_slug,
-          u.name as author_name
-        FROM articles a
-        JOIN categories c ON a.category_id = c.id
-        LEFT JOIN users u ON a.author_id = u.id
-        WHERE a.slug = ? AND c.slug = ? AND a.status = 'published'
-        LIMIT 1
-      `)
-      .bind(params.slug, params.category)
-      .first()
-
-    article = articleResult as Article | null
+    article = await queryOne<Article>(
+      `SELECT 
+        a.id, a.title, a.slug, a.description, a.content,
+        a.category_id, c.name as category_name, c.slug as category_slug,
+        a.reading_time, a.word_count, a.published_at, a.updated_at,
+        a.author_name
+       FROM articles a
+       JOIN categories c ON a.category_id = c.id
+       WHERE c.slug = ? AND a.slug = ?`,
+      [params.category, params.slug]
+    )
 
     if (article) {
-      const relatedResult = await db
-        .prepare(`
-          SELECT a.title, a.slug, a.description, c.slug as category_slug
-          FROM articles a
-          JOIN categories c ON a.category_id = c.id
-          WHERE a.category_id = ? AND a.id != ? AND a.status = 'published'
-          ORDER BY a.published_at DESC
-          LIMIT 3
-        `)
-        .bind(article.category_id, article.id)
-        .all()
-
-      relatedArticles = (relatedResult.results as RelatedArticle[]) || []
+      relatedArticles = await query<RelatedArticle>(
+        `SELECT a.title, a.slug, c.slug as category_slug, a.description
+         FROM articles a
+         JOIN categories c ON a.category_id = c.id
+         WHERE a.category_id = ? AND a.id != ?
+         LIMIT 3`,
+        [article.category_id, article.id]
+      )
     }
   } catch (e) {
     error = e instanceof Error ? e.message : 'Failed to load article'
-    console.error('Error loading article:', e)
+    console.error('Article page error:', e)
   }
 
-  if (error) {
+  if (!article) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">Error</h1>
-          <p className="text-gray-700">{error}</p>
-          <Link
-            href="/articles"
-            className="mt-6 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Article Not Found</h1>
+          <Link href="/articles" className="text-blue-600 hover:text-blue-700">
             ← Back to Articles
           </Link>
         </div>
@@ -102,166 +79,99 @@ export default async function ArticlePage({
     )
   }
 
-  if (!article) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Article Not Found</h1>
-          <p className="text-gray-600 mb-6">
-            The article you're looking for doesn't exist or hasn't been published yet.
-          </p>
-          <Link
-            href="/articles"
-            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            ← Browse All Articles
-          </Link>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen bg-white">
-      {/* Breadcrumb */}
-      <div className="bg-gray-50 border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Link href="/" className="hover:text-blue-600">
-              Home
-            </Link>
-            <span>›</span>
-            <Link href="/articles" className="hover:text-blue-600">
-              Articles
-            </Link>
-            <span>›</span>
-            <Link
-              href={`/articles/${article.category_slug}`}
-              className="hover:text-blue-600"
-            >
-              {article.category_name}
-            </Link>
-            <span>›</span>
-            <span className="text-gray-900 font-medium">{article.title}</span>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <article className="container mx-auto px-4 py-16 max-w-4xl">
+        {/* Breadcrumb */}
+        <nav className="mb-8 text-sm">
+          <Link href="/articles" className="text-blue-600 hover:text-blue-700">
+            Articles
+          </Link>
+          <span className="mx-2 text-gray-400">/</span>
+          <Link href={`/articles/${article.category_slug}`} className="text-blue-600 hover:text-blue-700">
+            {article.category_name}
+          </Link>
+          <span className="mx-2 text-gray-400">/</span>
+          <span className="text-gray-600">{article.title}</span>
+        </nav>
 
-      {/* Article Header */}
-      <div className="bg-gradient-to-b from-gray-50 to-white border-b">
-        <div className="container mx-auto px-4 py-12 max-w-4xl">
-          <div className="mb-6">
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
+            <p className="text-red-600">⚠️ {error}</p>
+          </div>
+        )}
+
+        {/* Article Header */}
+        <header className="mb-12">
+          <div className="mb-4">
             <Link
               href={`/articles/${article.category_slug}`}
-              className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full hover:bg-blue-200"
+              className="inline-block px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"
             >
               {article.category_name}
             </Link>
           </div>
-
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">
             {article.title}
           </h1>
-
-          <p className="text-xl text-gray-600 mb-8">{article.description}</p>
-
-          <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600">
-            <div className="flex items-center gap-2">
-              <span>📅</span>
-              <span>{new Date(article.published_at).toLocaleDateString()}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span>⏱️</span>
-              <span>{article.reading_time} min read</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span>📝</span>
-              <span>{article.word_count.toLocaleString()} words</span>
-            </div>
-            {article.author_name && (
-              <div className="flex items-center gap-2">
-                <span>✍️</span>
-                <span>{article.author_name}</span>
-              </div>
-            )}
+          
+          <p className="text-xl text-gray-600 mb-6">
+            {article.description}
+          </p>
+          
+          <div className="flex items-center gap-6 text-sm text-gray-500">
+            <span>By {article.author_name}</span>
+            <span>•</span>
+            <span>{new Date(article.published_at).toLocaleDateString()}</span>
+            <span>•</span>
+            <span>{article.reading_time} min read</span>
+            <span>•</span>
+            <span>{article.word_count} words</span>
           </div>
-        </div>
-      </div>
+        </header>
 
-      {/* Article Content */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
-          {/* Main Content */}
-          <article className="lg:col-span-3">
-            <div 
-              className="prose prose-lg max-w-none
-                prose-headings:font-bold prose-headings:text-gray-900
-                prose-h1:text-3xl prose-h1:mt-8 prose-h1:mb-4
-                prose-h2:text-2xl prose-h2:mt-6 prose-h2:mb-3
-                prose-h3:text-xl prose-h3:mt-4 prose-h3:mb-2
-                prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-4
-                prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
-                prose-strong:text-gray-900 prose-strong:font-semibold
-                prose-em:text-gray-700 prose-em:italic
-                prose-code:text-pink-600 prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
-                prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto
-                prose-ul:list-disc prose-ul:ml-6 prose-ul:mb-4
-                prose-ol:list-decimal prose-ol:ml-6 prose-ol:mb-4
-                prose-li:text-gray-700 prose-li:mb-1
-                prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600
-                prose-table:border prose-table:border-gray-300
-                prose-th:bg-gray-100 prose-th:p-2 prose-th:border prose-th:border-gray-300
-                prose-td:p-2 prose-td:border prose-td:border-gray-300
-                prose-img:rounded-lg prose-img:shadow-md
-              "
-              dangerouslySetInnerHTML={{ __html: renderMarkdown(article.content) }}
-            />
-          </article>
+        {/* Article Content */}
+        <div 
+          className="prose prose-lg max-w-none mb-16"
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(article.content) }}
+        />
 
-          {/* Sidebar */}
-          <aside className="lg:col-span-1">
-            {/* Related Articles */}
-            {relatedArticles.length > 0 && (
-              <div className="sticky top-4">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Related Articles</h3>
-                <div className="space-y-4">
-                  {relatedArticles.map((related, index) => (
-                    <Link
-                      key={index}
-                      href={`/articles/${related.category_slug}/${related.slug}`}
-                      className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                    >
-                      <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-                        {related.title}
-                      </h4>
-                      <p className="text-sm text-gray-600 line-clamp-2">
-                        {related.description}
-                      </p>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
-          </aside>
-        </div>
-      </div>
+        {/* Related Articles */}
+        {relatedArticles.length > 0 && (
+          <section className="border-t border-gray-200 pt-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Related Articles
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedArticles.map((related) => (
+                <Link
+                  key={related.slug}
+                  href={`/articles/${related.category_slug}/${related.slug}`}
+                  className="block p-6 bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-all"
+                >
+                  <h3 className="font-semibold text-gray-900 mb-2">
+                    {related.title}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    {related.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
-      {/* Navigation */}
-      <div className="bg-gray-50 border-t">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex justify-between items-center">
-            <Link
-              href={`/articles/${article.category_slug}`}
-              className="text-blue-600 hover:text-blue-700 font-medium"
-            >
-              ← More in {article.category_name}
-            </Link>
-            <Link href="/articles" className="text-blue-600 hover:text-blue-700 font-medium">
-              Browse All Articles →
-            </Link>
-          </div>
+        {/* Back Link */}
+        <div className="mt-12 pt-8 border-t border-gray-200">
+          <Link
+            href={`/articles/${article.category_slug}`}
+            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
+          >
+            ← Back to {article.category_name}
+          </Link>
         </div>
-      </div>
+      </article>
     </div>
   )
 }

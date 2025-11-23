@@ -44,7 +44,7 @@ export default function Home() {
               <div className="text-gray-600">Categories</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">4+</div>
+              <div className="text-4xl font-bold text-blue-600 mb-2">15</div>
               <div className="text-gray-600">Calculators</div>
             </div>
             <div className="text-center">
@@ -224,8 +224,12 @@ const categories = [
 ]
 
 const calculators = [
+  { name: 'TCO Calculator', slug: 'lock-tco', icon: '💰', description: 'Calculate total cost of ownership over multiple years' },
   { name: 'Battery Life Calculator', slug: 'battery-life', icon: '🔋', description: 'Estimate how long your smart lock batteries will last' },
+  { name: 'Protocol Selection Wizard', slug: 'protocol-wizard', icon: '🧙‍♂️', description: 'Get personalized protocol recommendations' },
   { name: 'Signal Strength Analyzer', slug: 'signal-strength', icon: '📶', description: 'Analyze and optimize your lock\'s wireless signal' },
-  { name: 'Installation Cost Estimator', slug: 'installation-cost', icon: '💰', description: 'Calculate the total cost of your smart lock installation' },
+  { name: 'STR ROI Calculator', slug: 'str-roi', icon: '🏠', description: 'Calculate ROI for short-term rental properties' },
+  { name: 'Installation Cost Estimator', slug: 'installation-cost', icon: '💰', description: 'Calculate the total cost of your installation' },
   { name: 'Door Compatibility Checker', slug: 'compatibility', icon: '🚪', description: 'Check if your door is compatible with smart locks' },
+  { name: 'Mesh Node Planner', slug: 'mesh-planner', icon: '🔗', description: 'Estimate required mesh repeaters for your deployment' },
 ]

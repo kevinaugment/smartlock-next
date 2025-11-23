@@ -9,19 +9,11 @@ const nextConfig = {
   },
   
   // 排除不需要编译的文件
-  webpack: (config, { isServer }) => {
+  webpack: (config) => {
     config.externals = config.externals || []
     config.externals.push({
       'gray-matter': 'gray-matter',
     })
-    
-    // Cloudflare Pages环境注入
-    if (isServer) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        '@cloudflare/next-on-pages': '@cloudflare/next-on-pages',
-      }
-    }
     
     return config
   },

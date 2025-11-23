@@ -1,0 +1,35 @@
+# Cloudflare Pages Headers Configuration
+# 缓存和性能优化
+
+# 静态资源 - 最大化缓存
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+# 图片资源
+/images/*
+  Cache-Control: public, max-age=86400
+  X-Content-Type-Options: nosniff
+
+# 字体文件
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+# API端点 - 短期缓存
+/api/categories
+  Cache-Control: public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400
+  X-Content-Type-Options: nosniff
+
+/api/health
+  Cache-Control: public, max-age=60, s-maxage=60
+  X-Content-Type-Options: nosniff
+
+# HTML页面 - 中期缓存
+/*
+  Cache-Control: public, max-age=0, s-maxage=7200, must-revalidate
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  X-XSS-Protection: 1; mode=block

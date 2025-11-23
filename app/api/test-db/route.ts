@@ -1,36 +1,26 @@
-import { getRequestContext } from '@cloudflare/next-on-pages'
 import { NextResponse } from 'next/server'
+import { queryOne } from '@/lib/db'
 
 export const runtime = 'edge'
 
 export async function GET() {
   try {
-    const { env } = getRequestContext()
-    const db = (env as any).DB
-    
-    if (!db) {
-      return NextResponse.json({ 
-        error: 'DB not available',
-        env_keys: Object.keys(env),
-        message: 'Database binding not configured'
-      }, { status: 500 })
-    }
+    // 测试查询
+    const articlesResult = await queryOne<{ count: number }>('SELECT COUNT(*) as count FROM articles')
+    const categoriesResult = await queryOne<{ count: number }>('SELECT COUNT(*) as count FROM categories')
 
-    // Test query
-    const result = await db.prepare('SELECT COUNT(*) as count FROM articles').first()
-    const categories = await db.prepare('SELECT id, name FROM categories').all()
-    
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: true,
-      articles_count: result.count,
-      categories_count: categories.results.length,
-      categories: categories.results,
-      message: 'Database connection successful'
+      articles: articlesResult?.count || 0,
+      categories: categoriesResult?.count || 0,
+      message: 'Turso database connection successful',
+      database: 'Turso (LibSQL)',
     })
-  } catch (error) {
-    return NextResponse.json({ 
-      error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined
-    }, { status: 500 })
+  } catch (error: any) {
+    console.error('Test DB error:', error)
+    return NextResponse.json(
+      { error: error.message, database: 'Turso (LibSQL)' },
+      { status: 500 }
+    )
   }
 }

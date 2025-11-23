@@ -15,10 +15,13 @@
     "migrate:articles:run": "wrangler d1 execute smartlock-production --remote --file=./database/migrate-articles.sql"
   },
   "dependencies": {
-    "@cloudflare/next-on-pages": "^1.13.0",
+    "@cloudflare/next-on-pages": "^1.13.16",
+    "@libsql/client": "^0.15.15",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "dotenv": "^17.2.3",
+    "hono": "^4.10.6",
     "jose": "^5.2.0",
     "lucide-react": "^0.344.0",
     "marked": "^17.0.1",

@@ -1,0 +1,7 @@
+# Cloudflare Pages Redirects Configuration
+
+# 强制HTTPS
+http://:project.pages.dev/* https://:project.pages.dev/:splat 301
+
+# SPA Fallback for dynamic routes (handled by Next.js, but good to have)
+# Note: Next.js handles routing, so this is mostly for reference

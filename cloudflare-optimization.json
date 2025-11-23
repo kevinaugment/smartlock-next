@@ -1,0 +1,167 @@
+{
+  "name": "Smart Lock Hub - Cloudflare 免费版优化配置",
+  "description": "完整的Cloudflare性能优化设置（适用于免费版）",
+  
+  "caching": {
+    "cache_level": "aggressive",
+    "browser_cache_ttl": 14400,
+    "always_online": true,
+    "development_mode": false,
+    
+    "cache_rules": [
+      {
+        "name": "静态资源最大化缓存",
+        "url": "*/_next/static/*",
+        "cache_level": "cache_everything",
+        "edge_cache_ttl": 2592000,
+        "browser_cache_ttl": 2592000
+      },
+      {
+        "name": "API响应缓存",
+        "url": "*/api/categories",
+        "cache_level": "cache_everything",
+        "edge_cache_ttl": 3600,
+        "browser_cache_ttl": 300
+      },
+      {
+        "name": "HTML页面缓存",
+        "url": "*",
+        "cache_level": "standard",
+        "edge_cache_ttl": 7200,
+        "browser_cache_ttl": 0
+      }
+    ]
+  },
+  
+  "speed": {
+    "auto_minify": {
+      "js": true,
+      "css": true,
+      "html": true
+    },
+    "brotli": true,
+    "early_hints": true,
+    "rocket_loader": false,
+    "mirage": false,
+    "polish": "off",
+    "http2": true,
+    "http3": true,
+    "zero_rtt": true,
+    "websockets": true
+  },
+  
+  "security": {
+    "ssl": {
+      "mode": "full_strict",
+      "min_tls_version": "1.2",
+      "tls_1_3": true,
+      "automatic_https_rewrites": true,
+      "always_use_https": true,
+      "opportunistic_encryption": true
+    },
+    
+    "firewall_rules": [
+      {
+        "name": "阻止恶意Bot",
+        "expression": "(cf.client.bot) and not (cf.verified_bot_category in {\"Search Engine Crawler\"})",
+        "action": "block",
+        "priority": 1
+      },
+      {
+        "name": "API速率限制",
+        "expression": "(http.request.uri.path contains \"/api/\")",
+        "action": "rate_limit",
+        "rate_limit": {
+          "requests": 10,
+          "period": 60,
+          "mitigation_timeout": 600
+        },
+        "priority": 2
+      }
+    ],
+    
+    "security_level": "medium",
+    "challenge_passage": 30,
+    "browser_integrity_check": true,
+    "hotlink_protection": false,
+    "security_header": true,
+    "privacy_pass": true
+  },
+  
+  "network": {
+    "ipv6": true,
+    "pseudo_ipv4": "off",
+    "ip_geolocation": true,
+    "max_upload": 100,
+    "websockets": true
+  },
+  
+  "dns": {
+    "dnssec": true,
+    "cname_flattening": "flatten_all",
+    "ttl": "auto"
+  },
+  
+  "analytics": {
+    "web_analytics": true,
+    "performance_metrics": true,
+    "core_web_vitals": true
+  },
+  
+  "custom_rules": {
+    "transform_rules": [],
+    "redirect_rules": [
+      {
+        "name": "强制HTTPS",
+        "source": "http://*",
+        "target": "https://$1",
+        "status_code": 301
+      }
+    ]
+  },
+  
+  "workers": {
+    "routes": [
+      {
+        "pattern": "*smartlock-next.pages.dev/*",
+        "script": "_worker"
+      }
+    ]
+  },
+  
+  "performance_targets": {
+    "ttfb": "< 200ms",
+    "fcp": "< 1.8s",
+    "lcp": "< 2.5s",
+    "cls": "< 0.1",
+    "fid": "< 100ms",
+    "cache_hit_ratio": "> 85%"
+  },
+  
+  "notes": [
+    "这是针对Cloudflare免费版的完整优化配置",
+    "Page Rules限制: 3条（已配置3条最重要的规则）",
+    "Firewall Rules限制: 5条（已配置2条核心规则）",
+    "部分高级功能需要付费版本（Polish, Mirage, Argo等）",
+    "所有配置需要在Cloudflare Dashboard中手动应用"
+  ],
+  
+  "manual_configuration_steps": [
+    "1. 登录 Cloudflare Dashboard",
+    "2. 选择 smartlock-next.pages.dev 项目",
+    "3. 导航到 Speed → Optimization",
+    "4. 启用 Auto Minify (JS, CSS, HTML)",
+    "5. 启用 Brotli compression",
+    "6. 启用 Early Hints",
+    "7. 导航到 SSL/TLS",
+    "8. 设置为 Full (strict)",
+    "9. 启用 Always Use HTTPS",
+    "10. 导航到 Network",
+    "11. 启用 HTTP/2, HTTP/3, 0-RTT",
+    "12. 导航到 Caching → Configuration",
+    "13. 配置3条 Page Rules（如配置文件所示）",
+    "14. 导航到 Security → WAF",
+    "15. 配置2条 Firewall Rules",
+    "16. 启用 Web Analytics"
+  ]
+}

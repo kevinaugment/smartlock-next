@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getRequestContext } from '@cloudflare/next-on-pages'
+import { query } from '@/lib/db'
 
 export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
@@ -30,34 +30,21 @@ export default async function ArticlesPage() {
   let error = null
 
   try {
-    const { env } = getRequestContext()
-    const db = (env as any).DB
-
-    if (!db) {
-      throw new Error('Database not available')
-    }
-
     // Get categories
-    const categoriesResult = await db
-      .prepare('SELECT id, name, slug, icon, description FROM categories ORDER BY display_order')
-      .all()
-    categories = (categoriesResult.results as Category[]) || []
+    categories = await query<Category>(
+      'SELECT id, name, slug, icon, description FROM categories ORDER BY display_order'
+    )
 
-    // Get articles
-    const articlesResult = await db
-      .prepare(`
-        SELECT 
-          a.id, a.title, a.slug, a.description, 
-          a.reading_time, a.published_at,
-          c.slug as category_slug, c.name as category_name
-        FROM articles a
-        JOIN categories c ON a.category_id = c.id
-        WHERE a.status = 'published'
-        ORDER BY a.published_at DESC
-        LIMIT 50
-      `)
-      .all()
-    articles = (articlesResult.results as Article[]) || []
+    // Get articles with category info
+    articles = await query<Article>(`
+      SELECT 
+        a.id, a.title, a.slug, a.description, 
+        c.slug as category_slug, c.name as category_name,
+        a.reading_time, a.published_at
+      FROM articles a
+      JOIN categories c ON a.category_id = c.id
+      ORDER BY a.published_at DESC
+    `)
   } catch (e) {
     error = e instanceof Error ? e.message : 'Failed to load data'
     console.error('Error loading articles:', e)

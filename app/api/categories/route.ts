@@ -3,10 +3,14 @@ import { getRequestContext } from '@cloudflare/next-on-pages'
 
 export const runtime = 'edge'
 
+interface CloudflareEnv {
+  DB: any  // D1Database
+}
+
 export async function GET() {
   try {
     // 使用@cloudflare/next-on-pages的正确方式获取D1绑定
-    const { env } = getRequestContext()
+    const { env } = getRequestContext<CloudflareEnv>()
     const db = env.DB
     
     if (!db) {

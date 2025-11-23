@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getRequestContext } from '@cloudflare/next-on-pages'
 import { mockDb, isDevelopment } from '@/lib/mock-db'
+import { renderMarkdown } from '@/lib/markdown'
 
 export const runtime = 'edge'
 
@@ -199,18 +200,29 @@ export default async function ArticlePage({
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
           {/* Main Content */}
           <article className="lg:col-span-3">
-            <div className="bg-white rounded-lg border border-gray-200 p-8">
-              <div className="prose prose-lg max-w-none">
-                <div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
-                  {article.content}
-                </div>
-              </div>
-              <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-                <p className="text-sm text-blue-800">
-                  📝 <strong>Note:</strong> Full markdown rendering coming soon. Currently displaying raw content.
-                </p>
-              </div>
-            </div>
+            <div 
+              className="prose prose-lg max-w-none
+                prose-headings:font-bold prose-headings:text-gray-900
+                prose-h1:text-3xl prose-h1:mt-8 prose-h1:mb-4
+                prose-h2:text-2xl prose-h2:mt-6 prose-h2:mb-3
+                prose-h3:text-xl prose-h3:mt-4 prose-h3:mb-2
+                prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-4
+                prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+                prose-strong:text-gray-900 prose-strong:font-semibold
+                prose-em:text-gray-700 prose-em:italic
+                prose-code:text-pink-600 prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
+                prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto
+                prose-ul:list-disc prose-ul:ml-6 prose-ul:mb-4
+                prose-ol:list-decimal prose-ol:ml-6 prose-ol:mb-4
+                prose-li:text-gray-700 prose-li:mb-1
+                prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600
+                prose-table:border prose-table:border-gray-300
+                prose-th:bg-gray-100 prose-th:p-2 prose-th:border prose-th:border-gray-300
+                prose-td:p-2 prose-td:border prose-td:border-gray-300
+                prose-img:rounded-lg prose-img:shadow-md
+              "
+              dangerouslySetInnerHTML={{ __html: renderMarkdown(article.content) }}
+            />
           </article>
 
           {/* Sidebar */}

@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -40,15 +42,27 @@ export default function Home() {
           </div>
 
           {/* Quick Links */}
-          <div className="mt-16 space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">Quick Access</h2>
-            <div className="flex flex-wrap justify-center gap-4">
-              <a href="/api/categories" className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                View API: Categories
-              </a>
-              <a href="/admin/login" className="px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors">
-                Admin Login
-              </a>
+          <div className="max-w-md mx-auto">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Quick Access</h2>
+            <div className="flex flex-col gap-4">
+              <Link
+                href="/articles"
+                className="block px-6 py-4 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 hover:shadow-md transition-all text-center"
+              >
+                <span className="font-semibold">📚 Browse Knowledge Base</span>
+              </Link>
+              <Link
+                href="/api/categories"
+                className="block px-6 py-4 bg-white rounded-lg shadow-sm border-2 border-blue-200 hover:border-blue-400 hover:shadow-md transition-all text-center"
+              >
+                <span className="text-blue-600 font-semibold">View API: Categories</span>
+              </Link>
+              <Link
+                href="/admin/login"
+                className="block px-6 py-4 bg-white rounded-lg shadow-sm border-2 border-gray-200 hover:border-gray-400 hover:shadow-md transition-all text-center"
+              >
+                <span className="text-gray-700 font-semibold">Admin Login</span>
+              </Link>
             </div>
           </div>
 

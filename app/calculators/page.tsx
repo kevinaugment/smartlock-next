@@ -41,6 +41,22 @@ const calculators = [
     features: ['Door measurements', 'Material compatibility', 'Lock type matching', 'Installation difficulty'],
     complexity: 'Moderate',
   },
+  {
+    name: 'Protocol Selection Wizard',
+    slug: 'protocol-wizard',
+    icon: '🧙‍♂️',
+    description: 'Get personalized protocol recommendations based on your specific requirements and priorities',
+    features: ['Smart recommendation engine', 'Multi-factor scoring', 'Pros/cons analysis', 'Ecosystem matching'],
+    complexity: 'Moderate',
+  },
+  {
+    name: 'STR ROI Calculator',
+    slug: 'str-roi',
+    icon: '🏠',
+    description: 'Calculate ROI and payback time for smart locks in short-term rental properties',
+    features: ['Labor time savings', 'Lockout cost reduction', 'Lost key savings', 'Payback analysis'],
+    complexity: 'Simple',
+  },
 ]
 
 const categories = [

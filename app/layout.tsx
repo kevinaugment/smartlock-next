@@ -6,8 +6,6 @@ export const metadata: Metadata = {
   description: 'Comprehensive smart lock guides covering protocols, security, installation, troubleshooting, and real-world applications.',
 }
 
-export const runtime = 'edge'
-
 export default function RootLayout({
   children,
 }: {

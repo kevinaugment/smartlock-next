@@ -1,0 +1,16 @@
+# Cloudflare Pages配置
+name = "smartlock-next"
+compatibility_date = "2024-01-01"
+
+# D1数据库绑定
+[[d1_databases]]
+binding = "DB"
+database_name = "smartlock-production"
+database_id = "a6ecde29-4a32-4085-bdd6-a390ed453eec"
+
+# Pages配置
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+[env.preview]
+vars = { ENVIRONMENT = "preview" }

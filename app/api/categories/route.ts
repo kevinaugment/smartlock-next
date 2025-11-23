@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 export const runtime = 'edge'
 
 interface CloudflareEnv {
-  DB: D1Database
+  DB: any // D1Database type
 }
 
 export async function GET(request: NextRequest) {

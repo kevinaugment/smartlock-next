@@ -104,8 +104,18 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/faq" className="hover:text-white transition-colors">
+                  FAQ
+                </Link>
+              </li>
+              <li>
                 <Link href="/compare" className="hover:text-white transition-colors">
                   Protocol Comparison
+                </Link>
+              </li>
+              <li>
+                <Link href="/brands" className="hover:text-white transition-colors">
+                  Brands
                 </Link>
               </li>
               <li>

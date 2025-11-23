@@ -1,7 +1,5 @@
 import Link from 'next/link'
 import { getRequestContext } from '@cloudflare/next-on-pages'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
 
 export const runtime = 'edge'
 
@@ -192,21 +190,17 @@ export default async function ArticlePage({
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
           {/* Main Content */}
           <article className="lg:col-span-3">
-            <div className="prose prose-lg max-w-none
-              prose-headings:font-bold prose-headings:text-gray-900
-              prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl
-              prose-p:text-gray-700 prose-p:leading-relaxed
-              prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
-              prose-strong:text-gray-900 prose-strong:font-semibold
-              prose-code:text-pink-600 prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded
-              prose-pre:bg-gray-900 prose-pre:text-gray-100
-              prose-ul:list-disc prose-ol:list-decimal
-              prose-li:text-gray-700
-              prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:italic
-            ">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {article.content}
-              </ReactMarkdown>
+            <div className="bg-white rounded-lg border border-gray-200 p-8">
+              <div className="prose prose-lg max-w-none">
+                <div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
+                  {article.content}
+                </div>
+              </div>
+              <div className="mt-8 p-4 bg-blue-50 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  📝 <strong>Note:</strong> Full markdown rendering coming soon. Currently displaying raw content.
+                </p>
+              </div>
             </div>
           </article>
 

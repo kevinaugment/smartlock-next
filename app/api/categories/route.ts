@@ -1,13 +1,25 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { getRequestContext } from '@cloudflare/next-on-pages'
 
 export const runtime = 'edge'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    // 获取Cloudflare环境（不使用泛型避免TypeScript问题）
-    const context = getRequestContext()
-    const db = (context.env as any).DB
+    // 尝试多种方式获取D1绑定
+    let db = null
+    
+    // 方法1: 通过getRequestContext (推荐)
+    try {
+      const context = getRequestContext()
+      db = (context?.env as any)?.DB
+    } catch (e) {
+      console.error('getRequestContext failed:', e)
+    }
+    
+    // 方法2: 通过request对象 (备用)
+    if (!db) {
+      db = (request as any)?.env?.DB || (request as any)?.DB
+    }
     
     if (!db) {
       return NextResponse.json(

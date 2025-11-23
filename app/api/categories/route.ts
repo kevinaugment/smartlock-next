@@ -3,35 +3,32 @@ import { getRequestContext } from '@cloudflare/next-on-pages'
 
 export const runtime = 'edge'
 
-interface CloudflareEnv extends Record<string, unknown> {
-  DB: any  // D1Database
-}
-
 export async function GET() {
   try {
-    // 使用@cloudflare/next-on-pages的正确方式获取D1绑定
-    const { env } = getRequestContext<CloudflareEnv>()
-    const db = env.DB
+    // 获取Cloudflare环境（不使用泛型避免TypeScript问题）
+    const context = getRequestContext()
+    const db = (context.env as any).DB
     
     if (!db) {
       return NextResponse.json(
         { 
           error: 'D1 database not configured',
-          message: 'DB binding not found. Please configure D1 binding in Cloudflare Pages.'
+          message: 'DB binding not found. Please configure D1 binding in Cloudflare Pages Dashboard.',
+          hint: 'Check Settings → Functions → D1 database bindings'
         },
         { status: 500 }
       )
     }
 
     // 查询所有分类
-    const { results } = await db.prepare(
+    const result = await db.prepare(
       'SELECT * FROM categories ORDER BY display_order ASC'
     ).all()
 
     return NextResponse.json({
       success: true,
-      count: results?.length || 0,
-      categories: results || [],
+      count: result.results?.length || 0,
+      categories: result.results || [],
       timestamp: new Date().toISOString(),
     })
   } catch (error) {

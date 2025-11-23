@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { getRequestContext } from '@cloudflare/next-on-pages'
-import { mockDb, isDevelopment } from '@/lib/mock-db'
 import { renderMarkdown } from '@/lib/markdown'
 
 export const runtime = 'edge'
@@ -38,54 +37,46 @@ export default async function ArticlePage({
   let error = null
 
   try {
-    // 本地开发使用Mock数据
-    if (isDevelopment || process.env.NEXT_PUBLIC_USE_MOCK === 'true') {
-      article = await mockDb.getArticle(params.slug, params.category)
-      if (article) {
-        const relatedResult = await mockDb.getRelatedArticles(article.category_id, article.id, 3)
-        relatedArticles = relatedResult.results as RelatedArticle[]
-      }
-    } else {
-      // 生产环境使用真实D1数据库
-      const context = getRequestContext()
-      const db = (context.env as any).DB
+    const { env } = getRequestContext()
+    const db = (env as any).DB
 
-      if (db) {
-        const articleResult = await db
-          .prepare(`
-            SELECT 
-              a.id, a.title, a.slug, a.description, a.content,
-              a.category_id, a.reading_time, a.word_count,
-              a.published_at, a.updated_at,
-              c.name as category_name, c.slug as category_slug,
-              u.name as author_name
-            FROM articles a
-            JOIN categories c ON a.category_id = c.id
-            LEFT JOIN users u ON a.author_id = u.id
-            WHERE a.slug = ? AND c.slug = ? AND a.status = 'published'
-            LIMIT 1
-          `)
-          .bind(params.slug, params.category)
-          .first()
+    if (!db) {
+      throw new Error('Database not available')
+    }
 
-        article = articleResult as Article | null
+    const articleResult = await db
+      .prepare(`
+        SELECT 
+          a.id, a.title, a.slug, a.description, a.content,
+          a.category_id, a.reading_time, a.word_count,
+          a.published_at, a.updated_at,
+          c.name as category_name, c.slug as category_slug,
+          u.name as author_name
+        FROM articles a
+        JOIN categories c ON a.category_id = c.id
+        LEFT JOIN users u ON a.author_id = u.id
+        WHERE a.slug = ? AND c.slug = ? AND a.status = 'published'
+        LIMIT 1
+      `)
+      .bind(params.slug, params.category)
+      .first()
 
-        if (article) {
-          const relatedResult = await db
-            .prepare(`
-              SELECT a.title, a.slug, a.description, c.slug as category_slug
-              FROM articles a
-              JOIN categories c ON a.category_id = c.id
-              WHERE a.category_id = ? AND a.id != ? AND a.status = 'published'
-              ORDER BY a.published_at DESC
-              LIMIT 3
-            `)
-            .bind(article.category_id, article.id)
-            .all()
+    article = articleResult as Article | null
 
-          relatedArticles = relatedResult.results as RelatedArticle[]
-        }
-      }
+    if (article) {
+      const relatedResult = await db
+        .prepare(`
+          SELECT a.title, a.slug, a.description, c.slug as category_slug
+          FROM articles a
+          JOIN categories c ON a.category_id = c.id
+          WHERE a.category_id = ? AND a.id != ? AND a.status = 'published'
+          ORDER BY a.published_at DESC
+          LIMIT 3
+        `)
+        .bind(article.category_id, article.id)
+        .all()
+
+      relatedArticles = (relatedResult.results as RelatedArticle[]) || []
     }
   } catch (e) {
     error = e instanceof Error ? e.message : 'Failed to load article'

@@ -3,12 +3,21 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { mockArticles, mockCategories } from '@/lib/mock-db'
+
+const mockCategories = [
+  { id: 1, name: 'Protocols', slug: 'protocols', icon: '📡' },
+  { id: 2, name: 'Security', slug: 'security', icon: '🔒' },
+  { id: 3, name: 'Installation', slug: 'installation', icon: '🔋' },
+  { id: 4, name: 'Guides', slug: 'guides', icon: '🔧' },
+  { id: 5, name: 'Use Cases', slug: 'use-cases', icon: '🏢' },
+  { id: 6, name: 'Support', slug: 'support', icon: '💡' },
+  { id: 7, name: 'Integration', slug: 'integration', icon: '🔗' },
+]
 
 export default function ArticlesManagement() {
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
-  const [articles, setArticles] = useState(mockArticles)
+  const [articles, setArticles] = useState<any[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filterCategory, setFilterCategory] = useState<number | 'all'>('all')
   const [loading, setLoading] = useState(true)

@@ -1,20 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: {
-      allowedOrigins: ['localhost:3000'],
-    },
-  },
+  // Cloudflare Pages 配置
+  reactStrictMode: true,
+  
+  // 图片优化配置
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
-    ],
+    unoptimized: true,
   },
-  // Cloudflare Pages 配置 - hybrid模式支持API routes
-  // output留空使用默认的server模式
+  
+  // 排除不需要编译的文件
+  webpack: (config) => {
+    config.externals = config.externals || []
+    config.externals.push({
+      'gray-matter': 'gray-matter',
+    })
+    return config
+  },
 }
 
 export default nextConfig

@@ -10,7 +10,9 @@
     "pages:build": "npx @cloudflare/next-on-pages",
     "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static",
     "db:migrate": "wrangler d1 execute smartlock-production --remote --file=./database/schema.sql",
-    "db:seed": "wrangler d1 execute smartlock-production --remote --file=./database/seed.sql"
+    "db:seed": "wrangler d1 execute smartlock-production --remote --file=./database/seed.sql",
+    "migrate:articles": "tsx scripts/migrate-articles.ts",
+    "migrate:articles:run": "wrangler d1 execute smartlock-production --remote --file=./database/migrate-articles.sql"
   },
   "dependencies": {
     "next": "^14.2.0",
@@ -39,6 +41,7 @@
     "autoprefixer": "^10.4.17",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.2.0",
-    "wrangler": "^3.114.0"
+    "wrangler": "^3.114.0",
+    "tsx": "^4.7.0"
   }
 }

@@ -4,6 +4,9 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Smart Lock Hub - Expert Guides & Tools',
   description: 'Comprehensive smart lock guides covering protocols, security, installation, troubleshooting, and real-world applications.',
+  icons: {
+    icon: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({

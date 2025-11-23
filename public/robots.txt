@@ -1,0 +1,17 @@
+# robots.txt for Smart Lock Hub
+
+User-agent: *
+Allow: /
+Allow: /articles/
+Allow: /calculators/
+Allow: /about
+Allow: /contact
+
+Disallow: /admin/
+Disallow: /api/auth/
+
+# Sitemap
+Sitemap: https://smartlockhub.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

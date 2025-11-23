@@ -104,6 +104,16 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/compare" className="hover:text-white transition-colors">
+                  Protocol Comparison
+                </Link>
+              </li>
+              <li>
+                <Link href="/resources" className="hover:text-white transition-colors">
+                  Resources
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="hover:text-white transition-colors">
                   Contact
                 </Link>
@@ -116,11 +126,6 @@ export default function Footer() {
               <li>
                 <Link href="/terms" className="hover:text-white transition-colors">
                   Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link href="/admin/login" className="hover:text-white transition-colors">
-                  Admin Login
                 </Link>
               </li>
             </ul>

@@ -22,27 +22,33 @@ export default function Header() {
           <nav className="hidden md:flex items-center gap-8">
             <Link
               href="/articles"
-              className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
             >
               Knowledge Base
             </Link>
             <Link
               href="/calculators"
-              className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
             >
               Calculators
             </Link>
             <Link
-              href="/about"
-              className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+              href="/compare"
+              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
             >
-              About
+              Compare
             </Link>
             <Link
-              href="/admin/login"
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors"
+              href="/resources"
+              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
             >
-              Admin
+              Resources
+            </Link>
+            <Link
+              href="/about"
+              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+            >
+              About
             </Link>
           </nav>
 
@@ -82,18 +88,25 @@ export default function Header() {
                 Calculators
               </Link>
               <Link
+                href="/compare"
+                className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Compare Protocols
+              </Link>
+              <Link
+                href="/resources"
+                className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Resources
+              </Link>
+              <Link
                 href="/about"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 About
-              </Link>
-              <Link
-                href="/admin/login"
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors text-center"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Admin
               </Link>
             </nav>
           </div>

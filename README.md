@@ -51,18 +51,27 @@ DB=<your-d1-binding>
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
 ```
 
-### 4. 迁移旧数据（可选）
+### 4. 迁移文章数据（已完成✅）
+
+**49篇真实文章已从旧Astro站点迁移！**
 
 ```bash
-# 安装迁移工具
-npm install -D gray-matter tsx
+# 生成迁移SQL（已完成）
+npx tsx scripts/migrate-articles.ts
 
-# 运行迁移脚本
-npx tsx database/migrate-from-astro.ts
+# 清空旧数据（如需重新导入）
+npx wrangler d1 execute smartlock-production --remote --file=./database/clean-articles.sql
 
-# 执行迁移SQL
+# 执行迁移（已完成）
 npx wrangler d1 execute smartlock-production --remote --file=./database/migrate-articles.sql
 ```
+
+**迁移统计**:
+- ✅ 49篇完整文章
+- ✅ 所有frontmatter元数据
+- ✅ 标签和关键词
+- ✅ 分类关联
+- ✅ 发布日期保留
 
 ### 5. 本地开发
 

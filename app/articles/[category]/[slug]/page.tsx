@@ -43,8 +43,9 @@ export default async function ArticlePage({
       `SELECT 
         a.id, a.title, a.slug, a.description, a.content,
         a.category_id, c.name as category_name, c.slug as category_slug,
-        a.reading_time, a.word_count, a.published_at, a.updated_at,
-        a.author_name
+        a.reading_time, a.word_count, a.published_at,
+        COALESCE(a.updated_at, a.published_at, a.created_at) as updated_at,
+        COALESCE(a.author_name, 'Smart Lock Hub') as author_name
        FROM articles a
        JOIN categories c ON a.category_id = c.id
        WHERE c.slug = ? AND a.slug = ?`,

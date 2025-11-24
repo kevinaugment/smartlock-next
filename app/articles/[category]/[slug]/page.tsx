@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { query, queryOne } from '@/lib/db'
-import { renderMarkdown } from '@/lib/markdown'
+import { renderMarkdown, extractHeadings } from '@/lib/markdown'
+import TableOfContents from '@/components/TableOfContents'
 
 export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
@@ -94,11 +95,18 @@ export default async function ArticlePage({
     )
   }
 
+  // Extract headings for TOC
+  const headings = article ? extractHeadings(article.content) : []
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <article className="container mx-auto px-4 py-8 md:py-12 max-w-5xl">
-        {/* Breadcrumb */}
-        <nav className="mb-6 text-sm bg-white px-4 py-3 rounded-lg border border-gray-200 inline-flex items-center gap-2">
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8">
+            {/* Main Content Column */}
+            <article>
+              {/* Breadcrumb */}
+              <nav className="mb-6 text-sm bg-white px-4 py-3 rounded-lg border border-gray-200 inline-flex items-center gap-2">
           <Link href="/articles" className="text-blue-600 hover:text-blue-700 hover:underline font-medium">
             📚 Articles
           </Link>
@@ -190,16 +198,24 @@ export default async function ArticlePage({
           </section>
         )}
 
-        {/* Back Link */}
-        <div className="mt-12 pt-8 border-t border-gray-200">
-          <Link
-            href={`/articles/${article.category_slug}`}
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
-          >
-            ← Back to {article.category_name}
-          </Link>
+              {/* Back Link */}
+              <div className="mt-12 pt-8 border-t border-gray-200">
+                <Link
+                  href={`/articles/${article.category_slug}`}
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  ← Back to {article.category_name}
+                </Link>
+              </div>
+            </article>
+
+            {/* Sidebar Column */}
+            <aside>
+              <TableOfContents headings={headings} />
+            </aside>
+          </div>
         </div>
-      </article>
+      </div>
     </div>
   )
 }

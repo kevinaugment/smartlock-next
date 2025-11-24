@@ -1,7 +1,5 @@
 import Link from 'next/link'
 import { query, queryOne } from '@/lib/db'
-import { renderMarkdown, extractHeadings } from '@/lib/markdown'
-import TableOfContents from '@/components/TableOfContents'
 
 export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
@@ -95,16 +93,9 @@ export default async function ArticlePage({
     )
   }
 
-  // Extract headings for TOC
-  const headings = article ? extractHeadings(article.content) : []
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-8 md:py-12">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8">
-            {/* Main Content Column */}
-            <article>
+      <article className="container mx-auto px-4 py-8 md:py-12 max-w-4xl">
               {/* Breadcrumb */}
               <nav className="mb-6 text-sm bg-white px-4 py-3 rounded-lg border border-gray-200 inline-flex items-center gap-2">
           <Link href="/articles" className="text-blue-600 hover:text-blue-700 hover:underline font-medium">
@@ -167,10 +158,10 @@ export default async function ArticlePage({
           </div>
         </header>
 
-        {/* Article Content */}
+        {/* Article Content - HTML from database */}
         <div 
           className="prose prose-lg max-w-none mb-16 bg-white p-8 rounded-lg shadow-sm border border-gray-100"
-          dangerouslySetInnerHTML={{ __html: renderMarkdown(article.content) }}
+          dangerouslySetInnerHTML={{ __html: article.content }}
         />
 
         {/* Related Articles */}
@@ -198,24 +189,16 @@ export default async function ArticlePage({
           </section>
         )}
 
-              {/* Back Link */}
-              <div className="mt-12 pt-8 border-t border-gray-200">
-                <Link
-                  href={`/articles/${article.category_slug}`}
-                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  ← Back to {article.category_name}
-                </Link>
-              </div>
-            </article>
-
-            {/* Sidebar Column */}
-            <aside>
-              <TableOfContents headings={headings} />
-            </aside>
-          </div>
+        {/* Back Link */}
+        <div className="mt-12 pt-8 border-t border-gray-200">
+          <Link
+            href={`/articles/${article.category_slug}`}
+            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
+          >
+            ← Back to {article.category_name}
+          </Link>
         </div>
-      </div>
+      </article>
     </div>
   )
 }

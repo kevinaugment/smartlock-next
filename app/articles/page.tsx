@@ -70,20 +70,23 @@ export default async function ArticlesPage() {
         )}
 
         {/* Categories */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Browse by Category</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">Browse by Category</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((category) => (
               <Link
                 key={category.id}
                 href={`/articles/${category.slug}`}
-                className="p-6 bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-300 transition-all"
+                className="group p-6 bg-white rounded-xl shadow-sm border-2 border-gray-200 hover:shadow-lg hover:border-blue-400 hover:-translate-y-1 transition-all duration-200"
               >
-                <div className="text-4xl mb-3">{category.icon}</div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-200">{category.icon}</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                   {category.name}
                 </h3>
-                <p className="text-sm text-gray-600">{category.description}</p>
+                <p className="text-sm text-gray-600 leading-relaxed">{category.description}</p>
+                <div className="mt-4 text-blue-600 font-medium text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  Explore <span>→</span>
+                </div>
               </Link>
             ))}
           </div>
@@ -91,41 +94,48 @@ export default async function ArticlesPage() {
 
         {/* Articles Grid */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Latest Articles</h2>
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">Latest Articles</h2>
+            <span className="text-sm text-gray-500">{articles.length} articles</span>
+          </div>
           {articles.length === 0 ? (
-            <div className="text-center py-12 bg-gray-50 rounded-lg">
-              <p className="text-gray-600">No articles yet. Run data migration first.</p>
+            <div className="text-center py-16 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border-2 border-dashed border-gray-300">
+              <p className="text-gray-600 text-lg mb-2">📚 No articles yet</p>
+              <p className="text-gray-500 text-sm">Check back soon for new content!</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {articles.map((article) => (
                 <Link
                   key={article.id}
                   href={`/articles/${article.category_slug}/${article.slug}`}
-                  className="group bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all"
+                  className="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-xl hover:border-blue-300 hover:-translate-y-1 transition-all duration-200"
                 >
                   <div className="p-6">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="text-xs font-semibold text-blue-600 uppercase">
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700">
                         {article.category_name}
                       </span>
-                      <span className="text-xs text-gray-500">
-                        • {article.reading_time} min read
+                      <span className="text-xs text-gray-400 flex items-center gap-1">
+                        <span>⏱️</span> {article.reading_time} min
                       </span>
                     </div>
                     
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors leading-tight line-clamp-2">
                       {article.title}
                     </h3>
                     
-                    <p className="text-sm text-gray-600 line-clamp-3 mb-4">
+                    <p className="text-sm text-gray-600 line-clamp-3 mb-4 leading-relaxed">
                       {article.description}
                     </p>
                     
-                    <div className="flex items-center justify-between text-xs text-gray-500">
-                      <span>{new Date(article.published_at).toLocaleDateString()}</span>
-                      <span className="text-blue-600 group-hover:translate-x-1 transition-transform">
-                        Read more →
+                    <div className="flex items-center justify-between text-xs text-gray-500 pt-4 border-t border-gray-100">
+                      <span className="flex items-center gap-1">
+                        <span>📅</span>
+                        {new Date(article.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      </span>
+                      <span className="text-blue-600 font-medium group-hover:gap-2 flex items-center gap-1 transition-all">
+                        Read more <span className="group-hover:translate-x-1 transition-transform">→</span>
                       </span>
                     </div>
                   </div>

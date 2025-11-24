@@ -6,6 +6,20 @@ export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+// Category icon helper
+function getCategoryIcon(slug: string): string {
+  const icons: Record<string, string> = {
+    'protocols': '📡',
+    'security': '🔒',
+    'installation': '🔋',
+    'guides': '🔧',
+    'use-cases': '🏢',
+    'support': '💡',
+    'integration': '🔗',
+  }
+  return icons[slug] || '📄'
+}
+
 interface Article {
   id: number
   title: string
@@ -82,59 +96,72 @@ export default async function ArticlePage({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <article className="container mx-auto px-4 py-16 max-w-4xl">
+      <article className="container mx-auto px-4 py-8 md:py-12 max-w-5xl">
         {/* Breadcrumb */}
-        <nav className="mb-8 text-sm">
-          <Link href="/articles" className="text-blue-600 hover:text-blue-700">
-            Articles
+        <nav className="mb-6 text-sm bg-white px-4 py-3 rounded-lg border border-gray-200 inline-flex items-center gap-2">
+          <Link href="/articles" className="text-blue-600 hover:text-blue-700 hover:underline font-medium">
+            📚 Articles
           </Link>
-          <span className="mx-2 text-gray-400">/</span>
-          <Link href={`/articles/${article.category_slug}`} className="text-blue-600 hover:text-blue-700">
+          <span className="text-gray-400">›</span>
+          <Link href={`/articles/${article.category_slug}`} className="text-blue-600 hover:text-blue-700 hover:underline font-medium">
             {article.category_name}
           </Link>
-          <span className="mx-2 text-gray-400">/</span>
-          <span className="text-gray-600">{article.title}</span>
+          <span className="text-gray-400">›</span>
+          <span className="text-gray-700 font-medium truncate max-w-xs">{article.title}</span>
         </nav>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
-            <p className="text-red-600">⚠️ {error}</p>
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-8 rounded-r-lg">
+            <p className="text-red-700 font-medium">⚠️ {error}</p>
           </div>
         )}
 
         {/* Article Header */}
-        <header className="mb-12">
-          <div className="mb-4">
+        <header className="mb-12 bg-white p-8 md:p-12 rounded-xl shadow-sm border border-gray-200">
+          <div className="mb-6">
             <Link
               href={`/articles/${article.category_slug}`}
-              className="inline-block px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-sm font-semibold hover:bg-blue-100 transition-colors"
             >
+              <span className="text-lg">{getCategoryIcon(article.category_slug)}</span>
               {article.category_name}
             </Link>
           </div>
           
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
             {article.title}
           </h1>
           
-          <p className="text-xl text-gray-600 mb-6">
+          <p className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
             {article.description}
           </p>
           
-          <div className="flex items-center gap-6 text-sm text-gray-500">
-            <span>By {article.author_name}</span>
-            <span>•</span>
-            <span>{new Date(article.published_at).toLocaleDateString()}</span>
-            <span>•</span>
-            <span>{article.reading_time} min read</span>
-            <span>•</span>
-            <span>{article.word_count} words</span>
+          <div className="flex flex-wrap items-center gap-4 md:gap-6 text-sm text-gray-600 border-t border-gray-200 pt-6">
+            <div className="flex items-center gap-2">
+              <span className="text-gray-400">✍️</span>
+              <span className="font-medium">{article.author_name}</span>
+            </div>
+            <span className="text-gray-300">•</span>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-400">📅</span>
+              <time dateTime={article.published_at}>{new Date(article.published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+            </div>
+            <span className="text-gray-300">•</span>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-400">⏱️</span>
+              <span>{article.reading_time} min read</span>
+            </div>
+            <span className="text-gray-300">•</span>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-400">📝</span>
+              <span>{article.word_count.toLocaleString()} words</span>
+            </div>
           </div>
         </header>
 
         {/* Article Content */}
         <div 
-          className="prose prose-lg max-w-none mb-16"
+          className="prose prose-lg max-w-none mb-16 bg-white p-8 rounded-lg shadow-sm border border-gray-100"
           dangerouslySetInnerHTML={{ __html: renderMarkdown(article.content) }}
         />
 

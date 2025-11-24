@@ -4,8 +4,6 @@
  */
 
 import { marked } from 'marked'
-import { markedHighlight } from 'marked-highlight'
-import hljs from 'highlight.js'
 
 export interface Heading {
   level: number
@@ -13,17 +11,7 @@ export interface Heading {
   id: string
 }
 
-// 配置语法高亮
-const highlight = markedHighlight({
-  langPrefix: 'hljs language-',
-  highlight(code, lang) {
-    const language = hljs.getLanguage(lang) ? lang : 'plaintext'
-    return hljs.highlight(code, { language }).value
-  }
-})
-
-// 配置marked
-marked.use(highlight)
+// 配置marked - 简化版本，适配Edge Runtime
 marked.setOptions({
   gfm: true, // GitHub Flavored Markdown
   breaks: true, // 换行支持
@@ -31,11 +19,27 @@ marked.setOptions({
 
 // 自定义renderer添加heading ID
 const renderer = new marked.Renderer()
-renderer.heading = ({ tokens, depth }) => {
-  const text = renderer.parser.parseInline(tokens)
-  const id = generateId(text)
+const originalHeading = renderer.heading.bind(renderer)
+
+renderer.heading = function({ text, depth }) {
+  const cleanText = text.replace(/<[^>]*>/g, '')
+  const id = generateId(cleanText)
   return `<h${depth} id="${id}">${text}</h${depth}>`
 }
+
+// 代码块样式
+renderer.code = function({ text, lang }) {
+  const language = lang || 'plaintext'
+  const escapedCode = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+  
+  return `<pre><code class="language-${language}">${escapedCode}</code></pre>`
+}
+
 marked.use({ renderer })
 
 /**

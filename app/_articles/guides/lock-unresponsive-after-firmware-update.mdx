@@ -1,0 +1,326 @@
+---
+title: "Smart Lock Unresponsive After Firmware Update - Recovery Guide"
+description: "Fix smart lock that stopped working after firmware update. Recover from failed updates, restore functionality, and prevent future update issues for all lock brands."
+category: guides
+pubDate: 2024-03-26
+wordCount: 750
+readingTime: 4
+keywords:
+  - "firmware update failed"
+  - "lock broken after update"
+  - "update bricked lock"
+  - "unresponsive after update"
+  - "firmware recovery"
+tags:
+  - "firmware"
+  - "recovery"
+  - "troubleshooting"
+isPillar: false
+isSupport: true
+featured: false
+relatedArticles:
+  - "update-smart-lock-firmware"
+  - "forgot-master-code-reset"
+
+---
+
+
+## Quick Answer
+
+**If lock unresponsive after update: Power cycle (remove batteries 60 sec), test manually (thumb turn works?), check app connection, attempt factory reset if completely dead.** Most "bricked" locks can be recovered. Contact manufacturer within 24 hours if no recovery - usually replaceable under warranty if update caused failure.
+
+**Recovery success rate:**
+- Power cycle fixes: 70%
+- Factory reset fixes: 20%
+- Needs replacement: 10%
+
+## Immediate Recovery Steps
+
+### Step 1: Power Cycle (Try First)
+
+```
+□ Remove ALL 4 batteries
+□ Wait 60 seconds (not 10, not 30 - full minute)
+□ Press any button 2-3 times
+  - Drains residual power
+□ Reinsert batteries (ensure +/- correct)
+□ Wait 2-3 minutes
+  - Lock initializes
+  - May take longer than normal
+□ Test:
+  - LED lights up when button pressed?
+  - Thumb turn works?
+  - Keypad responds?
+```
+
+**Success:** 70% of issues resolved here
+
+### Step 2: Test Basic Functions
+
+```
+□ Manual operation:
+  - Thumb turn lock/unlock (interior)
+  - Should work (not electronic)
+  - If doesn't: Mechanical issue (rare)
+
+□ Power indicator:
+  - Press any button
+  - LED lights up? = Has power
+  - No LED? = Try different batteries
+
+□ Keypad:
+  - Press digits
+  - Beeps? = Keypad working
+  - No beeps? = Continue recovery
+```
+
+### Step 3: Check App Connection
+
+```
+□ Open app
+□ Lock shows "Online" or "Offline"?
+  - Online: Good sign
+  - Offline: Connection issue, not bricked
+
+□ Try lock/unlock command
+  - Works? = Update successful, just glitchy
+  - No response? = Continue
+
+□ Check firmware version
+  - Settings → About → Firmware
+  - Updated to new version?
+  - OR: Rolled back to old?
+```
+
+### Step 4: Factory Reset
+
+```
+□ Last resort before contacting support
+□ Erases all codes and settings
+□ Process varies by brand:
+
+General process:
+1. Remove batteries
+2. Press and hold reset button (inside)
+3. While holding, reinsert one battery
+4. Keep holding 10-20 seconds
+5. LED flashes = Reset initiated
+6. Release button
+7. Wait 30 seconds
+8. Lock resets to factory defaults
+
+□ After reset:
+  - Pair as new device
+  - Reconfigure all settings
+  - Add users again
+```
+
+## Common Update Failures
+
+### Partial Update
+
+**Symptoms:**
+- Some features work, others don't
+- Keypad works but app doesn't
+- Or vice versa
+
+**Fix:**
+```
+□ Power cycle
+□ Force update again (if app allows)
+□ Check for newer update (may fix broken update)
+```
+
+### Failed Mid-Update
+
+**Symptoms:**
+- Update started, never finished
+- Lock frozen during update
+- Progress stuck at X%
+
+**Fix:**
+```
+□ Leave alone for 30 minutes
+  - May still be processing
+  - Patience first
+
+□ Power cycle (after 30 min)
+  - May restart update
+  - OR: Rollback to previous version
+
+□ Contact manufacturer
+  - May have emergency recovery firmware
+```
+
+### Bricked Lock
+
+**Symptoms:**
+- Completely unresponsive
+- No LED, no beeps, no response
+- Even with fresh batteries
+- Thumb turn works  - mechanical
+
+**Recovery:**
+```
+□ Try different batteries
+  - Even "new" batteries can be dead
+  - Test with multimeter (1.5V each)
+
+□ Clean battery contacts
+  - Corrosion from old batteries?
+  - Cotton swab + isopropyl alcohol
+
+□ Factory reset (if possible)
+  - Some locks allow reset even when "dead"
+
+□ Contact manufacturer
+  - Update should never brick lock
+  - Usually covered by warranty
+  - Replacement likely
+```
+
+## Prevention (Next Time)
+
+### Before Updating
+
+```
+☑ Battery >50% (ideally >70%)
+☑ Lock online and responding
+☑ Hub firmware updated first
+☑ Read update notes (known issues?)
+☑ Time available (30-45 min)
+☑ Backup key accessible (just in case)
+☑ Note current firmware version
+```
+
+### During Update
+
+```
+☑ Don't close app
+☑ Don't let phone sleep
+☑ Don't interrupt power
+☑ Don't remove batteries
+☑ Stay within range
+☑ Be patient (can take 20+ min)
+```
+
+### After Update
+
+```
+☑ Test immediately (don't assume works)
+☑ Test all functions:
+  - Lock/unlock via app
+  - Keypad codes
+  - Manual operation
+  - Auto-lock (if enabled)
+☑ Monitor for 24 hours
+☑ Report issues immediately
+```
+
+## Brand-Specific Recovery
+
+**Yale:**
+- Reset: Hold program button 10 sec
+- Recovery mode: Contact Yale support
+- Warranty: 2 years
+
+**Schlage:**
+- Reset: Press program button, remove battery while holding
+- Update retry: Usually automatic
+- Warranty: 3 years electronics
+
+**Kwikset:**
+- Reset: Program button + battery removal
+- Recovery: Often self-recovers after power cycle
+- Warranty: Lifetime mechanical, 1 year electronics
+
+**August:**
+- Reset: Paperclip in reset hole 10 sec
+- Recovery: App may offer firmware recovery
+- Warranty: 1 year
+
+## When to Contact Support
+
+**Contact within 24 hours if:**
+- Power cycle doesn't help
+- Factory reset fails
+- Lock completely unresponsive
+- Update clearly caused failure
+- Under warranty
+
+**What to provide:**
+```
+- Lock model and serial number
+- Firmware version  - before and after
+- Update timestamp
+- Description of issue
+- Photos/videos of problem
+- Troubleshooting steps tried
+```
+
+## Warranty Coverage
+
+**Usually covered:**
+- Update bricks lock
+- Update causes malfunction
+- Hardware failure during update
+
+**Not covered:**
+- User interrupted update
+- Low battery during update
+- Dropped lock during update
+- Lock already broken before update
+
+**Process:**
+1. Document issue
+2. Contact support
+3. Troubleshoot with agent
+4. Receive RMA (return authorization)
+5. Ship defective lock
+6. Receive replacement (usually 5-10 days)
+
+## Temporary Workarounds
+
+**While waiting for fix/replacement:**
+
+```
+✓ Use backup physical key
+✓ Use keypad (if still works)
+✓ Manual thumb turn from interior
+✓ Disable auto-lock temporarily
+✓ Consider temporary backup lock
+
+Until fixed, don't rely on:
+✗ App control
+✗ Remote access
+✗ Auto-lock
+✗ Automations
+```
+
+## Related Resources
+
+**Firmware:**
+- [How to Update Firmware] - /support/update-smart-lock-firmware - Proper process
+- [Improve Stability] - /support/improve-connection-stability - Prevent issues
+
+**Recovery:**
+- [Forgot Master Code] - /support/forgot-master-code-reset - Factory reset
+- [Lock Not Responding] - /support/smart-lock-no-response - General troubleshooting
+
+---
+
+## Summary Checklist
+
+**Recover unresponsive lock:**
+
+1. ☑ **Power cycle** (remove batteries 60 sec)
+2. ☑ **Test manually** (thumb turn works?)
+3. ☑ **Check app** (online? firmware version?)
+4. ☑ **Factory reset** (if still dead)
+5. ☑ **Contact manufacturer** (within 24 hrs)
+6. ☑ **Document issue** (for warranty claim)
+
+**Success rate:** 90% recoverable
+
+**Pro tip:** Before ANY firmware update, take a photo of: lock's current firmware version, battery level, and lock working (video of successful unlock). If update fails and you need warranty service, having "before" evidence helps claims process dramatically. Manufacturers sometimes claim "lock was already broken" - photos prove otherwise!
+

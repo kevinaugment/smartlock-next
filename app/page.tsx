@@ -40,7 +40,7 @@ export default function Home() {
               <div className="text-gray-600">Articles</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">7</div>
+              <div className="text-4xl font-bold text-blue-600 mb-2">6</div>
               <div className="text-gray-600">Categories</div>
             </div>
             <div className="text-center">

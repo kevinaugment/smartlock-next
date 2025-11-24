@@ -1,0 +1,1351 @@
+---
+title: "Smart Lock Enterprise System Integration: Complete Technical Guide"
+description: "Deep dive into integrating smart locks with HR systems, calendar platforms, visitor management, and building automation. Includes API architectures, code examples, error handling strategies, and real-world implementation patterns."
+category: integration
+pubDate: 2024-02-05
+wordCount: 4800
+readingTime: 19
+keywords:
+  - "smart lock API integration"
+  - "HR system integration smart lock"
+  - "calendar integration access control"
+  - "enterprise access automation"
+  - "building automation integration"
+  - "smart lock webhook integration"
+tags:
+  - "api-integration"
+  - "automation"
+  - "enterprise"
+  - "hr-systems"
+  - "calendar-sync"
+isPillar: false
+isSupport: false
+featured: true
+relatedArticles:
+  - "office-access-control"
+  - "multi-unit-buildings"
+  - "smart-lock-protocols-overview"
+relatedTools:
+  - "integration-roi-calculator"
+  - "api-compatibility-checker"
+---
+
+
+## Introduction: Why Integration Transforms Smart Lock Value
+
+Smart locks deployed in isolation deliver basic security and convenience—keyless entry, remote unlock, access logging. Smart locks integrated with enterprise systems transform from passive hardware into active infrastructure components that eliminate manual workflows, enforce policy automatically, and provide actionable business intelligence. The value differential proves dramatic: manual smart lock management consumes 15-20 minutes per employee lifecycle event (hire/transfer/termination); fully integrated systems reduce this to under 30 seconds—a 97% time reduction that, for 100-employee organization with 30% annual turnover, saves 15 hours annually ($750-1,500 at $50-100/hour fully-loaded labor cost).
+
+Integration complexity scales non-linearly with organizational sophistication. Small businesses (20-50 employees) achieve 80% of integration value through simple scheduled batch syncs costing $30-50 monthly via platforms like Zapier; mid-market companies (100-500 employees) require custom API integrations ($5,000-15,000 development) delivering real-time event processing and complex permission logic; enterprise deployments (1000+ employees) demand fault-tolerant distributed systems with message queues, idempotent processing, and multi-region failover—engineering investments of $50,000-200,000 justified by eliminating security gaps and achieving regulatory compliance impossible through manual processes.
+
+The technical architecture decision fundamentally impacts long-term maintainability and scalability. Point-to-point integrations connecting each system directly create N×(N-1)/2 integration endpoints that become unmaintainable beyond 3-4 systems; hub-and-spoke architectures centralizing integration logic through middleware reduce complexity to N endpoints but introduce single point of failure; event-driven architectures using message brokers provide best scalability and resilience but require sophisticated operational expertise. Selection depends on current system count, projected growth, internal technical capability, and tolerance for operational complexity.
+
+This comprehensive technical guide addresses enterprise integration requirements through systematic analysis of integration patterns, API authentication methods, data synchronization strategies, error handling frameworks, and production-tested implementation architectures. Understanding that integration constitutes ongoing operational commitment rather than one-time project enables realistic resource planning and architectural decisions aligned with organizational technical maturity and long-term strategic direction.
+
+## Integration Maturity Model & ROI Analysis
+
+### Five Levels of Integration Sophistication
+
+| Level | Description | Implementation | Latency | Error Rate | Labor Cost/Event | Setup Cost | Monthly Cost | Best For |
+|-------|-------------|----------------|---------|------------|-----------------|------------|--------------|----------|
+| **Level 0: Manual** | CSV export/import | Excel + manual entry | Days | 5-10% human error | 15-20 min | $0 | $0 | <20 employees, <5 events/year |
+| **Level 1: Scheduled Batch** | Daily/hourly sync | Zapier, Integromat | Hours | 2-3%  - sync failures | 5 min  - exception handling | $100 setup | $30-50 | 20-100 employees, <50 events/year |
+| **Level 2: Near Real-Time** | 15-minute polling | Custom scripts | 15-30 min | 1-2% | 2 min  - exception handling | $500-1,000 dev | $0 | 50-200 employees, moderate turnover |
+| **Level 3: Real-Time Webhook** | Event-driven push | Custom API integration | <1 min | <1%  - with retry | 30 sec  - monitoring only | $5,000-15,000 dev | $0-100  - infrastructure | 200-1000 employees, high turnover |
+| **Level 4: Enterprise Distributed** | Message queue + DLQ | Kafka/RabbitMQ + microservices | <10 sec | <0.1%  - HA design | Near zero  - fully automated | $50,000-200,000 | $500-2,000  - infrastructure | 1000+ employees, mission-critical |
+
+### ROI Calculation by Organization Size
+
+**Small Organization** (50 employees, 15% annual turnover equals 7-8 events/year):
+
+```Manual approach:
+- Time: 15 min × 8 events equals 120 minutes equals 2 hours/year
+- Cost: 2 hours × $50/hr equals $100/year
+- ROI of automation: Negative  - setup cost > annual savings
+- Recommendation: Stay manual OR use free tier Zapier
+
+Level 1 Scheduled (if growing to 100 employees):
+- Setup: $100
+- Monthly: $30 × 12 equals $360/year
+- Time saved: 1.5 hours/year × $50 equals $75
+- Net cost: $385/year
+- Justification: Process reliability + scalability, not immediate ROI
+```
+**Mid-Size Organization** (200 employees, 25% turnover equals 50 events/year):
+
+```Manual approach:
+- Time: 15 min × 50 equals 750 minutes equals 12.5 hours/year
+- Cost: 12.5 hours × $75/hr equals $937.50/year
+- Error cost: 5% error rate × 50 events × $200/error equals $500/year
+- Total cost: $1,437.50/year
+
+Level 3 Real-Time Webhook:
+- Setup: $10,000  - one-time
+- Monthly: $50 infrastructure equals $600/year
+- Time: 30 sec × 50 equals 25 min equals 0.4 hours × $75 equals $30/year
+- Total annual: $630/year
+- Annual savings: $1,437.50 - $630 equals $807.50/year
+- Payback period: $10,000 ÷ $807.50 equals 12.4 years  - pure financial
+
+BUT intangible benefits justify faster ROI:
+- Zero security gaps  - terminated employees lose access instantly
+- Compliance audit trail  - automated, tamper-proof
+- Employee experience  - instant access on day 1
+- HR productivity  - no manual tasks
+
+True ROI: 2-3 years including intangibles
+```
+**Enterprise Organization** (2000 employees, 20% turnover equals 400 events/year):
+
+```Manual approach (impossible at this scale):
+- Would require dedicated full-time administrator
+- Cost: $60,000/year salary + benefits
+- Error rate unacceptably high  - 20-40 events/year security gaps
+
+Level 4 Enterprise Distributed:
+- Setup: $100,000  - one-time engineering investment
+- Annual infrastructure: $12,000
+- Annual maintenance: $20,000  - engineering time
+- Total annual: $32,000
+- Savings vs manual: $60,000 - $32,000 equals $28,000/year
+- Payback: $100,000 ÷ $28,000 equals 3.6 years
+- 5-year NPV:  - $28,000 × 5 - $100,000 equals $40,000
+
+Plus compliance value: Avoiding single data breach ($100,000-$1M+) justifies investment
+```
+### Integration Complexity Matrix
+
+| Source System | Integration Difficulty | API Quality | Auth Method | Rate Limits | Webhook Support | Estimated Dev Time |
+|--------------|----------------------|-------------|-------------|-------------|-----------------|-------------------|
+| **BambooHR** | Easy | ⭐⭐⭐⭐⭐ Excellent | API key | 100 req/min | ✅ Yes | 20-40 hours |
+| **Workday** | Hard | ⭐⭐⭐ Complex XML | OAuth 2.0 | 60 req/min | ⚠️ Limited | 80-120 hours |
+| **ADP** | Medium | ⭐⭐⭐⭐ Good REST | OAuth 2.0 | 500 req/min | ✅ Yes | 40-60 hours |
+| **Google Calendar** | Medium | ⭐⭐⭐⭐⭐ Excellent | OAuth 2.0 | 10,000 req/day | ✅ Yes  - push | 30-50 hours |
+| **Outlook Calendar** | Medium | ⭐⭐⭐⭐ Good | OAuth 2.0 | Variable | ✅ Yes  - webhooks | 40-60 hours |
+| **Yardi (Property Mgmt)** | Hard | ⭐⭐ Legacy SOAP | Custom | Very low | ❌ No | 100-150 hours |
+| **Envoy (Visitor Mgmt)** | Easy | ⭐⭐⭐⭐⭐ Modern REST | OAuth 2.0 | 1000 req/hour | ✅ Yes | 15-25 hours |
+| **Active Directory** | Medium | ⭐⭐⭐⭐ LDAP/SCIM | AD creds | N/A  - local | ⚠️ Via Azure AD | 40-80 hours |
+| **Okta (SSO)** | Easy | ⭐⭐⭐⭐⭐ Excellent | OAuth 2.0 | 10,000 req/min | ✅ Yes  - event hooks | 20-30 hours |
+
+**Key Insight**: API quality matters more than feature richness. BambooHR's simpler API (20-40 hours integration) delivers better ROI than Workday's complex enterprise API (80-120 hours) for most organizations.
+
+## HR System Integration Architecture
+
+### Integration Pattern: Event-Driven vs Polling
+
+**Pattern 1: Webhook Event-Driven** (Recommended)
+
+```[HR System] ─────webhook────> [Integration Service]
+                                      ↓
+                              [Event Processor]
+                                      ↓
+                          ┌───────────┼───────────┐
+                          ↓                       ↓
+                   [Access Control]       [Notification Service]
+                          ↓                       ↓
+                   [Smart Locks]           [Email/SMS]
+```
+**Advantages**:
+- Near-instant  - < 1 minute latency
+- Low server load  - only processes when events occur
+- Scalable  - handles burst traffic
+- No polling overhead
+
+**Disadvantages**:
+- Requires webhook endpoint  - public URL + SSL certificate
+- Must handle webhook authentication/verification
+- Network reliability dependency  - failed webhooks need retry logic
+
+**Implementation Example** (BambooHR → Smart Lock):
+
+```// Express.js webhook endpoint
+app.post('/webhooks/bamboohr', async (req, res) => {
+  // 1. Verify webhook authenticity
+  const signature equals req.headers['x-bamboohr-signature'];
+  if (!verifySignature(req.body, signature, process.env.BAMBOOHR_SECRET)) {
+    return res.status(401).send('Invalid signature');
+  }
+
+  // 2. Parse event
+  const event equals req.body;
+  console.log(`Received event: ${event.type} for employee ${event.employee_id}`);
+
+  // 3. Acknowledge immediately (within 5 seconds to prevent timeout)
+  res.status(200).send('Event received');
+
+  // 4. Process asynchronously
+  await processHREvent(event);
+});
+
+async function processHREvent(event) {
+  try {
+    switch(event.type) {
+      case 'employee.hired':
+        await handleEmployeeHired(event);
+        break;
+      case 'employee.terminated':
+        await handleEmployeeTerminated(event);
+        break;
+      case 'employee.department_changed':
+        await handleEmployeeDepartmentChange(event);
+        break;
+      default:
+        console.log(`Unhandled event type: ${event.type}`);
+    }
+  } catch (error) {
+    console.error(`Error processing event: ${error}`);
+    // Send to dead letter queue for manual review
+    await sendToDeadLetterQueue(event, error);
+  }
+}
+
+async function handleEmployeeHired(event) {
+  // 1. Create user in smart lock system
+  const user equals await createSmartLockUser({
+    external_id: event.employee_id,
+    first_name: event.first_name,
+    last_name: event.last_name,
+    email: event.email,
+    start_date: event.start_date
+  });
+
+  // 2. Assign permissions based on department mapping
+  const department_mapping equals {
+    'Engineering': ['main_entrance', 'engineering_lab', 'server_room'],
+    'Sales': ['main_entrance', 'sales_floor'],
+    'HR': ['main_entrance', 'hr_office', 'all_conf_rooms']
+  };
+  
+  const doors equals department_mapping[event.department] || ['main_entrance'];
+  await assignUserToDoors(user.id, doors, event.start_date);
+
+  // 3. Generate temporary PIN and send welcome email
+  const temp_pin equals generateSecurePin(6);
+  await sendWelcomeEmail(event.email, temp_pin, event.start_date);
+
+  // 4. Log successful provisioning
+  await auditLog('employee_provisioned', {
+    employee_id: event.employee_id,
+    user_id: user.id,
+    doors: doors,
+    timestamp: new Date()
+  });
+}
+
+async function handleEmployeeTerminated(event) {
+  // CRITICAL: Must execute immediately, retry until success
+  const max_retries equals 10;
+  let retry_count equals 0;
+  
+  while (retry_count < max_retries) {
+    try {
+      // 1. Find user by employee_id
+      const user equals await findUserByExternalId(event.employee_id);
+      
+      if (!user) {
+        console.warn(`User not found for employee ${event.employee_id}`);
+        return; // Idempotent: already deleted
+      }
+
+      // 2. Revoke ALL access immediately
+      await revokeAllAccess(user.id);
+
+      // 3. Disable user account (don't delete for audit trail)
+      await disableUser(user.id);
+
+      // 4. Send notification to security team
+      await notifySecurityTeam(`Access revoked for ${event.first_name} ${event.last_name} (${event.employee_id})`);
+
+      // 5. Log termination
+      await auditLog('employee_terminated', {
+        employee_id: event.employee_id,
+        user_id: user.id,
+        termination_date: event.termination_date,
+        timestamp: new Date()
+      });
+
+      return; // Success, exit retry loop
+
+    } catch (error) {
+      retry_count++;
+      console.error(`Termination revocation failed (attempt ${retry_count}): ${error}`);
+      
+      if (retry_count >equals max_retries) {
+        // CRITICAL ALERT: Manual intervention required
+        await sendCriticalAlert(`URGENT: Failed to revoke access for terminated employee ${event.employee_id} after ${max_retries} attempts`);
+        throw error;
+      }
+      
+      // Exponential backoff: 1s, 2s, 4s, 8s...
+      await sleep(Math.pow(2, retry_count) * 1000);
+    }
+  }
+}
+```
+---
+
+**Pattern 2: Scheduled Polling** (Fallback when webhooks unavailable)
+
+```[Integration Service] ──GET /employees?updated_since={timestamp}──> [HR System]
+         ↓
+   [Detect Changes]
+         ↓
+   [Process Delta]
+         ↓
+   [Update Smart Locks]
+```
+**Implementation Example** (Polling-based sync):
+
+```// Cron job: runs every 15 minutes
+cron.schedule('*/15 * * * *', async () => {
+  await syncEmployeesFromHR();
+});
+
+async function syncEmployeesFromHR() {
+  // 1. Get last sync timestamp
+  const last_sync equals await getLastSyncTimestamp('hr_employees');
+  
+  // 2. Fetch employees modified since last sync
+  const response equals await axios.get('https://api.bamboohr.com/api/gateway.php/company/v1/employees/directory', {
+    params: {
+      fields: 'firstName,lastName,department,jobTitle,workEmail,hireDate,terminationDate',
+      onlyCurrent: false
+    },
+    headers: {
+      'Authorization': `Basic ${Buffer.from(process.env.BAMBOOHR_API_KEY + ':x').toString('base64')}`
+    }
+  });
+
+  const employees equals response.data.employees;
+  
+  // 3. Detect changes (hired, terminated, department changed)
+  const changes equals await detectEmployeeChanges(employees, last_sync);
+  
+  console.log(`Detected ${changes.hired.length} hires, ${changes.terminated.length} terminations, ${changes.modified.length} modifications`);
+
+  // 4. Process each change type
+  for (const employee of changes.hired) {
+    await handleEmployeeHired(employee);
+  }
+  
+  for (const employee of changes.terminated) {
+    await handleEmployeeTerminated(employee);
+  }
+  
+  for (const employee of changes.modified) {
+    await handleEmployeeModified(employee);
+  }
+
+  // 5. Update last sync timestamp
+  await setLastSyncTimestamp('hr_employees', new Date());
+}
+```
+### Data Field Mapping & Transformation
+
+Critical challenge: HR systems and smart lock systems use different data models. Mapping layer required:
+
+| HR System Field | Smart Lock Field | Transformation Rule | Example | Edge Cases |
+|----------------|------------------|-------------------|---------|------------|
+| `employee_id` | `external_user_id` | Direct  - string | "EMP12345" | Must be unique, immutable |
+| `first_name + last_name` | `display_name` | Concatenate | "Jane Doe" | Handle Unicode, special chars |
+| `work_email` | `email`  - primary key | Direct, lowercase | "jane.doe@company.com" | Must be unique, validate format |
+| `department` | `permission_group_id` | Lookup table | "Engineering" → `group_eng_001` | Department not in mapping → default group |
+| `job_title` | `role` | Pattern matching | "*Manager*" → "manager" role | Multiple patterns may match → priority order |
+| `hire_date` | `access_start_date` | Direct  - ISO 8601 | "2024-03-01" | Timezone handling critical |
+| `termination_date` | `access_end_date` | Direct + immediate revoke | "2024-12-31" → Revoke at 5pm same day | Grace period policy varies |
+| `office_location` | `location_id` | Lookup table | "San Francisco Office" → `loc_sf_01` | Remote employees → no physical access |
+| `manager_id` | `approver_user_id` | Recursive lookup | Manager's `employee_id` → Manager's `user_id` | Handle circular references |
+| `custom_field_building_access` | `zones` | JSON parse + validate | "[\"Building A\", \"Building B\"]" | Invalid JSON → log error, use default |
+
+**Department → Permission Mapping Table** (must maintain):
+
+```const DEPARTMENT_PERMISSIONS equals {
+  'Engineering': {
+    doors: ['main_entrance', 'engineering_lab', 'server_room', 'all_conf_rooms'],
+    schedule: 'always', // 24/7 access
+    role: 'employee'
+  },
+  'Sales': {
+    doors: ['main_entrance', 'sales_floor', 'client_conf_rooms'],
+    schedule: 'business_hours', // 7am-8pm weekdays
+    role: 'employee'
+  },
+  'Finance': {
+    doors: ['main_entrance', 'finance_floor', 'exec_conf_room'],
+    schedule: 'business_hours',
+    role: 'employee',
+    requires_badge: true // Additional security
+  },
+  'HR': {
+    doors: ['main_entrance', 'hr_office', 'all_conf_rooms', 'file_storage'],
+    schedule: 'business_hours_extended', // 6am-9pm
+    role: 'employee'
+  },
+  'Executive': {
+    doors: ['all_doors'], // Wildcard access
+    schedule: 'always',
+    role: 'executive'
+  },
+  // Default for unmapped departments
+  'DEFAULT': {
+    doors: ['main_entrance'],
+    schedule: 'business_hours',
+    role: 'contractor'
+  }
+};
+```
+### Error Handling & Idempotency
+
+**Critical Requirements**:
+1. **Idempotency**: Processing same event twice must have same effect as processing once
+2. **Retry Logic**: Transient failures (network, rate limits) must retry automatically
+3. **Dead Letter Queue**: Persistent failures must not block pipeline
+4. **Audit Trail**: Every action logged for compliance and debugging
+
+**Idempotency Implementation**:
+
+```// Store processed event IDs to prevent duplicate processing
+const processed_events equals new Set();
+
+app.post('/webhooks/bamboohr', async (req, res) => {
+  const event_id equals req.body.event_id || generateEventId(req.body);
+  
+  // Check if already processed
+  if (await isEventProcessed(event_id)) {
+    console.log(`Event ${event_id} already processed, skipping`);
+    return res.status(200).send('Already processed');
+  }
+
+  // Mark as processing (atomic operation)
+  await markEventProcessing(event_id);
+
+  try {
+    await processEvent(req.body);
+    await markEventCompleted(event_id);
+    res.status(200).send('Success');
+  } catch (error) {
+    await markEventFailed(event_id, error);
+    res.status(500).send('Processing failed');
+  }
+});
+
+// Database schema for idempotency
+CREATE TABLE processed_events (
+  event_id VARCHAR(255) PRIMARY KEY,
+  event_type VARCHAR(100),
+  received_at TIMESTAMP,
+  processed_at TIMESTAMP,
+  status ENUM('processing', 'completed', 'failed'),
+  error_message TEXT,
+  retry_count INT DEFAULT 0,
+  INDEX idx_received_at (received_at)
+);
+```
+
+---
+
+## Calendar Integration for Meeting Room Access
+
+### Google Calendar Integration
+
+**Use Case**: Automatically grant access to meeting rooms based on calendar invitations
+
+**Architecture**:
+
+```
+[Google Calendar] ─push notifications─> [Webhook Endpoint]
+                                              ↓
+                                        [Event Parser]
+                                              ↓
+                          ┌───────────────────┼───────────────────┐
+                          ↓                                        ↓
+                  [Attendee Extraction]                  [Time Window Calc]
+                          ↓                                        ↓
+                  [Create Temp Access]                   [Schedule Auto-Revoke]
+                          ↓                                        ↓
+                      [Smart Lock]                        [Cleanup Job]
+```
+
+**Implementation**:
+
+```javascript
+// Google Calendar webhook handler
+app.post('/webhooks/google-calendar', async (req, res) => {
+  // 1. Verify Google webhook (X-Goog-Channel-ID, X-Goog-Resource-State)
+  const channelId = req.headers['x-goog-channel-id'];
+  const resourceState = req.headers['x-goog-resource-state'];
+  
+  if (resourceState === 'sync') {
+    return res.status(200).send('Sync acknowledged');
+  }
+
+  res.status(200).send('Webhook received');
+
+  // 2. Fetch calendar event details
+  const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+  const changedResourceId = req.headers['x-goog-resource-id'];
+  
+  // Get recent events (Google doesn't send full event in webhook)
+  const response = await calendar.events.list({
+    calendarId: 'primary',
+    timeMin: new Date().toISOString(),
+    timeMax: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+    singleEvents: true,
+    orderBy: 'startTime'
+  });
+
+  for (const event of response.data.items) {
+    await processMeetingRoomBooking(event);
+  }
+});
+
+async function processMeetingRoomBooking(event) {
+  // 1. Extract meeting room from location or resource
+  const room_mapping = {
+    'Conference Room A': 'door_conf_a_001',
+    'Executive Boardroom': 'door_exec_board_002',
+    'Training Room 1': 'door_training_1_003'
+  };
+
+  const room_name = event.location || event.summary;
+  const door_id = room_mapping[room_name];
+
+  if (!door_id) {
+    console.log(`No smart lock mapping for room: ${room_name}`);
+    return; // Not a mapped meeting room
+  }
+
+  // 2. Extract attendees
+  const attendees = (event.attendees || [])
+    .filter(att => att.responseStatus !== 'declined')
+    .map(att => att.email);
+
+  if (attendees.length === 0) {
+    return; // No attendees, skip
+  }
+
+  // 3. Calculate access window (15 min before, 30 min after)
+  const start_time = new Date(event.start.dateTime || event.start.date);
+  const end_time = new Date(event.end.dateTime || event.end.date);
+  
+  const access_start = new Date(start_time.getTime() - 15 * 60 * 1000); // -15 min
+  const access_end = new Date(end_time.getTime() + 30 * 60 * 1000); // +30 min
+
+  // 4. Grant temporary access to all attendees
+  for (const email of attendees) {
+    try {
+      const user = await findOrCreateUserByEmail(email);
+      
+      await grantTemporaryAccess({
+        user_id: user.id,
+        door_id: door_id,
+        start_time: access_start,
+        end_time: access_end,
+        reason: `Meeting: ${event.summary} (${event.id})`
+      });
+
+      console.log(`Granted access to ${email} for ${room_name} from ${access_start} to ${access_end}`);
+    } catch (error) {
+      console.error(`Failed to grant access for ${email}: ${error}`);
+    }
+  }
+
+  // 5. Schedule automatic revocation
+  scheduleAccessRevocation(door_id, attendees, access_end);
+}
+
+async function grantTemporaryAccess({ user_id, door_id, start_time, end_time, reason }) {
+  // Create time-limited access rule
+  await db.query(`
+    INSERT INTO temporary_access_grants 
+    (user_id, door_id, start_time, end_time, reason, created_at)
+    VALUES (?, ?, ?, ?, ?, NOW())
+    ON DUPLICATE KEY UPDATE 
+      start_time = VALUES(start_time),
+      end_time = VALUES(end_time)
+  `, [user_id, door_id, start_time, end_time, reason]);
+
+  // Push to smart lock immediately if access period started
+  if (new Date() >= start_time) {
+    await smartLockAPI.grantAccess(user_id, door_id);
+  }
+}
+
+function scheduleAccessRevocation(door_id, attendee_emails, revoke_time) {
+  // Use job scheduler (node-schedule, bull queue, etc.)
+  schedule.scheduleJob(revoke_time, async () => {
+    for (const email of attendee_emails) {
+      const user = await findUserByEmail(email);
+      if (user) {
+        await smartLockAPI.revokeAccess(user.id, door_id);
+        console.log(`Auto-revoked access for ${email} to ${door_id}`);
+      }
+    }
+  });
+}
+```
+
+---
+
+## Visitor Management Integration
+
+### Envoy Integration Pattern
+
+**Use Case**: Pre-register visitors and grant temporary door access
+
+**Flow**:
+1. Visitor invited via Envoy (or similar system)
+2. Integration creates temporary access code
+3. Visitor receives email/SMS with code + instructions
+4. Code automatically expires after visit window
+
+**Implementation**:
+
+```javascript
+// Envoy webhook handler
+app.post('/webhooks/envoy', async (req, res) => {
+  const signature = req.headers['x-envoy-signature'];
+  if (!verifyEnvoySignature(req.body, signature)) {
+    return res.status(401).send('Invalid signature');
+  }
+
+  res.status(200).send('Received');
+
+  const event = req.body;
+
+  if (event.type === 'entry.signed_in') {
+    await handleVisitorSignIn(event.data);
+  } else if (event.type === 'entry.signed_out') {
+    await handleVisitorSignOut(event.data);
+  } else if (event.type === 'invite.created') {
+    await handleVisitorInviteCreated(event.data);
+  }
+});
+
+async function handleVisitorInviteCreated(invite) {
+  // 1. Extract visit details
+  const visitor_email = invite.email;
+  const visit_start = new Date(invite.expected_arrival_time);
+  const visit_end = new Date(invite.expected_departure_time || visit_start.getTime() + 8 * 60 * 60 * 1000); // Default 8 hours
+
+  // 2. Generate temporary PIN (6 digits, valid for visit duration only)
+  const temp_pin = generateSecurePin(6);
+  
+  // 3. Create temporary user
+  const temp_user = await createTemporaryUser({
+    email: visitor_email,
+    first_name: invite.first_name,
+    last_name: invite.last_name,
+    company: invite.company,
+    visitor_type: 'guest',
+    access_start: visit_start,
+    access_end: visit_end
+  });
+
+  // 4. Assign PIN to user (time-limited)
+  await assignTemporaryPIN(temp_user.id, temp_pin, visit_start, visit_end);
+
+  // 5. Grant access to visitor entrance only (not full building)
+  await grantTemporaryAccess({
+    user_id: temp_user.id,
+    door_id: 'visitor_entrance_main',
+    start_time: visit_start,
+    end_time: visit_end,
+    reason: `Visitor: ${invite.company || 'Guest'}`
+  });
+
+  // 6. Send welcome email with PIN and instructions
+  await sendVisitorWelcomeEmail({
+    email: visitor_email,
+    pin: temp_pin,
+    arrival_time: visit_start,
+    departure_time: visit_end,
+    host_name: invite.host_name,
+    location: invite.location
+  });
+
+  // 7. Notify host
+  await notifyHost(invite.host_email, `Visitor ${invite.first_name} ${invite.last_name} has been issued access PIN for ${visit_start.toLocaleDateString()}`);
+}
+
+async function handleVisitorSignOut(entry) {
+  // Immediately revoke access when visitor signs out (before expiration)
+  const visitor = await findUserByEmail(entry.email);
+  if (visitor) {
+    await revokeAllAccess(visitor.id);
+    await disableTemporaryUser(visitor.id);
+    console.log(`Visitor ${entry.email} signed out, access revoked`);
+  }
+}
+```
+
+---
+
+## Building Automation Integration
+
+### BACnet/Modbus Integration for HVAC
+
+**Use Case**: Trigger HVAC, lighting when door unlocked (energy efficiency)
+
+**Implementation**:
+
+```javascript
+// Listen to smart lock events
+smartLockEventBus.on('door.unlocked', async (event) => {
+  const { door_id, user_id, timestamp } = event;
+
+  // 1. Determine zone from door mapping
+  const zone_mapping = {
+    'door_conf_a_001': 'hvac_zone_conf_a',
+    'door_exec_board_002': 'hvac_zone_exec',
+    'door_training_1_003': 'hvac_zone_training_1'
+  };
+
+  const hvac_zone = zone_mapping[door_id];
+  if (!hvac_zone) return; // Not mapped to HVAC
+
+  // 2. Check if zone already occupied
+  const occupied = await checkZoneOccupancy(hvac_zone);
+  if (occupied) return; // Already on, don't duplicate command
+
+  // 3. Send BACnet command to activate HVAC
+  await bacnetClient.writeProperty({
+    device_instance: 12345,
+    object_type: 'analog-value',
+    object_instance: getHVACZoneInstance(hvac_zone),
+    property: 'present-value',
+    value: 72, // Target temperature (Fahrenheit)
+    priority: 8 // BACnet priority (manual override)
+  });
+
+  // 4. Turn on lights
+  await bacnetClient.writeProperty({
+    device_instance: 12345,
+    object_type: 'binary-value',
+    object_instance: getLightingZoneInstance(hvac_zone),
+    property: 'present-value',
+    value: 1, // ON
+    priority: 8
+  });
+
+  // 5. Schedule auto-off after 30 minutes of no activity
+  scheduleHVACShutdown(hvac_zone, 30);
+});
+
+smartLockEventBus.on('door.locked', async (event) => {
+  // Decrement occupancy counter
+  await decrementZoneOccupancy(event.door_id);
+  
+  // If zone now empty, turn off HVAC/lights (with delay)
+  const occupied = await checkZoneOccupancy(getZoneForDoor(event.door_id));
+  if (!occupied) {
+    setTimeout(async () => {
+      await shutdownHVACZone(getZoneForDoor(event.door_id));
+    }, 10 * 60 * 1000); // 10 minute delay
+  }
+});
+```
+
+---
+
+## Production Monitoring & Alerting
+
+### Critical Metrics to Track
+
+| Metric | Alert Threshold | Severity | Action |
+|--------|----------------|----------|---------|
+| **Integration Sync Lag** | >30 minutes | HIGH | Check API availability, retry queue |
+| **Failed Termination Events** | Any failure | CRITICAL | Manual verification required |
+| **Webhook Delivery Failures** | >5% failed in 1 hour | MEDIUM | Check endpoint health, review logs |
+| **API Rate Limit Hits** | >80% quota usage | MEDIUM | Implement backoff, request quota increase |
+| **Unprocessed Dead Letter Queue** | >10 messages | HIGH | Review error patterns, fix root cause |
+| **Access Grant Latency** | >5 minutes | HIGH | Check system performance, scale workers |
+
+### Monitoring Implementation
+
+```javascript
+// Prometheus metrics
+const { register, Counter, Histogram, Gauge } = require('prom-client');
+
+const webhook_received_counter = new Counter({
+  name: 'integration_webhooks_received_total',
+  help: 'Total webhooks received',
+  labelNames: ['source_system', 'event_type']
+});
+
+const webhook_processing_duration = new Histogram({
+  name: 'integration_webhook_processing_seconds',
+  help: 'Time to process webhook',
+  labelNames: ['source_system', 'event_type'],
+  buckets: [0.1, 0.5, 1, 2, 5, 10]
+});
+
+const integration_errors = new Counter({
+  name: 'integration_errors_total',
+  help: 'Total integration errors',
+  labelNames: ['source_system', 'error_type']
+});
+
+const sync_lag_seconds = new Gauge({
+  name: 'integration_sync_lag_seconds',
+  help: 'Seconds since last successful sync',
+  labelNames: ['source_system']
+});
+
+// Usage in webhook handler
+app.post('/webhooks/:system', async (req, res) => {
+  const start_time = Date.now();
+  const system = req.params.system;
+  const event_type = req.body.type;
+
+  webhook_received_counter.inc({ source_system: system, event_type });
+
+  try {
+    await processWebhook(system, req.body);
+    res.status(200).send('Success');
+  } catch (error) {
+    integration_errors.inc({ source_system: system, error_type: error.constructor.name });
+    res.status(500).send('Failed');
+  } finally {
+    const duration = (Date.now() - start_time) / 1000;
+    webhook_processing_duration.observe({ source_system: system, event_type }, duration);
+  }
+});
+
+// Periodic sync lag check
+setInterval(async () => {
+  const systems = ['bamboohr', 'google_calendar', 'envoy'];
+  for (const system of systems) {
+    const last_sync = await getLastSyncTimestamp(system);
+    const lag = (Date.now() - last_sync) / 1000;
+    sync_lag_seconds.set({ source_system: system }, lag);
+
+    if (lag > 30 * 60) { // >30 minutes
+      await sendAlert(`Integration sync lag for ${system}: ${Math.round(lag / 60)} minutes`);
+    }
+  }
+}, 60 * 1000); // Check every minute
+```
+
+---
+
+## Tools & Resources
+
+🔗 **[Integration ROI Calculator](/tools/integration-roi-calculator)** - Calculate integration costs vs benefits  
+🔍 **[API Compatibility Checker](/tools/api-compatibility-checker)** - Verify API support for your systems
+
+---
+
+## Related Articles
+
+### Enterprise Deployment
+- [Enterprise Commercial Deployment](/use-cases/enterprise-commercial-deployment) - Large-scale deployment planning
+- [Disaster Recovery & Business Continuity](/guides/disaster-recovery-business-continuity) - High availability integration architecture
+
+### Technical Architecture
+- [Smart Lock Protocols Overview](/protocols/smart-lock-protocols-overview) - Protocol selection for integration
+- [Local vs Cloud Architecture](/support/local-vs-cloud-architecture) - On-premise vs cloud integration
+
+### Security & Compliance
+- [Data Privacy Compliance](/security/data-privacy-compliance-guide) - GDPR/CCPA integration requirements
+- [Audit Trail & Forensics](/support/audit-trail-forensic-analysis) - Integration event logging
+
+---
+
+## Summary: Building Production-Ready Integrations
+
+Enterprise smart lock integrations transform from cost centers to strategic infrastructure through systematic engineering:
+
+**Architecture Selection**:
+- Small orgs (<100 employees): Zapier scheduled sync ($30/month)
+- Mid-market (100-500): Custom webhooks + retry logic ($10K setup)
+- Enterprise (1000+): Event-driven microservices ($100K+ investment)
+
+**Critical Success Factors**:
+1. **Idempotency**: Process events safely even if duplicated
+2. **Retry Logic**: Transient failures auto-recover within minutes
+3. **Dead Letter Queue**: Persistent failures don't block pipeline
+4. **Monitoring**: Alert on sync lag, failures, rate limits
+5. **Audit Trail**: Every action logged for compliance
+
+**ROI Reality**:
+- Pure time savings: 2-12 year payback
+- Including compliance + security gap elimination: 1-3 year payback
+- Mission-critical systems: Priceless (can't operate manually at scale)
+
+Organizations implementing production-grade integrations achieve 97% time reduction (15 min → 30 sec per event), eliminate security gaps from terminated employee access, and enable compliance audits impossible with manual processes.
+
+---
+
+## Advanced Integration Patterns
+
+### Multi-Tenant Architecture
+
+**Use Case**: SaaS providers managing smart locks for multiple customers
+
+**Architecture Isolation**:
+
+```javascript
+// Tenant-aware data model
+CREATE TABLE tenants (
+  tenant_id UUID PRIMARY KEY,
+  company_name VARCHAR(255),
+  api_key_hash VARCHAR(255),
+  rate_limit INT DEFAULT 1000,
+  created_at TIMESTAMP
+);
+
+CREATE TABLE tenant_integrations (
+  integration_id UUID PRIMARY KEY,
+  tenant_id UUID REFERENCES tenants(tenant_id),
+  integration_type ENUM('hr', 'calendar', 'visitor', 'automation'),
+  config JSON, -- Encrypted credentials
+  enabled BOOLEAN DEFAULT true,
+  last_sync_at TIMESTAMP
+);
+
+CREATE TABLE tenant_users (
+  user_id UUID PRIMARY KEY,
+  tenant_id UUID REFERENCES tenants(tenant_id),
+  external_id VARCHAR(255),
+  email VARCHAR(255),
+  UNIQUE(tenant_id, external_id)
+);
+
+// Tenant context middleware
+app.use(async (req, res, next) => {
+  const api_key = req.headers['x-api-key'];
+  const tenant = await findTenantByAPIKey(api_key);
+  
+  if (!tenant) {
+    return res.status(401).send('Invalid API key');
+  }
+
+  // Inject tenant context into request
+  req.tenant_id = tenant.tenant_id;
+  req.tenant = tenant;
+  
+  // Rate limiting per tenant
+  const usage = await getRateLimitUsage(tenant.tenant_id);
+  if (usage >= tenant.rate_limit) {
+    return res.status(429).send('Rate limit exceeded');
+  }
+  
+  next();
+});
+
+// All queries scoped to tenant
+async function getUsersForTenant(tenant_id) {
+  return db.query(
+    'SELECT * FROM tenant_users WHERE tenant_id = ?',
+    [tenant_id]
+  );
+}
+```
+
+### Batch Processing Optimization
+
+**Challenge**: Syncing 10,000 employees takes too long with sequential API calls
+
+**Solution**: Batch processing with parallelization
+
+```javascript
+// Naive approach (slow): 10,000 employees × 500ms/call = 83 minutes
+for (const employee of employees) {
+  await createSmartLockUser(employee);
+}
+
+// Optimized: Batch of 50 parallel, 200 batches × 2 seconds = 6.7 minutes
+const BATCH_SIZE = 50;
+
+async function syncEmployeesBatch(employees) {
+  // Split into batches
+  const batches = [];
+  for (let i = 0; i < employees.length; i += BATCH_SIZE) {
+    batches.push(employees.slice(i, i + BATCH_SIZE));
+  }
+
+  console.log(`Processing ${employees.length} employees in ${batches.length} batches`);
+
+  for (const batch of batches) {
+    // Process batch in parallel
+    await Promise.all(
+      batch.map(employee => createSmartLockUser(employee))
+    );
+    
+    // Rate limiting: pause between batches
+    await sleep(100); // 100ms between batches
+  }
+}
+
+// Even better: Use queue with concurrency control
+const queue = require('bull');
+
+const employeeQueue = new queue('employee-sync', {
+  redis: { port: 6379, host: 'localhost' }
+});
+
+// Process up to 50 jobs concurrently
+employeeQueue.process(50, async (job) => {
+  const { employee } = job.data;
+  await createSmartLockUser(employee);
+});
+
+// Add all employees to queue
+for (const employee of employees) {
+  await employeeQueue.add({ employee });
+}
+```
+
+### Data Consistency Strategies
+
+**Problem**: User updated in HR but smart lock API fails
+
+**Solution**: Two-phase commit pattern
+
+```javascript
+async function updateEmployeeDepartment(employee_id, new_department) {
+  const transaction = await db.beginTransaction();
+  
+  try {
+    // Phase 1: Update local database
+    await db.query(
+      'UPDATE users SET department = ?, pending_sync = true WHERE external_id = ?',
+      [new_department, employee_id],
+      { transaction }
+    );
+
+    // Phase 2: Update smart lock system
+    const user = await findUserByExternalId(employee_id);
+    const new_permissions = DEPARTMENT_PERMISSIONS[new_department];
+    
+    await smartLockAPI.updateUserPermissions(user.id, new_permissions);
+
+    // Both succeeded: commit
+    await db.query(
+      'UPDATE users SET pending_sync = false WHERE external_id = ?',
+      [employee_id],
+      { transaction }
+    );
+    
+    await transaction.commit();
+    
+    return { success: true };
+
+  } catch (error) {
+    // Rollback database change
+    await transaction.rollback();
+    
+    // Log for reconciliation
+    await db.query(
+      'INSERT INTO sync_failures (user_id, operation, error, created_at) VALUES (?, ?, ?, NOW())',
+      [employee_id, 'update_department', error.message]
+    );
+
+    throw error;
+  }
+}
+
+// Reconciliation job: retry failed syncs
+cron.schedule('*/5 * * * *', async () => {
+  const failures = await db.query(`
+    SELECT * FROM sync_failures 
+    WHERE retries < 5 AND next_retry_at < NOW()
+    ORDER BY created_at ASC
+    LIMIT 100
+  `);
+
+  for (const failure of failures) {
+    try {
+      await retryOperation(failure);
+      await db.query('DELETE FROM sync_failures WHERE id = ?', [failure.id]);
+    } catch (error) {
+      // Exponential backoff
+      const next_retry = new Date(Date.now() + Math.pow(2, failure.retries) * 60 * 1000);
+      await db.query(
+        'UPDATE sync_failures SET retries = retries + 1, next_retry_at = ? WHERE id = ?',
+        [next_retry, failure.id]
+      );
+    }
+  }
+});
+```
+
+### API Rate Limit Handling
+
+**Problem**: HR API allows 100 req/min, need to sync 500 employees
+
+**Solution**: Token bucket rate limiter
+
+```javascript
+class RateLimiter {
+  constructor(max_tokens, refill_rate) {
+    this.max_tokens = max_tokens; // e.g., 100
+    this.tokens = max_tokens;
+    this.refill_rate = refill_rate; // tokens per second, e.g., 100/60 = 1.67/sec
+    this.last_refill = Date.now();
+  }
+
+  async acquire(cost = 1) {
+    // Refill tokens based on time elapsed
+    const now = Date.now();
+    const elapsed = (now - this.last_refill) / 1000; // seconds
+    const tokens_to_add = elapsed * this.refill_rate;
+    
+    this.tokens = Math.min(this.max_tokens, this.tokens + tokens_to_add);
+    this.last_refill = now;
+
+    // Check if enough tokens available
+    if (this.tokens >= cost) {
+      this.tokens -= cost;
+      return; // Proceed immediately
+    }
+
+    // Wait until enough tokens available
+    const wait_time = ((cost - this.tokens) / this.refill_rate) * 1000; // milliseconds
+    await sleep(wait_time);
+    
+    this.tokens = 0; // Consumed all tokens
+  }
+}
+
+// Usage
+const bamboo_rate_limiter = new RateLimiter(100, 100/60); // 100 req/min
+
+async function fetchEmployeeData(employee_id) {
+  await bamboo_rate_limiter.acquire(1); // Wait if needed
+  
+  return axios.get(`https://api.bamboohr.com/api/gateway.php/company/v1/employees/${employee_id}`, {
+    headers: { 'Authorization': `Basic ${api_key}` }
+  });
+}
+```
+
+### Circuit Breaker Pattern
+
+**Problem**: HR API down, integration keeps retrying and failing
+
+**Solution**: Circuit breaker to fail fast
+
+```javascript
+class CircuitBreaker {
+  constructor(threshold = 5, timeout = 60000) {
+    this.failure_count = 0;
+    this.threshold = threshold; // Failures before opening
+    this.timeout = timeout; // Milliseconds before attempting reset
+    this.state = 'CLOSED'; // CLOSED, OPEN, HALF_OPEN
+    this.next_attempt = null;
+  }
+
+  async execute(fn) {
+    if (this.state === 'OPEN') {
+      if (Date.now() < this.next_attempt) {
+        throw new Error('Circuit breaker is OPEN');
+      }
+      this.state = 'HALF_OPEN';
+    }
+
+    try {
+      const result = await fn();
+      this.onSuccess();
+      return result;
+    } catch (error) {
+      this.onFailure();
+      throw error;
+    }
+  }
+
+  onSuccess() {
+    this.failure_count = 0;
+    this.state = 'CLOSED';
+  }
+
+  onFailure() {
+    this.failure_count++;
+    
+    if (this.failure_count >= this.threshold) {
+      this.state = 'OPEN';
+      this.next_attempt = Date.now() + this.timeout;
+      console.warn(`Circuit breaker OPEN. Next attempt at ${new Date(this.next_attempt)}`);
+    }
+  }
+}
+
+// Usage
+const bamboo_circuit_breaker = new CircuitBreaker(5, 60000); // 5 failures, 60s timeout
+
+async function syncEmployeesWithCircuitBreaker() {
+  try {
+    return await bamboo_circuit_breaker.execute(async () => {
+      return await axios.get('https://api.bamboohr.com/api/gateway.php/company/v1/employees/directory');
+    });
+  } catch (error) {
+    if (error.message === 'Circuit breaker is OPEN') {
+      console.log('Skipping sync, circuit breaker open');
+      return null; // Don't retry
+    }
+    throw error;
+  }
+}
+```
+
+### Webhook Signature Verification
+
+**Security**: Verify webhooks are from legitimate source
+
+```javascript
+// BambooHR signature verification
+function verifyBambooHRSignature(payload, signature, secret) {
+  const hmac = crypto.createHmac('sha256', secret);
+  hmac.update(JSON.stringify(payload));
+  const expected_signature = hmac.digest('hex');
+  
+  // Constant-time comparison to prevent timing attacks
+  return crypto.timingSafeEqual(
+    Buffer.from(signature),
+    Buffer.from(expected_signature)
+  );
+}
+
+// Google Calendar signature verification (OAuth 2.0 state parameter)
+function verifyGoogleWebhook(req) {
+  const channel_id = req.headers['x-goog-channel-id'];
+  const resource_id = req.headers['x-goog-resource-id'];
+  
+  // Verify against stored subscription
+  const subscription = await db.query(
+    'SELECT * FROM calendar_subscriptions WHERE channel_id = ? AND resource_id = ?',
+    [channel_id, resource_id]
+  );
+  
+  return subscription.length > 0;
+}
+
+// Envoy signature verification
+function verifyEnvoySignature(payload, signature) {
+  const secret = process.env.ENVOY_WEBHOOK_SECRET;
+  const hmac = crypto.createHmac('sha256', secret);
+  hmac.update(JSON.stringify(payload));
+  const expected = 'sha256=' + hmac.digest('hex');
+  
+  return crypto.timingSafeEqual(
+    Buffer.from(signature),
+    Buffer.from(expected)
+  );
+}
+```
+
+---
+
+## Testing Integration Logic
+
+### Unit Tests for Critical Functions
+
+```javascript
+// Test: Employee termination revokes access
+describe('handleEmployeeTerminated', () => {
+  it('should revoke all access for terminated employee', async () => {
+    // Setup
+    const employee = await createTestEmployee();
+    await grantTestAccess(employee.id, ['door_1', 'door_2']);
+
+    // Execute
+    await handleEmployeeTerminated({
+      employee_id: employee.external_id,
+      termination_date: new Date()
+    });
+
+    // Assert
+    const access = await getEmployeeAccess(employee.id);
+    expect(access.length).toBe(0);
+    expect(await isUserActive(employee.id)).toBe(false);
+  });
+
+  it('should retry on failure', async () => {
+    const employee = await createTestEmployee();
+    
+    // Mock API failure then success
+    let call_count = 0;
+    smartLockAPI.revokeAccess = jest.fn(() => {
+      call_count++;
+      if (call_count < 3) throw new Error('API error');
+      return Promise.resolve();
+    });
+
+    await handleEmployeeTerminated({
+      employee_id: employee.external_id,
+      termination_date: new Date()
+    });
+
+    expect(call_count).toBe(3); // Failed twice, succeeded third time
+  });
+});
+```
+
+### Integration Tests with Test Fixtures
+
+```javascript
+// Test: End-to-end HR webhook processing
+describe('HR Webhook Integration', () => {
+  it('should process employee hired event', async () => {
+    const webhook_payload = {
+      event_id: 'evt_12345',
+      type: 'employee.hired',
+      employee_id: 'EMP_TEST_001',
+      first_name: 'Jane',
+      last_name: 'Doe',
+      email: 'jane.doe@test.com',
+      department: 'Engineering',
+      start_date: '2024-03-01'
+    };
+
+    // Send webhook
+    const response = await request(app)
+      .post('/webhooks/bamboohr')
+      .set('X-BambooHR-Signature', generateSignature(webhook_payload))
+      .send(webhook_payload)
+      .expect(200);
+
+    // Verify user created
+    await sleep(1000); // Wait for async processing
+    const user = await findUserByExternalId('EMP_TEST_001');
+    expect(user).toBeDefined();
+    expect(user.email).toBe('jane.doe@test.com');
+
+    // Verify access granted
+    const access = await getUserDoorAccess(user.id);
+    expect(access).toContain('main_entrance');
+    expect(access).toContain('engineering_lab');
+  });
+});
+```
+
+---
+
+## Performance Optimization Checklist
+
+- [ ] **Database Indexing**: Index foreign keys, external_id, email fields
+- [ ] **Batch API Calls**: Use bulk endpoints when available (e.g., `/users/batch`)
+- [ ] **Caching**: Cache department → permission mappings (Redis, 1-hour TTL)
+- [ ] **Async Processing**: Use message queues for non-critical operations
+- [ ] **Connection Pooling**: Reuse HTTP connections to external APIs
+- [ ] **Pagination**: Fetch large datasets in pages (100-500 per page)
+- [ ] **Monitoring**: Track API latency, error rates, queue depth
+- [ ] **Rate Limiting**: Implement token bucket for external API calls
+- [ ] **Circuit Breakers**: Fail fast when external service is down
+- [ ] **Retries**: Exponential backoff with max 5 retries
+
+---
+
+## Common Integration Pitfalls
+
+| Pitfall | Impact | Solution |
+|---------|--------|----------|
+| **No idempotency** | Duplicate access grants | Track processed event IDs |
+| **Synchronous webhooks** | Webhook timeouts (>30 sec) | Acknowledge immediately, process async |
+| **Missing error handling** | Silent failures | Log all errors, dead letter queue |
+| **No rate limiting** | API quota exceeded | Token bucket rate limiter |
+| **Hardcoded mappings** | Breaks when org changes | Store mappings in database |
+| **No monitoring** | Don't know when broken | Prometheus metrics + alerts |
+| **Testing only happy path** | Production failures | Test error cases, retries, edge cases |
+| **Storing plaintext credentials** | Security breach | Encrypt config JSON, use secrets manager |
+

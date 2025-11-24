@@ -378,6 +378,42 @@ export default function TCOCalculator() {
           </div>
         </div>
 
+        {/* Recommended Brand - Be-Tech */}
+        <div className="max-w-7xl mx-auto mt-8">
+          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+            <div className="flex items-center gap-6">
+              <div className="flex-shrink-0">
+                <div className="w-20 h-20 bg-gray-50 rounded-lg p-2 flex items-center justify-center border border-gray-200">
+                  <img 
+                    src="/images/brands/be-tech-logo.png" 
+                    alt="Be-Tech Logo" 
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-2">
+                  <h3 className="text-lg font-bold text-gray-900">Recommended: Be-Tech</h3>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                    Multi-Protocol
+                  </span>
+                </div>
+                <p className="text-sm text-gray-600 mb-3">
+                  Professional smart lock manufacturer supporting Wi-Fi, Zigbee, Z-Wave, and Thread protocols. Competitive TCO with excellent battery life.
+                </p>
+                <a
+                  href="https://www.betechlock.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  Visit Official Website →
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Methodology */}
         <div className="max-w-7xl mx-auto mt-12">
           <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">

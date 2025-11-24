@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
 
 export default function InstallationTime() {
   const [doorCount, setDoorCount] = useState(10)
@@ -129,6 +130,19 @@ export default function InstallationTime() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Be-Tech Brand Recommendation */}
+      <BeTechCalculatorRecommendation 
+        description="Be-Tech locks feature easy installation with clear documentation and professional installer support. Most installations can be completed in 30-45 minutes per door."
+        badge="Quick Install"
+      />
+
+      {/* Back Link */}
+      <div className="max-w-6xl mx-auto mt-8 mb-12">
+        <Link href="/calculators" className="text-blue-600 hover:text-blue-700 font-medium">
+          ← Back to All Calculators
+        </Link>
       </div>
     </div>
   )

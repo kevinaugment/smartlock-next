@@ -1,54 +1,13 @@
-import Link from 'next/link'
-import { query } from '@/lib/db'
+import Link from 'next/link';
+import { getAllArticles, getFeaturedArticles } from '@/lib/articles/registry';
+import { CATEGORIES } from '@/lib/articles/types';
 
-export const runtime = 'edge'
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+export const runtime = 'edge';
 
-interface Category {
-  id: number
-  name: string
-  slug: string
-  icon: string
-  description: string
-}
-
-interface Article {
-  id: number
-  title: string
-  slug: string
-  description: string
-  category_slug: string
-  category_name: string
-  reading_time: number
-  published_at: string
-}
-
-export default async function ArticlesPage() {
-  let categories: Category[] = []
-  let articles: Article[] = []
-  let error = null
-
-  try {
-    // Get categories
-    categories = await query<Category>(
-      'SELECT id, name, slug, icon, description FROM categories ORDER BY display_order'
-    )
-
-    // Get articles with category info
-    articles = await query<Article>(`
-      SELECT 
-        a.id, a.title, a.slug, a.description, 
-        c.slug as category_slug, c.name as category_name,
-        a.reading_time, a.published_at
-      FROM articles a
-      JOIN categories c ON a.category_id = c.id
-      ORDER BY a.published_at DESC
-    `)
-  } catch (e) {
-    error = e instanceof Error ? e.message : 'Failed to load data'
-    console.error('Error loading articles:', e)
-  }
+export default function ArticlesPage() {
+  const articles = getAllArticles();
+  const featuredArticles = getFeaturedArticles();
+  const categories = Object.values(CATEGORIES);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -63,29 +22,25 @@ export default async function ArticlesPage() {
           </p>
         </div>
 
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
-            <p className="text-red-600">⚠️ {error}</p>
-          </div>
-        )}
-
         {/* Categories */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-gray-900 mb-8">Browse by Category</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {categories.map((category) => (
               <Link
-                key={category.id}
+                key={category.slug}
                 href={`/articles/${category.slug}`}
                 className="group p-6 bg-white rounded-xl shadow-sm border-2 border-gray-200 hover:shadow-lg hover:border-blue-400 hover:-translate-y-1 transition-all duration-200"
               >
-                <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-200">{category.icon}</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                   {category.name}
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{category.description}</p>
-                <div className="mt-4 text-blue-600 font-medium text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  Explore <span>→</span>
+                <p className="text-sm text-gray-600 leading-relaxed mb-3">{category.description}</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">{category.count} articles</span>
+                  <span className="text-blue-600 font-medium text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore <span>→</span>
+                  </span>
                 </div>
               </Link>
             ))}
@@ -105,19 +60,19 @@ export default async function ArticlesPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {articles.map((article) => (
+              {featuredArticles.slice(0, 9).map((article) => (
                 <Link
-                  key={article.id}
-                  href={`/articles/${article.category_slug}/${article.slug}`}
+                  key={article.slug}
+                  href={`/articles/${article.category}/${article.slug}`}
                   className="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-xl hover:border-blue-300 hover:-translate-y-1 transition-all duration-200"
                 >
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-4">
                       <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700">
-                        {article.category_name}
+                        {CATEGORIES[article.category].name}
                       </span>
                       <span className="text-xs text-gray-400 flex items-center gap-1">
-                        <span>⏱️</span> {article.reading_time} min
+                        <span>⏱️</span> {article.readingTime} min
                       </span>
                     </div>
                     
@@ -132,7 +87,7 @@ export default async function ArticlesPage() {
                     <div className="flex items-center justify-between text-xs text-gray-500 pt-4 border-t border-gray-100">
                       <span className="flex items-center gap-1">
                         <span>📅</span>
-                        {new Date(article.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                        {new Date(article.pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                       </span>
                       <span className="text-blue-600 font-medium group-hover:gap-2 flex items-center gap-1 transition-all">
                         Read more <span className="group-hover:translate-x-1 transition-transform">→</span>

@@ -1,0 +1,315 @@
+---
+title: "How to Improve Auto-Lock Reliability - Stop Failed Auto-Locks"
+description: "Fix unreliable auto-lock. Troubleshoot delayed auto-lock, failed automatic locking, prevent false triggers, and ensure door locks automatically every time."
+category: guides
+pubDate: 2024-04-06
+wordCount: 700
+readingTime: 4
+keywords:
+  - "auto-lock not working"
+  - "automatic lock fails"
+  - "auto-lock unreliable"
+  - "delayed auto-lock"
+  - "improve auto-lock"
+tags:
+  - "auto-lock"
+  - "automation"
+  - "reliability"
+isPillar: false
+isSupport: true
+featured: false
+relatedArticles:
+  - "set-up-lock-automations"
+  - "smart-lock-shows-wrong-status"
+
+---
+
+
+## Quick Answer: The Multi-Prerequisite Failure Cascade Problem
+
+**Auto-lock reliability failures stem from cascading prerequisite dependencies where successful automatic locking requires simultaneous satisfaction of multiple independent conditions—door mechanically closed (50% failure contribution), sensor correctly detecting closed state (25%), timeout duration accommodating user behavior (15%), and lock mechanism operational (10%)—creating cumulative failure probability where each unsatisfied condition independently causes auto-lock abortion.** These multi-point failure modes explain auto-lock's characteristic 85-95% reliability ceiling (versus 98-99% manual operation reliability), as n-condition AND logic (ALL prerequisites must succeed) proves fundamentally less reliable than single-condition operation where single point of failure absent.
+
+The door-not-closing dominance (50%) reflects mechanical interface challenges where door must achieve positive latch (spring-loaded latch ball engages strike plate recess) creating resistance to opening, yet typical door closer adjustment achieves only 70-90% positive-close consistency (draft, temperature-dependent door/frame dimensional changes, worn latch springs varying threshold force). This mechanical uncertainty propagates to auto-lock: 10-30% of unlock-close cycles fail achieving positive latch, creating unlocked door where auto-lock timer expires yet door physically unsecured—auto-lock "succeeded" (lock extended deadbolt) yet failed security objective (door openable without force).
+
+## Auto-Lock Architecture: Reliability Through Conditional Logic Analysis
+
+Auto-lock implements state machine transitioning from "unlocked" to "locked" through prerequisite verification and timed actuation, creating failure modes at each decision point where condition checking produces false results or timing boundaries misalign with user behavior patterns.
+
+### Auto-Lock Strategy Reliability Comparison
+
+| Strategy Type | Prerequisites | Success Rate | False Lock Risk  - door open | False Non-Lock Risk | User Lockout Risk | Battery Impact | Typical Use Case |
+|--------------|--------------|-------------|---------------------------|-------------------|------------------|---------------|------------------|
+| **Timeout-Only** | Unlock + delay elapsed | 95-98% | High  - 5-15% | Low  - 2-5% | Medium | Minimal | Simple deployments, no sensor |
+| **Door-Sensor-Only** | Door closed detected | 80-90% | Very low  - <1% | High  - 10-20% | Low | Low  - +1-2 mW poll | Sensor-equipped, cautious |
+| **Conditional (AND)** | Door closed AND timeout | 85-92% | Very low  - <1% | Medium  - 8-15% | Low | Low | Premium locks, best balance |
+| **Conditional (OR)** | Door closed OR timeout | 98-99% | Medium  - 2-5% | Very low  - <1% | Medium | Low | Aggressive locking |
+| **Geofence-Triggered** | Everyone departed | 75-85% | Medium  - 3-8% | Medium  - 15-25% | High  - phone dead | Varies | Away-mode security |
+| **Manual-Only** | User action | 99%+ | None | N/A  - intentional | None | None  - baseline | Maximum control |
+
+**Reliability mathematics**: AND logic (conditional) multiplies individual component reliabilities creating lower system reliability than weakest component alone. Example: timeout-only 98% reliable, door sensor 90% reliable, conditional auto-lock equals 0.98 × 0.90 equals 88.2% reliable. This explains counterintuitive result where adding safety feature (door sensor preventing open-door locking) reduces overall auto-lock success rate despite improving security when it does lock.
+
+**False lock versus false non-lock trade-off**: Timeout-only strategy risks false locking (door open yet auto-lock triggers extending deadbolt into empty space—no security gained, motor strain from obstruction-free rapid extension), while door-sensor strategy risks false non-lock (door actually closed yet sensor reports open—security intended yet not delivered). Conservative deployments prefer false non-lock (fail-safe: don't lock unless certain) accepting lower convenience, aggressive deployments prefer false lock (fail-secure: lock unless certain door open) accepting higher usability.
+
+## Common Issues & Fixes
+
+### 1. Positive Door Close Failure: The Mechanical Prerequisite Problem
+
+Positive door close requires spring-loaded latch engaging strike plate recess with sufficient force overcoming friction and achieving locked position (latch ball fully seated in recess, not resting on strike edge), creating tactile/audible feedback confirming engagement. Failure to achieve positive close leaves door appearing closed (visually flush with frame) yet mechanically unsecured (pushable open without turning knob—latch ball not engaged), creating false security state where auto-lock timer expires, lock extends deadbolt, yet door remains functionally unlocked.
+
+**Positive close testing protocol**: Close door with normal force (not slamming, not gentle push—typical entry closing force ~5-8 lbs), release completely (no hand contact), attempt opening door from outside by pushing directly inward (no knob turning). Positive close achieved: door resists opening requiring knob turn to release latch. Positive close failed: door pushes open freely indicating latch not engaged. Repeat test 10 times from various closing angles (straight-on, left-side push, right-side push, top push, bottom push) measuring success rate—100% success indicates reliable positive close, <80% indicates mechanical adjustment required.
+
+**Strike plate depth optimization**: Latch travel (distance from door edge when retracted to fully extended) typically 3/4 inch, strike plate recess depth must accommodate full travel plus 1/16-1/8 inch margin ensuring latch ball fully enters recess. Insufficient recess depth (common when door or frame settled/shifted) causes latch ball contacting strike plate face rather than entering recess, creating partial engagement where minimal force opens door. Solution: chisel mortise deeper (add 1/8 inch depth), or install box strike (extended strike adding 3/4 inch depth) providing ample engagement depth eliminating partial-engagement failures.
+
+### 2. Door Sensor Issues (25%)
+
+**Problem:**
+```Sensor wrong:
+- Says "open" when closed
+- Says "closed" when open
+- Auto-lock based on wrong info
+```
+**Fix:**
+```- Test sensor accuracy:
+  - Close door
+  - Check app: Shows "Closed"?
+  - Open door
+  - Check app: Shows "Open"?
+
+- Recalibrate sensor:
+  - See: [Door Sensor Guide](/support/door-sensor-not-working)
+  - Reposition magnet
+  - Within 1/2 inch when closed
+
+- Disable sensor-based auto-lock:
+  - If sensor unreliable
+  - Use timeout-only
+  - Less ideal but more reliable
+```
+### 3. Timeout Too Short (15%)
+
+**Problem:**
+```Auto-lock triggers while:
+- Still unloading car
+- Carrying groceries
+- Multiple trips in/out
+equals Door relocks before you're done
+```
+**Fix:**
+```- Extend timeout:
+  - Current: 3 minutes (too short)
+  - Try: 5-10 minutes
+  - Adjust based on your usage
+
+- Disable temporarily:
+  - Quick toggle in app
+  - When expecting multiple trips
+  - Re-enable after
+
+- Use "I'm home" mode:
+  - Some platforms support
+  - Auto-lock disabled when home
+  - Auto-enables when away
+```
+### 4. Multiple Triggers (10%)
+
+**Problem:**
+```Auto-lock triggers repeatedly:
+- Locks → Manual unlock → Locks again
+- Annoying cycle
+- Happens immediately after unlock
+```
+**Fix:**
+```- Add delay after manual unlock:
+  - "Don't auto-lock if manually unlocked"
+  - Requires smart automation
+  - Home Assistant, IFTTT
+
+- Disable auto-lock conditionally:
+  - Only when everyone away
+  - Geofence-based
+  - Not when home
+
+- Use physical toggle:
+  - Privacy mode (some locks)
+  - Temporarily disables auto-lock
+  - Remember to re-enable
+```
+## Optimization Strategies
+
+### Timing Configuration
+
+**Find optimal delay:**
+```Test different timeouts:
+- Start with 10 minutes (generous)
+- Monitor for 1 week:
+  - Too long? Door left unlocked?
+  - Too short? Relocks while carrying things?
+- Adjust down to 7 minutes
+- Test another week
+- Settle on 5-7 minutes (typical sweet spot)
+
+Factors to consider:
+- How long to unload car?
+- Multiple trips common?
+- Kids forgetting to lock?
+- Visitor patterns?
+```
+### Conditional Auto-Lock
+
+**Smart conditions:**
+```- Auto-lock when:
+  ✓ Last person leaves (geofence)
+  ✓ After sunset (nighttime security)
+  ✓ Been unlocked >X minutes
+  ✓ Door closed + time passed
+
+- Don't auto-lock when:
+  ✗ Someone home (geofence)
+  ✗ "Expecting delivery" mode active
+  ✗ Party mode (frequent in/out)
+  ✗ Door open (prevents jamming)
+```
+### Multi-Method Approach
+
+**Layers of automation:**
+```Primary: Timeout-based (5 min)
+  - Simple, always works
+  - Catches most cases
+
+Backup: Geofence (when leaving)
+  - Lock when last person leaves
+  - Immediate security
+
+Final: Manual check
+  - Before bed, manually verify
+  - Don't rely 100% on automation
+```
+## Testing Auto-Lock
+
+### Systematic Test
+
+```- Test 1: Normal operation
+  - Unlock door
+  - Close door
+  - Wait full timeout
+  - Verify locks automatically
+  - Success? ✓
+
+- Test 2: Door open
+  - Unlock door
+  - Leave door open
+  - Wait timeout
+  - Should NOT lock (if sensor)
+  - OR: Manual check needed
+
+- Test 3: Multiple unlocks
+  - Unlock door
+  - Immediately unlock again (app)
+  - Wait timeout
+  - Should lock after final unlock
+
+- Test 4: Manual unlock
+  - Unlock via keypad
+  - Wait timeout
+  - Should still auto-lock
+
+- Test 5: Interruption
+  - Unlock door
+  - Wait 2 minutes
+  - Unlock again (resets timer)
+  - Wait timeout from second unlock
+  - Should lock
+
+- Test 10 times over 1 week:
+  - Real-world conditions
+  - Success rate ____/10
+  - 9-10/10 equals Good
+  - <8/10 equals Needs improvement
+```
+## Troubleshooting Failed Auto-Lock
+
+**When auto-lock does not trigger:**
+```- Check configuration:
+  - Auto-lock enabled?
+  - Timeout value set?
+  - Conditions met?
+
+- Check door sensor:
+  - Shows closed?
+  - Accurate?
+  - Clean and aligned?
+
+- Check battery:
+  - >30%?
+  - Replace if low
+
+- Check lock status:
+  - Already locked?
+  - Can't re-lock if locked
+
+- Check logs:
+  - Did auto-lock trigger?
+  - Failed or never attempted?
+  - Error messages?
+
+- Check connectivity:
+  - Lock online?
+  - Hub online?
+  - Can't auto-lock if offline
+```
+## Platform-Specific Tips
+
+**HomeKit:**
+- Automation: "When unlocked" → Delay 5 min → Lock
+- Condition: "Door closed"  - if sensor
+- Works reliably if set up correctly
+
+**Google Home:**
+- Routines → Custom routine
+- Trigger: Lock state changes to unlocked
+- Action: Delay → Lock
+
+**Alexa:**
+- Routines → When lock unlocks
+- Wait 5 minutes
+- Lock the lock
+
+**SmartThings:**
+- Automations → When lock unlocks
+- Delay 5 minutes
+- Lock
+- Can add conditions  - door sensor, presence, time
+
+## Safety Considerations
+
+**Important:**
+```⚠️ Auto-lock can lock you out
+⚠️ Ensure you have backup access:
+  ✓ Physical key on person
+  ✓ Phone with you (app access)
+  ✓ PIN code memorized
+
+⚠️ Don't rely 100% on auto-lock:
+  ✓ Manually verify before bed
+  ✓ Check door actually closed
+  ✓ Don't assume it worked
+```
+## Related Resources
+
+**Setup:**
+- [Set Up Automations] - /support/set-up-lock-automations - Complete guide
+
+**Troubleshooting:**
+- [Door Sensor] - /support/door-sensor-not-working - Sensor issues
+- [Wrong Status] - /support/smart-lock-shows-wrong-status - Status accuracy
+
+---
+
+## Summary: Achieving 90%+ Reliability Through Systematic Failure Mode Elimination
+
+Auto-lock reliability optimization demands identifying and eliminating highest-probability failure modes through systematic testing: door positive-close verification (eliminating 50% of failures), sensor calibration confirmation (eliminating 25%), timeout optimization for usage patterns (eliminating 15%), recognizing 85-90% baseline reliability represents practical ceiling where remaining failures stem from unpredictable factors (unexpected door draft, sensor aging, battery marginal voltage) resisting deterministic prevention. This reliability ceiling proves acceptable for convenience automation (reducing forgot-to-lock incidents from 100% to 10-15%) yet inadequate for critical security reliance demanding 99%+ reliability achievable only through redundant verification (manual checking).
+
+**The convenience-versus-security philosophical framework**: Auto-lock serves as safety net catching human error (forgetting to lock), not primary security mechanism replacing intentional locking. This distinction proves critical for appropriate deployment: implement auto-lock for everyday convenience (reducing unlocked-door hours from common 2-4 hours daily to rare 15-30 minutes when auto-lock fails), yet maintain manual verification discipline for critical security moments (bedtime, vacation departure, high-value property protection). Users treating auto-lock as infallible security feature experience periodic failures as security breaches, while users treating it as probabilistic convenience enhancement experience same failures as minor inconveniences requiring manual correction.
+
+**Failure rate monitoring importance**: Track auto-lock success rate over 30-day period (log all unlock events, verify lock status after expected timeout) establishing baseline reliability and identifying systematic versus random failures. Systematic failures (consistent pattern: always fails when door closed from certain angle, fails in specific weather conditions) indicate correctable root causes (hinge adjustment, sensor repositioning), while random failures (unpredictable 5-10% rate across all conditions) indicate fundamental reliability ceiling requiring acceptance rather than further optimization attempts.
+

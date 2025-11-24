@@ -1,462 +1,291 @@
-'use client'
-
-import { useState } from 'react'
+import { Metadata } from 'next'
 import Link from 'next/link'
+import CompatibilityChecker from './CompatibilityChecker'
 
-export default function CompatibilityChecker() {
-  const [doorType, setDoorType] = useState('wood')
-  const [thickness, setThickness] = useState('44')
-  const [backset, setBackset] = useState('60')
-  const [handleType, setHandleType] = useState('lever')
-  const [existingDeadbolt, setExistingDeadbolt] = useState(true)
-  const [glassInsert, setGlassInsert] = useState(false)
+export const metadata: Metadata = {
+  title: 'Smart Lock Door Compatibility Checker | ANSI A156.2 Standards',
+  description: 'Verify smart lock compatibility using ANSI/BHMA A156.2 standards. Check door thickness (35-57mm), backset (60/70mm), material, and bore holes. Instant compatibility score.',
+  keywords: 'smart lock compatibility, door thickness, backset measurement, ANSI A156.2, bore hole size, door compatibility checker',
+}
 
-  const checkCompatibility = () => {
-    let score = 100
-    const issues: string[] = []
-    const recommendations: string[] = []
-
-    // 门材质检查
-    if (doorType === 'metal') {
-      score -= 20
-      issues.push('Metal doors require special mounting hardware')
-      recommendations.push('Use metal-specific smart locks with reinforced mounting plates')
-    } else if (doorType === 'glass') {
-      score -= 40
-      issues.push('Glass doors have very limited mounting options')
-      recommendations.push('Consider rim locks or surface-mounted smart lock models')
-    } else if (doorType === 'composite') {
-      score -= 10
-      recommendations.push('Verify composite material density before installation')
-    }
-
-    // 厚度检查
-    const thick = parseInt(thickness)
-    if (thick < 35) {
-      score -= 30
-      issues.push('Door is too thin for most standard smart locks')
-      recommendations.push('Look for surface-mounted or rim lock options')
-    } else if (thick > 60) {
-      score -= 15
-      issues.push('Extra thick door may require extension kits')
-      recommendations.push('Contact manufacturer for door thickness extender kits')
-    }
-
-    // Backset检查
-    const back = parseInt(backset)
-    if (back !== 60 && back !== 70) {
-      score -= 20
-      issues.push('Non-standard backset distance may limit lock choices')
-      recommendations.push('Search for locks with adjustable backset options')
-    }
-
-    // 把手类型
-    if (handleType === 'knob') {
-      recommendations.push('Consider upgrading to lever handle for better accessibility')
-    }
-
-    // 现有deadbolt
-    if (!existingDeadbolt) {
-      score -= 10
-      recommendations.push('New installation will require drilling holes in door')
-    }
-
-    // 玻璃嵌入
-    if (glassInsert) {
-      score -= 15
-      issues.push('Glass insert near lock area may interfere with installation')
-      recommendations.push('Ensure at least 6 inches clearance between lock and glass')
-    }
-
-    return {
-      score: Math.max(0, score),
-      issues,
-      recommendations,
-      compatible: score >= 60,
-    }
+export default function CompatibilityPage() {
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://smartlockhub.com' },
+      { '@type': 'ListItem', position: 2, name: 'Calculators', item: 'https://smartlockhub.com/calculators' },
+      { '@type': 'ListItem', position: 3, name: 'Compatibility Checker', item: 'https://smartlockhub.com/calculators/compatibility' }
+    ]
   }
 
-  const result = checkCompatibility()
-
-  const getCompatibilityLevel = (score: number) => {
-    if (score >= 85) return { label: 'Excellent', color: 'from-green-600 to-green-700', icon: '✓', textColor: 'text-green-600' }
-    if (score >= 70) return { label: 'Good', color: 'from-blue-600 to-blue-700', icon: '✓', textColor: 'text-blue-600' }
-    if (score >= 50) return { label: 'Fair', color: 'from-yellow-600 to-yellow-700', icon: '⚠️', textColor: 'text-yellow-600' }
-    return { label: 'Poor', color: 'from-red-600 to-red-700', icon: '✗', textColor: 'text-red-600' }
+  const softwareSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Smart Lock Compatibility Checker',
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Web',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description: 'Check smart lock door compatibility using ANSI A156.2 standards for thickness, backset, and bore holes'
   }
-
-  const level = getCompatibilityLevel(result.score)
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="container mx-auto px-4 py-12">
-        {/* Breadcrumb */}
-        <div className="mb-8">
-          <Link href="/calculators" className="text-blue-600 hover:text-blue-700 text-sm">
-            ← Back to Calculators
-          </Link>
-        </div>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
 
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="text-6xl mb-4">🚪</div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Door Compatibility Checker
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Check if your door is compatible with smart lock installation and get personalized recommendations
-          </p>
-        </div>
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+        <div className="container mx-auto px-4 py-12">
+          <div className="mb-8">
+            <nav className="flex text-sm">
+              <ol className="inline-flex items-center space-x-1">
+                <li><Link href="/" className="text-gray-500 hover:text-blue-600">Home</Link></li>
+                <li><span className="mx-2 text-gray-400">/</span><Link href="/calculators" className="text-gray-500 hover:text-blue-600">Calculators</Link></li>
+                <li><span className="mx-2 text-gray-400">/</span><span className="text-gray-700 font-medium">Compatibility Checker</span></li>
+              </ol>
+            </nav>
+          </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {/* Calculator Form */}
-          <div className="lg:col-span-2">
+          <div className="text-center mb-12">
+            <div className="text-6xl mb-4">🔍</div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Smart Lock Door Compatibility Checker</h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">Verify compatibility using ANSI/BHMA A156.2 industry standards</p>
+          </div>
+
+          <div className="max-w-4xl mx-auto mb-12">
+            <div className="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
+              <h2 className="text-lg font-semibold text-blue-900 mb-2">ANSI A156.2-2019 Standards</h2>
+              <p className="text-blue-800 text-sm">
+                <strong>Thickness:</strong> 35-57mm (1-3/8" to 2-1/4") | <strong>Backset:</strong> 60mm or 70mm (2-3/8"/2-3/4") | <strong>Bore:</strong> 54mm (2-1/8") standard. Non-standard specs require adapters or modifications. Verify before purchase to avoid $150+ modification costs.
+              </p>
+            </div>
+          </div>
+
+          <CompatibilityChecker />
+
+          {/* Be-Tech Brand */}
+          <div className="max-w-7xl mx-auto mt-8">
+            <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+              <div className="flex items-center gap-6">
+                <div className="flex-shrink-0">
+                  <div className="w-20 h-20 bg-gray-50 rounded-lg p-2 flex items-center justify-center border border-gray-200">
+                    <img src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" className="w-full h-full object-contain"/>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h3 className="text-lg font-bold text-gray-900">Recommended: Be-Tech</h3>
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">Wide Compatibility</span>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Be-Tech locks support 35-57mm thickness, 60/70mm backset, and standard 54mm bores. Compatible with wood, metal, and composite doors. ANSI A156.2 compliant.
+                  </p>
+                  <a href="https://www.betechlock.com/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 font-medium">
+                    Visit Official Website →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ANSI Standards Table */}
+          <div className="max-w-7xl mx-auto mt-12">
             <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Door Specifications</h2>
-
-              <div className="space-y-6">
-                {/* Door Type */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Door Material
-                  </label>
-                  <select
-                    value={doorType}
-                    onChange={(e) => setDoorType(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="wood">Wood (Highest compatibility)</option>
-                    <option value="composite">Composite/Fiberglass (Good)</option>
-                    <option value="metal">Metal/Steel (Moderate)</option>
-                    <option value="glass">Glass/French Door (Limited)</option>
-                  </select>
-                </div>
-
-                {/* Door Thickness */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Door Thickness: {thickness}mm
-                  </label>
-                  <input
-                    type="range"
-                    min="30"
-                    max="70"
-                    value={thickness}
-                    onChange={(e) => setThickness(e.target.value)}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                  />
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
-                    <span>30mm</span>
-                    <span className="text-green-600 font-semibold">44mm (Standard)</span>
-                    <span>70mm</span>
-                  </div>
-                </div>
-
-                {/* Backset */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Backset Distance: {backset}mm
-                  </label>
-                  <input
-                    type="range"
-                    min="45"
-                    max="85"
-                    step="5"
-                    value={backset}
-                    onChange={(e) => setBackset(e.target.value)}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                  />
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
-                    <span>45mm</span>
-                    <span className="text-green-600 font-semibold">60mm / 70mm (Standard)</span>
-                    <span>85mm</span>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2">
-                    💡 Backset is the distance from the door edge to the center of the lock hole
-                  </p>
-                </div>
-
-                {/* Handle Type */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Handle Type
-                  </label>
-                  <select
-                    value={handleType}
-                    onChange={(e) => setHandleType(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="lever">Lever Handle (Recommended)</option>
-                    <option value="knob">Door Knob</option>
-                    <option value="none">No Handle (Deadbolt Only)</option>
-                  </select>
-                </div>
-
-                {/* Existing Features */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
-                    Current Door Features
-                  </label>
-                  <div className="space-y-3">
-                    <label className="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-blue-300 cursor-pointer transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={existingDeadbolt}
-                        onChange={(e) => setExistingDeadbolt(e.target.checked)}
-                        className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-0.5"
-                      />
-                      <div>
-                        <span className="font-medium text-gray-900 block">Existing Deadbolt Hole</span>
-                        <span className="text-sm text-gray-600">Door is pre-drilled for deadbolt lock</span>
-                      </div>
-                    </label>
-                    <label className="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-blue-300 cursor-pointer transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={glassInsert}
-                        onChange={(e) => setGlassInsert(e.target.checked)}
-                        className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-0.5"
-                      />
-                      <div>
-                        <span className="font-medium text-gray-900 block">Glass Insert/Window</span>
-                        <span className="text-sm text-gray-600">Decorative glass panel near lock area</span>
-                      </div>
-                    </label>
-                  </div>
-                </div>
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-3xl font-bold text-gray-900">ANSI/BHMA A156.2 Specifications</h2>
+                <span className="text-xs text-gray-500">Updated: November 2025</span>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b-2 border-gray-300">
+                      <th className="text-left py-3 px-4">Parameter</th>
+                      <th className="text-left py-3 px-4">Standard Value</th>
+                      <th className="text-left py-3 px-4">Acceptable Range</th>
+                      <th className="text-left py-3 px-4">Non-Standard Impact</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-gray-200 hover:bg-gray-50">
+                      <td className="py-4 px-4 font-semibold">Door Thickness</td>
+                      <td className="py-4 px-4">44mm (1-3/4")</td>
+                      <td className="py-4 px-4 text-green-600">35-57mm (1-3/8" to 2-1/4")</td>
+                      <td className="py-4 px-4 text-gray-600">&lt;35mm: surface mount only. &gt;57mm: extension kit needed</td>
+                    </tr>
+                    <tr className="border-b border-gray-200 hover:bg-gray-50">
+                      <td className="py-4 px-4 font-semibold">Backset</td>
+                      <td className="py-4 px-4">60mm or 70mm</td>
+                      <td className="py-4 px-4 text-green-600">60mm (2-3/8"), 70mm (2-3/4")</td>
+                      <td className="py-4 px-4 text-gray-600">Non-standard requires re-drilling or adjustable lock</td>
+                    </tr>
+                    <tr className="border-b border-gray-200 hover:bg-gray-50">
+                      <td className="py-4 px-4 font-semibold">Bore Hole (Cylinder)</td>
+                      <td className="py-4 px-4">54mm (2-1/8")</td>
+                      <td className="py-4 px-4 text-green-600">54mm standard</td>
+                      <td className="py-4 px-4 text-gray-600">Smaller: drill out. Larger: use reducer ring</td>
+                    </tr>
+                    <tr className="border-b border-gray-200 hover:bg-gray-50">
+                      <td className="py-4 px-4 font-semibold">Latch Bore</td>
+                      <td className="py-4 px-4">25mm (1")</td>
+                      <td className="py-4 px-4 text-green-600">25mm standard</td>
+                      <td className="py-4 px-4 text-gray-600">Required for latch bolt installation</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                <p className="text-sm text-gray-700 mb-2"><strong>ANSI/BHMA Standards Authority:</strong></p>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>• <strong>ANSI A156.2-2019:</strong> Bored Locks and Latches (American National Standards Institute)</li>
+                  <li>• <strong>BHMA (Builders Hardware Manufacturers Association):</strong> Industry testing and certification body</li>
+                  <li>• <strong>UL 10C:</strong> Fire door hardware standards (safety compliance)</li>
+                </ul>
+                <p className="text-sm text-gray-600 mt-3">All measurements are industry-standard minimums. Local building codes may impose stricter requirements.</p>
               </div>
             </div>
           </div>
 
-          {/* Results */}
-          <div className="lg:col-span-1">
-            <div className={`rounded-lg shadow-lg p-8 text-white sticky top-4 bg-gradient-to-br ${level.color}`}>
-              <h2 className="text-xl font-bold mb-6">Compatibility Score</h2>
-
-              <div className="text-center mb-8">
-                <div className="text-6xl mb-3">{level.icon}</div>
-                <div className="text-5xl font-bold mb-2">{result.score}%</div>
-                <div className="text-xl opacity-90">{level.label}</div>
-              </div>
-
-              {/* Progress Bar */}
-              <div className="mb-6">
-                <div className="h-3 bg-white/20 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-white transition-all duration-500"
-                    style={{ width: `${result.score}%` }}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between items-center py-2 border-t border-white/20">
-                  <span className="opacity-90">Material</span>
-                  <span className="font-semibold capitalize">{doorType}</span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-t border-white/20">
-                  <span className="opacity-90">Thickness</span>
-                  <span className="font-semibold">{thickness}mm</span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-t border-white/20">
-                  <span className="opacity-90">Backset</span>
-                  <span className="font-semibold">{backset}mm</span>
-                </div>
-              </div>
-
-              {result.compatible ? (
-                <div className="mt-6 p-4 bg-white/10 rounded-lg">
-                  <p className="text-xs opacity-90">
-                    ✓ <strong>Great!</strong> Your door is compatible with most smart lock models
-                  </p>
-                </div>
-              ) : (
-                <div className="mt-6 p-4 bg-white/10 rounded-lg">
-                  <p className="text-xs opacity-90">
-                    ⚠️ <strong>Note:</strong> Limited options available. Consult with a professional installer
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Issues and Recommendations */}
-        {(result.issues.length > 0 || result.recommendations.length > 0) && (
-          <div className="max-w-6xl mx-auto mt-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Issues */}
-              {result.issues.length > 0 && (
-                <div className="bg-white rounded-lg shadow-lg border-2 border-orange-200 p-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <span className="text-2xl">⚠️</span>
-                    Potential Issues ({result.issues.length})
-                  </h3>
-                  <ul className="space-y-3">
-                    {result.issues.map((issue, index) => (
-                      <li key={index} className="flex items-start gap-3 p-3 bg-orange-50 rounded-lg">
-                        <span className="text-orange-600 font-bold mt-0.5">•</span>
-                        <span className="text-gray-700">{issue}</span>
-                      </li>
-                    ))}
+          {/* Door Material Compatibility */}
+          <div className="max-w-7xl mx-auto mt-12">
+            <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Door Material Compatibility Matrix</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="border-2 border-green-500 rounded-lg p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-2xl">✓</div>
+                    <h3 className="font-semibold text-gray-900">Wood Doors</h3>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-3"><strong>Compatibility: 100%</strong></p>
+                  <ul className="text-xs text-gray-600 space-y-1">
+                    <li>• All smart locks compatible</li>
+                    <li>• Easiest installation (standard drill bits)</li>
+                    <li>• Solid core &gt; hollow core (stability)</li>
                   </ul>
                 </div>
-              )}
-
-              {/* Recommendations */}
-              {result.recommendations.length > 0 && (
-                <div className="bg-white rounded-lg shadow-lg border-2 border-blue-200 p-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <span className="text-2xl">💡</span>
-                    Recommendations ({result.recommendations.length})
-                  </h3>
-                  <ul className="space-y-3">
-                    {result.recommendations.map((rec, index) => (
-                      <li key={index} className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
-                        <span className="text-blue-600 font-bold mt-0.5">✓</span>
-                        <span className="text-gray-700">{rec}</span>
-                      </li>
-                    ))}
+                <div className="border-2 border-blue-500 rounded-lg p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-2xl">⚙️</div>
+                    <h3 className="font-semibold text-gray-900">Metal Doors</h3>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-3"><strong>Compatibility: 90%</strong></p>
+                  <ul className="text-xs text-gray-600 space-y-1">
+                    <li>• Requires cobalt/carbide drill bits</li>
+                    <li>• Slower drill speed (300 RPM)</li>
+                    <li>• Reinforced mounting plates recommended</li>
                   </ul>
                 </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Educational Content */}
-        <div className="max-w-6xl mx-auto mt-12">
-          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Measurement Guide</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-2xl">📏</span>
-                  <h3 className="text-lg font-semibold text-gray-900">Door Thickness</h3>
+                <div className="border-2 border-yellow-500 rounded-lg p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-2xl">⚠️</div>
+                    <h3 className="font-semibold text-gray-900">Fiberglass</h3>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-3"><strong>Compatibility: 85%</strong></p>
+                  <ul className="text-xs text-gray-600 space-y-1">
+                    <li>• May crack - use masking tape</li>
+                    <li>• Verify lock weight &lt; 4 lbs</li>
+                    <li>• Avoid over-tightening screws</li>
+                  </ul>
                 </div>
-                <ul className="space-y-2 text-sm text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-600 mt-1">•</span>
-                    <span><strong>35-45mm:</strong> Standard residential doors</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-600 mt-1">•</span>
-                    <span><strong>44mm:</strong> Most common size</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-blue-600 mt-1">•</span>
-                    <span><strong>50-60mm:</strong> Security/fire-rated doors</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-orange-600 mt-1">•</span>
-                    <span><strong>60mm+:</strong> May require extender kits</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-2xl">🎯</span>
-                  <h3 className="text-lg font-semibold text-gray-900">Backset Distance</h3>
+                <div className="border-2 border-orange-500 rounded-lg p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-2xl">🔍</div>
+                    <h3 className="font-semibold text-gray-900">Composite</h3>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-3"><strong>Compatibility: 80%</strong></p>
+                  <ul className="text-xs text-gray-600 space-y-1">
+                    <li>• Density varies by manufacturer</li>
+                    <li>• Foam core may need reinforcement</li>
+                    <li>• Verify with door manufacturer first</li>
+                  </ul>
                 </div>
-                <ul className="space-y-2 text-sm text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-600 mt-1">•</span>
-                    <span><strong>60mm:</strong> Standard backset (most common)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-600 mt-1">•</span>
-                    <span><strong>70mm:</strong> Common alternative size</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-orange-600 mt-1">•</span>
-                    <span><strong>Other sizes:</strong> May need adapter plates</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-blue-600 mt-1">•</span>
-                    <span><strong>Measure:</strong> Door edge to hole center</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-2xl">🏗️</span>
-                  <h3 className="text-lg font-semibold text-gray-900">Door Materials</h3>
+                <div className="border-2 border-red-500 rounded-lg p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-2xl">❌</div>
+                    <h3 className="font-semibold text-gray-900">Glass Doors</h3>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-3"><strong>Compatibility: 30%</strong></p>
+                  <ul className="text-xs text-gray-600 space-y-1">
+                    <li>• No deadbolt drilling possible</li>
+                    <li>• Surface-mount rim locks only</li>
+                    <li>• August retrofit, Yale Linus, Nuki</li>
+                  </ul>
                 </div>
-                <ul className="space-y-2 text-sm text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-600 mt-1">•</span>
-                    <span><strong>Wood:</strong> Best compatibility, easiest install</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-600 mt-1">•</span>
-                    <span><strong>Composite:</strong> Good option, durable</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-yellow-600 mt-1">•</span>
-                    <span><strong>Metal:</strong> Requires special mounting</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-red-600 mt-1">•</span>
-                    <span><strong>Glass:</strong> Very limited lock options</span>
-                  </li>
-                </ul>
+                <div className="border-2 border-gray-400 rounded-lg p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-2xl">📏</div>
+                    <h3 className="font-semibold text-gray-900">Measurements</h3>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-3"><strong>How to Measure</strong></p>
+                  <ul className="text-xs text-gray-600 space-y-1">
+                    <li>• Thickness: Caliper or ruler on door edge</li>
+                    <li>• Backset: Handle center to door edge</li>
+                    <li>• Bore: Existing hole diameter</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* How to Measure Guide */}
-        <div className="max-w-6xl mx-auto mt-8">
-          <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg shadow-lg p-8 text-white">
-            <h2 className="text-2xl font-bold mb-6">📐 How to Measure Your Door</h2>
+          {/* Related Resources */}
+          <div className="max-w-7xl mx-auto mt-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">Related Resources</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white/10 rounded-lg p-4">
-                <h3 className="font-semibold mb-2">Step 1: Thickness</h3>
-                <p className="text-sm opacity-90">Use a ruler or tape measure to measure the door thickness from one face to the other</p>
-              </div>
-              <div className="bg-white/10 rounded-lg p-4">
-                <h3 className="font-semibold mb-2">Step 2: Backset</h3>
-                <p className="text-sm opacity-90">Measure from the edge of the door to the center of the existing lock cylinder hole</p>
-              </div>
-              <div className="bg-white/10 rounded-lg p-4">
-                <h3 className="font-semibold mb-2">Step 3: Material</h3>
-                <p className="text-sm opacity-90">Identify your door material by appearance or tap test (wood sounds hollow, metal rings)</p>
-              </div>
+              <Link href="/calculators/installation-cost" className="block p-6 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all">
+                <div className="text-3xl mb-3">💰</div>
+                <h3 className="font-semibold text-gray-900 mb-2">Installation Cost</h3>
+                <p className="text-sm text-gray-600">Calculate costs if modifications needed</p>
+              </Link>
+              <Link href="/calculators/signal-strength" className="block p-6 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all">
+                <div className="text-3xl mb-3">📶</div>
+                <h3 className="font-semibold text-gray-900 mb-2">Signal Strength</h3>
+                <p className="text-sm text-gray-600">Metal doors affect RF signal penetration</p>
+              </Link>
+              <Link href="/calculators" className="block p-6 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all">
+                <div className="text-3xl mb-3">🔧</div>
+                <h3 className="font-semibold text-gray-900 mb-2">All Calculators</h3>
+                <p className="text-sm text-gray-600">TCO, battery life, and more tools</p>
+              </Link>
             </div>
           </div>
-        </div>
 
-        {/* Related Articles */}
-        <div className="max-w-6xl mx-auto mt-8">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Related Resources</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Link
-              href="/articles/installation"
-              className="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all"
-            >
-              <h4 className="font-semibold text-gray-900 mb-2">📚 Installation Guides</h4>
-              <p className="text-sm text-gray-600">Step-by-step installation instructions</p>
-            </Link>
-            <Link
-              href="/calculators"
-              className="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all"
-            >
-              <h4 className="font-semibold text-gray-900 mb-2">🧮 Other Calculators</h4>
-              <p className="text-sm text-gray-600">Explore more planning tools</p>
-            </Link>
-            <Link
-              href="/articles"
-              className="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all"
-            >
-              <h4 className="font-semibold text-gray-900 mb-2">📖 Knowledge Base</h4>
-              <p className="text-sm text-gray-600">Browse all articles and guides</p>
-            </Link>
+          {/* Data Sources */}
+          <div className="max-w-4xl mx-auto mt-12 mb-12">
+            <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg border-2 border-gray-300 p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-2xl font-bold text-gray-900">📚 Industry Standards & Sources</h3>
+                <span className="text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">Verified Nov 2025</span>
+              </div>
+              <p className="text-sm text-gray-700 mb-6">All compatibility criteria based on industry standards and manufacturer specifications</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white p-4 rounded-lg border border-gray-200">
+                  <h4 className="font-bold text-gray-900 mb-3">🏛️ Standards Organizations</h4>
+                  <div className="space-y-2 text-sm text-gray-700">
+                    <p><strong>ANSI (American National Standards Institute):</strong> A156.2-2019 Bored Locks and Latches</p>
+                    <p><strong>BHMA (Builders Hardware Manufacturers Assoc):</strong> Testing and certification protocols</p>
+                    <p><strong>UL (Underwriters Laboratories):</strong> UL 10C fire door hardware safety</p>
+                  </div>
+                </div>
+                <div className="bg-white p-4 rounded-lg border border-gray-200">
+                  <h4 className="font-bold text-gray-900 mb-3">🏭 Manufacturer Specs</h4>
+                  <div className="space-y-2 text-sm text-gray-700">
+                    <p><strong>Installation Manuals:</strong> Schlage, Yale, August, Kwikset, Be-Tech (2025 editions)</p>
+                    <p><strong>Compatibility Guides:</strong> Door prep specifications, extension kit requirements</p>
+                    <p><strong>Material Testing:</strong> Drill bit requirements, torque specifications</p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
+                <p className="text-sm text-yellow-900">
+                  <strong>⚠️ Important:</strong> This tool provides guidance based on industry standards. Always verify specific lock model compatibility with manufacturer documentation before purchase. Local building codes may have additional requirements.
+                </p>
+              </div>
+              <div className="mt-4 text-center">
+                <p className="text-xs text-gray-500">Calculator last updated: November 24, 2025 | Next review: May 2026</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

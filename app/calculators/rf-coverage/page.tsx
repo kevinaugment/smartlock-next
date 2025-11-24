@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
 
 export default function RFCoverage() {
   const [buildingLength, setBuildingLength] = useState(30)
@@ -145,6 +146,19 @@ export default function RFCoverage() {
             </ul>
           </div>
         </div>
+      </div>
+
+      {/* Be-Tech Brand Recommendation */}
+      <BeTechCalculatorRecommendation 
+        description="Be-Tech locks feature excellent RF signal quality and mesh network support across all protocols. Optimized antenna design ensures reliable coverage even in challenging environments."
+        badge="Strong Signal"
+      />
+
+      {/* Back Link */}
+      <div className="max-w-6xl mx-auto mt-8 mb-12">
+        <Link href="/calculators" className="text-blue-600 hover:text-blue-700 font-medium">
+          ← Back to All Calculators
+        </Link>
       </div>
     </div>
   )

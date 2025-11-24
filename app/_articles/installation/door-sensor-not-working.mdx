@@ -1,0 +1,336 @@
+---
+title: "Smart Lock Door Sensor Not Working - Fix DoorSense Issues"
+description: "Fix door sensor that will not detect open/closed status. Troubleshoot DoorSense, door position sensor, magnetic sensor, and restore accurate door status reporting."
+category: installation
+pubDate: 2024-03-29
+wordCount: 750
+readingTime: 4
+keywords:
+  - "door sensor not working"
+  - "doorsense failed"
+  - "door position sensor"
+  - "sensor malfunction"
+  - "door status wrong"
+tags:
+  - "sensor"
+  - "doorsense"
+  - "troubleshooting"
+isPillar: false
+isSupport: true
+featured: false
+relatedArticles:
+  - "smart-lock-shows-wrong-status"
+  - "install-smart-lock-step-by-step"
+
+---
+
+
+## Quick Answer: Magnetic Proximity Detection Failure Analysis
+
+**Door position sensor failures concentrate in magnetic field geometry issues: magnet-sensor misalignment (50%) where door/frame movement shifts magnet outside reed switch activation zone (typically 12mm/0.5-inch maximum detection distance), excessive gap distance (30%) where door-frame separation exceeds magnetic field strength threshold, or magnet field degradation (15%) through demagnetization or physical damage weakening magnetic flux below reed switch trigger threshold (~10-20 gauss minimum).** Magnetic reed sensors dominate door position detection (95% of implementations) using hermetically-sealed glass capsule containing ferromagnetic contacts actuated by external magnetic field, proving reliable yet sensitive to precise geometric alignment.
+
+### Door Sensor Technology Comparison Matrix
+
+| Technology | Detection Method | Accuracy | Alignment Sensitivity | Installation Complexity | Cost | Failure Modes | Typical Brands |
+|-----------|-----------------|----------|---------------------|------------------------|------|---------------|---------------|
+| **Magnetic Reed Switch** | Magnetic field proximity | High  - ±2mm | High  - must align within 12mm | Easy  - adhesive magnet | $5-15 | Misalignment, magnet loss, reed contact failure | August, Yale, Most locks |
+| **Hall Effect Sensor** | Magnetic field strength | Very High  - ±1mm | Medium  - 15-20mm range | Easy | $10-20 | Magnet degradation, sensor drift | Premium locks |
+| **Accelerometer** | Motion/vibration detection | Medium  - angle-based | Low  - no alignment needed | Very Easy  - built-in | $3-8 | False triggers, calibration drift | Budget locks |
+| **Optical (rare)** | Light beam interruption | Very High  - ±0.5mm | Very High  - precise alignment | Complex  - alignment required | $20-40 | Dirt accumulation, misalignment | Rare commercial |
+
+## Magnetic Reed Switch Physics and Detection Geometry
+
+**Reed switch operation principle**: Hermetically-sealed glass tube contains two ferromagnetic reeds (typically nickel-iron alloy) separated by small gap (~0.1-0.5mm), normally-open configuration. External magnetic field (from door-mounted permanent magnet, typically neodymium or ferrite, 50-200 gauss at surface) magnetizes reeds causing attractive force overcoming spring tension, closing electrical contact. Field removal allows spring tension separating contacts, opening circuit. This bistable mechanism provides clean digital signal (closed/open) without power consumption, ideal for battery-powered applications.
+
+**Magnetic field strength decay**: Magnetic field strength follows inverse-square law approximation: B ∝ 1/d² where B = field strength, d = distance. Practical implication: doubling distance (6mm to 12mm) reduces field strength ~4×, halving detection reliability. Reed switches require minimum 10-20 gauss activation threshold, explaining typical 12mm maximum reliable detection distance where magnet field decays below threshold. This geometric sensitivity makes alignment critical: 2mm lateral misalignment at 10mm distance can reduce effective field strength 30-40% potentially dropping below activation threshold.
+
+**Accelerometer (some locks):**
+```- Detects door movement
+- No separate magnet needed
+- Less accurate than magnetic
+- Can false-trigger from vibration
+```
+## Common Causes & Solutions
+
+### 1. Magnet Misaligned (50%)
+
+**Symptoms:**
+- Sensor worked initially, stopped later
+- Door closed but shows "open"
+- Works sometimes, not others
+- Seasonal  - door warps with weather
+
+**Fix - Magnetic sensors:**
+```- Locate alignment marks:
+  - August: White line on lock face
+  - Others: Small indicator or instruction
+
+- Check magnet position:
+  - Should align with sensor
+  - Usually mid-height of lock
+  - Within 1/2 inch when door closed
+
+- Test alignment:
+  1. Close door slowly
+  2. Watch where magnet passes sensor
+  3. Should be directly aligned
+
+- Reposition magnet:
+  1. Remove magnet (adhesive or screws)
+  2. Clean surface
+  3. Position to align with sensor
+  4. Re-attach firmly
+  5. Test multiple times
+
+- Mark optimal position:
+  - Pencil mark on frame
+  - Reference for future
+```
+**Expected result:** Consistent detection
+
+### 2. Gap Too Large (30%)
+
+**Symptoms:**
+- Never worked reliably
+- Only detects when door pushed hard
+- Works better in certain weather
+- Building recently settled
+
+**Causes:**
+- Door/frame misalignment
+- Weatherstripping too thick
+- Building settlement
+- Hinges worn/loose
+
+**Fix:**
+```- Measure gap:
+  - Use feeler gauge or paper
+  - Should be <1/2 inch for reliable detection
+  - Closer = Better (1/4 inch ideal)
+
+- Reduce gap:
+  Option A: Adjust hinges
+    - Tighten all hinge screws
+    - May pull door closer to frame
+
+  Option B: Shim hinges
+    - Remove hinge
+    - Add cardboard shim behind
+    - Reattach (pulls door toward latch side)
+
+  Option C: Move magnet
+    - Position closer to door edge
+    - Reduces effective gap
+
+  Option D: Stronger magnet
+    - Replace with neodymium magnet
+    - Increased sensing range
+    - $5-10 online
+```
+### 3. Weak or Missing Magnet (15%)
+
+**Symptoms:**
+- Gradually stopped working
+- Used to work perfectly
+- Magnet looks normal
+- Lock works fine otherwise
+
+**Fix:**
+```- Test magnet strength:
+  - Hold near paperclip/screw
+  - Should attract strongly
+  - If weak: Replace
+
+- Replace magnet:
+  1. Note current position/orientation
+  2. Purchase replacement:
+     - Brand-specific (best)
+     - Universal adhesive magnet
+     - Neodymium disc magnet
+  3. Install in same position
+  4. Test alignment
+
+- Verify polarity:
+  - Some magnets directional
+  - Try flipping if does not work
+  - Should attract to sensor strongly
+```
+### 4. Sensor Dirty/Damaged (3%)
+
+**Symptoms:**
+- Intermittent detection
+- No obvious alignment issue
+- Lock older  - 2+ years
+
+**Fix:**
+```- Clean sensor area:
+  - Cotton swab + isopropyl alcohol
+  - Wipe sensor surface
+  - Remove dust/debris
+  - Let dry
+
+- Check for damage:
+  - Sensor housing cracked?
+  - Wires visible/damaged?
+  - If damaged: Contact manufacturer
+
+- Test after cleaning:
+  - Multiple open/close cycles
+  - Should improve if dirt was issue
+```
+## Testing Procedure
+
+**Systematic test:**
+```- Test 1: Manual close
+  - Close door slowly
+  - Watch app for status change
+  - Changes to "Closed"? ✓
+  - Stays "Open"? → Continue
+
+- Test 2: Alignment check
+  - Mark where magnet aligns
+  - Should be within 1/2 inch
+  - If not: Reposition magnet
+
+- Test 3: Distance test
+  - Measure gap with door closed
+  - >1/2 inch? → Reduce gap
+  - <1/2 inch? → Check magnet strength
+
+- Test 4: Multiple cycles
+  - Open/close 10 times
+  - All register correctly?
+  - Success rate ___/10
+
+- Test 5: Wait test
+  - Close door, wait 5 minutes
+  - Status still correct?
+  - Verifies no drift/false detection
+```
+## Brand-Specific Notes
+
+**August Smart Lock (DoorSense):**
+```- White alignment line on lock face
+- Magnet must align with line
+- Very sensitive to position
+- Included magnet adhesive-backed
+- Replacement magnets: August store
+
+Setup:
+1. Position lock on door
+2. Close door to find magnet position
+3. Magnet aligns with white line
+4. Stick magnet to frame at that spot
+5. Test 10 times before finalizing
+```
+**Yale Assure Lock:**
+```- Not all models have door sensor
+- If equipped: Magnetic sensor
+- Less sensitive than August
+- Wider tolerance  - up to 3/4 inch
+```
+**Schlage Encode:**
+```- Built-in sensor  - no magnet
+- Uses accelerometer
+- May false-trigger from vibration
+- Less accurate than magnetic
+- Can't be "aligned"  - inherent design
+```
+**Wyze Lock:**
+```- Optional door sensor
+- Separate magnet required
+- Similar to August
+- Alignment critical
+```
+## Disable Door Sensor
+
+**If unreliable and cannot fix:**
+```Pros of disabling:
+✓ Stops false "door open" alerts
+✓ Still lock/unlock works
+✓ No functionality lost (just status)
+
+Cons:
+✗ Can't detect if door actually open
+✗ May lock when door open (bad)
+✗ No "door left open" alerts
+
+How to disable:
+- App → Lock Settings → Door Sensor
+- Toggle "Disabled" or "Off"
+- Confirm warning
+- Status will show "Unknown" instead
+
+When to disable:
+- Sensor unreliable despite fixes
+- Causing false alerts
+- Temporarily while troubleshooting
+```
+## Prevention
+
+```- Test during installation
+  - Don't finalize install until sensor works
+  - Test 20+ times before done
+
+- Mark positions
+  - Pencil outline around magnet
+  - Reference if it falls off
+
+- Use quality adhesive
+  - Double-sided foam tape
+  - OR: Screw-mount magnet (more secure)
+
+- Check quarterly
+  - Open/close test
+  - Verify still accurate
+  - Seasonal changes affect alignment
+
+- Weatherproof outdoor
+  - Moisture can affect magnetic sensor
+  - Seal magnet to prevent water entry
+```
+## Alternative Solutions
+
+**If door sensor not available/working:**
+```- Use lock status only
+  - Lock knows if deadbolt extended
+  - Not same as "door closed" but helpful
+
+- Add separate door sensor
+  - Zigbee/Z-Wave contact sensor
+  - Mounts on door/frame
+  - Independent of lock
+  - Cost: $15-30
+
+- Use camera
+  - Smart camera aimed at door
+  - Visual verification
+  - More expensive but adds security
+```
+## Related Resources
+
+**Installation:**
+- [Install Smart Lock] - /support/install-smart-lock-step-by-step - Proper setup
+- [Test After Install] - /support/test-smart-lock-after-install - Verification
+
+**Status Issues:**
+- [Wrong Status] - /support/smart-lock-shows-wrong-status - Related problem
+
+---
+
+## Summary Checklist
+
+**Fix door sensor:**
+
+1. ☑️ **Check alignment** (magnet vs sensor)
+2. ☑️ **Measure gap** (<1/2 inch required)
+3. ☑️ **Test magnet strength** (replace if weak)
+4. ☑️ **Clean sensor** (dust/debris)
+5. ☑️ **Reposition magnet** (align perfectly)
+6. ☑️ **Test 10 cycles** (verify consistent)
+7. ☑️ **Mark position** (pencil outline)
+
+**Success rate:** 85% fixable with realignment
+
+**Pro tip:** When installing magnet initially, don't just stick it on and hope. Close door multiple times from different angles (push left, push right, slam, gentle). Sensor should work ALL ways door closes. If only works when door perfectly aligned = Problem waiting to happen. Take 10 extra minutes during install to find the sweet spot where magnet triggers sensor reliably every time!
+

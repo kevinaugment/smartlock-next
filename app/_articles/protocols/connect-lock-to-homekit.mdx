@@ -1,0 +1,393 @@
+---
+title: "How to Connect Smart Lock to HomeKit - Complete Setup Guide"
+description: "Step-by-step guide to add smart lock to Apple HomeKit. Scan HomeKit code, troubleshoot pairing failures, set up automations, and integrate with Home app."
+category: protocols
+pubDate: 2024-03-20
+wordCount: 900
+readingTime: 4
+keywords:
+  - "homekit smart lock"
+  - "add lock to homekit"
+  - "homekit setup"
+  - "apple home lock"
+  - "homekit pairing"
+tags:
+  - "homekit"
+  - "apple"
+  - "setup"
+  - "how-to"
+isPillar: false
+isSupport: true
+featured: false
+relatedArticles:
+  - "smart-home-platform-integration"
+  - "pair-smart-lock-with-hub"
+
+---
+
+
+## Quick Answer
+
+**To add smart lock to HomeKit: Ensure iPhone iOS 16.1+, have Home Hub (HomePod/Apple TV/iPad), open Home app → + → Add Accessory → Scan lock's HomeKit QR code → Follow setup prompts → Assign room → Done (2-5 min).** Lock must support HomeKit or Matter (check box for logo). Requires "Always" location permission for automations.
+
+**Requirements:**
+- iPhone/iPad with iOS 16.1+
+- Home Hub  - HomePod mini, Apple TV 4K, or iPad left at home
+- Lock with HomeKit or Matter support
+- Lock's HomeKit code  - QR or 8-digit
+
+## Before You Start
+
+### Check Compatibility
+
+```
+☑️ Lock supports HomeKit
+  - Look for "Works with Apple Home" on box
+  - OR: "HomeKit Compatible"
+  - OR: "Matter" logo (works with HomeKit)
+
+☑️ iOS version 16.1 or newer
+  - Settings → General → About → iOS Version
+
+☑️ Home Hub set up
+  - HomePod mini, Apple TV 4K, or iPad
+  - Must be at home and powered on
+  - Home app → Home Settings → Hubs to verify
+
+☑️ Lock installed with batteries
+  - Battery level >50%
+  - Lock tested and working
+
+☑️ HomeKit code accessible
+  - QR code sticker on lock or in box
+  - OR: 8-digit code format XXX-XX-XXX
+```
+
+### Find HomeKit Code
+
+**Common locations:**
+- Inside battery compartment  - most common
+- On separate card in box
+- On lock manual
+- Bottom of lock exterior  - some models
+
+**Code formats:**
+- QR code  - easiest - just scan
+- 8-digit: XXX-XX-XXX
+- If lost: Contact manufacturer support
+
+## Step-by-Step Setup
+
+### Step 1: Open Home App
+
+```
+□ Launch Home app on iPhone/iPad
+□ Ensure you're on "Home" tab (bottom left)
+□ Top right corner: + icon
+□ Tap "Add Accessory"
+```
+
+### Step 2: Scan HomeKit Code
+
+```
+□ Position camera to scan QR code
+  - Hold phone 6-8 inches from code
+  - Ensure good lighting
+  - Auto-scans when visible
+
+□ OR: Manual entry:
+  - Tap "I Don't Have a Code or Cannot Scan"
+  - Tap lock from discovered devices
+  - OR: "Enter Code Manually"
+  - Type 8-digit code: XXX-XX-XXX
+```
+
+### Step 3: Nearby Devices
+
+```
+If lock appears in "Nearby Accessories":
+□ Tap the lock name
+□ Tap "Add to Home"
+
+If not appearing:
+□ Ensure lock has power (press button)
+□ Move iPhone closer (within 3 feet)
+□ Restart iPhone
+□ Try manual code entry
+```
+
+### Step 4: Add Accessory
+
+```
+□ Lock should show up with name
+  - Example: "Yale Assure Lock"
+  
+□ Tap "Add to Home"
+
+□ Wait for connection (10-30 seconds)
+  - Progress indicator shows pairing
+  - Don't close app during this time
+
+□ If warning "Uncertified Accessory":
+  - Some older locks show this
+  - Tap "Add Anyway" if you trust manufacturer
+```
+
+### Step 5: Configure Settings
+
+```
+□ Assign room:
+  - "Front Door", "Back Door", etc.
+  - Create new room if needed
+
+□ Name your lock:
+  - Default: "Lock"
+  - Change to: "Front Door Lock"
+  - Used for Siri commands
+
+□ Include in Home Status:
+  - ✅ Recommended (shows status on Home screen)
+
+□ Configure notifications:
+  - Lock status changes
+  - Low battery alerts
+  - Choose preferences
+```
+
+### Step 6: Set Up Access
+
+```
+□ Choose who can control:
+  - People in home (family)
+  - Only you
+  - Anyone on network (guests)
+
+□ Enable notifications:
+  - Lock/unlock events
+  - Security alerts
+  - Low battery
+
+□ Location permission:
+  - Tap "Allow"
+  - Select "Always" (required for automations)
+  - Not "While Using App"
+```
+
+### Step 7: Test Lock
+
+```
+□ In Home app, tap lock icon
+□ Should show current status (Locked/Unlocked)
+□ Tap to unlock
+  - Authenticates (Face ID/Touch ID)
+  - Lock should unlock within 1-2 seconds
+□ Tap to lock
+  - Locks immediately
+□ Test 3-5 times to verify reliability
+```
+
+**Setup complete!** Lock now appears in Home app
+
+## Post-Setup Configuration
+
+### Add User Codes (If Supported)
+
+```
+Some locks via HomeKit:
+□ Long press lock in Home app
+□ Settings (gear icon)
+□ Access Codes
+□ Add New
+□ Enter code and name
+□ Set schedule (optional)
+```
+
+**Note:** Not all locks support code management via HomeKit. May need manufacturer app.
+
+### Create Automations
+
+**Example 1: Auto-lock after 5 minutes**
+```
+□ Home app → Automation → + → An Accessory is Controlled
+□ Select your lock
+□ When: Unlocked
+□ Next → Add Action
+□ Select same lock → Lock
+□ Next → Time → After 5 minutes
+□ Name: "Auto-lock Front Door"
+□ Done
+```
+
+**Example 2: Lock when leaving home**
+```
+□ Automation → + → People Leave
+□ When: Last Person Leaves
+□ Add Action → Lock → Front Door Lock
+□ Done
+```
+
+**Example 3: Unlock when arriving**
+```
+□ Automation → + → People Arrive
+□ When: Anyone Arrives
+□ Add Action → Unlock → Front Door Lock
+□ Security: Requires confirmation (recommended)
+□ Done
+```
+
+### Siri Commands
+
+**Test voice control:**
+- "Hey Siri, lock the front door"
+- "Hey Siri, unlock the front door"  - requires auth
+- "Hey Siri, is the front door locked?"
+- "Hey Siri, show me front door"
+
+## Troubleshooting
+
+### Lock Not Found During Setup
+
+**Fixes:**
+```
+□ Ensure lock has power
+  - Press button, LED should light
+
+□ Move iPhone within 3 feet of lock
+  - Bluetooth range
+
+□ Restart lock
+  - Remove batteries 30 seconds
+  - Reinsert
+
+□ Restart iPhone
+  - Often resolves Bluetooth issues
+
+□ Check lock not already paired
+  - Factory reset lock if previously set up
+  - Remove from old Home if you have access
+
+□ Update iOS
+  - Settings → General → Software Update
+```
+
+### "Unable to Add Accessory"
+
+**Fixes:**
+```
+□ Check Home Hub online
+  - HomePod, Apple TV, or iPad
+  - Must be on same network
+  - Home app → Home Settings → Hubs
+
+□ Verify WiFi connection
+  - iPhone on same network as Home Hub
+  - 2.4GHz network (for older devices)
+
+□ Reset network settings
+  - Settings → General → Reset → Reset Network Settings
+  - Warning: Re-enter WiFi passwords
+
+□ Try different iPhone/iPad
+  - Isolate if your device issue
+```
+
+### Lock Added But "No Response"
+
+**Fixes:**
+```
+□ Power cycle Home Hub
+  - Unplug HomePod/Apple TV
+  - Wait 30 seconds
+  - Plug back in
+
+□ Remove and re-add lock
+  - Long press → Remove Accessory
+  - Wait 2 minutes
+  - Add again
+
+□ Check lock battery
+  - >30% required for reliable operation
+
+□ Update firmware
+  - Lock firmware via manufacturer app
+  - Home Hub firmware auto-updates
+```
+
+## Matter Locks (Newer)
+
+**If lock supports Matter:**
+```
+□ Setup same as above (HomeKit code scanning)
+□ Matter locks work with multiple platforms
+  - Can also add to Google Home, Alexa simultaneously
+  - No need to choose one platform
+□ More reliable, future-proof
+□ Look for Matter logo on box
+```
+
+## Limitations
+
+**HomeKit lock limitations:**
+```
+⚠️ Cannot unlock remotely (outside home)
+  - Unless you have Home Hub
+  - Security feature
+
+⚠️ Some features require manufacturer app
+  - User code management
+  - Advanced settings
+  - Firmware updates
+
+⚠️ Automations require Home Hub
+  - HomePod, Apple TV, or iPad
+  - Must be left at home
+
+⚠️ Geo-fence unlock requires confirmation
+  - Can't auto-unlock without auth
+  - Security by design
+```
+
+## Using Multiple Platforms
+
+**HomeKit + Google Home + Alexa:**
+```
+Matter locks:
+✅ Add to all platforms simultaneously
+✅ Control from any app/voice assistant
+✅ No conflicts
+
+Non-Matter locks:
+❌ Usually exclusive to one platform
+❌ Must choose: HomeKit OR Google/Alexa
+```
+
+## Related Resources
+
+**Setup Guides:**
+- [Smart Home Integration] - /guides/smart-home-platform-integration - Multi-platform setup
+- [Pair with Hub] - /support/pair-smart-lock-with-hub - General pairing
+
+**Troubleshooting:**
+- [Won't Pair] - /support/smart-lock-wont-pair - Pairing issues
+- [No Response] - /support/smart-lock-no-response - Connection problems
+
+---
+
+## Summary Checklist
+
+**Add lock to HomeKit:**
+
+1. ☑️ **Verify requirements** (iOS 16.1+, Home Hub, HomeKit lock)
+2. ☑️ **Find HomeKit code** (QR or 8-digit)
+3. ☑️ **Open Home app** (+ → Add Accessory)
+4. ☑️ **Scan code** (or enter manually)
+5. ☑️ **Follow prompts** (assign room, name)
+6. ☑️ **Set permissions** (who can control)
+7. ☑️ **Enable "Always" location** (for automations)
+8. ☑️ **Test lock/unlock** (3-5 times)
+9. ☑️ **Create automations** (optional but useful)
+
+**Time: 2-5 minutes**
+
+**Pro tip:** After adding lock to HomeKit, create a "Goodnight" scene that locks all doors, turns off lights, and sets thermostat. Activate with "Hey Siri, goodnight" or automatically at bedtime. HomeKit's real power is in automations and scenes - not just individual device control!
+

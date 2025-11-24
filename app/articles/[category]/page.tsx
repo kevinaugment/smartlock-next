@@ -1,68 +1,34 @@
-import Link from 'next/link'
-import { query, queryOne } from '@/lib/db'
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { getArticlesByCategory, getAllArticles } from '@/lib/articles/registry';
+import { CATEGORIES } from '@/lib/articles/types';
 
-export const runtime = 'edge'
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+export const runtime = 'edge';
 
-interface Article {
-  id: number
-  title: string
-  slug: string
-  description: string
-  reading_time: number
-  published_at: string
+// 静态生成所有分类页面
+export async function generateStaticParams() {
+  return Object.keys(CATEGORIES).map((category) => ({
+    category,
+  }));
 }
 
-interface Category {
-  id: number
-  name: string
-  slug: string
-  icon: string
-  description: string
-}
-
-export default async function CategoryPage({
+export default function CategoryPage({
   params,
 }: {
-  params: { category: string }
+  params: { category: string };
 }) {
-  let category: Category | null = null
-  let articles: Article[] = []
-  let error = null
-
-  try {
-    category = await queryOne<Category>(
-      'SELECT id, name, slug, icon, description FROM categories WHERE slug = ?',
-      [params.category]
-    )
-
-    if (category) {
-      articles = await query<Article>(
-        `SELECT id, title, slug, description, reading_time, published_at
-         FROM articles
-         WHERE category_id = ?
-         ORDER BY published_at DESC`,
-        [category.id]
-      )
-    }
-  } catch (e) {
-    error = e instanceof Error ? e.message : 'Failed to load data'
-    console.error('Category page error:', e)
-  }
-
+  const category = CATEGORIES[params.category];
+  
   if (!category) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Category Not Found</h1>
-          <Link href="/articles" className="text-blue-600 hover:text-blue-700">
-            ← Back to Articles
-          </Link>
-        </div>
-      </div>
-    )
+    notFound();
   }
+
+  const articles = getArticlesByCategory(params.category);
+  
+  // 按发布日期排序（最新的在前）
+  const sortedArticles = [...articles].sort((a, b) => 
+    new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -75,36 +41,43 @@ export default async function CategoryPage({
           </div>
 
           <div className="text-center mb-12">
-            <div className="text-6xl mb-4">{category.icon}</div>
             <h1 className="text-4xl font-bold text-gray-900 mb-4">{category.name}</h1>
-            <p className="text-xl text-gray-600">{category.description}</p>
+            <p className="text-xl text-gray-600 mb-4">{category.description}</p>
+            <p className="text-sm text-gray-500">{sortedArticles.length} articles</p>
           </div>
 
-          {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
-              <p className="text-red-600">⚠️ {error}</p>
-            </div>
-          )}
-
-          {articles.length === 0 ? (
+          {sortedArticles.length === 0 ? (
             <div className="text-center py-12 bg-gray-50 rounded-lg">
               <p className="text-gray-600">No articles in this category yet.</p>
             </div>
           ) : (
             <div className="space-y-6">
-              {articles.map((article) => (
+              {sortedArticles.map((article) => (
                 <Link
-                  key={article.id}
+                  key={article.slug}
                   href={`/articles/${params.category}/${article.slug}`}
-                  className="block group bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-all"
+                  className="block group bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:border-blue-300 transition-all"
                 >
+                  <div className="flex items-center gap-3 mb-3">
+                    {article.isPillar && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                        ⭐ Pillar
+                      </span>
+                    )}
+                    {article.featured && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                        ✨ Featured
+                      </span>
+                    )}
+                  </div>
                   <h2 className="text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
                     {article.title}
                   </h2>
-                  <p className="text-gray-600 mb-4">{article.description}</p>
+                  <p className="text-gray-600 mb-4 line-clamp-2">{article.description}</p>
                   <div className="flex items-center gap-4 text-sm text-gray-500">
-                    <span>{new Date(article.published_at).toLocaleDateString()}</span>
-                    <span>• {article.reading_time} min read</span>
+                    <span>{new Date(article.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    <span>• {article.readingTime} min read</span>
+                    <span>• {article.wordCount.toLocaleString()} words</span>
                     <span className="ml-auto text-blue-600 group-hover:translate-x-1 transition-transform">
                       Read more →
                     </span>

@@ -1,0 +1,408 @@
+---
+title: "How to Calibrate Smart Lock - Fix Position Drift Issues"
+description: "Calibrate smart lock to fix incomplete lock/unlock, wrong status, or motor position drift. Step-by-step calibration for all lock brands to restore accurate operation."
+category: installation
+pubDate: 2024-04-04
+wordCount: 700
+readingTime: 4
+keywords:
+  - "calibrate smart lock"
+  - "lock calibration"
+  - "position drift"
+  - "reset lock position"
+  - "motor calibration"
+tags:
+  - "calibration"
+  - "maintenance"
+  - "troubleshooting"
+isPillar: false
+isSupport: true
+featured: false
+relatedArticles:
+  - "smart-lock-shows-wrong-status"
+  - "smart-lock-wont-lock-unlock-completely"
+
+---
+
+
+## Quick Answer: Position Reference Re-establishment Protocol
+
+**Lock calibration resets position encoder reference points teaching motor controller absolute locked/unlocked positions through physical hard-stop detection, correcting accumulated step-counting errors (stepper motor step loss 0.1-0.5% per operation accumulating to 10-50% drift over 100-1000 cycles) causing premature stop commands (controller believes full extension achieved at 90% actual travel) or status misreporting (position counter indicates locked yet deadbolt 1/4-inch short).** Calibration methods: app-initiated automated sequence (premium locks, 1-2 minute motor-driven endpoint detection), power-cycle manual training (universal method, 3-5 manual cycles teaching mechanical limits), keypad programming menu (select models, on-device calibration). Success rate 75-85% resolving position drift issues.
+
+### Calibration Method Comparison Matrix
+
+| Method | Availability | Complexity | Duration | Success Rate | Requires Hub | Position Accuracy | When to Use |
+|--------|-------------|-----------|----------|--------------|--------------|-------------------|-------------|
+| **App-Initiated Auto** | Premium locks  - 70% | Easy  - 3 taps | 1-2 min | 85-90% | Yes  - paired | Highest  - ±1-2° | First choice if available |
+| **Power Cycle Manual** | Universal  - 99% | Moderate  - manual operation | 3-5 min | 75-80% | No | High  - ±3-5° | No app available, universal method |
+| **Keypad Programming** | Select models  - 30% | Complex  - menu navigation | 2-3 min | 80-85% | No | High  - ±2-3° | Standalone operation needed |
+| **Factory Reset** | Universal  - 100% | Complex  - reconfiguration | 15-30 min | 95%+ | Varies | Highest  - fresh calibration | Last resort, requires full setup |
+
+## Position Encoder Drift Mechanics and Calibration Necessity
+
+**Stepper motor open-loop control limitations**: Smart locks predominantly implement open-loop stepper motor control (no feedback sensor verifying actual shaft position, only commanded steps counted) where controller tracks position through step accumulation: "locked" position = step 0, "unlocked" = step 200, current position = cumulative steps from reference. This open-loop architecture proves cost-effective ($2-5 per lock versus $15-25 for closed-loop encoder) yet vulnerable to step loss where commanded rotation fails achieving expected movement.
+
+**Step loss accumulation mechanism**: Momentary load exceeding motor holding torque (typical 0.3-0.8 Nm, versus required 0.2-0.5 Nm nominal yet encountering 1-2 Nm peak during strike contact) causes rotor skip where energized coils fail advancing shaft despite step counter incrementing. Example: motor commanded "advance 5 steps" (controller increments position counter +5) yet shaft actually rotates 4 steps (strike resistance causing 1-step skip), creating +1 step cumulative error. After 100 operations with 0.5% average step loss = 50 steps accumulated error (200 steps full range × 25% = 50 steps = 1/4-inch position error on typical 1-inch deadbolt travel).
+
+### Symptoms Requiring Calibration
+
+```
+Common signs:
+☑ Incomplete lock/unlock (stops at 80-95%)
+☑ Status wrong (shows locked but isn't)
+☑ Increased failures (commands timeout)
+☑ Inconsistent operation (works sometimes)
+☑ After battery replacement (voltage change)
+☑ Seasonal issues (temperature affects friction)
+```
+
+## Calibration Methods
+
+### Method 1: Via App (Preferred)
+
+**Most locks support app calibration:**
+
+```
+□ Open smart lock app
+□ Select your lock
+□ Navigate to Settings
+  - Look for: "Calibrate", "Auto-Calibrate", 
+    "Reset Position", "Learn Position"
+
+□ Tap Calibration option
+
+□ Follow prompts:
+  - Lock will extend to physical stop
+  - Lock will retract to physical stop
+  - May repeat 2-3 times
+  - Takes 1-2 minutes
+
+□ Completion:
+  - App shows "Calibration Complete"
+  - Status updates
+  - Test lock/unlock
+
+□ Verify:
+  - Lock/unlock 5 times
+  - Should complete fully each time
+  - Status updates correctly
+```
+
+**Brands with app calibration:**
+- Schlage Encode: Settings → Calibrate
+- Yale Assure: Settings → Auto-Calibrate
+- August: Automatic after battery change
+- Kwikset: Settings → Reset Position
+
+### Method 2: Power Cycle (Universal)
+
+**Works for most locks:**
+
+```
+□ Remove ALL batteries
+  - Take out all 4 batteries
+  - Wait 30 seconds minimum
+
+□ Manually operate lock:
+  1. Extend deadbolt fully (thumb turn)
+  2. Retract fully
+  3. Repeat 2-3 times
+  - Teaches lock physical limits
+
+□ Reinsert batteries:
+  - Ensure correct +/- orientation
+  - Insert all 4 batteries
+
+□ Wait 2 minutes:
+  - Lock boots up
+  - Auto-calibrates on first operation
+
+□ Test immediately:
+  - Lock/unlock via app or keypad
+  - Should complete fully
+  - Repeat 3-5 times
+```
+
+**Success rate:** 70-80%
+
+### Method 3: Keypad Calibration (Some Models)
+
+**Direct at lock:**
+
+```
+□ Enter programming mode:
+  - Usually: Master code + special button
+  - Varies by brand (check manual)
+
+□ Navigate to calibration menu:
+  - Look for "CAL" or "Calibrate"
+  - Follow screen prompts
+
+□ Lock self-calibrates:
+  - Extends/retracts multiple times
+  - Learns physical stops
+  - Beeps when complete
+
+□ Exit programming mode
+
+□ Test operation
+```
+
+**Less common** - Check if your lock supports
+
+## Brand-Specific Instructions
+
+### Schlage Encode
+
+```
+App calibration:
+1. Schlage Home app → Lock
+2. Settings → Auto-Calibrate
+3. Tap "Start Calibration"
+4. Wait 1-2 minutes
+5. Test
+
+Automatic:
+- Auto-calibrates on power-up
+- Usually don't need manual calibration
+```
+
+### Yale Assure Lock
+
+```
+App calibration:
+1. Yale Access app → Lock
+2. Settings → Lock Settings
+3. Auto-Calibrate → Confirm
+4. Wait for completion
+5. Test
+
+Power cycle method:
+- Also works  - method 2 above
+```
+
+### August Smart Lock
+
+```
+Automatic calibration:
+- Auto-calibrates after battery change
+- No manual calibration needed
+- If issues persist: Contact support
+
+Force calibration:
+1. Remove lock from door
+2. Power cycle
+3. Reinstall
+4. Auto-calibrates on first use
+```
+
+### Kwikset SmartCode
+
+```
+Power cycle method:
+1. Remove batteries 60 seconds
+2. Manually operate 3 times
+3. Reinsert batteries
+4. First operation auto-calibrates
+
+Via app (if available):
+- Settings → Reset Position
+```
+
+## After Calibration
+
+### Verification Test
+
+```
+□ Test 10 complete cycles:
+  - Lock 5 times (via app)
+  - Unlock 5 times (via keypad)
+  - All should complete 100%
+
+□ Check status accuracy:
+  - Lock manually (thumb turn)
+  - Check app shows "Locked"
+  - Unlock manually
+  - Check app shows "Unlocked"
+
+□ Test alignment:
+  - Close door
+  - Lock deadbolt
+  - Should enter strike smoothly
+  - No grinding or resistance
+
+□ Monitor for 24 hours:
+  - All operations complete?
+  - Status accurate?
+  - No degradation?
+```
+
+### Success Criteria
+
+```
+✓ 100% lock completion
+✓ 100% unlock completion
+✓ Accurate status reporting
+✓ Consistent operation
+✓ Smooth, quiet operation
+
+If not achieved:
+→ Recalibrate
+→ Check for mechanical issues
+→ Contact manufacturer
+```
+
+## Troubleshooting Failed Calibration
+
+### Calibration Fails to Complete
+
+**Causes:**
+```
+□ Battery too low (<40%)
+  → Replace batteries first
+
+□ Mechanical obstruction
+  → Check strike plate alignment
+  → Remove lock, test off door
+
+□ Door/frame misalignment
+  → Adjust strike plate
+  → Test with door open first
+
+□ Motor issue
+  → May need replacement
+  → Contact manufacturer
+```
+
+### Calibration Completes But Issue Persists
+
+**Solutions:**
+```
+□ Recalibrate 2-3 times
+  - First calibration may not be perfect
+  - Repeat process
+
+□ Factory reset then calibrate
+  - Full reset to defaults
+  - Then calibrate fresh
+
+□ Check for interference
+  - Strike plate too tight?
+  - Weather stripping too thick?
+  - Adjust clearances
+```
+
+## Maintenance Schedule
+
+### Regular Calibration
+
+```
+☑ After battery replacement (always)
+☑ Every 6 months (routine maintenance)
+☑ After firmware update (if issues)
+☑ Seasonal (fall and spring)
+☑ After any adjustment (strike plate, hinges)
+```
+
+### Preventive Calibration
+
+**Before problems occur:**
+```
+Set calendar reminder:
+- "Calibrate Smart Lock" every 6 months
+- Takes 5 minutes
+- Prevents drift accumulation
+- Maintains optimal performance
+```
+
+## When Calibration Won't Help
+
+**Other issues requiring different fixes:**
+```
+✗ Physical damage (broken motor)
+✗ Severe misalignment (door warped)
+✗ Electronic failure (circuit board)
+✗ Low battery (calibrate after replacing)
+✗ Connectivity issues (not calibration)
+```
+
+**These need:**
+- Professional repair
+- Replacement parts
+- Door adjustment
+- Manufacturer support
+
+## Advanced: Force Calibration
+
+**For stubborn issues:**
+
+```
+□ Full factory reset:
+  1. Reset lock to defaults
+  2. Re-pair as new device
+  3. Power cycle
+  4. Manually operate 5 times
+  5. Calibrate via app
+  6. Test extensively
+
+□ Off-door calibration:
+  1. Remove lock from door
+  2. Power cycle
+  3. Let calibrate freely (no resistance)
+  4. Reinstall on door
+  5. Test
+
+□ Temperature calibration:
+  - Calibrate in same conditions you use
+  - Cold weather: Calibrate when cold
+  - Hot weather: Calibrate when hot
+```
+
+## Tools & Resources
+
+🔧 **[Door Compatibility Checker](/tools/door-lock-compatibility-checker)** - Check door alignment  
+📊 **[Installation Time Estimator](/tools/installation-time-estimator)** - Professional calibration time
+
+---
+
+## Related Articles
+
+**Installation & Maintenance:**
+- [Installation Step-by-Step](/support/install-smart-lock-step-by-step) - Proper installation prevents drift
+- [Clean and Maintain Smart Lock](/support/clean-maintain-smart-lock) - Regular maintenance
+- [Door Compatibility Guide](/guides/door-compatibility-guide) - Door requirements
+
+**Troubleshooting:**
+- [Complete Troubleshooting Guide](/guides/complete-troubleshooting-guide) - All mechanical issues
+- [Lock Motor Noise](/support/lock-motor-noise-troubleshooting) - Motor problems
+- [Battery Life Guide](/installation/smart-lock-battery-life-guide) - Weak battery affects calibration
+
+---
+
+## Summary Checklist
+
+**Calibrate smart lock:**
+
+**Via App:**
+1. ☑️ Settings → Calibrate
+2. ☑️ Follow prompts (1-2 min)
+3. ☑️ Test 5 cycles
+4. ☑️ Verify status accurate
+
+**Power Cycle Method:**
+1. ☑️ Remove batteries (30 sec)
+2. ☑️ Manually operate 3×
+3. ☑️ Reinsert batteries
+4. ☑️ Wait 2 min (auto-calibrate)
+5. ☑️ Test 5 cycles
+
+**When:**
+- After battery change
+- Every 6 months
+- After incomplete operations
+- Wrong status showing
+
+**Success rate:** 80% of position issues resolved
+
+**Pro tip:** Don't wait for obvious problems to calibrate. Make it part of routine maintenance - every 6 months, same day you check smoke detector batteries. Takes 5 minutes, prevents 90% of "lock doesn't complete" and "wrong status" issues. Like rotating tires on car - preventive maintenance that extends life and prevents problems!
+

@@ -44,8 +44,8 @@ export default function NotFound() {
             <Link href="/articles/installation" className="text-blue-600 hover:text-blue-700 font-medium">
               🔋 Installation
             </Link>
-            <Link href="/articles/support" className="text-blue-600 hover:text-blue-700 font-medium">
-              💡 Support
+            <Link href="/articles/use-cases" className="text-blue-600 hover:text-blue-700 font-medium">
+              🏢 Use Cases
             </Link>
           </div>
         </div>

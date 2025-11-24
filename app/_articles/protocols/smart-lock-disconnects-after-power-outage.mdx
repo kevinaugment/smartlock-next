@@ -1,0 +1,388 @@
+---
+title: "Smart Lock Disconnects After Power Outage - Quick Recovery"
+description: "Reconnect smart lock after power outage. Fix hub offline issues, restore mesh network, prevent future disconnections, and ensure reliable post-outage recovery."
+category: protocols
+pubDate: 2024-03-21
+wordCount: 800
+readingTime: 4
+keywords:
+  - "power outage lock"
+  - "lock offline after outage"
+  - "restore after power loss"
+  - "hub offline"
+  - "reconnect lock"
+tags:
+  - "power-outage"
+  - "recovery"
+  - "connectivity"
+isPillar: false
+isSupport: true
+featured: false
+relatedArticles:
+  - "smart-lock-keeps-going-offline"
+  - "improve-connection-stability"
+
+---
+
+
+## Quick Answer
+
+**After power outage: Wait 5-10 minutes for hub/router to fully restart, lock should auto-reconnect. If doesn't: Restart hub (unplug 30 sec), power cycle lock (remove batteries 30 sec), wait 2-3 minutes for mesh network to rebuild.** Hub needs 5+ min to boot fully after power restored. Z-Wave/Zigbee mesh takes additional time to re-establish routes.
+
+**Recovery timeline:**
+- Router online: 2-3 minutes
+- Hub online: 3-5 minutes  
+- Mesh rebuilt: 5-10 minutes
+- Lock reconnects: 8-15 minutes total
+
+## Understanding Power Outage Impact
+
+### What Happens During Outage
+
+```
+Power goes out:
+1. Router/modem offline
+2. Hub offline (Zigbee/Z-Wave/Thread)
+3. Lock stays functional (has batteries) ✓
+   - Keypad still works
+   - Manual thumb turn works
+   - BUT: App control lost
+
+Power restored:
+1. Router boots (2-3 min)
+2. Hub boots (3-5 min)
+3. Mesh network rebuilds (5-10 min)
+4. Devices reconnect gradually
+```
+
+**Lock itself unaffected** - Has battery backup
+
+**App control lost** - Needs hub/network
+
+## Immediate Recovery Steps
+
+### Quick 10-Minute Recovery
+
+```
+Step 1: Wait patiently (most important)
+□ Power restored? Give it 10 minutes
+□ Don't rush - networks need time to stabilize
+□ Check time: _____ (come back in 10 min)
+
+Step 2: Check router online
+□ Router lights normal?
+□ Internet working? (test on phone)
+□ If not: Restart router first
+
+Step 3: Check hub status
+□ Hub LED indicators normal?
+□ Hub shows online in app?
+□ If offline: Continue to Step 4
+
+Step 4: Restart hub
+□ Unplug hub (or HomePod, Apple TV)
+□ Wait 30 seconds
+□ Plug back in
+□ Wait 5 minutes for full boot
+
+Step 5: Test lock connection
+□ Open app → Check lock status
+□ Try lock/unlock command
+□ Works? Done! ✓
+□ Still offline? Continue to Step 6
+
+Step 6: Power cycle lock
+□ Remove all 4 batteries
+□ Wait 30 seconds
+□ Reinsert batteries
+□ Wait 2-3 minutes
+□ Lock should reconnect
+
+Step 7: Verify connection
+□ Lock shows "Online" in app
+□ Test lock/unlock 3 times
+□ Response time normal (<2 sec)
+```
+
+**80% of locks reconnect by Step 5**
+
+## Protocol-Specific Recovery
+
+### Zigbee Locks
+
+```
+Issue: Zigbee mesh needs to rebuild after power loss
+
+Recovery:
+□ Wait 10-15 minutes after power restored
+□ All mains-powered devices (plugs, lights) reconnect first
+□ Battery devices (lock) reconnect last
+□ Be patient - automatic
+
+If still offline:
+□ Wake up lock (press keypad button)
+□ Forces lock to search for network
+□ Should reconnect within 2 minutes
+```
+
+### Z-Wave Locks
+
+```
+Issue: Z-Wave slower to rebuild (especially S2 secure)
+
+Recovery:
+□ Wait 15 minutes minimum
+□ Z-Wave polls devices to check status
+□ S2 security adds handshake time
+
+If still offline:
+□ Run "Z-Wave Network Repair" (if hub supports)
+  - SmartThings: Settings → Z-Wave Utilities → Repair
+  - Hubitat: Settings → Z-Wave Details → Repair
+□ Takes 10-30 minutes
+□ Do overnight for best results
+```
+
+### Thread Locks
+
+```
+Issue: Thread Border Router may need restart
+
+Recovery:
+□ Check Border Router online
+  - HomePod mini, Apple TV, or Nest Hub
+  - Must be powered on
+
+□ Restart Border Router if needed
+  - Unplug, wait 30 sec, replug
+
+□ Thread mesh rebuilds quickly (5-10 min)
+```
+
+### WiFi Locks
+
+```
+Issue: Direct WiFi connection to router
+
+Recovery:
+□ Usually fastest (2-5 minutes)
+□ No mesh to rebuild
+□ Just lock → router → cloud
+
+If still offline:
+□ Check lock battery (>20%)
+□ Verify WiFi network online
+□ Lock may need manual reconnect:
+  - App → Lock Settings → Reconnect WiFi
+```
+
+## Prevention Strategies
+
+### UPS (Uninterruptible Power Supply)
+
+**Best solution:**
+```
+☑️ UPS for network equipment
+  - Router + modem: $50-100 UPS
+  - 30-60 minutes backup power
+  - Prevents disconnection during brief outages
+
+☑️ UPS for hub
+  - Zigbee/Z-Wave hub: $50-100 UPS
+  - SmartThings, Hubitat, etc.
+  - Keeps smart home running
+
+Cost: $100-200 total
+Benefit: Zero disruption during outages <1 hour
+```
+
+**What to protect:**
+1. Modem
+2. Router
+3. Smart home hub
+4. (Optional) NAS, security cameras
+
+**Locks have battery backup** - Don't need UPS
+
+### Cellular Backup
+
+**For critical access:**
+```
+☑️ LTE backup router
+  - Netgear LM1200, etc.
+  - Switches to cellular if broadband down
+  - Cost: $200 + cellular plan
+
+☑️ Hub with cellular
+  - Some hubs support LTE dongle
+  - Rare but available
+```
+
+**Overkill for most** - UPS simpler and cheaper
+
+### Scheduled Network Maintenance
+
+**Proactive approach:**
+```
+☑️ Monthly restart
+  - Router, hub (planned restart)
+  - Ensures clean state
+  - Prevents gradual degradation
+
+☑️ Test after every outage
+  - Verify all devices reconnected
+  - Note which ones needed manual help
+  - Document for next time
+```
+
+## Multiple Devices Offline
+
+**If ALL smart home devices offline after outage:**
+
+```
+□ Router issue most likely
+  - Restart router
+  - Verify internet working
+  - Check with ISP if prolonged
+
+□ Hub issue
+  - Restart hub
+  - Check hub firmware
+
+□ Network configuration lost
+  - Router may have reset to defaults
+  - Check WiFi password
+  - Check DHCP settings
+  - May need to reconfigure
+```
+
+## Temporary Workarounds
+
+**While waiting for reconnection:**
+
+```
+✓ Use keypad PIN codes
+  - Lock itself works fine
+  - No network needed
+
+✓ Use physical key
+  - Always reliable
+
+✓ Manual lock/unlock
+  - Thumb turn from interior
+
+✓ Be patient
+  - Networks recover on their own
+  - Forced fixes often make worse
+```
+
+## When to Call for Help
+
+**Call ISP if:**
+- Internet not restored after 2+ hours
+- Router not getting signal
+- Modem lights abnormal
+
+**Call locksmith if:**
+- Lock mechanically damaged during outage
+- Battery died during outage  - locked out
+
+**Contact manufacturer if:**
+- Lock won't reconnect after 24 hours
+- Multiple power cycles don't help
+- Lock worked before outage, never recovered
+
+## Post-Outage Checklist
+
+```
+After power restored:
+
+□ Wait 15 minutes (be patient)
+
+□ Verify internet working
+  - Test on phone/computer
+
+□ Check hub online
+  - LED indicators
+  - App shows online
+
+□ Test lock from app
+  - Lock/unlock command
+  - Status updates
+
+□ If any issues:
+  - Restart hub
+  - Power cycle lock
+  - Wait another 10 minutes
+
+□ Document what worked
+  - For next time
+  - Note any devices that needed manual intervention
+
+□ Consider UPS
+  - Prevent future issues
+```
+
+## Long Outage (>6 Hours)
+
+**If power out for extended time:**
+
+```
+□ Lock battery OK?
+  - May need replacement if was already low
+  - Check level after power restored
+
+□ Router may need ISP intervention
+  - Prolonged outage can cause network issues
+
+□ Hub may need reconfiguration
+  - Rare but possible
+  - Factory reset and restore backup (last resort)
+
+□ Security system armed during outage?
+  - May need to disarm
+  - May have triggered alerts
+```
+
+## Tools & Resources
+
+📡 **[RF Coverage Estimator](/tools/rf-coverage-estimator)** - Check signal strength  
+🗺️ **[Mesh Network Planner](/tools/mesh-node-planner)** - Optimize mesh reliability
+
+---
+
+## Related Articles
+
+**Connection Issues:**
+- [Improve Connection Stability](/support/improve-connection-stability) - Network optimization
+- [Command Timeout Errors](/support/command-timeout-errors) - Timeout fixes
+- [Complete Troubleshooting](/guides/complete-troubleshooting-guide) - All connection issues
+
+**Protocol Guides:**
+- [Protocol Overview](/protocols/smart-lock-protocols-overview) - Understand reconnection
+- [Zigbee vs Z-Wave](/protocols/zigbee-vs-zwave-comparison) - Mesh reliability
+
+**Setup:**
+- [Pairing Complete Guide](/guides/smart-lock-pairing-complete-guide) - Re-pair after outage
+- [Battery Life Guide](/installation/smart-lock-battery-life-guide) - Battery during outages
+
+---
+
+## Summary Checklist
+
+**Reconnect lock after power outage:**
+
+1. ☑️ **Wait 10-15 minutes** (networks need time)
+2. ☑️ **Check internet working** (router online)
+3. ☑️ **Check hub online** (LED indicators)
+4. ☑️ **Restart hub** (unplug 30 sec)
+5. ☑️ **Power cycle lock** (remove batteries 30 sec)
+6. ☑️ **Wait 3-5 minutes** (reconnection time)
+7. ☑️ **Test lock/unlock** (verify working)
+
+**Most important:** Patience - networks recover automatically given time
+
+**Prevention:** $100 UPS prevents 90% of outage issues
+
+**Pro tip:** After EVERY power outage (even brief flickers), check your smart lock status within an hour. Don't wait until you need it and discover it's offline. Quick test: Open app, verify "Online", send one lock/unlock command. Takes 30 seconds now, saves hours of frustration later. If offline, restart hub immediately while you remember - don't put it off!
+

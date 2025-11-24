@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
 
 export default function EmergencyBackup() {
   const [hasPhysicalKey, setHasPhysicalKey] = useState(true)
@@ -253,6 +254,19 @@ export default function EmergencyBackup() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Be-Tech Brand Recommendation */}
+      <BeTechCalculatorRecommendation 
+        description="Be-Tech smart locks feature multiple backup access methods including physical keys, backup PINs, 9V emergency power, and offline operation capabilities for maximum security."
+        badge="Emergency Ready"
+      />
+
+      {/* Back Link */}
+      <div className="max-w-7xl mx-auto mt-8 mb-12">
+        <Link href="/calculators" className="text-blue-600 hover:text-blue-700 font-medium">
+          ← Back to All Calculators
+        </Link>
       </div>
     </div>
   )

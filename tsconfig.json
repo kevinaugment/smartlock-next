@@ -30,6 +30,6 @@
   ],
   "exclude": [
     "node_modules",
-    "database/migrate-from-astro.ts"
+    "smartlockold"
   ]
 }

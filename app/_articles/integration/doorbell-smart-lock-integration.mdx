@@ -1,0 +1,477 @@
+---
+title: "Smart Lock and Video Doorbell Integration - Complete Setup"
+description: "Integrate smart lock with video doorbell. See who's at door before unlocking remotely, automate based on doorbell press, and create seamless entry experience."
+category: integration
+pubDate: 2024-04-09
+wordCount: 700
+readingTime: 4
+keywords:
+  - "doorbell lock integration"
+  - "video doorbell smart lock"
+  - "unlock from doorbell"
+  - "doorbell automation"
+  - "see before unlock"
+tags:
+  - "integration"
+  - "doorbell"
+  - "automation"
+  - "security"
+isPillar: false
+isSupport: true
+featured: false
+relatedArticles:
+  - "smart-home-platform-integration"
+  - "set-up-lock-automations"
+
+---
+
+
+## Quick Answer
+
+**Integrate doorbell + lock for: Visual verification before remote unlock, automated guest access (see who rang → send unlock notification), delivery logging (who accessed when).** Most platforms support both devices - create automation: "When doorbell pressed → Send notification with unlock option" OR "When specific person detected (Ring, Nest) → Auto-unlock". Requires both devices on same platform (HomeKit, Google, Alexa, SmartThings).
+
+**Benefits:**
+- See who's there before unlocking
+- Quick remote unlock from doorbell notification
+- Automated trusted person entry
+
+## Compatible Combinations
+
+### Popular Pairings
+
+**Ring + Compatible Locks:**
+```
+Ring Video Doorbell + 
+- August Smart Lock  - best integration
+- Yale x Nest Lock
+- Kwikset SmartCode  - via Alexa
+- Any Z-Wave lock  - via Ring Alarm
+
+Integration level: Medium-High
+```
+
+**Nest + Compatible Locks:**
+```
+Google Nest Doorbell +
+- August Smart Lock  - Google Home
+- Yale x Nest Lock  - direct integration
+- Any Matter lock
+- SmartThings connected locks
+
+Integration level: Medium
+```
+
+**Arlo + Locks:**
+```
+Arlo Video Doorbell +
+- August  - via IFTTT
+- Z-Wave locks  - via SmartThings
+- HomeKit locks  - if both in HomeKit
+
+Integration level: Medium-Low
+```
+
+**Eufy + Locks:**
+```
+Eufy Video Doorbell +
+- Eufy Smart Lock  - direct
+- HomeKit locks  - if both supported
+- IFTTT integrations
+
+Integration level: Low-Medium
+```
+
+## Integration Levels
+
+### Level 1: Basic (Separate Apps)
+
+**What you get:**
+```
+- Two separate apps
+- Doorbell notification
+- Switch to lock app
+- Unlock manually
+
+Flow:
+1. Doorbell rings
+2. Open doorbell app
+3. See who it is
+4. Close doorbell app
+5. Open lock app
+6. Unlock
+
+Time: 30-45 seconds
+```
+
+**Benefit:** Works with any combination
+
+### Level 2: Platform Integration
+
+**What you get:**
+```
+- Both in same platform  - HomeKit, Google, Alexa
+- Unified notifications
+- Quick actions from notification
+- Basic automations
+
+Flow:
+1. Doorbell rings
+2. Notification shows video thumbnail
+3. Tap "Unlock" button in notification
+4. Authenticates
+5. Unlocks
+
+Time: 10-15 seconds
+```
+
+**Requires:** Both devices in same ecosystem
+
+### Level 3: Deep Integration
+
+**What you get:**
+```
+- Native app integration
+- Unlock button in doorbell app
+- Automated unlock based on person detection
+- Combined activity logs
+
+Flow:
+1. Doorbell rings
+2. Face recognized as "John"
+3. Auto-unlock (or prompt)
+4. Door opens
+
+Time: 5 seconds (automated)
+```
+
+**Examples:**
+- Ring + August  - via Alexa
+- Nest + Yale Nest Lock
+- Arlo + Arlo Lock
+
+## Setup Methods
+
+### Method 1: HomeKit (iOS)
+
+**Requirements:**
+```
+- Both devices HomeKit compatible
+- Home Hub  - HomePod/Apple TV
+- iOS 16.1+
+```
+
+**Setup:**
+```
+□ Add both to Home app
+□ Create automation:
+  1. Home app → Automation → +
+  2. "When Doorbell detects motion/press"
+  3. "Send notification"
+  4. Include: "Unlock Front Door"
+  5. Requires confirmation (security)
+
+□ Result:
+  - Doorbell rings
+  - iPhone notification appears
+  - Shows doorbell camera
+  - "Unlock" button available
+  - Tap → Face ID → Unlocks
+```
+
+**Limitation:** Always requires authentication
+
+### Method 2: Google Home
+
+**Requirements:**
+```
+- Both devices Google compatible
+- Google Home app
+- Android or iOS
+```
+
+**Setup:**
+```
+□ Add both devices to Google Home
+□ Create routine:
+  1. Google Home → Automations → +
+  2. Starter: Doorbell rings
+  3. Action: Send notification
+  4. Include lock control option
+
+□ Advanced: Person detection
+  1. Nest Doorbell recognizes face
+  2. If familiar face → Unlock
+  3. If unknown → Just notify
+```
+
+### Method 3: Alexa
+
+**Requirements:**
+```
+- Both devices Alexa compatible
+- Alexa app
+- Skills enabled for both
+```
+
+**Setup:**
+```
+□ Enable skills for both devices
+□ Discover devices
+□ Create routine:
+  1. Alexa app → Routines → +
+  2. When: Doorbell pressed
+  3. Add action: Send notification
+  4. Include: "Unlock door via voice"
+
+□ Voice unlock:
+  - "Alexa, show front door"
+  - See camera feed
+  - "Alexa, unlock front door"
+  - Provides voice PIN
+  - Unlocks
+```
+
+### Method 4: SmartThings
+
+**Requirements:**
+```
+- Both devices SmartThings compatible
+- SmartThings hub
+- SmartThings app
+```
+
+**Setup:**
+```
+□ Add both devices to SmartThings
+□ Create automation:
+  1. If doorbell button pressed
+  2. Send push notification
+  3. With link to unlock
+
+□ Advanced automation:
+  1. If doorbell + specific person
+  2. AND between 9am-5pm
+  3. Auto-unlock
+  4. Log event
+```
+
+## Useful Automations
+
+### 1. Visual Verification + Quick Unlock
+
+**Most common:**
+```
+Trigger: Doorbell pressed
+Action: 
+- Show camera feed
+- Notification with "Unlock" button
+- Requires auth  - Face ID/PIN
+
+Use case:
+- Trusted visitor
+- You're busy  - cooking, showering
+- Quick remote entry
+```
+
+### 2. Scheduled Auto-Unlock
+
+**For expected visitors:**
+```
+Trigger: Doorbell pressed
+Conditions:
+- Between 3pm-4pm  - delivery window
+- OR specific day  - cleaner
+Action: Auto-unlock (no confirmation)
+
+Use case:
+- Expected delivery
+- Regular service provider
+- Time-limited trust
+```
+
+### 3. Person Detection Auto-Entry
+
+**Smart doorbells with AI:**
+```
+Trigger: Doorbell detects person
+Conditions:
+- Face recognized as "Family"
+- Between allowed hours
+Action: Auto-unlock
+
+Use case:
+- Kids coming home
+- Family forgot keys
+- Hands-free entry
+```
+
+### 4. Delivery Notification
+
+**Track access:**
+```
+Trigger: Doorbell motion
+Actions:
+- Record video
+- Notify: "Package delivered"
+- If unlocked: Log who accessed
+- Combined record: video + access log
+
+Use case:
+- Package tracking
+- Security monitoring
+- Accountability
+```
+
+## Security Best Practices
+
+**Safe integration:**
+```
+☑ Always require authentication for remote unlock
+  - Face ID, Touch ID, PIN
+  - Never auto-unlock unknown person
+
+☑ Use person detection wisely
+  - Only auto-unlock truly trusted faces
+  - Kids yes, "neighbor" maybe not
+
+☑ Set time restrictions
+  - Auto-unlock only during day
+  - Require manual at night (11pm-6am)
+
+☑ Log all access
+  - Review weekly
+  - Video + lock log combined
+  - Notice patterns
+
+☑ Have backup access
+  - Physical key
+  - PIN code
+  - If tech fails
+```
+
+## Use Cases
+
+### For Families
+
+```
+✓ Kids home from school
+  - Face detected → Auto-unlock
+  - Notification to parents
+  - No key needed
+
+✓ Spouse forgot keys
+  - Rings doorbell
+  - You unlock remotely
+  - See it's them first
+```
+
+### For Deliveries
+
+```
+✓ Expected package
+  - Doorbell motion detected
+  - See delivery person
+  - Unlock garage/door briefly
+  - Relock after 30 sec
+
+✓ In-home delivery
+  - Amazon Key compatible
+  - Unlock for verified delivery
+  - Camera records entire time
+```
+
+### For Airbnb/Rentals
+
+```
+✓ Guest arrival
+  - Rings doorbell
+  - You verify identity
+  - Unlock remotely
+  - Welcome them in
+
+✓ Early check-in request
+  - See guest at door
+  - Check booking
+  - Unlock if confirmed
+  - Update checkout code
+```
+
+### For Elderly/Accessibility
+
+```
+✓ Caregiver arrival
+  - Face recognized
+  - Auto-unlock
+  - No need to answer door
+  - Log visit time
+
+✓ Difficult mobility
+  - See who's there
+  - Unlock without walking to door
+  - Safer than leaving unlocked
+```
+
+## Limitations
+
+**What integration CAN'T do:**
+```
+✗ Unlock without any confirmation (most platforms)
+✗ Auto-lock when camera sees person leave (unreliable)
+✗ Unlock based on doorbell audio only
+✗ 100% reliable person detection (AI not perfect)
+```
+
+**Realistic expectations:**
+- 90-95% person detection accuracy
+- Always need backup  - key/PIN
+- Sometimes cloud delay
+- Video may lag
+
+## Troubleshooting
+
+**Integration not working:**
+```
+□ Both devices online?
+□ Same platform/account?
+□ Automation enabled?
+□ Permissions granted?
+□ Hub online (if required)?
+□ Recent firmware updates?
+```
+
+**Delayed notifications:**
+```
+□ Check internet speed
+□ Restart both devices
+□ Restart hub
+□ Check cloud status
+```
+
+## Related Resources
+
+**Integration:**
+- [Platform Integration] - /guides/smart-home-platform-integration - Setup guides
+- [Set Up Automations] - /support/set-up-lock-automations - Automation creation
+
+**Access:**
+- [Share Access Securely] - /support/share-access-securely - Guest management
+- [Remote Unlock] - /support/remote-unlock-not-working - Troubleshooting
+
+---
+
+## Summary Checklist
+
+**Integrate doorbell + lock:**
+
+1. ☑️ **Check compatibility** (same platform?)
+2. ☑️ **Add both devices** (to platform app)
+3. ☑️ **Create automation** (doorbell → unlock option)
+4. ☑️ **Set security** (require authentication)
+5. ☑️ **Test integration** (ring doorbell, try unlock)
+6. ☑️ **Set restrictions** (time limits, person detection)
+7. ☑️ **Have backup** (physical key, PIN)
+
+**Best combo:** Same brand (Ring+Ring, Nest+Nest, Arlo+Arlo)
+
+**Pro tip:** Don't over-automate unlock. It's tempting to set up "face detected → auto-unlock" for everyone you know, but this is security risk. Keep auto-unlock for ONLY immediate family (kids, spouse). Everyone else gets "notification with unlock button" requiring your active decision. The 10 seconds to tap "unlock" is worth the security of verifying who's actually there!
+

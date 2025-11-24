@@ -1,0 +1,444 @@
+---
+title: "How to Share Smart Lock Access Securely - Safe User Management"
+description: "Share smart lock access safely. Temporary codes, time limits, access levels, revoke permissions, and best practices for secure access sharing with family, guests, and service providers."
+category: guides
+pubDate: 2024-04-05
+wordCount: 750
+readingTime: 4
+keywords:
+  - "share access"
+  - "grant access"
+  - "temporary access"
+  - "secure sharing"
+  - "access management"
+tags:
+  - "access"
+  - "security"
+  - "sharing"
+  - "user-management"
+isPillar: false
+isSupport: true
+featured: false
+relatedArticles:
+  - "create-temporary-guest-code"
+  - "secure-smart-lock-best-practices"
+  - "delete-smart-lock-user"
+
+---
+
+
+## Quick Answer: Principle of Least Privilege Access Control
+
+**Secure access sharing implements defense-in-depth through temporal scope limitation (temporary time-bounded access preferred over permanent credentials), permission minimization (grant minimum necessary privileges: guest-level unlock-only versus admin-level configuration access), unique credential assignment (individual codes enabling audit trail accountability), and proactive revocation (immediate credential deletion upon access termination preventing stale credential exploitation).** Default vendor configurations granting permanent admin-level access to all users violate security principles, creating unnecessary attack surface where compromised guest credential provides full lock control including user management, history access, and configuration modification beyond legitimate access requirements.
+
+### Access Control Security Model Comparison
+
+| Sharing Method | Duration | Permission Level | Revocation Method | Audit Granularity | Compromise Risk | Attack Surface | Recommended Use Case |
+|---------------|----------|-----------------|-------------------|-------------------|----------------|---------------|---------------------|
+| **Temporary Code (Time-Limited)** | Hours-weeks | Unlock only | Auto-expires | Per-person, per-event | Low  - time-bounded | Minimal | Guests, service providers, contractors |
+| **Recurring Schedule** | Ongoing  - with windows | Unlock during windows | Manual disable | Per-person, per-window | Medium  - ongoing access | Medium | Regular cleaners, dog walkers |
+| **Permanent Code (No Expiry)** | Indefinite | Unlock 24/7 | Manual delete  - often forgotten | Per-person | High  - persistent credential | High | Family members only  - minimize |
+| **Admin App Invitation** | Indefinite until revoked | Full admin control | Manual revoke | Account-level | Very High  - full control | Very High | Spouse/partner only |
+| **Master Code Sharing** | Indefinite | Full admin + physical | Cannot revoke  - factory reset only | None  - anonymous | Critical | Maximum | NEVER share |
+
+## Principle of Least Privilege: Minimal Necessary Access Rights
+
+**Security principle foundation**: Each access grant should provide minimum permissions sufficient completing legitimate task, no more. Guest requiring entry for 2-hour cleaning appointment needs unlock capability 9am-11am Tuesday, not permanent 24/7 admin access enabling user management, configuration changes, or history review. This minimization reduces compromise impact: stolen guest code provides 2-hour window unauthorized entry (limited damage) versus stolen admin credential providing persistent full control (catastrophic breach).
+
+**Permission escalation risk**: Admin-level access enables credential creation (attacker adds own permanent code), audit log manipulation (deleting entry evidence), configuration changes (disabling security features), and user management (locking out legitimate users). Guest needing physical entry has zero legitimate need for these capabilities, yet default "share full access" workflows grant unnecessary permissions creating security vulnerabilities. Optimal configuration: 95% of shared access uses guest-level temporary codes, 4% uses user-level permanent codes (immediate family), 1% uses admin access (spouse/partner managing household security jointly).
+
+**Unique credential accountability**: Sharing single code among multiple users ("all guests use code 1234") eliminates audit trail where access log shows "code 1234 used" without identifying which specific person accessed. Individual codes enable forensic analysis: "unauthorized 3am entry traced to contractor John's code, revoked and reported" versus "someone with shared guest code 1234 entered, impossible identifying which of 12 people having code". This accountability also enables selective revocation: compromised individual code requires single credential change versus shared code compromise requiring re-issuing to all 12 legitimate users.
+
+**Guest (temporary):**
+```
+Can do:
+✓ Lock/unlock (during time window)
+✓ Use temporary code only
+
+Cannot:
+✗ Anything else
+✗ Access outside time window
+
+Grant to:
+- Visitors
+- Cleaners
+- Contractors
+- Airbnb guests
+- Service providers
+
+Risk: Low (time-limited, easily revoked)
+```
+
+## Sharing Methods
+
+### 1. Temporary Code (Recommended)
+
+**Best for short-term access:**
+```
+□ Create time-limited code:
+  - Set start date/time
+  - Set end date/time
+  - Auto-expires (no manual deletion)
+
+□ Example uses:
+  - Guest visiting: Friday 3pm - Sunday 11am
+  - Cleaner: Every Monday 9am-12pm
+  - Contractor: This week only, 8am-6pm
+  - Airbnb guest: Check-in to check-out
+
+□ Security benefits:
+  ✓ Auto-revokes (can't forget)
+  ✓ Limited time window
+  ✓ Can't be used outside schedule
+  ✓ Unique per person (track who)
+```
+
+**Setup:** See [Create Temporary Code Guide](/support/create-temporary-guest-code)
+
+### 2. Recurring Access
+
+**For regular service providers:**
+```
+□ Set recurring schedule:
+  - Every Monday 9am-12pm
+  - Weekdays 8am-6pm
+  - Specific days + times
+
+□ Example:
+  - Dog walker: M/W/F 11am-12pm
+  - Cleaner: Every Tue 9am-1pm
+  - Lawn care: Saturdays 7am-9am
+
+□ Benefits:
+  ✓ Automatic (don't recreate weekly)
+  ✓ Restricted hours (not 24/7)
+  ✓ Easy to disable (one toggle)
+```
+
+### 3. App Invitation
+
+**For trusted users:**
+```
+□ Invite via app:
+  1. App → Users → Invite
+  2. Enter email/phone
+  3. Select access level (User or Admin)
+  4. Send invitation
+  5. They accept and create account
+
+□ Benefits:
+  ✓ They use their own app
+  ✓ No code to remember
+  ✓ Can be admin or user
+  ✓ Easy to revoke
+
+□ Drawbacks:
+  - Requires app install
+  - Requires account creation
+  - More access than code-only
+```
+
+### 4. Physical Key (Backup Only)
+
+**Last resort / emergency:**
+```
+□ Keep physical key for:
+  - Emergency access
+  - Backup when tech fails
+  - Trusted neighbor (emergency)
+
+□ DON'T use as primary:
+  - Can't track access
+  - Can't revoke remotely
+  - Can be copied
+  - No time limits
+```
+
+## Secure Sharing Best Practices
+
+### Before Granting Access
+
+**Ask yourself:**
+```
+☑ Do they really need access?
+  - Or can they call when needed?
+
+☑ For how long?
+  - Permanent or temporary?
+  - Set expiration if temporary
+
+☑ What hours?
+  - 24/7 or restricted?
+  - Restrict to needed hours only
+
+☑ Can I track their use?
+  - Unique code per person
+  - Review logs regularly
+
+☑ How will I revoke?
+  - Easy to delete?
+  - Have I set reminder?
+```
+
+### Setting Up Access
+
+**Secure setup process:**
+```
+□ Create unique code/account:
+  - Never share YOUR code
+  - Unique = Accountability
+
+□ Set minimum permissions:
+  - User level (not admin)
+  - Unless they truly need admin
+
+□ Set time restrictions:
+  - Start/end dates
+  - Hours of day (if applicable)
+  - Days of week (if recurring)
+
+□ Name descriptively:
+  - "John Smith Guest 1/15-1/20"
+  - "Maria Cleaner Tue 9-1"
+  - "Dave Contractor Week of 3/5"
+
+□ Document:
+  - Who: Full name
+  - When: Date/time granted
+  - Why: Purpose
+  - Expiration: When to revoke
+```
+
+### After Granting Access
+
+**Monitoring and management:**
+```
+☑ Send access details securely:
+  - In person (best)
+  - Encrypted message
+  - NOT via SMS or email (insecure)
+
+☑ Confirm they received:
+  - Ask them to test
+  - Verify works before you leave
+
+☑ Set revocation reminder:
+  - Calendar event
+  - "Revoke John's access on..."
+
+☑ Review access logs:
+  - Weekly check
+  - Any unexpected access?
+  - Any issues?
+
+☑ Communicate changes:
+  - If access modified
+  - If access ending soon
+  - Give 24hr notice
+```
+
+## Revoking Access
+
+### When to Revoke Immediately
+
+**Critical scenarios:**
+```
+🔴 Relationship ended (ex-partner)
+🔴 Employee terminated
+🔴 Trust broken (suspicious activity)
+🔴 Guest checkout (Airbnb)
+🔴 Service complete (contractor)
+🔴 Lost phone (had app access)
+```
+
+**Action: Delete within 1 hour**
+
+### Revocation Process
+
+```
+□ Delete access:
+  - App → Users → [Person] → Delete
+  - OR: Delete temporary code
+
+□ Change master code (if they knew it):
+  - See: [Change Master Code](/support/change-master-code)
+  - Especially after contentious separation
+
+□ Verify deletion:
+  - Check code doesn't work
+  - Check not in user list
+  - Check can't access app
+
+□ Document:
+  - Who: Person revoked
+  - When: Date/time
+  - Why: Reason
+  - Verified: Confirmed deleted
+
+□ Monitor logs:
+  - For attempted access
+  - Unusual patterns
+  - Security concerns
+```
+
+## Common Mistakes
+
+**What NOT to do:**
+```
+❌ Share master code widely
+  → Give individual codes instead
+
+❌ Give permanent access for temporary need
+  → Set expiration dates
+
+❌ Give admin to everyone
+  → User level is usually enough
+
+❌ Use same code for multiple people
+  → Can't track who accessed
+
+❌ Forget to revoke after use
+  → Set automatic expiration
+
+❌ Share via insecure channels
+  → Not SMS, email, social media
+
+❌ Give 24/7 access when not needed
+  → Restrict to working hours
+```
+
+## Platform-Specific Tips
+
+### August Lock
+- "Anytime eKeys" = Permanent
+- "Scheduled eKeys" = Time-limited  - better
+- Can send directly via app
+- Easy to revoke
+
+### Yale Assure Lock
+- PIN codes only  - no app sharing
+- Set schedule per code
+- Auto-expires at end date
+
+### Schlage Encode
+- Access codes via app
+- Can set recurring schedules
+- Easy management interface
+
+### Kwikset SmartCode
+- Up to 30 user codes
+- Schedule support varies by model
+- Check manual for features
+
+## Use Case Examples
+
+### Airbnb Host
+```
+Guest: Friday 3pm check-in to Sunday 11am checkout
+Code: Unique per booking
+Expires: Automatically at checkout
+Communication: Sent 24hr before arrival
+Revocation: Automatic (no action needed)
+```
+
+### Dog Walker
+```
+Access: M/W/F 11am-12pm
+Code: Unique code
+Expires: End of month (renew if continuing)
+Track: Review logs weekly
+Adjust: Modify hours if needed
+```
+
+### House Cleaner
+```
+Access: Every Tuesday 9am-1pm
+Code: Recurring schedule
+Track: Confirm arrival/departure times
+Communicate: Any schedule changes
+Review: Monthly access audit
+```
+
+### Family Member (Adult Child)
+```
+Access: Permanent user level
+Method: App invitation
+Permissions: User (not admin)
+Track: Casual monitoring
+Trust: High but not admin level
+```
+
+## Security Checklist
+
+**Before sharing access:**
+```
+☑ Really necessary? (vs call when needed)
+☑ Temporary vs permanent? (temporary if possible)
+☑ Time restrictions? (business hours only)
+☑ Unique identifier? (their own code)
+☑ Expiration set? (auto-revoke)
+☑ Documented? (who, when, why)
+```
+
+**After sharing access:**
+```
+☑ Communicated securely? (not SMS)
+☑ Tested and works? (they confirmed)
+☑ Reminder set? (to revoke)
+☑ Monitoring? (check logs)
+☑ Plan to revoke? (clear end date)
+```
+
+## Related Resources
+
+**Access Management:**
+- [Add User Code] - /support/how-to-add-user-code - Create access
+- [Temporary Guest Code] - /support/create-temporary-guest-code - Time-limited
+- [Delete User] - /support/delete-smart-lock-user - Revoke access
+
+**Security:**
+- [Security Best Practices] - /support/secure-smart-lock-best-practices - Complete guide
+
+---
+
+## Summary Checklist
+
+**Share access securely:**
+
+1. ☑️ **Use temporary codes** (not permanent)
+2. ☑️ **Unique code per person** (track who)
+3. ☑️ **Set time limits** (start/end dates)
+4. ☑️ **Minimum permissions** (user not admin)
+5. ☑️ **Restrict hours** (9-5 for workers)
+6. ☑️ **Document all access** (who, when, why)
+7. ☑️ **Set revocation reminder** (don't forget)
+8. ☑️ **Revoke immediately** (when no longer needed)
+
+**Golden rule:** Temporary + Time-limited + Unique = Secure
+
+**Pro tip:** Treat smart lock access like passwords - unique per person, time-limited when possible, revoke immediately when no longer needed. The convenience of "just give everyone master code" becomes security nightmare. 5 extra minutes creating proper temporary codes saves $500 locksmith call when ex-employee abuses access. Invest time upfront in proper access management!
+
+## Tools & Resources
+
+👥 **[Credential Capacity Planner](/tools/credential-capacity-planner)** - Plan user capacity  
+🏢 **[Multi-Property Fleet Planner](/tools/multi-property-fleet-planner)** - Enterprise access planning
+
+---
+
+## Related Articles
+
+**Access Management:**
+- [Create Temporary Guest Code](/support/create-temporary-guest-code) - Time-limited access
+- [Delete Smart Lock User](/support/delete-smart-lock-user) - Revoke access properly
+- [Change Master Code](/support/change-master-code) - Administrative codes
+
+**Security:**
+- [Security Complete Analysis](/security/smart-lock-security-complete-analysis) - Security best practices
+- [Secure Configuration](/support/secure-smart-lock-best-practices) - Hardening guide
+- [Audit Trail Setup](/support/audit-trail-forensic-analysis) - Track all access
+
+**Use Cases:**
+- [Airbnb Guide](/use-cases/smart-locks-airbnb-complete-guide) - Guest access automation
+- [Enterprise Deployment](/use-cases/enterprise-commercial-deployment) - Multi-admin management
+- [Long-Term Rentals](/use-cases/long-term-rental-strategy) - Property manager access
+

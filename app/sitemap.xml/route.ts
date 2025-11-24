@@ -3,13 +3,12 @@ import { NextResponse } from 'next/server'
 export const runtime = 'edge'
 
 const categories = [
+  'guides',
+  'installation',
   'protocols',
   'security',
-  'installation',
-  'guides',
-  'use-cases',
-  'support',
   'integration',
+  'use-cases',
 ]
 
 const calculators = [

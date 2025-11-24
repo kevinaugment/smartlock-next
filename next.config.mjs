@@ -8,12 +8,21 @@ const nextConfig = {
     unoptimized: true,
   },
   
+  // 排除smartlockold目录
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+  
   // 排除不需要编译的文件
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     config.externals = config.externals || []
     config.externals.push({
       'gray-matter': 'gray-matter',
     })
+    
+    // 排除smartlockold目录
+    config.watchOptions = {
+      ...config.watchOptions,
+      ignored: ['**/smartlockold/**', '**/node_modules/**'],
+    }
     
     return config
   },

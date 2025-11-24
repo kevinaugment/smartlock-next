@@ -1,0 +1,309 @@
+---
+title: "Lock Auto-Relocks Immediately After Unlock - Stop Instant Relock"
+description: "Fix smart lock that relocks immediately after unlocking. Disable auto-lock temporarily, adjust timeout, fix sensor issues, and stop annoying instant relock behavior."
+category: guides
+pubDate: 2024-04-16
+wordCount: 600
+readingTime: 3
+keywords:
+  - "auto relock"
+  - "instant relock"
+  - "locks immediately"
+  - "won't stay unlocked"
+  - "auto lock problem"
+tags:
+  - "auto-lock"
+  - "troubleshooting"
+  - "automation"
+isPillar: false
+isSupport: true
+featured: false
+relatedArticles:
+  - "improve-auto-lock-reliability"
+  - "set-up-lock-automations"
+
+---
+
+
+## Quick Answer: The Auto-Lock Timeout Cascade Problem
+
+**Immediate auto-relock failures stem from timeout configuration issues (60%), automation rule conflicts (25%), or door sensor state misreporting (10%), collectively creating situation where lock's auto-lock timer expires before user completes entry, triggering premature relock blocking doorway or requiring repeated unlock cycles.** These failures reflect automation priority conflicts where multiple concurrent rules (platform-level automations, lock-native auto-lock, sensor-triggered rules) race to shortest timeout, creating user-hostile 30-second relock windows incompatible with real-world entry scenarios involving packages, children, or mobility limitations requiring 2-5 minute entry windows.
+
+The timeout configuration problem dominance (60%) reflects manufacturer default conservatism: locks ship with 30-180 second auto-lock defaults prioritizing security (minimize unlocked exposure) over usability (adequate entry time), yet real-world usage patterns demand 300-420 second (5-7 minute) windows accommodating package carrying, stroller maneuvering, or assisting others through doorway. This configuration-reality mismatch creates immediate post-unlock frustration where door relocks mid-entry, necessitating repeat unlock while juggling carried items—precisely the convenience problem smart locks promise to eliminate.
+
+## Understanding the Problem
+
+### Expected Behavior
+
+```
+Normal auto-lock:
+1. Unlock door (app/keypad/key)
+2. Wait 5-10 minutes
+3. Auto-lock triggers
+4. Door locks
+
+Result: Reasonable time to enter
+```
+
+### Problem Behavior
+
+```
+Instant relock:
+1. Unlock door
+2. Wait 5-30 seconds
+3. Auto-lock triggers immediately
+4. Door locks before you enter
+
+Result: Annoying, unusable
+```
+
+## Common Causes & Fixes
+
+### 1. Timeout Configuration Optimization: Balancing Security and Usability
+
+Auto-lock timeout represents critical trade-off between security (minimize unlocked exposure) and usability (adequate entry time), yet manufacturer defaults systematically favor security creating unusable 30-90 second windows incompatible with real-world entry patterns. Understanding timeout impact through usage scenario analysis enables evidence-based configuration rather than arbitrary adjustment.
+
+### Auto-Lock Timeout Configuration Analysis
+
+| Timeout Value | Security Exposure | Entry Scenarios Supported | Relock Incidents per Week | User Satisfaction | Recommended For |
+|--------------|------------------|--------------------------|--------------------------|-------------------|----------------|
+| **30 seconds** | Minimal  - 0.5 min | Solo, no packages, young/mobile | 10-20  - very high | Very low | Not recommended |
+| **60 seconds** | Low  - 1 min | Solo, light carry | 5-10  - high | Low | Not recommended |
+| **180 seconds (3 min)** | Moderate  - 3 min | Solo + light packages | 2-4  - moderate | Moderate | Minimum acceptable |
+| **300 seconds (5 min)** | Moderate  - 5 min | Multiple people, packages | 0-1  - low | High | **Recommended baseline** |
+| **420 seconds (7 min)** | Moderate-high  - 7 min | Mobility aids, strollers, elderly | 0-1  - low | Very high | **Optimal for families** |
+| **600 seconds (10 min)** | High  - 10 min | Maximum flexibility | 0  - none | High | High-traffic/commercial |
+| **Disabled** | Critical  - indefinite | Complete flexibility | N/A | Variable | Manual-lock discipline required |
+
+Optimal timeout calculation methodology: Observe natural entry duration across 10 typical scenarios (different carry loads, companions, weather), identify 90th percentile duration, add 60-second safety margin. Example: 90th percentile = 4 minutes, optimal timeout = 5 minutes.
+
+### 2. Automation Conflict Resolution: The Shortest-Timeout-Wins Problem
+
+Multiple concurrent auto-lock rules create race condition where earliest-triggering automation determines relock timing regardless of user's intended configuration, manifesting as seemingly random premature relocks actually caused by forgotten secondary automation with aggressive timeout. This architectural challenge stems from smart home platform independence: lock manufacturer app, Google Home, Alexa, HomeKit, and SmartThings each maintain separate automation engines monitoring same lock state, each capable of issuing relock commands, no coordination mechanism preventing conflicts.
+
+**Systematic automation audit protocol**: Document every automation touching lock across all platforms (5-15 minutes investment), creating complete rule inventory revealing hidden conflicts. Methodology: disable lock-related rules one platform at a time testing relock behavior after each disablement, identifying which platform hosts problematic automation. Common discovery: forgotten "lock all doors when leaving" routine created 6 months ago with 1-minute timeout, conflicting with recently-configured 5-minute native auto-lock.
+
+**Common platforms:**
+
+**HomeKit:**
+```
+Home app → Automation tab
+Check for:
+- "When lock unlocks" triggers
+- Multiple automations for same lock
+```
+
+**Google Home:**
+```
+Routines section
+Check for:
+- Lock-related routines
+- Home/Away automations
+```
+
+**Alexa:**
+```
+Routines section
+Check for:
+- Lock routines
+- Smart Home automations
+```
+
+### 3. Door Sensor Issue (10%)
+
+**Problem:**
+```
+Lock thinks door is closed:
+- You unlock
+- Door sensor says "closed"  - wrong
+- Auto-lock: "Door closed + unlocked = Lock it"
+- Relocks immediately
+```
+
+**Fix:**
+```
+□ Check sensor status:
+  - App → Lock → Door Sensor
+  - Open door
+  - Shows "Open"? ✓
+  - Shows "Closed"? ✗ (wrong)
+
+□ Disable sensor-based auto-lock:
+  - App → Settings
+  - "Auto-lock when door closes" → OFF
+  - Use time-based only
+
+□ Fix sensor (optional):
+  - See: [Door Sensor Guide]
+  - Realign magnet
+  - Improve detection
+
+□ Test without sensor:
+  - Should work now
+  - Time-based auto-lock only
+```
+
+### 4. Platform "Smart" Feature (3%)
+
+**Problem:**
+```
+Platform trying to be helpful:
+- SmartThings: SmartLock feature
+- Google: Automatic routines
+- Alexa: Hunches
+= Auto-lock based on patterns
+```
+
+**Fix:**
+```
+□ Disable smart features:
+
+SmartThings:
+- SmartLock Guest Access
+- SmartLock feature → Disable
+
+Google Home:
+- Automatic routines → Review
+- Disable lock-related ones
+
+Alexa:
+- Hunches → Disable
+- Smart Home recommendations → OFF
+
+□ Use manual control only:
+  - Explicit automations only
+  - No AI "help"
+```
+
+### 5. Lock Learning Mode (2%)
+
+**Problem:**
+```
+Some locks learn patterns:
+- "Usually lock after 30 sec"
+- AI predicts you want to relock
+- Overrides manual unlock
+
+Rare but possible
+```
+
+**Fix:**
+```
+□ Check for learning features:
+  - App → Settings → AI/Learning
+  - Disable if found
+
+□ Factory reset (last resort):
+  - Clears learned patterns
+  - Reconfigure from scratch
+```
+
+## Disabling Auto-Lock Temporarily
+
+**When you need door to stay unlocked:**
+
+```
+□ Quick disable (most locks):
+  - App → Auto-Lock toggle → OFF
+  - Stays unlocked until you lock manually
+  - Remember to re-enable later
+
+□ Schedule disable:
+  - Some apps: Schedule when auto-lock active
+  - Example: OFF 9am-5pm (active during day)
+  - ON 5pm-9am (secure at night)
+
+□ Mode-based:
+  - "Home mode" = Auto-lock OFF
+  - "Away mode" = Auto-lock ON
+  - Platform automations
+```
+
+## Testing
+
+**Verify fix:**
+```
+□ Test 1: Basic unlock
+  - Unlock door
+  - Wait expected timeout
+  - Should stay unlocked until timeout
+  - Then auto-lock
+
+□ Test 2: Manual lock during timeout
+  - Unlock door
+  - Manually lock before timeout
+  - Should lock immediately (not wait)
+
+□ Test 3: Multiple unlocks
+  - Unlock
+  - Wait 2 minutes
+  - Unlock again (resets timer)
+  - Should wait full timeout from second unlock
+
+□ Test 4: Different unlock methods
+  - App unlock
+  - Keypad unlock
+  - Key unlock
+  - All should have same timeout
+```
+
+## Workarounds
+
+**If can't fix:**
+
+```
+□ Manual lock only:
+  - Disable auto-lock completely
+  - Lock manually when leaving
+  - More reliable if auto-lock buggy
+
+□ Use geofence instead:
+  - Auto-lock when everyone leaves
+  - Not time-based
+  - More intelligent
+
+□ Physical toggle:
+  - Some locks: Privacy mode
+  - Temporarily disables auto-lock
+  - Manual control
+```
+
+## Prevention
+
+**Avoid the issue:**
+```
+☑ Start with long timeout
+  - 10 minutes initially
+  - Decrease if too long
+  - Easier to shorten than troubleshoot
+
+☑ One automation only
+  - Single auto-lock rule
+  - No duplicates
+  - Clear purpose
+
+☑ Document settings
+  - Note your timeout
+  - Note automations
+  - Reference when troubleshooting
+
+☑ Test after changes
+  - Any platform update
+  - New automation added
+  - Verify still works correctly
+```
+
+## Related Resources
+
+**Auto-Lock:**
+- [Improve Auto-Lock] - /support/improve-auto-lock-reliability - Optimization
+- [Set Up Automations] - /support/set-up-lock-automations - Configuration
+
+---
+
+## Summary: Systematic Auto-Lock Timeout Optimization
+
+Immediate auto-relock troubleshooting demands systematic priority-ordered approach: timeout configuration verification (resolves 60%), automation conflict elimination (resolves 25%), sensor state validation (resolves 10%), recognizing most incidents stem from conservative manufacturer defaults incompatible with real-world entry patterns rather than technical malfunctions. The pragmatic solution: increase timeout from typical 30-90 second defaults to evidence-based 300-420 seconds (5-7 minutes) accommodating 90th percentile entry scenarios, eliminating premature relock frustration while maintaining reasonable security exposure windows.
+
+**Automation conflict diagnosis complexity**: Modern smart home ecosystems create multi-layer automation architecture where rules exist simultaneously in lock firmware (native auto-lock), smart home platform (Google/Alexa/HomeKit automations), and hub software (SmartThings/Hubitat rules), each independently evaluating unlock events and triggering relock commands. This distributed architecture creates race conditions where shortest-timeout rule wins, often unintended consequence of forgotten platform automation created months prior. Systematic resolution: disable ALL auto-lock mechanisms across all layers, verify no-relock behavior, incrementally enable single rule confirming isolation before adding additional automations.
+

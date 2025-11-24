@@ -1,0 +1,414 @@
+---
+title: "Smart Lock Initial Setup Checklist - Complete Configuration Guide"
+description: "Complete smart lock setup checklist. Step-by-step initial configuration, test all features, optimize settings, and ensure reliable operation before daily use."
+category: installation
+pubDate: 2024-04-17
+wordCount: 650
+readingTime: 3
+keywords:
+  - "setup checklist"
+  - "initial setup"
+  - "configuration guide"
+  - "first time setup"
+  - "lock setup"
+tags:
+  - "setup"
+  - "checklist"
+  - "configuration"
+isPillar: false
+isSupport: true
+featured: false
+relatedArticles:
+  - "install-smart-lock-step-by-step"
+  - "test-smart-lock-after-install"
+  - "pair-smart-lock-with-hub"
+
+---
+
+
+## Quick Answer: Systematic Commissioning Protocol
+
+**Smart lock commissioning implements staged validation where each configuration layer verified before proceeding: mechanical installation (manual operation 10-cycle test confirming alignment), electronic pairing (bidirectional communication verification), user provisioning (code/biometric enrollment with test authentication), automation configuration (auto-lock/scheduling with multi-cycle validation), firmware updating (ensuring latest security patches), backup verification (physical key + emergency access confirmation).** This systematic approach prevents cascading failures where downstream configuration assumes upstream functionality yet unverified baseline creates unreliable operation requiring repeated troubleshooting versus single comprehensive validation session (45-60 minutes) establishing confident baseline.
+
+### Setup Stage Validation Matrix
+
+| Stage | Duration | Prerequisites | Success Criteria | Test Protocol | Failure Recovery | Skip Risk |
+|-------|----------|--------------|------------------|---------------|------------------|----------|
+| **Mechanical Install** | 15-20 min | Door measurement, tools | 10/10 smooth manual cycles | Thumb turn + key test, door open/closed | Strike adjustment, realignment | Lock jams, motor strain |
+| **Power & Pairing** | 5-10 min | Fresh batteries, hub ready | App shows "Connected", LED responds | Send lock/unlock command | Battery reseat, re-pair, factory reset | No electronic control |
+| **User Provisioning** | 10-15 min | Pairing complete | All codes/fingerprints work 5/5 | Test each method door-closed | Re-enroll, check collision | Lockout risk |
+| **Access Testing** | 10-15 min | Users added | All methods work, status accurate | 10 cycles per method, verify app status | Troubleshoot specific method | Unreliable operation |
+| **Automation Config** | 5-10 min | Access verified | Auto-lock triggers correctly | Wait timeout, verify locks automatically | Adjust timing, check sensor | Security gap |
+| **Firmware Update** | 5-10 min | Internet connection | Firmware current, no issues post-update | Check version, test all functions | Rollback if supported | Security vulnerabilities |
+| **Documentation** | 5 min | Setup complete | Codes recorded securely, manual saved | Verify can retrieve codes | Create backup record | Lost access |
+
+## Pre-Installation Checklist
+
+**Before you start:**
+```
+☑ Door compatible:
+  - Backset 2-3/8" or 2-3/4"
+  - Door thickness 1-3/8" to 2"
+  - Standard deadbolt hole
+  - Measured and confirmed
+
+☑ Tools ready:
+  - Screwdriver (Phillips)
+  - Measuring tape
+  - Pencil
+  - Level
+  - 30-60 minutes
+
+☑ Batteries purchased:
+  - 4× AA (most locks)
+  - Name brand (Duracell/Energizer)
+  - Fresh, not expired
+
+☑ Hub ready (if required):
+  - Plugged in
+  - Connected to WiFi
+  - Account created
+
+☑ Backup key accessible:
+  - Know where it is
+  - Test fits lock
+  - Keep nearby during setup
+```
+
+## Physical Installation (20 min)
+
+```
+☑ Remove old lock:
+  - Unscrew deadbolt
+  - Remove strike plate (if replacing)
+  - Clean mounting area
+
+☑ Install new deadbolt:
+  - Insert through door
+  - Align with latch
+  - Test manual operation (key & thumb turn)
+  - Should be smooth
+
+☑ Install strike plate:
+  - Position on frame
+  - Screw in place
+  - Test deadbolt enters smoothly
+  - File hole if needed (1-2mm)
+
+☑ Mount smart lock:
+  - Interior side
+  - Align with deadbolt
+  - Don't overtighten screws
+  - Leave 1/4 turn loose initially
+
+☑ Test mechanical operation:
+  - Manual thumb turn 10×
+  - Physical key 10×
+  - Should be smooth every time
+  - Adjust strike if resistance
+```
+
+**Don't proceed until mechanical operation perfect**
+
+## Power & Pairing (10 min)
+
+```
+☑ Insert batteries:
+  - All 4 batteries
+  - Correct +/- orientation
+  - Fully seated
+  - LED should light up
+
+☑ Initial power-on:
+  - Press any button
+  - Beeps/lights confirm power
+  - May auto-calibrate
+
+☑ Pair with hub/app:
+  - Follow manufacturer instructions
+  - Hub inclusion mode first
+  - Then lock pairing mode
+  - Wait 30-90 seconds
+
+☑ Complete setup prompts:
+  - Name your lock
+  - Assign to room
+  - Set initial preferences
+
+☑ Test app control:
+  - Lock via app
+  - Unlock via app
+  - Both work? ✓
+```
+
+## User Configuration (15 min)
+
+```
+☑ Set master code:
+  - Change from default
+  - 6-8 random digits
+  - Not 1234 or birthday
+  - Document securely
+
+☑ Add user codes:
+  - Your personal code
+  - Family codes (unique each)
+  - Name each code clearly
+  - Test each code immediately
+
+☑ Add biometric (if equipped):
+  - Enroll fingerprints
+  - 2-3 enrollments per finger
+  - Multiple fingers
+  - Test recognition
+
+☑ Configure access levels:
+  - Admin vs User
+  - Set appropriate permissions
+  - Review who can do what
+```
+
+## Feature Configuration (10 min)
+
+```
+☑ Auto-lock settings:
+  - Enable? (recommended)
+  - Timeout: 5-7 minutes
+  - Test: Unlock, wait, should auto-lock
+
+☑ Notifications:
+  - Enable lock/unlock alerts? (optional)
+  - Low battery warning: YES
+  - Tamper alert: YES
+  - Failed attempts: YES
+  - Disable noisy notifications
+
+☑ Voice control (optional):
+  - Link to Alexa/Google/Siri
+  - Set up voice PIN (security)
+  - Test voice commands
+
+☑ Automations (optional):
+  - Auto-lock after timeout
+  - Lock when leaving home
+  - Unlock when arriving (with auth)
+  - Start simple, add later
+
+☑ Integration:
+  - Doorbell integration?
+  - Security system?
+  - Smart home scenes?
+  - Configure if desired
+```
+
+## Testing Phase (10 min)
+
+**Critical - don't skip:**
+
+```
+☑ Keypad test:
+  - Each digit responds: 0-9
+  - Enter each user code
+  - All work on first try?
+  - 10/10 success? ✓
+
+☑ App control test:
+  - Lock 5 times via app
+  - Unlock 5 times via app
+  - All work within 2 seconds?
+  - Status updates correctly?
+
+☑ Physical key test:
+  - Lock with key
+  - Unlock with key
+  - Still works? (important backup)
+
+☑ Manual test:
+  - Thumb turn lock
+  - Thumb turn unlock
+  - Always works (mechanical)
+
+☑ Auto-lock test:
+  - Unlock door
+  - Wait full timeout
+  - Does it auto-lock?
+  - If not, troubleshoot now
+
+☑ Alignment test:
+  - Close door different ways
+  - Push hard, close soft
+  - Deadbolt enters smoothly?
+  - No grinding/resistance?
+
+☑ Battery level:
+  - Check in app
+  - Should show 100%
+  - If less, replace batteries
+
+☑ Connectivity test:
+  - Walk to furthest room
+  - Can you control lock?
+  - Response time <3 seconds?
+  - Add repeater if needed
+```
+
+## Security Setup (5 min)
+
+```
+☑ Document codes securely:
+  - Password manager (best)
+  - Sealed envelope in safe
+  - NOT in phone notes
+
+☑ Backup access:
+  - Physical key on keyring
+  - Spare key with neighbor
+  - Emergency code memorized
+
+☑ Security settings:
+  - Enable 2FA on account
+  - Strong app password
+  - Biometric app lock
+  - Review regularly
+
+☑ Update firmware:
+  - Check for updates
+  - Install if available
+  - May add features/security
+```
+
+## Final Verification
+
+```
+☑ Stress test:
+  - Lock/unlock 20 times (various methods)
+  - All successful?
+  - No glitches?
+
+☑ Real-world test:
+  - Leave house, return
+  - Use as you normally would
+  - Works reliably?
+
+☑ Document setup:
+  - Take photos
+  - Note settings
+  - Record codes (securely)
+  - Reference for future
+
+☑ Clean up:
+  - Remove packaging
+  - Store manual
+  - Keep warranty info
+  - Dispose of old lock
+```
+
+## Common Setup Mistakes
+
+**Avoid these:**
+```
+❌ Skipping mechanical testing
+  → Alignment problems later
+
+❌ Using old batteries
+  → Fails quickly, frustrating
+
+❌ Not testing before relying on
+  → Locked out when doesn't work
+
+❌ Weak codes (1234)
+  → Security risk
+
+❌ No backup access
+  → Disaster when fails
+
+❌ Overtightening screws
+  → Binding, grinding
+
+❌ Rushing setup
+  → Miss critical steps
+```
+
+## Post-Setup Monitoring
+
+**First week:**
+```
+☑ Daily testing:
+  - Use different access methods
+  - Verify reliability
+  - Note any issues
+
+☑ Battery check:
+  - Should stay near 100%
+  - If drains fast, investigate
+
+☑ Connectivity check:
+  - Always online?
+  - Any disconnections?
+  - Add repeater if needed
+
+☑ User feedback:
+  - Family members able to use?
+  - Any confusion?
+  - Additional training needed?
+```
+
+## When to Call for Help
+
+**Contact support if:**
+```
+□ Can't complete pairing after 3 tries
+□ Lock binds or jams repeatedly
+□ Battery drains in <1 week
+□ Connection constantly drops
+□ Keypad unresponsive
+□ Motor sounds damaged
+```
+
+**Don't wait - address issues early**
+
+## Related Resources
+
+**Installation:**
+- [Install Guide] - /support/install-smart-lock-step-by-step - Detailed steps
+- [Test After Install] - /support/test-smart-lock-after-install - Testing
+
+**Configuration:**
+- [Pair with Hub] - /support/pair-smart-lock-with-hub - Pairing help
+- [Add User Code] - /support/how-to-add-user-code - User setup
+
+---
+
+## Summary Checklist
+
+**Complete setup:**
+
+**Phase 1 - Physical (20 min):**
+1. ☑️ Install deadbolt & strike
+2. ☑️ Mount lock
+3. ☑️ Test mechanical operation
+
+**Phase 2 - Pairing (10 min):**
+4. ☑️ Insert batteries
+5. ☑️ Pair with hub/app
+6. ☑️ Test app control
+
+**Phase 3 - Users (15 min):**
+7. ☑️ Set master code
+8. ☑️ Add user codes
+9. ☑️ Test all codes
+
+**Phase 4 - Features (10 min):**
+10. ☑️ Configure auto-lock
+11. ☑️ Set notifications
+12. ☑️ Add voice control
+
+**Phase 5 - Testing (10 min):**
+13. ☑️ Test all access methods 10×
+14. ☑️ Verify auto-lock works
+15. ☑️ Stress test 20 cycles
+
+**Total time:** 45-60 minutes
+
+**Pro tip:** Invest the full hour in proper setup. The temptation is to "quickly install and use it" but skipping testing leads to problems. Test EVERYTHING 10× BEFORE you leave house and lock door. Finding out keypad doesn't work reliably when you're locked out at midnight = Bad time to discover. Hour of thorough testing prevents hours of frustration!
+

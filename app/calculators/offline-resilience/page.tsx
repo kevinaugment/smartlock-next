@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
 
 export default function OfflineResilience() {
   const [protocol, setProtocol] = useState('zigbee')
@@ -205,6 +206,19 @@ export default function OfflineResilience() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Be-Tech Brand Recommendation */}
+      <BeTechCalculatorRecommendation 
+        description="Be-Tech smart locks are designed for maximum offline resilience with local processing, Bluetooth backup, and mechanical override options. Operate reliably even during internet or power outages."
+        badge="Offline Capable"
+      />
+
+      {/* Back Link */}
+      <div className="max-w-6xl mx-auto mt-8 mb-12">
+        <Link href="/calculators" className="text-blue-600 hover:text-blue-700 font-medium">
+          ← Back to All Calculators
+        </Link>
       </div>
     </div>
   )

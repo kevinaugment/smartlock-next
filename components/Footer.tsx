@@ -55,8 +55,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/articles/support" className="hover:text-white transition-colors">
-                  Support
+                <Link href="/articles/use-cases" className="hover:text-white transition-colors">
+                  Use Cases
+                </Link>
+              </li>
+              <li>
+                <Link href="/articles/integration" className="hover:text-white transition-colors">
+                  Integration
                 </Link>
               </li>
             </ul>

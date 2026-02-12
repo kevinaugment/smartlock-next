@@ -1,8 +1,11 @@
 /**
- * D1 数据库客户端
- * Cloudflare D1 (SQLite) 连接和查询工具
+ * 数据库客户端 (支持 Turso/LibSQL 和 Cloudflare D1)
  */
+import { createClient, type Client, type ResultSet } from '@libsql/client'
 
+// ===========================================
+// D1 类型定义 (用于兼容)
+// ===========================================
 export interface D1Database {
   prepare(query: string): D1PreparedStatement
   dump(): Promise<ArrayBuffer>
@@ -35,34 +38,68 @@ export interface D1ExecResult {
   duration: number
 }
 
+// ===========================================
+// 客户端实例
+// ===========================================
+
+let libsqlClient: Client | null = null
+
+function getLibSQLClient(): Client {
+  if (!libsqlClient) {
+    const url = process.env.TURSO_DATABASE_URL
+    const authToken = process.env.TURSO_AUTH_TOKEN
+
+    if (!url || !authToken) {
+      throw new Error('TURSO_DATABASE_URL and TURSO_AUTH_TOKEN must be set')
+    }
+
+    libsqlClient = createClient({
+      url,
+      authToken,
+    })
+  }
+  return libsqlClient
+}
+
 /**
- * 获取D1数据库实例
- * 在Cloudflare Pages环境中自动注入
+ * 获取D1数据库实例 (Cloudflare Pages环境中)
  */
-export function getDB(): D1Database {
-  // @ts-ignore - Cloudflare环境变量
+export function getD1(): D1Database | null {
+  // @ts-ignore
   if (typeof process !== 'undefined' && process.env.DB) {
     // @ts-ignore
     return process.env.DB
   }
-  
-  throw new Error('D1 database not available. Make sure DB binding is configured.')
+  return null
 }
 
 /**
- * 执行查询并返回结果
+ * 判断是否使用 Turso
+ */
+const USE_TURSO = !!(process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN)
+
+// ===========================================
+// 统一查询接口
+// ===========================================
+
+/**
+ * 执行查询并返回结果列表
  */
 export async function query<T = any>(
   sql: string,
   params: any[] = []
 ): Promise<T[]> {
-  const db = getDB()
-  const stmt = db.prepare(sql)
-  
-  if (params.length > 0) {
-    stmt.bind(...params)
+  if (USE_TURSO) {
+    const client = getLibSQLClient()
+    const result = await client.execute({ sql, args: params })
+    return result.rows as unknown as T[]
   }
-  
+
+  // Fallback to D1
+  const db = getD1()
+  if (!db) throw new Error('Database not configured (No Turso or D1 found)')
+
+  const stmt = db.prepare(sql).bind(...params)
   const result = await stmt.all<T>()
   return result.results || []
 }
@@ -74,42 +111,84 @@ export async function queryOne<T = any>(
   sql: string,
   params: any[] = []
 ): Promise<T | null> {
-  const db = getDB()
-  const stmt = db.prepare(sql)
-  
-  if (params.length > 0) {
-    stmt.bind(...params)
+  if (USE_TURSO) {
+    const client = getLibSQLClient()
+    const result = await client.execute({ sql, args: params })
+    if (result.rows.length === 0) return null
+    return result.rows[0] as unknown as T
   }
-  
+
+  // Fallback to D1
+  const db = getD1()
+  if (!db) throw new Error('Database not configured')
+
+  const stmt = db.prepare(sql).bind(...params)
   return await stmt.first<T>()
 }
 
 /**
- * 执行INSERT/UPDATE/DELETE
+ * 执行 INSERT/UPDATE/DELETE
  */
 export async function execute(
   sql: string,
   params: any[] = []
 ): Promise<D1Result> {
-  const db = getDB()
-  const stmt = db.prepare(sql)
-  
-  if (params.length > 0) {
-    stmt.bind(...params)
+  if (USE_TURSO) {
+    const client = getLibSQLClient()
+    const result = await client.execute({ sql, args: params })
+
+    return {
+      success: true,
+      results: [],
+      meta: {
+        duration: 0,
+        size_after: 0,
+        rows_read: 0,
+        rows_written: result.rowsAffected,
+      }
+    }
   }
-  
+
+  // Fallback to D1
+  const db = getD1()
+  if (!db) throw new Error('Database not configured')
+
+  const stmt = db.prepare(sql).bind(...params)
   return await stmt.run()
 }
 
 /**
- * 批量执行多个语句（事务）
+ * 批量执行多个语句 (事务)
  */
-export async function batch(queries: { sql: string; params?: any[] }[]): Promise<D1Result[]> {
-  const db = getDB()
+export async function batch(queries: { sql: string; params?: any[] }[]): Promise<any[]> {
+  if (USE_TURSO) {
+    const client = getLibSQLClient()
+    // LibSQL transaction
+    const transaction = await client.transaction('write')
+    const results = []
+
+    try {
+      for (const q of queries) {
+        // execute method on transaction might differ slightly depending on version, 
+        // but generally client.execute works or transaction.execute
+        await transaction.execute({ sql: q.sql, args: q.params || [] })
+      }
+      await transaction.commit()
+      return new Array(queries.length).fill({ success: true })
+    } catch (e) {
+      transaction.close() // Rollback is automatic on close without commit usually, or implicit
+      throw e
+    }
+  }
+
+  // Fallback to D1
+  const db = getD1()
+  if (!db) throw new Error('Database not configured')
+
   const statements = queries.map(q => {
     const stmt = db.prepare(q.sql)
     return q.params ? stmt.bind(...q.params) : stmt
   })
-  
+
   return await db.batch(statements)
 }

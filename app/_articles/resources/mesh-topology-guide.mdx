@@ -1,0 +1,21 @@
+---
+title: Mesh Topology Explained
+description: How your smart lock talks to your hub through other devices.
+category: resources
+pubDate: 2024-05-20
+slug: mesh-topology-guide
+hero_image: /images/articles/mesh-topology.jpg
+author: SmartLockHub Team
+keywords: [mesh network, zigbee router, end device, z-wave repeater, smart lock connectivity]
+tags: [glossary, decision-guide]
+---
+
+## Routers vs End Devices
+
+In a mesh network (Zigbee/Z-Wave/Thread), devices have two roles:
+1.  **Router (Repeater)**: Always powered (light switches, plugs). They relay messages for others.
+2.  **End Device**: Battery powered (locks, sensors). They sleep and wake up only to talk.
+
+### Why it matters for Locks
+*   **Placement**: Your lock needs a *Router* nearby (within 20ft), not necessarily the Hub.
+*   **Healing**: If you move a lamp, the lock might lose connection until the network "heals".

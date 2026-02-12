@@ -6,6 +6,7 @@ import {
   DollarSign, Signal, Wrench, BookOpen, Landmark, Factory
 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Door Compatibility Checker | ANSI A156.2 Standards',
@@ -233,7 +234,10 @@ export default function CompatibilityPage() {
             </div>
           </div>
 
-          {/* Related Resources */}
+          
+          <RelatedResources calculatorSlug="door-lock-compatibility-checker" />
+
+{/* Related Resources */}
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">Related Resources</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

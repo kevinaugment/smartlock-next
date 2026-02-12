@@ -6,6 +6,7 @@ import {
   BookOpen, Plug, AlertTriangle
 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 // SEO Metadata
 export const metadata: Metadata = {
@@ -394,9 +395,11 @@ export default function BatteryLifePage() {
             </div>
           </div>
 
+          <RelatedResources calculatorSlug="battery-life-comparison" />
+
           {/* Related Tools & Articles */}
           <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
-            <h2 className="section-title">Related Resources</h2>
+            <h2 className="section-title">More Tools</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Link href="/calculators/lock-tco" className="link-card">
                 <div style={{ color: 'var(--color-accent)', marginBottom: 'var(--space-sm)' }}><DollarSign className="w-8 h-8" /></div>

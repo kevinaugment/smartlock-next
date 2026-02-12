@@ -1,0 +1,81 @@
+---
+title: "Smart Lock Encryption: AES-128, ChaCha20 & The Future of Security"
+description: "Is your smart lock hackable? We explain the difference between AES-128 (Zigbee) and ChaCha20 (Matter), and why 'Bank Grade Security' is a meaningless marketing term."
+category: resources
+pubDate: 2024-05-20
+slug: encryption-standards-guide
+hero_image: /images/articles/encryption-security.jpg
+author: SmartLockHub Team
+keywords: [smart lock encryption, aes-128 vs chacha20, matter protocol security, zigbee encryption keys, iot hacking defense, tls 1.3 smart home]
+tags: [glossary, standard]
+---
+
+## Executive Summary
+
+Marketing teams love to say "Bank Grade Security." Engineers roll their eyes.
+In 2025, true smart lock security relies on **Authenticated Encryption with Associated Data (AEAD)**.
+
+This guide explains the two titans of IoT security: **AES-128** (The Standard) and **ChaCha20-Poly1305** (The Challenger).
+
+---
+
+## 1. AES-128 (The Industry Workhorse)
+
+**Advanced Encryption Standard (128-bit)** is the backbone of the global economy. It is approved by the NSA for Top Secret information.
+
+*   **Used In**: **Zigbee**, **Z-Wave (S2 Security)**, and legacy Wi-Fi (WPA2).
+*   **How it Works**: It is a block cipher. It takes a block of data (128 bits) and scrambles it using a key, repeating this process 10 times (rounds).
+*   **Pros**:
+    *   **Hardware Acceleration**: Most modern chips (even cheap ones) have dedicated silicon to run AES fast without draining the battery.
+    *   **Battle Tested**: We have tried to break it for 20 years and failed.
+*   **Cons**:
+    *   **Slower in Software**: If the chip lacks hardware support, AES is slow and power-hungry.
+
+---
+
+## 2. ChaCha20-Poly1305 (The Modern Challenger)
+
+This is the new standard favored by Google, Apple, and the **Matter / Thread** protocol.
+
+*   **Used In**: **Matter**, **Thread**, **TLS 1.3** (Modern Web).
+*   **How it Works**: It is a stream cipher. It generates a pseudorandom stream of bits and XORs them with the message.
+*   **Pros**:
+    *   **Fast in Software**: It runs blazingly fast on simple mobile/IoT chips that lack AES hardware.
+    *   **Mobile Friendly**: It consumes less battery on constrained devices while offering equal security to AES-128.
+    *   **Side-Channel Resistant**: It is "Constant Time," meaning hackers cannot measure how long the chip takes to process data to guess the key.
+
+---
+
+## 3. The Real Vulnerability: "Replay Attacks"
+
+Encryption is useless if a hacker can record your "Unlock" signal and play it back later.
+
+*   **The Defense**: **Rolling Codes (Nonces)**.
+*   Every time you send a command, the lock expects a unique, one-time number (Nonce).
+*   **Matter** uses extensive Nonce tracking to ensure that even if someone records your exact unlock signal, playing it back 1 second later will fail.
+
+---
+
+## Check Your Lock's Security Specs
+
+| Feature | Standard (Minimum) | **Gold Standard (Best)** |
+| :--- | :--- | :--- |
+| **Encryption** | AES-128 | **ChaCha20-Poly1305** or AES-256 |
+| **Handshake** | WPA2 | **WPA3 / TLS 1.3** |
+| **Authentication** | Password | **2FA (Biometric / TOTP)** |
+| **Updates** | Manual | **Automatic OTA** |
+
+## Related Tools
+*   **[Smart Home Protocol Specs](/articles/resources/smart-home-protocol-specs-table)**: See which protocols use which encryption.
+*   **[Anti-Pick Glossary](/articles/resources/anti-pick-bump-glossary)**: Physical security vs Digital security.
+
+## Frequently Asked Questions
+
+### Is 128-bit encryption enough?
+**Yes.** Brute-forcing a 128-bit key would take a supercomputer longer than the age of the universe. The weak point is never the math; it's the **password** you use for your account ("123456").
+
+### Why is "Bank Grade" meaningless?
+Because banks use 256-bit encryption for *storage*, but often transfer data over standard TLS. It is a marketing buzzword. Look for specific protocols like **TLS 1.3** or **S2 Security**.
+
+### Can someone hack my Z-Wave lock?
+Only if they are within 50 feet of your house *during* the pairing process (when the network key is exchanged). Once paired, Z-Wave S2 encryption is arguably more secure than most Wi-Fi networks.

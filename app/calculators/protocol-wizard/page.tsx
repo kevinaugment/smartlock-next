@@ -3,6 +3,7 @@ import Link from 'next/link'
 import ProtocolWizard from './ProtocolWizard'
 import { Wand2, BookOpen } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Protocol Wizard | Zigbee vs Z-Wave vs Wi-Fi Selector',
@@ -308,7 +309,10 @@ export default function ProtocolWizardPage() {
             </div>
           </div>
 
-          {/* Related Resources */}
+          
+          <RelatedResources calculatorSlug="protocol-selection-wizard" />
+
+{/* Related Resources */}
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">Related Calculators</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

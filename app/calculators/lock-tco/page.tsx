@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { DollarSign, Lightbulb, AlertTriangle } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 interface TCOInputs {
   lockPrice: number
@@ -458,7 +459,10 @@ export default function TCOCalculator() {
           </div>
         </div>
 
-        {/* Related Resources */}
+        
+          <RelatedResources calculatorSlug="lock-tco-calculator" />
+
+{/* Related Resources */}
         <div className="max-w-7xl mx-auto mt-8">
           <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-md)" }}>Related Resources</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

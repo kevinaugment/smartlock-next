@@ -6,7 +6,7 @@ export interface ArticleMetadata {
   slug: string;
   title: string;
   description: string;
-  category: 'guides' | 'installation' | 'integration' | 'protocols' | 'security' | 'use-cases';
+  category: 'guides' | 'installation' | 'integration' | 'protocols' | 'security' | 'use-cases' | 'resources';
   pubDate: string;
   wordCount: number;
   readingTime: number;
@@ -70,5 +70,11 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     slug: 'use-cases',
     description: 'Real-world applications and strategies',
     count: 4,
+  },
+  resources: {
+    name: 'Resources',
+    slug: 'resources',
+    description: 'Data tables, glossary terms, and reference materials',
+    count: 20,
   },
 };

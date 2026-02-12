@@ -6,6 +6,7 @@ import {
   ShoppingCart, AlertTriangle
 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Installation Cost Calculator | 2025-2025 Real Rates',
@@ -212,7 +213,10 @@ export default function InstallationCostPage() {
             </div>
           </div>
 
-          {/* Related Resources */}
+          
+          <RelatedResources calculatorSlug="installation-cost-estimator" />
+
+{/* Related Resources */}
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">Related Resources</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

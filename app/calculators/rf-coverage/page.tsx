@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
 import { Radio, MapPin, AlertTriangle, Check } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export default function RFCoverage() {
   const [buildingLength, setBuildingLength] = useState(30)
@@ -150,6 +151,8 @@ export default function RFCoverage() {
       </div>
 
       <ToolRating toolSlug="rf-coverage" />
+
+          <RelatedResources calculatorSlug="rf-coverage-estimator" />
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

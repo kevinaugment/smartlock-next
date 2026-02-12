@@ -182,6 +182,24 @@ export const CalculatorModel = {
       [id]
     )
   },
+
+  async getRelatedArticles(calculatorId: number): Promise<Article[]> {
+    return await query<Article>(
+      `SELECT a.*, c.slug as category_slug, ca.custom_title, ca.custom_description
+       FROM articles a
+       JOIN calculator_articles ca ON a.id = ca.article_id
+       JOIN categories c ON a.category_id = c.id
+       WHERE ca.calculator_id = ?
+       ORDER BY ca.display_order ASC, a.published_at DESC`,
+      [calculatorId]
+    )
+  },
+
+  async getRelatedArticlesBySlug(slug: string): Promise<Article[]> {
+    const calculator = await this.getBySlug(slug)
+    if (!calculator) return []
+    return await this.getRelatedArticles(calculator.id)
+  },
 }
 
 // ============================================

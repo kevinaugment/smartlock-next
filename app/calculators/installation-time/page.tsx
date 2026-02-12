@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
 import { Timer } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export default function InstallationTime() {
   const [doorCount, setDoorCount] = useState(10)
@@ -135,6 +136,8 @@ export default function InstallationTime() {
       </div>
 
       <ToolRating toolSlug="installation-time" />
+
+          <RelatedResources calculatorSlug="installation-time-estimator" />
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

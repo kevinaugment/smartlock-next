@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
 import { ShieldAlert, Check, AlertTriangle, Lightbulb } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export default function EmergencyBackup() {
   const [hasPhysicalKey, setHasPhysicalKey] = useState(true)
@@ -258,6 +259,8 @@ export default function EmergencyBackup() {
       </div>
 
       <ToolRating toolSlug="emergency-backup" />
+
+          <RelatedResources calculatorSlug="emergency-backup-evaluator" />
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

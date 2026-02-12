@@ -6,6 +6,7 @@ import {
   Microscope, AlertTriangle, Check, Zap
 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Signal Strength Calculator | RF Analysis Tool (2025)',
@@ -408,7 +409,10 @@ export default function SignalStrengthPage() {
             </div>
           </div>
 
-          {/* Related Resources */}
+          
+          <RelatedResources calculatorSlug="signal-strength-analyzer" />
+
+{/* Related Resources */}
           <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
             <h2 className="section-title">Related Resources</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

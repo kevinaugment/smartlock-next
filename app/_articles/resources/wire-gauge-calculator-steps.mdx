@@ -1,0 +1,77 @@
+---
+title: "Wire Gauge & Voltage Drop: The 12V/24V Smart Lock Guide"
+description: "Why does your magnetic lock fail? It's probably Voltage Drop. We explain how to calculate AWG wire thickness for 12V and 24V cable runs."
+category: resources
+pubDate: 2024-05-20
+slug: wire-gauge-calculator-steps
+hero_image: /images/articles/wire-gauge.jpg
+author: SmartLockHub Team
+keywords: [wire gauge calculator, 12v voltage drop, smart lock wiring, 24v cable run, awg chart, electric strike power issues]
+tags: [data-table, decision-guide]
+---
+
+## Executive Summary
+
+A standard electric strike needs **12 Volts** to open. If you run a thin wire 50 feet, it might only receive **10.5 Volts**.
+*   **Result**: The lock buzzes but doesn't open (Solenoid Failure).
+*   **The Culprit**: **Voltage Drop**.
+
+This guide explains how to select the right wire thickness (**AWG**) to ensure your lock gets the power it needs.
+
+---
+
+## The 3% Rule
+
+For electronic locks, the Golden Rule is: **Max 3% Voltage Drop**.
+*   **12V System**: Loss should be < 0.36V (Min 11.64V at lock).
+*   **24V System**: Loss should be < 0.72V (Min 23.28V at lock).
+
+*Why?* Solenoids are stronger at higher voltages. If voltage drops too low, the magnetic field is too weak to pull the latch against the friction of the door seal.
+
+---
+
+## Wire Gauge (AWG) selection Chart
+
+Based on a standard 0.5 Amp Electric Strike (12V):
+
+| Distance (One Way) | 18 AWG | 16 AWG | 14 AWG | 12 AWG |
+| :--- | :--- | :--- | :--- | :--- |
+| **0 - 20 ft** | **OK** | OK | OK | OK |
+| **20 - 50 ft** | **Marginal** | **OK** | OK | OK |
+| **50 - 100 ft** | FAIL | **Marginal** | **OK** | OK |
+| **100 - 200 ft** | FAIL | FAIL | FAIL | **OK** |
+
+*   **18 AWG**: Standard alarm wire. Good for short runs.
+*   **16/14 AWG**: "Landscape Lighting" wire. Better for long runs.
+
+---
+
+## The Calculation Process
+
+To calculate precisely, use this formula:
+`Voltage Drop = (2 x Length x Current x Resistance) / 1000`
+
+1.  **Length**: One-way distance in feet.
+2.  **Current**: Amps drawn by the lock (check the manual).
+3.  **Resistance**: Ohms per 1000ft of wire (see standard tables).
+
+### Example: The "Buzzing" Strike
+*   **Lock**: 12V Electric Strike, 0.6 Amps.
+*   **Wire**: 80 feet of 22AWG (Security Wire).
+*   **Result**: 2.5V Drop! The lock gets 9.5V. **It fails.**
+*   **Fix**: Upgrade to 16AWG wire. Drop becomes 0.4V. Lock gets 11.6V. **Success.**
+
+## Related Tools
+*   **[Wire Gauge Calculator](/calculators/wire-gauge-calculator)**: Interactive tool to do the math for you.
+*   **[Electric Strike Guide](/articles/resources/electric-strike-guide)**: Choosing the right hardware.
+
+## Frequently Asked Questions
+
+### Can I use Cat5/Cat6 ethernet cable?
+**Be careful.** Cat5 wire is extremely thin (24AWG).
+*   For **Data**: Excellent.
+*   For **Power**: Terrible.
+*   **Hack**: You can twist 3 pairs together to act as one thicker conductor, but for reliability, pull a real 18/2 cable.
+
+### Is 24V better than 12V?
+**Yes.** At 24V, a device uses half the Amps to produce the same Watts. Less Amps = Less Voltage Drop. If your system supports 24V, always use it for long cable runs.

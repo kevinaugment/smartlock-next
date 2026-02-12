@@ -7,6 +7,7 @@ import {
   Users, BookOpen, AlertTriangle, Battery, Wrench
 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export const metadata: Metadata = {
   title: 'Airbnb Smart Lock ROI Calculator | Short-Term Rental Investment Analysis',
@@ -291,7 +292,10 @@ export default function STRROIPage() {
             </div>
           </div>
 
-          {/* Related Resources */}
+          
+          <RelatedResources calculatorSlug="short-term-rental-roi-calculator" />
+
+{/* Related Resources */}
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">Related Calculators</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

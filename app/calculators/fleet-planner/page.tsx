@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
 import { Building2, Wrench, DollarSign, BarChart3 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export default function FleetPlanner() {
   const [properties, setProperties] = useState(10)
@@ -140,6 +141,8 @@ export default function FleetPlanner() {
       </div>
 
       <ToolRating toolSlug="fleet-planner" />
+
+          <RelatedResources calculatorSlug="multi-property-fleet-planner" />
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

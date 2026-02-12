@@ -1,0 +1,61 @@
+---
+title: "Z-Wave Range Troubleshooting: Fixing Offline Locks"
+description: "Is your smart lock showing 'Offline'? We explain Z-Wave Mesh, the 4-Hop Limit, and why you need a Repeater (and where to put it)."
+category: resources
+pubDate: 2024-05-20
+slug: troubleshooting-z-wave-range
+hero_image: /images/articles/zwave-mesh.jpg
+author: SmartLockHub Team
+keywords: [z-wave range extender, smart lock offline fix, z-wave mesh network healing, repeaters for smart locks, interference troubleshooting, 908 mhz frequency]
+tags: [how-to, troubleshooting]
+---
+
+## Executive Summary
+
+Z-Wave does not work like Wi-Fi. It is a **Mesh Network**.
+If your hub is in the office and your lock is at the front door, the signal might need to "hop" through a light switch or a plug to get there.
+
+If your lock is "Offline" or drains batteries in 2 weeks, your Mesh is weak.
+
+---
+
+## The "4-Hop" Limit
+
+Z-Wave messages can only jump **4 times**.
+*   **Hub** -> **Repeater 1** -> **Repeater 2** -> **Repeater 3** -> **Lock**.
+*   If the distance is too great, or if you have a concrete wall, the signal dies.
+
+## Troubleshooting Steps
+
+### 1. Run a "Network Heal"
+Z-Wave devices memorize their neighbors. If you move the hub, they get confused.
+*   **Fix**: Go to your Hub settings (SmartThings/Hubitat) and click **"Repair Z-Wave Network"** (or "Heal").
+*   **What it does**: Forces every device to say "Hello" to its neighbors and rebuild the map.
+
+### 2. The "Repeater" Solution
+Battery devices (Locks, Sensors) **DO NOT** repeat signals. They sleep to save power.
+You need **Mains Powered** devices to act as repeaters:
+*   **Light Switches** (Jasco/GE Enbrighten).
+*   **Plugs** (Minoston/Aeotec).
+*   **Dedicated Range Extenders** (Aeotec Range Extender 7).
+
+**Placement Rule**: Place the repeater **halfway** between the hub and the lock. Do not put it right next to the lock (the signal is already dead by then).
+
+### 3. Interference Assessment
+Z-Wave operates at **908.4 MHz** (US).
+*   **Good**: It doesn't fight with Wi-Fi (2.4 GHz).
+*   **Bad**: It fights with Baby Monitors and older Cordless Phones.
+*   **Metal Doors**: A metal door acts as a Faraday Cage. If your hub is *behind* the open door, and you close it, the signal is cut.
+
+---
+
+## Battery Drain = Weak Signal
+
+If a lock has a weak connection, it will scream.
+It tries to send the status update ("I locked!") at 100% power, fails, retries, fails, and retries again.
+*   **Symptom**: Batteries die in 2 weeks instead of 6 months.
+*   **Fix**: Add a repeater within 10 feet of the lock.
+
+## Related Tools
+*   **[Protocol Specs](/articles/resources/smart-home-protocol-specs-table)**: Comparing Z-Wave to Zigbee range.
+*   **[Battery Life Calculator](/calculators/battery-life-calculator)**: Estimate impact of signal strength.

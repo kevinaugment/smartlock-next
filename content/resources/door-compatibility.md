@@ -4,7 +4,7 @@ slug: standard-door-dimensions-table
 description: Quick reference for ANSI vs DIN door preparation standards.
 category: Resources
 tags: [data-table, standard]
-calculator_slug: door-compatibility-checker
+calculator_slug: door-lock-compatibility-checker
 ---
 
 ## Why this matters
@@ -25,12 +25,12 @@ Incorrect bore hole sizing is the #1 reason for smart lock installation failure.
 ---
 
 ---
-title: Lock Anatomy: Deep Dive
+title: "Lock Anatomy: Deep Dive"
 slug: lock-anatomy-glossary
 description: Understanding the key components of a deadbolt assembly.
 category: Resources
 tags: [glossary]
-calculator_slug: door-compatibility-checker
+calculator_slug: door-lock-compatibility-checker
 ---
 
 ## Core Components

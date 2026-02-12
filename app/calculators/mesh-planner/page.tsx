@@ -7,6 +7,7 @@ import {
   BarChart3, Radio, RefreshCw, BookOpen, DollarSign
 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export const metadata: Metadata = {
   title: 'Mesh Network Planner | Zigbee/Z-Wave Repeater Calculator for Smart Locks',
@@ -344,7 +345,10 @@ export default function MeshPlannerPage() {
             </div>
           </div>
 
-          {/* Related Resources */}
+          
+          <RelatedResources calculatorSlug="mesh-node-planner" />
+
+{/* Related Resources */}
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">Related Calculators</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

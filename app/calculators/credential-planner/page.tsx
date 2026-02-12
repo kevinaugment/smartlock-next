@@ -7,6 +7,7 @@ import {
   BookOpen, Landmark, Building2, AlertTriangle
 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Credential Capacity Planner | PIN/RFID/NFC Management Calculator',
@@ -373,7 +374,10 @@ export default function CredentialPlannerPage() {
             </div>
           </div>
 
-          {/* Related Resources */}
+          
+          <RelatedResources calculatorSlug="credential-capacity-planner" />
+
+{/* Related Resources */}
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">Related Calculators</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

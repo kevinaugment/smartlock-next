@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
 import { WifiOff, AlertTriangle, Lightbulb, Check } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export default function OfflineResilience() {
   const [protocol, setProtocol] = useState('zigbee')
@@ -210,6 +211,8 @@ export default function OfflineResilience() {
       </div>
 
       <ToolRating toolSlug="offline-resilience" />
+
+          <RelatedResources calculatorSlug="offline-resilience-scorecard" />
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

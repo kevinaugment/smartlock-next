@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
 import { Scale, Cloud, Home, Check, X } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
+import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export default function SubscriptionCompare() {
   const [doors, setDoors] = useState(10)
@@ -162,6 +163,8 @@ export default function SubscriptionCompare() {
       </div>
 
       <ToolRating toolSlug="subscription-compare" />
+
+          <RelatedResources calculatorSlug="subscription-vs-purchase-calculator" />
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

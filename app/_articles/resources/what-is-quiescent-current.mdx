@@ -1,0 +1,83 @@
+---
+title: "Understanding Quiescent Current: The Vampire That Kills Batteries"
+description: "Why 'doing nothing' is the hardest job for a smart lock. We explain Standby Leakage, Vampire Draw (µA), and why your batteries drain even if you never open the door."
+category: resources
+pubDate: 2024-05-20
+slug: what-is-quiescent-current
+hero_image: /images/articles/circuit-board.jpg
+author: SmartLockHub Team
+keywords: [quiescent current, smart lock battery drain, standby power, vampire draw, electronics leakage, battery life calculation, microamps]
+tags: [glossary, decision-guide]
+---
+
+## Executive Summary
+
+If you put a smart lock on a shelf and never touch it, the batteries will still die. Why?
+
+**Quiescent Current ($I_Q$)** is the tiny trickle of electricity required to keep the brain "alive" so it can wake up when you press a button. It is the metabolic rate of the device.
+
+In 99% of a smart lock's life, it is asleep. Therefore, optimizing Quiescent Current (measured in Micro-Amps, µA) is often more important than optimizing the Actuator Current (measured in Amps).
+
+---
+
+## The Math of "Doing Nothing"
+
+Let's run the numbers on a standard AA battery pack (2500 mAh).
+
+### Scenario A: The "Good" Design (Zigbee)
+*   **Quiescent Current**: **20 µA**.
+*   **Daily Sleep Drain**: 0.48 mAh/day.
+*   **Years to Drain (Idle)**: **14 Years** (Longer than the shelf life of the battery).
+*   **Result**: The battery is used almost entirely for *locking the door*.
+
+### Scenario B: The "Bad" Design (Cheap Wi-Fi)
+*   **Quiescent Current**: **200 µA** (Due to cheap LDO regulators).
+*   **Wakeups**: Wakes often to check Wi-Fi (High Duty Cycle).
+*   **Daily Sleep Drain**: 50 mAh/day equivalent.
+*   **Time to Drain (Idle)**: **50 Days**.
+*   **Result**: The battery dies in 2 months *even if you never use the lock*.
+
+---
+
+## Where does the power leak?
+
+### 1. The LDO (Linear Regulator)
+Batteries provide 6V. The chip needs 3.3V. A cheap **LDO** burns the excess 2.7V as heat.
+*   **Efficient Lock**: Uses a **Buck Converter** (95% efficient).
+*   **Cheap Lock**: Uses an LDO (50% efficient). Half your battery is turned into heat inside the door.
+
+### 2. The "Touch" Sensor
+Capacitive touch keypads are energy hogs.
+*   **Mechanism**: The chip must energize the keypad surface 10 times a second to detect a finger "hover."
+*   **Cost**: This adds ~50µA to the sleep current. This is why keypads often have shorter battery life than "App Only" locks.
+
+### 3. The "Polling" Trap
+The lock isn't always to blame.
+*   **Z-Wave Polling**: If your Smart Hub queries the lock status every 30 seconds, the lock enters a "Light Sleep" instead of "Deep Sleep."
+*   **Drain**: Current jumps from 20µA to 20mA. Battery life drops from 1 year to 3 weeks.
+
+---
+
+## Measuring Vampire Draw
+
+You cannot measure this with a standard $20 multimeter.
+1.  **Burden Voltage**: Standard meters add resistance. When the lock wakes up (drawing 1 Amp), the voltage drops across the meter, resetting the lock.
+2.  **Dynamic Range**: A meter set to "Amps" cannot see "Micro-Amps." A meter set to "Micro-Amps" will blow its fuse when the motor fires.
+3.  **The Tool**: You need an **Otii Arc** or **Joulescope**—specialized energy analyzers that can switch ranges in nanoseconds.
+
+---
+
+## Related Tools
+*   **[Battery Life Estimator](/calculators/battery-life-estimator)**: Input the µA and Motor Load to predict your exact lifespan.
+*   **[Protocol Power Draw](/articles/resources/protocol-power-draw-table)**: See which protocols have the lowest sleep current.
+
+## Frequently Asked Questions
+
+### Does cold weather increase Quiescent Current?
+No. The chip actually draws *less* current when cold (lower resistance). However, the **Battery Chemistry** fails. Cold increases the *Internal Resistance* of the battery. So even though the lock is sipping tinier amounts, the battery can't deliver it without the voltage collapsing.
+
+### Why do smart locks utilize 4 AA batteries instead of 2?
+Motor Torque. A smart lock needs to physically turn a deadbolt. That requires 6 Volts (4x 1.5V) to generate enough torque to overcome door friction. 3 Volts (2x 1.5V) is not enough to shove a sticky bolt.
+
+### What is the ideal Quiescent Current for a Smart Lock?
+**< 50 µA**. Anything under 50 is excellent. Anything over 100 means the firmware is sloppy or the hardware is cheap.

@@ -1,0 +1,101 @@
+---
+title: "Understanding Signal Strength (RSSI): Why 'Full Bars' Is A Lie"
+description: "Why does -70dBm mean 'Good' for Wi-Fi but 'Critical' for Zigbee? We decode the logarithmic math of RSSI vs LQI and why Signal-to-Noise Ratio matters more than raw power."
+category: resources
+pubDate: 2024-05-20
+slug: rssi-dbm-explained
+hero_image: /images/articles/rssi-signals.jpg
+author: SmartLockHub Team
+keywords: [rssi explained, smart lock signal strength, dbm values meaning, zigbee lqi vs rssi, signal to noise ratio, wifi signal strength for locks, lqi scale]
+tags: [glossary, standard]
+---
+
+## Executive Summary
+
+If your smart lock is "Offline" or your battery is dying in 3 weeks, the culprit is almost always **RSSI (Received Signal Strength Indicator)**.
+
+However, your app's "3 Bars" icon is misleading. RSSI is a negative logarithmic scale. A signal of **-73dBm** is not "slightly worse" than **-70dBm**—it is **half the strength**.
+
+This guide explains the difference between **Volume** (RSSI) and **Clarity** (LQI) so you can stop buying extenders that make the problem worse.
+
+---
+
+## The dBm Scale: A Logarithmic Cliff
+
+RSSI is measured in **dBm** (decibels-milliwatts). Closer to **0** is better.
+
+| RSSI Value | Signal Quality | Experience |
+| :--- | :--- | :--- |
+| **-30 to -50 dBm** | **Perfect** | Instant response. Zero packet loss. |
+| **-51 to -65 dBm** | **Good** | Standard reliable range. |
+| **-66 to -75 dBm** | **Fair** | Noticeable latency (2-3 sec). Minor battery drain from re-tries. |
+| **-76 to -90 dBm** | **Critical** | Frequent "Device Offline". Firmware updates will fail. |
+| **< -90 dBm** | **Dead Zone** | Device is effectively disconnected. |
+
+### The "3dB Rule"
+In radio physics, a change of **3dB** represents a **doubling or halving** of power.
+*   Moving a hub from behind a TV to a shelf might improve signal from -76dBm to -70dBm.
+*   That +6dB improvement means **4x stronger signal energy**.
+
+---
+
+## RSSI vs. LQI: The "Volume vs Clarity" Trap
+
+You check your Z-Wave dashboard (Hubitat/Home Assistant) and see your lock has **-60dBm** (Strong). But it still fails to unlock. Why?
+
+**Answer: LQI (Link Quality Indicator)**.
+
+*   **RSSI (Volme)**: How loud is the signal?
+*   **LQI (Clarity)**: How intelligible is the signal?
+
+### The "Noisy Room" Analogy
+Imagine you are at a rock concert.
+*   Your friend screams in your ear (**High RSSI / Loud**).
+*   But the band is playing loud music (**High Noise Floor**).
+*   You still can't understand what he said (**Low LQI / Bad Quality**).
+
+**Smart Lock Reality**: If your neighbor has a bad Wi-Fi router broadcasting on Channel 1, and your Zigbee lock is on Channel 11 (which overlaps), your lock hears the hub loud and clear (-60dBm), but the "Noise" destroys the data packets. **High signals do not fix interference.**
+
+---
+
+## Protocol Thresholds (The Danger Zone)
+
+Different radios have different sensitivities.
+
+### Wi-Fi Locks (Schlage Encode, August Wi-Fi)
+*   **Safe Zone**: > -65 dBm.
+*   **Why?**: Wi-Fi is high-bandwidth. It is complex complex modulation (QAM). It needs a very clean signal. At -70dBm, Wi-Fi radios struggle to maintain the handshake, causing them to wake up constantly and drain the battery.
+
+### Zigbee / Z-Wave (Yale Assure, Kwikset)
+*   **Safe Zone**: > -75 dBm.
+*   **Why?**: These are low-bandwidth, simple pulses (FSK/OQPSK). They can "hear" a command through static much better than Wi-Fi. A Zigbee lock at -75dBm is often more reliable than a Wi-Fi lock at -65dBm.
+
+---
+
+## Troubleshooting Checklist
+
+1.  **Check LQI, not just RSSI**:
+    *   If RSSI is good (-60) but LQI is low (<100 on a 0-255 scale), you have **Interference**. Change your Zigbee/Wi-Fi channel.
+    *   If RSSI is bad (-80) and LQI is low, you have **Distance/Obstruction**. You need a repeater.
+
+2.  **The "Human Body" Test**:
+    *   Stand between the hub and the lock. Your body (70% water) blocks RF. If the signal drops to critical levels when you walk by, your margin is too thin.
+
+3.  **The Repeater Fallacy**:
+    *   *Bad*: Putting a repeater right next to the lock. (It receives a bad signal and repeats a bad signal).
+    *   *Good*: Putting a repeater **halfway** between the hub and the lock.
+
+## Related Tools
+*   **[Signal Strength Analyzer](/calculators/signal-strength-analyzer)**: Input your wall materials to predict dBm loss.
+*   **[RF Interference Sources](/articles/resources/rf-interference-materials)**: See why your Stucco wall is a Faraday Cage.
+
+## Frequently Asked Questions
+
+### Why does my battery die so fast?
+Weak signal = Re-transmissions. If a lock has to ask "Did you hear me?" 5 times for every 1 time it sends a status, your battery life is cut by 80%. Fixing RSSI is the #1 way to extend battery life.
+
+### Is -100dBm better than -50dBm?
+No. Remember it's negative. -50 is hot/strong. -100 is cold/weak. Think of it like temperature (in Celsius) below zero. -5 degrees is bearable; -40 degrees is deadly.
+
+### Does Z-Wave Long Range help?
+Yes. Z-Wave LR uses **900MHz** (vs 2.4GHz). Lower frequency waves are physically larger and pass through walls/furniture more easily. A 900MHz signal often has 10dB better penetration through stucco than 2.4GHz.

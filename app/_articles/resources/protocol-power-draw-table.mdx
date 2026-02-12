@@ -1,0 +1,79 @@
+---
+title: "IoT Protocol Power Draw: Why Your Smart Lock Batteries Die So Fast"
+description: "Why does Wi-Fi kill batteries in 3 months while Zigbee lasts 18? We break down the physics of TX/RX currents, Connection Overhead, and the 'Sleep Ratio'."
+category: resources
+pubDate: 2024-05-20
+slug: protocol-power-draw-table
+hero_image: /images/articles/battery-power.jpg
+author: SmartLockHub Team
+keywords: [iot power consumption, smart lock battery life, zigbee vs wifi power, zwave active current, esp32 power draw, nrf52 current consumption]
+tags: [data-table, standard]
+---
+
+## Executive Summary
+
+Battery life is the #1 complaint in smart lock reviews. While users blame "cheap batteries," the physics dictates that the **Protocol Choice** determines 80% of longevity.
+
+A Wi-Fi lock is like a gas-guzzling V8 engine running at a stoplight. A Zigbee lock is a hybrid that turns off the engine when stopped. This guide breaks down the electrical engineering reality of why Wi-Fi locks burn through 4 AA batteries in 90 days.
+
+---
+
+## Current Consumption Table (Active vs Sleep)
+
+Values represent typical real-world consumption for modern chipsets (ESP32 for Wi-Fi, Silicon Labs MG21 for Zigbee).
+
+| Protocol | Sleep Current (Idle) | Active TX Current (Transmitting) | Connection Time (Overhead) | Energy Penalty |
+| :--- | :--- | :--- | :--- | :--- |
+| **Wi-Fi 4 (802.11n)** | ~100 µA | **160 - 260 mA** | **3,000 - 5,000 ms** | **Massive** |
+| **Zigbee 3.0** | ~5 µA | **30 - 50 mA** | **15 - 30 ms** | **Low** |
+| **Z-Wave Plus (700)** | ~10 µA | **35 - 45 mA** | **20 ms** | **Low** |
+| **Thread** | ~5 µA | **30 - 50 mA** | **20 ms** | **Low** |
+| **Bluetooth LE 5.0** | ~2 µA | **5 - 10 mA** | **500 ms** | **Lowest** |
+
+### The "Overhead" Killer
+The current (mA) is only half the story. The **Time** is the killer.
+*   **Zigbee Event**: Wakes up -> Chirps "Unlocked" (15ms) -> Sleeps.
+*   **Wi-Fi Event**: Wakes up -> Scans SSIDs -> Handshake (WPA2) -> DHCP (Get IP) -> ARP -> TLS Handshake -> Send Data -> Close. **Total Time: 5 Seconds**.
+*   **Result**: Even if the current were equal (it isn't), **Wi-Fi is awake 300x longer per event**.
+
+---
+
+## Battery Chemistry: Why 1.5V Isn't 1.5V
+
+Smart locks rely on the **Voltage Curve**. As a battery dies, its voltage drops. Wi-Fi radios (ESP32) are hungry; if voltage drops below 2.7V, they "Brown Out" (crash), even if the battery has 20% juice left.
+
+| Battery Type | Nominal Voltage | Capacity | Cold Weather Performance |
+| :--- | :--- | :--- | :--- |
+| **Alkaline (AA)** | 1.5V -> 0.9V | 2500 mAh | **Fails at 0°C** |
+| **Lithium Iron (AA)** | 1.5V (Flat) | 3000 mAh | **Excellent (-40°C)** |
+| **Rechargeable (NiMH)** | 1.2V | 2000 mAh | **Unusable** (Voltage too low calls "Low Battery" instantly) |
+
+---
+
+## Advanced Power Save Tricks
+
+### 1. Z-Wave FLiRS (Frequently Listening Routing Slave)
+Standard Z-Wave sensors sleep for 4 hours. A lock can't do that.
+*   **The Trick**: The lock wakes up every **250ms** for just 1ms to "sniff" the air. If it hears a specialized "Beam", it wakes up fully. If not, it sleeps.
+*   **Benefit**: <1 second latency with >99% sleep time.
+
+### 2. The "Polling Storm"
+Sometimes the Hub kills the lock.
+*   **Scenario**: A buggy SmartThings driver asks the lock "Are you locked?" every 5 seconds.
+*   **Result**: The radio never sleeps. Consumption jumps from 10µA to 40mA continuous.
+*   **Symptom**: Batteries die in 48 hours.
+
+## Related Tools
+*   **[Protocol Selection Wizard](/calculators/protocol-selection-wizard)**: Choose the right protocol for your climate and usage.
+*   **[Quiescent Current Guide](/articles/resources/what-is-quiescent-current)**: Learn about the vampire draw that depletes batteries while idle.
+
+## Frequently Asked Questions
+
+### Why do Wi-Fi locks exist if they are so inefficient?
+Convenience. They don't require a Hub. For a standard user buying 1 lock, changing batteries every 3 months is acceptable to avoid buying a $100 Hub. For a landlord with 50 locks, it is a maintenance nightmare.
+
+### Will Matter / Thread fix battery life?
+Yes. Thread uses the same low-power radio silicon (802.15.4) as Zigbee. A Matter-over-Thread lock will have the 18-month battery life of Zigbee with the IP-addressability of Wi-Fi. It is the "Holy Grail" of smart lock power.
+
+### Can I use Rechargeable Lithium (1.5V) batteries?
+Yes, but be careful. Active "Buck Converter" Li-ion batteries output a flat 1.5V until they die constantly. The lock will report "100%" battery for 6 months and then "0%" and die instantly, stranding you outside.

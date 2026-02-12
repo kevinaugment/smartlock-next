@@ -1,0 +1,84 @@
+---
+title: "Smart Home Protocol Specs: The Ultimate Technical Cheat Sheet (2025)"
+description: "Direct technical comparison of Z-Wave 800, Zigbee 3.0, Thread, and Wi-Fi 6. We compare frequency, bandwidth, max nodes, security encryption, and mesh capabilities."
+category: resources
+pubDate: 2024-05-20
+slug: smart-home-protocol-specs-table
+hero_image: /images/articles/protocol-specs.jpg
+author: SmartLockHub Team
+keywords: [smart home protocols, zwave 800 vs zigbee 3.0, thread matter protocol details, iot mesh network comparison, aes-128 encryption, smart lock security standards, wifi 6 iot]
+tags: [data-table, standard]
+---
+
+## Executive Summary
+
+Marketing fluff says "Seamless Connectivity." Engineers need to know Frequency, Max Hops, and Encryption standards.
+
+This guide is the definitive technical reference for the 4 major smart lock protocols. Use this to design networks that don't fail when you add your 50th device.
+
+---
+
+## Master Comparison Table
+
+| Specification | **Z-Wave (800 Series)** | **Zigbee 3.0** | **Thread (Matter)** | **Wi-Fi 6 (802.11ax)** |
+| :--- | :--- | :--- | :--- | :--- |
+| **Frequency** | **908.42 MHz** (Sub-1GHz) | 2.4 GHz (Global) | 2.4 GHz (IEEE 802.15.4) | 2.4 GHz / 5 GHz |
+| **PHY Layer** | FSK / OQPSK | O-QPSK | O-QPSK | OFDM / OFDMA |
+| **Range (Indoor)** | **Excellent** (Penetrates Brick) | **Fair** (Blocked by Walls) | **Fair** (Mesh extends it) | **Good** (High Power) |
+| **Max Nodes** | 4,000 (LR Mode) | ~65,000 (Practical: 200) | ~250 per subnet | 255 (Router limit) |
+| **Mesh Hops** | Max 4 Hops | Unlimited (Practical: 15) | Unlimited (IP Routing) | None (Star Topology) |
+| **Security** | **S2 (AES-128)** Mandatory | AES-128 + Trust Center | ChaCha20 / DTLS | WPA3 (SAE) |
+| **Addressing** | Proprietary Node ID | 16-bit Network Address | **IPv6** (Native IP) | IP Address (DHCP) |
+| **Interoperability** | **Extremely High** (Strict Cert) | Medium (Profiles) | **High** (Matter Layer) | Low (Proprietary Cloud) |
+
+---
+
+## Detailed Technical Analysis
+
+### 1. Frequency Physics (900 MHz vs 2.4 GHz)
+*   **Z-Wave (908 MHz)**: The "Golden Frequency." Its wavelength is ~33cm. It passes through furniture, water pipes, and people with minimal loss. It does not compete with your Wi-Fi router.
+*   **Zigbee/Thread (2.4 GHz)**: The "Jungle Frequency." Its wavelength is ~12cm. It competes with Wi-Fi, Bluetooth, Microwaves, and Baby Monitors. In a crowded apartment, 2.4GHz noise floors can reach -80dBm, drowning out smart locks.
+
+### 2. Mesh Architecture & Hops
+*   **Z-Wave Mesh**: Uses "Source Routing" (Hub calculates path). Deeply established but limited to 4 hops.
+*   **Thread**: A "Self-Healing" Mesh. Unlike Zigbee where a "Coordinator" failure kills the network, Thread has no single point of failure. Multiple devices can become "Border Routers." If one breaks, traffic re-routes instantly.
+
+### 3. Z-Wave Long Range (LR)
+The new 800-Series chips support **Z-Wave LR**.
+*   **Topology**: Star (Direct to Hub), not Mesh.
+*   **Power**: Increases output to +14dBm (limit of FCC).
+*   **Range**: Tested up to **1.5 Miles** Line-of-Sight.
+*   **Use Case**: Front gates, detached garages, mailboxes.
+
+---
+
+## The "Matter" Revolution
+
+**Matter** is not a radio protocol; it is the language spoken *over* the radio.
+*   **The Problem**: A Zigbee bulb speaks "Zigbee Cluster Library." A Z-Wave bulb speaks "Command Classes." They need a Hub to translate.
+*   **The Fix**: Matter runs over Thread and Wi-Fi. It unifies the command set.
+*   **Smart Lock Benefit**: A Matter-over-Thread lock works with Apple Home, Google Home, and Alexa simultaneously, with **Local Control** (no cloud latency).
+
+---
+
+## Which Should You Choose?
+
+*   **Concrete Walls / Large Home**: **Z-Wave 800**. The 900MHz physics wins every time.
+*   **Apple Ecosystem**: **Thread**. Apple HomeKit is built on Thread. It is fast, IP-based, and seamless.
+*   **Rental/Airbnb**: **Wi-Fi**. No Hub required. Simplicity for the owner is key.
+*   **Tech Enthusiast**: **Zigbee2MQTT**. Cheap sensors ($10), massive compatibility, open control.
+
+## Related Tools
+*   **[Protocol Selection Wizard](/calculators/protocol-selection-wizard)**: An interactive quiz to pick the best one for you.
+*   **[Mesh Topology Guide](/articles/resources/mesh-topology-guide)**: Visualizing the hops and repeater placement.
+
+## Frequently Asked Questions
+
+### Is Z-Wave dead?
+No. Z-Wave still dominates the professional security market (Alarm.com/Ring) because sub-GHz is more reliable for critical sensors than 2.4GHz. It will coexist with Matter.
+
+### Can Thread devices talk to Zigbee?
+Not directly. They use the same radio hardware (802.15.4) but different software languages. You need a Hub that supports both (like a specialized border router).
+
+### Does Wi-Fi 6 improve smart locks?
+Yes. Wi-Fi 6 introduces **TWT (Target Wake Time)**. It allows the router to tell the lock "Go to sleep for exactly 4 hours, then wake up." This could potentially double Wi-Fi lock battery life in the future.

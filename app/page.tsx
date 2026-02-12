@@ -173,7 +173,7 @@ export default function HomePage() {
                   <h3 className="icon-card__title">{calc.name}</h3>
                   <p className="icon-card__desc">{calc.description}</p>
                 </div>
-                <svg className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--color-text-muted)' }}>
+                <svg className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 transition-transform text-color-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </Link>

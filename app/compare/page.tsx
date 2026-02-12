@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
-  ArrowRight, Radio, Wifi, Home, Zap, CheckCircle, XCircle, GitCompareArrows
+  ArrowRight, CheckCircle, XCircle, GitCompareArrows
 } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -118,12 +118,12 @@ export default function ComparePage() {
               { q: 'Most Reliable', a: 'Z-Wave — dedicated frequency', protocol: 'zwave' as const },
               { q: 'Future-Proof', a: 'Thread — Matter compatible', protocol: 'thread' as const },
             ].map((item) => (
-              <div key={item.q} className="card" style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-md)' }}>
-                <div style={{ color: 'var(--color-accent)', marginTop: '2px' }}>
+              <div key={item.q} className="card flex items-start gap-4">
+                <div className="text-color-accent mt-0.5">
                   <CheckCircle className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-bold mb-1" style={{ color: 'var(--color-text-primary)' }}>{item.q}</h3>
+                  <h3 className="font-bold mb-1 text-color-primary">{item.q}</h3>
                   <p className={`text-sm font-medium ${protocolColors[item.protocol]}`}>
                     {item.a}
                   </p>
@@ -136,7 +136,7 @@ export default function ComparePage() {
         {/* Comparison Table */}
         <div className="mb-16">
           <h2 className="section-title">Detailed Comparison</h2>
-          <div className="card overflow-hidden" style={{ padding: 0 }}>
+          <div className="card overflow-hidden p-0">
             <div className="overflow-x-auto">
               <table className="data-table">
                 <thead>
@@ -152,11 +152,11 @@ export default function ComparePage() {
                 <tbody>
                   {comparisonRows.map((row) => (
                     <tr key={row.key}>
-                      <td className="font-medium" style={{ color: 'var(--color-text-primary)' }}>
+                      <td className="font-medium text-color-primary">
                         {row.label}
                       </td>
                       {protocols.map((p) => (
-                        <td key={p.name} className="mono-value" style={{ fontSize: '0.875rem' }}>
+                        <td key={p.name} className="mono-value text-sm">
                           {p[row.key]}
                         </td>
                       ))}
@@ -173,20 +173,20 @@ export default function ComparePage() {
           <h2 className="section-title section-title--center">Pros & Cons</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {protocols.map((protocol) => (
-              <div key={protocol.name} className="card" style={{ padding: 'var(--space-xl)' }}>
+              <div key={protocol.name} className="card">
                 <h3 className={`text-xl font-bold mb-4 ${protocolColors[protocol.color]}`}>
                   {protocol.name}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Pros */}
                   <div>
-                    <h4 className="text-sm font-bold uppercase mb-3" style={{ color: 'var(--color-success)', letterSpacing: '0.05em' }}>
+                    <h4 className="text-sm font-bold uppercase mb-3 text-color-success tracking-wider">
                       Advantages
                     </h4>
                     <ul className="space-y-2">
                       {protocol.pros.map((pro) => (
-                        <li key={pro} className="flex items-center gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                          <CheckCircle className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--color-success)' }} />
+                        <li key={pro} className="flex items-center gap-2 text-sm text-color-secondary">
+                          <CheckCircle className="w-4 h-4 flex-shrink-0 text-color-success" />
                           {pro}
                         </li>
                       ))}
@@ -194,13 +194,13 @@ export default function ComparePage() {
                   </div>
                   {/* Cons */}
                   <div>
-                    <h4 className="text-sm font-bold uppercase mb-3" style={{ color: 'var(--color-danger)', letterSpacing: '0.05em' }}>
+                    <h4 className="text-sm font-bold uppercase mb-3 text-color-danger tracking-wider">
                       Limitations
                     </h4>
                     <ul className="space-y-2">
                       {protocol.cons.map((con) => (
-                        <li key={con} className="flex items-center gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                          <XCircle className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--color-danger)' }} />
+                        <li key={con} className="flex items-center gap-2 text-sm text-color-secondary">
+                          <XCircle className="w-4 h-4 flex-shrink-0 text-color-danger" />
                           {con}
                         </li>
                       ))}

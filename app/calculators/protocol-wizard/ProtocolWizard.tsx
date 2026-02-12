@@ -182,15 +182,15 @@ export default function ProtocolWizard() {
   return (
     <div className="max-w-7xl mx-auto space-y-8">
       {/* Questionnaire */}
-      <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Requirements</h2>
+      <div className="card">
+        <h2 className="text-2xl font-bold text-color-primary mb-6">Your Requirements</h2>
 
         <div className="space-y-6">
           {/* Doors */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Number of Smart Locks: {answers.doors}</label>
-            <input type="range" min="1" max="30" value={answers.doors} onChange={(e) => setAnswers({ ...answers, doors: Number(e.target.value) })} className="w-full" />
-            <div className="flex justify-between text-xs text-gray-500 mt-1">
+            <label className="block text-sm font-medium text-color-secondary mb-2">Number of Smart Locks: {answers.doors}</label>
+            <input type="range" min="1" max="30" value={answers.doors} onChange={(e) => setAnswers({ ...answers, doors: Number(e.target.value) })} className="w-full accent-cyan-600" />
+            <div className="flex justify-between text-xs text-color-muted mt-1">
               <span>1 door</span>
               <span>30 doors</span>
             </div>
@@ -198,8 +198,8 @@ export default function ProtocolWizard() {
 
           {/* Environment */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Environment</label>
-            <select value={answers.environment} onChange={(e) => setAnswers({ ...answers, environment: e.target.value as any })} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
+            <label className="block text-sm font-medium text-color-secondary mb-2">Environment</label>
+            <select value={answers.environment} onChange={(e) => setAnswers({ ...answers, environment: e.target.value as any })} className="w-full px-4 py-3 border border-border rounded-lg bg-surface text-color-primary focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none">
               <option value="residential">Residential (Home/Apartment)</option>
               <option value="commercial">Commercial (Office/Building)</option>
               <option value="outdoor">Outdoor/Exposed Location</option>
@@ -208,8 +208,8 @@ export default function ProtocolWizard() {
 
           {/* Internet */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Internet Reliability</label>
-            <select value={answers.internet} onChange={(e) => setAnswers({ ...answers, internet: e.target.value as any })} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
+            <label className="block text-sm font-medium text-color-secondary mb-2">Internet Reliability</label>
+            <select value={answers.internet} onChange={(e) => setAnswers({ ...answers, internet: e.target.value as any })} className="w-full px-4 py-3 border border-border rounded-lg bg-surface text-color-primary focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none">
               <option value="excellent">Excellent (Fiber, stable Wi-Fi)</option>
               <option value="good">Good (Occasional outages)</option>
               <option value="unreliable">Unreliable (Frequent issues)</option>
@@ -218,8 +218,8 @@ export default function ProtocolWizard() {
 
           {/* Priority */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Top Priority</label>
-            <select value={answers.priority} onChange={(e) => setAnswers({ ...answers, priority: e.target.value as any })} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
+            <label className="block text-sm font-medium text-color-secondary mb-2">Top Priority</label>
+            <select value={answers.priority} onChange={(e) => setAnswers({ ...answers, priority: e.target.value as any })} className="w-full px-4 py-3 border border-border rounded-lg bg-surface text-color-primary focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none">
               <option value="battery">Battery Life (12+ months)</option>
               <option value="speed">Response Speed (&lt;200ms)</option>
               <option value="range">Range/Penetration (thick walls)</option>
@@ -229,8 +229,8 @@ export default function ProtocolWizard() {
 
           {/* Ecosystem */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Smart Home Ecosystem</label>
-            <select value={answers.ecosystem} onChange={(e) => setAnswers({ ...answers, ecosystem: e.target.value as any })} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
+            <label className="block text-sm font-medium text-color-secondary mb-2">Smart Home Ecosystem</label>
+            <select value={answers.ecosystem} onChange={(e) => setAnswers({ ...answers, ecosystem: e.target.value as any })} className="w-full px-4 py-3 border border-border rounded-lg bg-surface text-color-primary focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none">
               <option value="none">None (starting fresh)</option>
               <option value="homekit">Apple HomeKit</option>
               <option value="alexa">Amazon Alexa</option>
@@ -241,8 +241,8 @@ export default function ProtocolWizard() {
 
           {/* Technical */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Technical Skill Level</label>
-            <select value={answers.technical} onChange={(e) => setAnswers({ ...answers, technical: e.target.value as any })} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
+            <label className="block text-sm font-medium text-color-secondary mb-2">Technical Skill Level</label>
+            <select value={answers.technical} onChange={(e) => setAnswers({ ...answers, technical: e.target.value as any })} className="w-full px-4 py-3 border border-border rounded-lg bg-surface text-color-primary focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none">
               <option value="beginner">Beginner (plug-and-play)</option>
               <option value="intermediate">Intermediate (some setup OK)</option>
               <option value="expert">Expert (full control)</option>
@@ -254,7 +254,7 @@ export default function ProtocolWizard() {
       {/* Top Recommendation */}
       <div className={`bg-gradient-to-br ${getScoreColor(topChoice.score)} rounded-lg shadow-xl p-8 text-white`}>
         <div className="text-center mb-6">
-          <div className="text-5xl mb-2" style={{ color: 'var(--color-accent)' }}>★</div>
+          <div className="text-5xl mb-2 text-white/90">★</div>
           <h2 className="text-3xl font-bold mb-2">Recommended: {topChoice.name}</h2>
           <div className="text-xl opacity-90">{topChoice.match} ({topChoice.score}% compatibility)</div>
         </div>
@@ -281,31 +281,31 @@ export default function ProtocolWizard() {
       </div>
 
       {/* All Results */}
-      <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">All Protocol Comparisons</h2>
+      <div className="card">
+        <h2 className="text-2xl font-bold text-color-primary mb-6">All Protocol Comparisons</h2>
         <div className="space-y-4">
           {results.map((protocol, idx) => (
-            <div key={protocol.name} className={`border-2 rounded-lg p-6 ${idx === 0 ? 'border-blue-500 bg-blue-50' : 'border-gray-300'}`}>
+            <div key={protocol.name} className={`border-2 rounded-lg p-6 ${idx === 0 ? 'border-cyan-500 bg-cyan-50/10' : 'border-border'}`}>
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900">{idx + 1}. {protocol.name}</h3>
-                  <p className="text-sm text-gray-600">{protocol.match}</p>
+                  <h3 className="text-xl font-bold text-color-primary">{idx + 1}. {protocol.name}</h3>
+                  <p className="text-sm text-color-secondary">{protocol.match}</p>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl font-bold text-gray-900">{protocol.score}%</div>
-                  <div className="text-xs text-gray-500">Compatibility</div>
+                  <div className="text-3xl font-bold text-color-primary">{protocol.score}%</div>
+                  <div className="text-xs text-color-muted">Compatibility</div>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="font-semibold text-green-800 mb-1">Pros:</p>
-                  <ul className="text-gray-700 space-y-0.5">
+                  <p className="font-semibold text-color-success mb-1">Pros:</p>
+                  <ul className="text-color-secondary space-y-0.5">
                     {protocol.pros.map((pro, i) => <li key={i}>✓ {pro}</li>)}
                   </ul>
                 </div>
                 <div>
-                  <p className="font-semibold text-orange-800 mb-1">Cons:</p>
-                  <ul className="text-gray-700 space-y-0.5">
+                  <p className="font-semibold text-color-warning mb-1">Cons:</p>
+                  <ul className="text-color-secondary space-y-0.5">
                     {protocol.cons.map((con, i) => <li key={i}>• {con}</li>)}
                   </ul>
                 </div>

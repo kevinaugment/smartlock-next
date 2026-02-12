@@ -185,9 +185,9 @@ export default function CalculatorsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {categories.map((category) => (
                 <div key={category.name} className="card card-hover">
-                  <div className="mb-2" style={{ color: 'var(--color-accent)' }}>{category.icon}</div>
-                  <h3 className="font-semibold mb-1" style={{ color: 'var(--color-text-primary)' }}>{category.name}</h3>
-                  <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+                  <div className="mb-2 text-color-accent">{category.icon}</div>
+                  <h3 className="font-semibold mb-1 text-color-primary">{category.name}</h3>
+                  <p className="text-sm text-color-secondary">
                     {category.calculators.length} tool{category.calculators.length > 1 ? 's' : ''}
                   </p>
                 </div>
@@ -203,17 +203,15 @@ export default function CalculatorsPage() {
                 <Link
                   key={calculator.slug}
                   href={`/calculators/${calculator.slug}`}
-                  className="group block card card-hover overflow-hidden"
-                  style={{ padding: 0 }}
+                  className="group block card card-hover overflow-hidden p-0"
                 >
-                  <div style={{ padding: 'var(--space-xl)' }}>
+                  <div className="p-8">
                     {/* Header */}
                     <div className="flex items-start gap-4 mb-4">
-                      <div style={{ color: 'var(--color-accent)' }}>{calculator.icon}</div>
+                      <div className="text-color-accent">{calculator.icon}</div>
                       <div className="flex-1">
                         <h3
-                          className="text-lg font-bold mb-2 group-hover:text-[var(--color-accent)] transition-colors"
-                          style={{ color: 'var(--color-text-primary)' }}
+                          className="text-lg font-bold mb-2 text-color-primary group-hover:text-cyan-600 transition-colors"
                         >
                           {calculator.name}
                         </h3>
@@ -224,8 +222,7 @@ export default function CalculatorsPage() {
                         </div>
                       </div>
                       <svg
-                        className="w-5 h-5 group-hover:translate-x-1 transition-transform flex-shrink-0"
-                        style={{ color: 'var(--color-text-muted)' }}
+                        className="w-5 h-5 group-hover:translate-x-1 transition-transform flex-shrink-0 text-color-muted"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -235,7 +232,7 @@ export default function CalculatorsPage() {
                     </div>
 
                     {/* Description */}
-                    <p className="mb-4" style={{ color: 'var(--color-text-secondary)' }}>
+                    <p className="mb-4 text-color-secondary">
                       {calculator.description}
                     </p>
 
@@ -246,7 +243,7 @@ export default function CalculatorsPage() {
                           <svg className="feature-item__icon feature-item__icon--success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
-                          <span className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{feature}</span>
+                          <span className="text-sm text-color-secondary">{feature}</span>
                         </div>
                       ))}
                     </div>
@@ -254,13 +251,9 @@ export default function CalculatorsPage() {
 
                   {/* Footer */}
                   <div
-                    className="group-hover:bg-[var(--color-accent-subtle)] transition-colors"
-                    style={{
-                      padding: 'var(--space-md) var(--space-xl)',
-                      background: 'var(--color-bg-alt)',
-                    }}
+                    className="group-hover:bg-cyan-50 transition-colors p-4 px-8 bg-slate-50"
                   >
-                    <span className="font-semibold text-sm" style={{ color: 'var(--color-accent)' }}>
+                    <span className="font-semibold text-sm text-color-accent">
                       Try Calculator →
                     </span>
                   </div>
@@ -270,7 +263,7 @@ export default function CalculatorsPage() {
           </div>
 
           {/* Features Section */}
-          <div className="card-elevated mb-16" style={{ padding: 'var(--space-2xl)', background: 'var(--color-accent-subtle)' }}>
+          <div className="card-elevated mb-16 p-12 bg-cyan-50">
             <h2 className="section-title section-title--center">Why Use Our Calculators?</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
@@ -280,13 +273,12 @@ export default function CalculatorsPage() {
               ].map((f) => (
                 <div key={f.title} className="text-center">
                   <div
-                    className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4"
-                    style={{ background: 'var(--color-accent)', color: 'var(--color-text-on-accent)' }}
+                    className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 bg-cyan-600 text-white"
                   >
                     {f.icon}
                   </div>
-                  <h3 className="font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>{f.title}</h3>
-                  <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{f.desc}</p>
+                  <h3 className="font-semibold mb-2 text-color-primary">{f.title}</h3>
+                  <p className="text-sm text-color-secondary">{f.desc}</p>
                 </div>
               ))}
             </div>

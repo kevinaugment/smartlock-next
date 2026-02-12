@@ -90,14 +90,14 @@ export default function Resources() {
           </div>
 
           {/* External Resources */}
-          <div style={{ marginBottom: 'var(--space-4xl)' }}>
+          <div className="mb-24">
             <h2 className="section-title">External References</h2>
             <div className="grid md:grid-cols-2 gap-8">
               {sections.map(section => (
                 <div key={section.title} className="content-card">
-                  <div className="flex items-center gap-3" style={{ marginBottom: 'var(--space-lg)' }}>
-                    <span style={{ color: 'var(--color-accent)' }}>{section.icon}</span>
-                    <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>{section.title}</h3>
+                  <div className="flex items-center gap-3 mb-6">
+                    <span className="text-color-accent">{section.icon}</span>
+                    <h3 className="text-2xl font-bold text-color-primary">{section.title}</h3>
                   </div>
                   <ul className="space-y-4">
                     {section.resources.map(resource => (
@@ -110,7 +110,7 @@ export default function Resources() {
                         >
                           <div className="link-card__title">{resource.name}</div>
                           <div className="link-card__desc">{resource.description}</div>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--color-accent)', marginTop: 'var(--space-sm)' }}>Visit website →</div>
+                          <div className="text-xs text-color-accent mt-2 font-semibold">Visit website →</div>
                         </a>
                       </li>
                     ))}
@@ -121,17 +121,17 @@ export default function Resources() {
           </div>
 
           {/* Our Tools */}
-          <div style={{ marginBottom: 'var(--space-4xl)' }}>
+          <div className="mb-24">
             <h2 className="section-title">Our Tools</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {tools.map(tool => (
                 <Link key={tool.name} href={tool.url} className="link-card">
-                  <div className="flex items-start justify-between" style={{ marginBottom: 'var(--space-sm)' }}>
-                    <h3 className="link-card__title" style={{ fontSize: '1.25rem' }}>{tool.name}</h3>
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="link-card__title text-xl">{tool.name}</h3>
                     <span className="badge badge-accent">{tool.category}</span>
                   </div>
                   <p className="link-card__desc">{tool.description}</p>
-                  <div style={{ color: 'var(--color-accent)', fontWeight: 600, marginTop: 'var(--space-sm)' }}>
+                  <div className="text-color-accent font-semibold mt-2">
                     {tool.url.startsWith('/') ? 'Use Tool' : 'Visit'} →
                   </div>
                 </Link>
@@ -140,30 +140,30 @@ export default function Resources() {
           </div>
 
           {/* Knowledge Base */}
-          <div className="cta-section" style={{ marginBottom: 'var(--space-3xl)' }}>
+          <div className="cta-section mb-16">
             <h2 className="cta-section__title">Our Knowledge Base</h2>
             <p className="cta-section__subtitle">
               49+ comprehensive articles covering all aspects of smart lock technology
             </p>
-            <div className="grid md:grid-cols-3 gap-4" style={{ textAlign: 'left' }}>
-              <Link href="/articles/protocols" className="link-card" style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: 'var(--color-text-inverse)' }}>
-                <div style={{ fontWeight: 600, marginBottom: 'var(--space-xs)' }}>Protocols</div>
-                <div style={{ fontSize: '0.875rem', opacity: 0.8 }}>Z-Wave, Zigbee, Thread, Matter</div>
+            <div className="grid md:grid-cols-3 gap-4 text-left">
+              <Link href="/articles/protocols" className="link-card bg-white/10 border-0 text-color-inverse hover:bg-white/20">
+                <div className="font-semibold mb-1">Protocols</div>
+                <div className="text-sm opacity-80">Z-Wave, Zigbee, Thread, Matter</div>
               </Link>
-              <Link href="/articles/security" className="link-card" style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: 'var(--color-text-inverse)' }}>
-                <div style={{ fontWeight: 600, marginBottom: 'var(--space-xs)' }}>Security</div>
-                <div style={{ fontSize: '0.875rem', opacity: 0.8 }}>Encryption, vulnerabilities, best practices</div>
+              <Link href="/articles/security" className="link-card bg-white/10 border-0 text-color-inverse hover:bg-white/20">
+                <div className="font-semibold mb-1">Security</div>
+                <div className="text-sm opacity-80">Encryption, vulnerabilities, best practices</div>
               </Link>
-              <Link href="/articles/installation" className="link-card" style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: 'var(--color-text-inverse)' }}>
-                <div style={{ fontWeight: 600, marginBottom: 'var(--space-xs)' }}>Installation</div>
-                <div style={{ fontSize: '0.875rem', opacity: 0.8 }}>Setup guides and battery tips</div>
+              <Link href="/articles/installation" className="link-card bg-white/10 border-0 text-color-inverse hover:bg-white/20">
+                <div className="font-semibold mb-1">Installation</div>
+                <div className="text-sm opacity-80">Setup guides and battery tips</div>
               </Link>
             </div>
           </div>
 
           {/* Disclaimer */}
           <div className="callout callout-warning">
-            <p className="callout-title" style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+            <p className="callout-title flex items-center gap-2">
               <AlertTriangle className="w-5 h-5" /> Disclaimer
             </p>
             <p>

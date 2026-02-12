@@ -32,20 +32,20 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="page-bg" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="page-bg flex-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 mx-auto" style={{ borderBottom: '2px solid var(--color-accent)', marginBottom: 'var(--space-md)' }}></div>
-          <p style={{ color: 'var(--color-text-secondary)' }}>Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 mx-auto border-b-2 border-accent mb-4"></div>
+          <p className="text-color-secondary">Loading...</p>
         </div>
       </div>
     )
   }
 
   const stats = [
-    { label: 'Total Articles', value: '49', change: '+3 this week', changeColor: 'var(--color-success)', icon: FileText },
-    { label: 'Categories', value: '7', change: 'Active', changeColor: 'var(--color-text-muted)', icon: FolderOpen },
-    { label: 'Views Today', value: '1,234', change: '+12% vs yesterday', changeColor: 'var(--color-success)', icon: Eye },
-    { label: 'Calculators', value: '4', change: 'Interactive tools', changeColor: 'var(--color-text-muted)', icon: Calculator },
+    { label: 'Total Articles', value: '49', change: '+3 this week', changeColor: 'text-success-700', icon: FileText },
+    { label: 'Categories', value: '7', change: 'Active', changeColor: 'text-color-muted', icon: FolderOpen },
+    { label: 'Views Today', value: '1,234', change: '+12% vs yesterday', changeColor: 'text-success-700', icon: Eye },
+    { label: 'Calculators', value: '4', change: 'Interactive tools', changeColor: 'text-color-muted', icon: Calculator },
   ]
 
   const quickActions = [
@@ -58,23 +58,22 @@ export default function AdminDashboard() {
   return (
     <div>
       {/* Header */}
-      <header className="content-card" style={{ borderRadius: 0, position: 'sticky', top: 0, zIndex: 10 }}>
-        <div className="container mx-auto" style={{ padding: 'var(--space-md)' }}>
+      <header className="bg-surface border-b border-border sticky top-0 z-10 w-full shadow-sm">
+        <div className="container-main py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/" style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
+              <Link href="/" className="text-xl font-bold text-color-primary flex items-center gap-2">
                 <Lock className="w-6 h-6 inline" /> SLockHub.com
               </Link>
               <span className="badge badge-accent">Admin</span>
             </div>
             <div className="flex items-center gap-4">
-              <span style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>
+              <span className="text-sm text-color-secondary">
                 {user?.email}
               </span>
               <button
                 onClick={handleLogout}
-                className="badge badge-danger"
-                style={{ cursor: 'pointer', padding: 'var(--space-xs) var(--space-md)', fontSize: '0.875rem', fontWeight: 500 }}
+                className="badge badge-danger cursor-pointer hover:bg-danger-100 transition-colors"
               >
                 Logout
               </button>
@@ -84,27 +83,27 @@ export default function AdminDashboard() {
       </header>
 
       {/* Main Content */}
-      <div className="container mx-auto" style={{ padding: 'var(--space-xl) var(--space-md)' }}>
+      <div className="container-main py-8">
         {/* Welcome */}
-        <div style={{ marginBottom: 'var(--space-xl)' }}>
-          <h1 style={{ fontSize: '1.875rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-color-primary mb-2">
             Welcome back, {user?.email.split('@')[0]}!
           </h1>
-          <p style={{ color: 'var(--color-text-secondary)' }}>
+          <p className="text-color-secondary">
             Manage your SLockHub.com content and settings
           </p>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6" style={{ marginBottom: 'var(--space-xl)' }}>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           {stats.map(stat => (
             <div key={stat.label} className="card">
-              <div className="flex items-center justify-between" style={{ marginBottom: 'var(--space-xs)' }}>
-                <span style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)' }}>{stat.label}</span>
-                <span style={{ color: 'var(--color-accent)' }}><stat.icon className="w-6 h-6" /></span>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-color-secondary">{stat.label}</span>
+                <span className="text-color-accent"><stat.icon className="w-6 h-6" /></span>
               </div>
-              <p style={{ fontSize: '1.875rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>{stat.value}</p>
-              <p style={{ fontSize: '0.875rem', color: stat.changeColor, marginTop: '2px' }}>{stat.change}</p>
+              <p className="text-3xl font-bold text-color-primary">{stat.value}</p>
+              <p className={`text-sm mt-1 ${stat.changeColor}`}>{stat.change}</p>
             </div>
           ))}
         </div>
@@ -117,9 +116,9 @@ export default function AdminDashboard() {
               href={action.href}
               className="link-card group"
             >
-              <div className="flex items-center justify-between" style={{ marginBottom: 'var(--space-md)' }}>
-                <span style={{ color: 'var(--color-accent)' }}><action.icon className="w-10 h-10" /></span>
-                <span style={{ color: 'var(--color-accent)', opacity: 0 }} className="group-hover:opacity-100 transition-opacity">→</span>
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-color-accent"><action.icon className="w-10 h-10" /></span>
+                <span className="text-color-accent opacity-0 group-hover:opacity-100 transition-opacity">→</span>
               </div>
               <h3 className="link-card__title">{action.title}</h3>
               <p className="link-card__desc">{action.desc}</p>
@@ -130,22 +129,22 @@ export default function AdminDashboard() {
             href="/articles"
             className="link-card group"
           >
-            <div className="flex items-center justify-between" style={{ marginBottom: 'var(--space-md)' }}>
-              <span style={{ color: 'var(--color-success)' }}><Globe className="w-10 h-10" /></span>
-              <span style={{ color: 'var(--color-success)', opacity: 0 }} className="group-hover:opacity-100 transition-opacity">→</span>
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-color-success"><Globe className="w-10 h-10" /></span>
+              <span className="text-color-success opacity-0 group-hover:opacity-100 transition-opacity">→</span>
             </div>
             <h3 className="link-card__title">View Site</h3>
             <p className="link-card__desc">Browse the public website</p>
           </Link>
 
-          <div className="callout callout-info">
-            <div style={{ marginBottom: 'var(--space-md)' }}>
-              <span style={{ color: 'var(--color-accent)' }}><Lightbulb className="w-10 h-10" /></span>
+          <div className="callout callout-info mt-0 mb-0">
+            <div className="mb-4">
+              <span className="text-color-accent"><Lightbulb className="w-10 h-10" /></span>
             </div>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>
+            <h3 className="callout-title">
               Quick Tip
             </h3>
-            <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>
+            <p>
               Use Markdown format for rich content formatting in articles.
             </p>
           </div>

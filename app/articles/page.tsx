@@ -5,13 +5,13 @@ import { CATEGORIES } from '@/lib/articles/types';
 import { BookOpen, Clock, Calendar } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Knowledge Base - Smart Lock Hub',
+  title: 'Knowledge Base - SLockHub.com',
   description: 'Comprehensive smart lock guides, tutorials, and documentation covering protocols, security, installation, troubleshooting, and real-world applications.',
   alternates: { canonical: '/articles' },
   openGraph: {
-    title: 'Knowledge Base - Smart Lock Hub',
+    title: 'Knowledge Base - SLockHub.com',
     description: 'Comprehensive smart lock guides, tutorials, and documentation.',
-    siteName: 'Smart Lock Hub',
+    siteName: 'SLockHub.com',
     type: 'website',
   },
 }
@@ -28,7 +28,7 @@ export default function ArticlesPage() {
     '@type': 'CollectionPage',
     name: 'Smart Lock Knowledge Base',
     description: 'Comprehensive smart lock guides, tutorials, and documentation covering protocols, security, installation, troubleshooting, and real-world applications.',
-    url: 'https://smartlockhub.com/articles',
+    url: 'https://www.slockhub.com/articles',
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: articles.length,
@@ -36,7 +36,7 @@ export default function ArticlesPage() {
         '@type': 'ListItem',
         position: i + 1,
         name: article.title,
-        url: `https://smartlockhub.com/articles/${article.category}/${article.slug}`,
+        url: `https://www.slockhub.com/articles/${article.category}/${article.slug}`,
       })),
     },
   }

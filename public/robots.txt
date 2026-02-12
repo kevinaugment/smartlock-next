@@ -1,4 +1,4 @@
-# robots.txt for Smart Lock Hub
+# robots.txt for SLockHub.com
 
 User-agent: *
 Allow: /
@@ -11,7 +11,7 @@ Disallow: /admin/
 Disallow: /api/auth/
 
 # Sitemap
-Sitemap: https://smartlockhub.com/sitemap.xml
+Sitemap: https://www.slockhub.com/sitemap.xml
 
 # Crawl delay
 Crawl-delay: 1

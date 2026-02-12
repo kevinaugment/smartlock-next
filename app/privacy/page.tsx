@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy - Smart Lock Hub',
-  description: 'Smart Lock Hub privacy policy — how we collect, use, and protect your information.',
+  title: 'Privacy Policy - SLockHub.com',
+  description: 'SLockHub.com privacy policy — how we collect, use, and protect your information.',
   alternates: { canonical: '/privacy' },
 }
 
@@ -18,7 +18,7 @@ export default function Privacy() {
             <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
               <h2 className="section-title">Overview</h2>
               <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
-                Smart Lock Hub (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy.
+                SLockHub.com (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy.
                 This Privacy Policy explains how we collect, use, and safeguard your information
                 when you visit our website.
               </p>
@@ -103,7 +103,7 @@ export default function Privacy() {
               <h2 className="section-title">Contact Us</h2>
               <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
                 If you have questions about this Privacy Policy or wish to exercise your rights,
-                please contact us at <a href="mailto:privacy@smartlockhub.com" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>privacy@smartlockhub.com</a>
+                please contact us at <a href="mailto:privacy@slockhub.com" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>privacy@slockhub.com</a>
               </p>
             </div>
           </div>

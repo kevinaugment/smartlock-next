@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = {
-    title: 'FAQ - Smart Lock Hub',
+    title: 'FAQ - SLockHub.com',
     description: 'Frequently asked questions about smart lock systems — protocols, battery life, security, installation, and more.',
     alternates: { canonical: '/faq' },
 }

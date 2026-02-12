@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Sitemap - Smart Lock Hub',
-  description: 'Complete sitemap of Smart Lock Hub — browse all articles, calculators, guides, and tools.',
+  title: 'Sitemap - SLockHub.com',
+  description: 'Complete sitemap of SLockHub.com — browse all articles, calculators, guides, and tools.',
   alternates: { canonical: '/sitemap' },
 }
 
@@ -42,7 +42,7 @@ export default function Sitemap() {
         <div className="max-w-6xl mx-auto">
           <h1 className="page-header__title" style={{ marginBottom: 'var(--space-md)' }}>Sitemap</h1>
           <p className="page-subtitle" style={{ marginBottom: 'var(--space-3xl)' }}>
-            Complete overview of all pages on Smart Lock Hub
+            Complete overview of all pages on SLockHub.com
           </p>
 
           <div className="grid md:grid-cols-2 gap-8">

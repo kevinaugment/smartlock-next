@@ -23,9 +23,9 @@ export default function SignalStrengthPage() {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://smartlockhub.com' },
-      { '@type': 'ListItem', position: 2, name: 'Calculators', item: 'https://smartlockhub.com/calculators' },
-      { '@type': 'ListItem', position: 3, name: 'Signal Strength Calculator', item: 'https://smartlockhub.com/calculators/signal-strength' }
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.slockhub.com' },
+      { '@type': 'ListItem', position: 2, name: 'Calculators', item: 'https://www.slockhub.com/calculators' },
+      { '@type': 'ListItem', position: 3, name: 'Signal Strength Calculator', item: 'https://www.slockhub.com/calculators/signal-strength' }
     ]
   }
 
@@ -95,6 +95,8 @@ export default function SignalStrengthPage() {
           </div>
 
           <SignalCalculator />
+
+          <ToolRating toolSlug="signal-strength" />
 
           {/* Be-Tech Brand Recommendation */}
           <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-xl)' }}>
@@ -429,7 +431,7 @@ export default function SignalStrengthPage() {
           </div>
 
           {/* Technical References */}
-          <div className="max-w-4xl mx-auto" style={{ marginTop: 'var(--space-3xl)', marginBottom: 'var(--space-3xl)' }}>
+          <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)', marginBottom: 'var(--space-3xl)' }}>
             <div className="info-box">
               <div className="flex items-center justify-between" style={{ marginBottom: 'var(--space-lg)' }}>
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)', display: 'inline-flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
@@ -500,8 +502,6 @@ export default function SignalStrengthPage() {
           </div>
         </div>
       </div>
-
-      <ToolRating toolSlug="signal-strength" />
     </>
   )
 }

@@ -63,7 +63,7 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link href="/" style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
-                <Lock className="w-6 h-6 inline" /> Smart Lock Hub
+                <Lock className="w-6 h-6 inline" /> SLockHub.com
               </Link>
               <span className="badge badge-accent">Admin</span>
             </div>
@@ -91,7 +91,7 @@ export default function AdminDashboard() {
             Welcome back, {user?.email.split('@')[0]}!
           </h1>
           <p style={{ color: 'var(--color-text-secondary)' }}>
-            Manage your Smart Lock Hub content and settings
+            Manage your SLockHub.com content and settings
           </p>
         </div>
 

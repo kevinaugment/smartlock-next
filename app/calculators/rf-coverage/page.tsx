@@ -149,6 +149,8 @@ export default function RFCoverage() {
         </div>
       </div>
 
+      <ToolRating toolSlug="rf-coverage" />
+
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation
         description="Be-Tech locks feature excellent RF signal quality and mesh network support across all protocols. Optimized antenna design ensures reliable coverage even in challenging environments."
@@ -160,10 +162,6 @@ export default function RFCoverage() {
         <Link href="/calculators" style={{ color: "var(--color-accent)", fontWeight: 500 }}>
           ← Back to All Calculators
         </Link>
-      </div>
-
-      <div className="container-main">
-        <ToolRating toolSlug="rf-coverage" />
       </div>
     </div>
   )

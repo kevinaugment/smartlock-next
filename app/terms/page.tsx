@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service - Smart Lock Hub',
-  description: 'Terms of Service for Smart Lock Hub. Read about acceptable use, content, and liability.',
+  title: 'Terms of Service - SLockHub.com',
+  description: 'Terms of Service for SLockHub.com. Read about acceptable use, content, and liability.',
   alternates: { canonical: '/terms' },
 }
 
@@ -18,7 +18,7 @@ export default function Terms() {
             <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
               <h2 className="section-title">Acceptance of Terms</h2>
               <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
-                By accessing and using Smart Lock Hub, you accept and agree to be bound by these
+                By accessing and using SLockHub.com, you accept and agree to be bound by these
                 Terms of Service. If you do not agree to these terms, please do not use our website.
               </p>
             </div>
@@ -47,7 +47,7 @@ export default function Terms() {
             <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
               <h2 className="section-title">Content and Intellectual Property</h2>
               <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-md)' }}>
-                All content on Smart Lock Hub, including articles, calculators, designs, and code,
+                All content on SLockHub.com, including articles, calculators, designs, and code,
                 is owned by us or our licensors and protected by copyright law.
               </p>
               <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
@@ -59,7 +59,7 @@ export default function Terms() {
             <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
               <h2 className="section-title">Disclaimer of Warranties</h2>
               <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-md)' }}>
-                Smart Lock Hub is provided &quot;as is&quot; without warranties of any kind, either express or implied.
+                SLockHub.com is provided &quot;as is&quot; without warranties of any kind, either express or implied.
               </p>
               <ul className="space-y-2" style={{ color: 'var(--color-text-secondary)' }}>
                 <li>• We do not guarantee accuracy of all information</li>
@@ -85,7 +85,7 @@ export default function Terms() {
             <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
               <h2 className="section-title">Limitation of Liability</h2>
               <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
-                To the maximum extent permitted by law, Smart Lock Hub shall not be liable for any
+                To the maximum extent permitted by law, SLockHub.com shall not be liable for any
                 indirect, incidental, special, consequential, or punitive damages, or any loss of
                 profits or revenues, whether incurred directly or indirectly, or any loss of data,
                 use, goodwill, or other intangible losses.
@@ -121,8 +121,8 @@ export default function Terms() {
               <h2 className="section-title">Contact</h2>
               <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
                 Questions about these Terms? Contact us at{' '}
-                <a href="mailto:legal@smartlockhub.com" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
-                  legal@smartlockhub.com
+                <a href="mailto:legal@slockhub.com" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
+                  legal@slockhub.com
                 </a>
               </p>
             </div>

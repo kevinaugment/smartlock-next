@@ -18,9 +18,9 @@ export default function InstallationCostPage() {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://smartlockhub.com' },
-      { '@type': 'ListItem', position: 2, name: 'Calculators', item: 'https://smartlockhub.com/calculators' },
-      { '@type': 'ListItem', position: 3, name: 'Installation Cost', item: 'https://smartlockhub.com/calculators/installation-cost' }
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.slockhub.com' },
+      { '@type': 'ListItem', position: 2, name: 'Calculators', item: 'https://www.slockhub.com/calculators' },
+      { '@type': 'ListItem', position: 3, name: 'Installation Cost', item: 'https://www.slockhub.com/calculators/installation-cost' }
     ]
   }
 
@@ -84,6 +84,8 @@ export default function InstallationCostPage() {
           </div>
 
           <CostCalculator />
+
+          <ToolRating toolSlug="installation-cost" />
 
           {/* Be-Tech Brand */}
           <div className="max-w-7xl mx-auto mt-8">
@@ -270,8 +272,6 @@ export default function InstallationCostPage() {
           </div>
         </div>
       </div>
-
-      <ToolRating toolSlug="installation-cost" />
     </>
   )
 }

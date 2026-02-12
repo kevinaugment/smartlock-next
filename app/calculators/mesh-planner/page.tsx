@@ -19,9 +19,9 @@ export default function MeshPlannerPage() {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://smartlockhub.com' },
-      { '@type': 'ListItem', position: 2, name: 'Calculators', item: 'https://smartlockhub.com/calculators' },
-      { '@type': 'ListItem', position: 3, name: 'Mesh Planner', item: 'https://smartlockhub.com/calculators/mesh-planner' }
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.slockhub.com' },
+      { '@type': 'ListItem', position: 2, name: 'Calculators', item: 'https://www.slockhub.com/calculators' },
+      { '@type': 'ListItem', position: 3, name: 'Mesh Planner', item: 'https://www.slockhub.com/calculators/mesh-planner' }
     ]
   }
 
@@ -68,6 +68,8 @@ export default function MeshPlannerPage() {
           </div>
 
           <MeshPlanner />
+
+          <ToolRating toolSlug="mesh-planner" />
 
           {/* Be-Tech Brand */}
           <div className="max-w-7xl mx-auto mt-12">
@@ -365,7 +367,7 @@ export default function MeshPlannerPage() {
           </div>
 
           {/* Data Sources */}
-          <div className="max-w-4xl mx-auto mt-12 mb-12">
+          <div className="max-w-7xl mx-auto mt-12 mb-12">
             <div className="info-box">
               <div className="flex items-center justify-between mb-6">
                 <h3 style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--color-text-primary)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><BookOpen className="w-6 h-6" style={{ color: "var(--color-accent)" }} /> Technical Standards & Sources</h3>
@@ -459,8 +461,6 @@ export default function MeshPlannerPage() {
           </div>
         </div>
       </div>
-
-      <ToolRating toolSlug="mesh-planner" />
     </>
   )
 }

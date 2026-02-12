@@ -12,7 +12,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Lock className="w-6 h-6" style={{ color: 'var(--color-accent)' }} />
-              <span className="text-lg font-bold" style={{ color: 'var(--color-text-inverse)' }}>Smart Lock Hub</span>
+              <span className="text-lg font-bold" style={{ color: 'var(--color-text-inverse)' }}>SLockHub.com</span>
             </div>
             <p className="text-sm mb-4" style={{ color: 'var(--color-text-muted)' }}>
               Your comprehensive resource for smart lock knowledge, tools, and expert guidance.
@@ -68,7 +68,7 @@ export default function Footer() {
         <div className="mt-8 pt-8" style={{ borderTop: '1px solid var(--color-bg-dark-secondary)' }}>
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
-              © {currentYear} Smart Lock Hub. All rights reserved.
+              © {currentYear} SLockHub.com. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm">
               <Link href="/sitemap">Sitemap</Link>

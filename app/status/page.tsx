@@ -4,8 +4,8 @@ import { queryOne, query } from '@/lib/db'
 import { Search, CheckCircle, XCircle, HelpCircle } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'System Status - Smart Lock Hub',
-  description: 'Real-time status of Smart Lock Hub services and database connectivity.',
+  title: 'System Status - SLockHub.com',
+  description: 'Real-time status of SLockHub.com services and database connectivity.',
   robots: 'noindex',
 }
 
@@ -71,7 +71,7 @@ export default async function StatusPage() {
             <div className="page-header__icon"><Search className="w-8 h-8" /></div>
             <h1 className="page-header__title">System Status</h1>
             <p className="page-header__subtitle">
-              Real-time status of Smart Lock Hub services
+              Real-time status of SLockHub.com services
             </p>
           </div>
 

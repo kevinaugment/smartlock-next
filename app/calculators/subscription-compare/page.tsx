@@ -161,6 +161,8 @@ export default function SubscriptionCompare() {
         </div>
       </div>
 
+      <ToolRating toolSlug="subscription-compare" />
+
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation
         description="Be-Tech offers both cloud-connected and local-only options, giving you flexibility in deployment models. No mandatory subscriptions for core functionality."
@@ -172,10 +174,6 @@ export default function SubscriptionCompare() {
         <Link href="/calculators" style={{ color: "var(--color-accent)", fontWeight: 500 }}>
           ← Back to All Calculators
         </Link>
-      </div>
-
-      <div className="container-main">
-        <ToolRating toolSlug="subscription-compare" />
       </div>
     </div>
   )

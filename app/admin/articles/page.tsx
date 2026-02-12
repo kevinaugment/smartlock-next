@@ -65,7 +65,7 @@ export default function ArticlesManagement() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link href="/admin" style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
-                Smart Lock Hub
+                SLockHub.com
               </Link>
               <span className="badge badge-accent">Articles</span>
             </div>

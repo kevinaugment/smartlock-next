@@ -24,13 +24,13 @@ export async function generateMetadata({
     return { title: 'Category Not Found' };
   }
   return {
-    title: `${categoryInfo.name} - Smart Lock Hub`,
+    title: `${categoryInfo.name} - SLockHub.com`,
     description: categoryInfo.description,
     alternates: { canonical: `/articles/${params.category}` },
     openGraph: {
-      title: `${categoryInfo.name} - Smart Lock Hub`,
+      title: `${categoryInfo.name} - SLockHub.com`,
       description: categoryInfo.description,
-      siteName: 'Smart Lock Hub',
+      siteName: 'SLockHub.com',
       type: 'website',
     },
   };
@@ -57,9 +57,9 @@ export default function CategoryPage({
   const collectionSchema = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: `${category.name} - Smart Lock Hub`,
+    name: `${category.name} - SLockHub.com`,
     description: category.description,
-    url: `https://smartlockhub.com/articles/${params.category}`,
+    url: `https://www.slockhub.com/articles/${params.category}`,
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: sortedArticles.length,
@@ -67,7 +67,7 @@ export default function CategoryPage({
         '@type': 'ListItem',
         position: i + 1,
         name: article.title,
-        url: `https://smartlockhub.com/articles/${params.category}/${article.slug}`,
+        url: `https://www.slockhub.com/articles/${params.category}/${article.slug}`,
       })),
     },
   }

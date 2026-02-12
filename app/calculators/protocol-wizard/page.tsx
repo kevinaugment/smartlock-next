@@ -15,9 +15,9 @@ export default function ProtocolWizardPage() {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://smartlockhub.com' },
-      { '@type': 'ListItem', position: 2, name: 'Calculators', item: 'https://smartlockhub.com/calculators' },
-      { '@type': 'ListItem', position: 3, name: 'Protocol Wizard', item: 'https://smartlockhub.com/calculators/protocol-wizard' }
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.slockhub.com' },
+      { '@type': 'ListItem', position: 2, name: 'Calculators', item: 'https://www.slockhub.com/calculators' },
+      { '@type': 'ListItem', position: 3, name: 'Protocol Wizard', item: 'https://www.slockhub.com/calculators/protocol-wizard' }
     ]
   }
 
@@ -80,6 +80,8 @@ export default function ProtocolWizardPage() {
           </div>
 
           <ProtocolWizard />
+
+          <ToolRating toolSlug="protocol-wizard" />
 
           {/* Be-Tech Brand */}
           <div className="max-w-7xl mx-auto mt-12">
@@ -368,8 +370,6 @@ export default function ProtocolWizardPage() {
           </div>
         </div>
       </div>
-
-      <ToolRating toolSlug="protocol-wizard" />
     </>
   )
 }

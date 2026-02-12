@@ -50,7 +50,7 @@ export default function LoginPage() {
         <div className="text-center" style={{ marginBottom: 'var(--space-xl)' }}>
           <Link href="/" className="inline-block">
             <h1 style={{ fontSize: '2.25rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>
-              Smart Lock Hub
+              SLockHub.com
             </h1>
           </Link>
           <p style={{ color: 'var(--color-text-secondary)' }}>Admin Portal</p>

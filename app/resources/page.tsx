@@ -5,7 +5,7 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Resources - Smart Lock Hub',
+  title: 'Resources - SLockHub.com',
   description: 'Curated resources, tools, and references for smart lock technology.',
   alternates: { canonical: '/resources' },
 }

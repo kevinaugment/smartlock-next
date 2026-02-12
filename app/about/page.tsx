@@ -6,8 +6,8 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'About - Smart Lock Hub',
-  description: 'Learn about Smart Lock Hub — your comprehensive resource for smart lock knowledge, tools, and expert guidance.',
+  title: 'About - SLockHub.com',
+  description: 'Learn about SLockHub.com — your comprehensive resource for smart lock knowledge, tools, and expert guidance.',
   alternates: { canonical: '/about' },
 }
 
@@ -21,7 +21,7 @@ export default function AboutPage() {
           <div className="page-header__icon">
             <Info className="w-10 h-10" />
           </div>
-          <h1 className="page-header__title">About Smart Lock Hub</h1>
+          <h1 className="page-header__title">About SLockHub.com</h1>
           <p className="page-header__subtitle">
             Your comprehensive resource for smart lock knowledge, tools, and expert guidance
           </p>

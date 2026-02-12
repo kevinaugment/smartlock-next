@@ -14,17 +14,17 @@ const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Smart Lock Hub',
-    url: 'https://smartlockhub.com',
-    logo: 'https://smartlockhub.com/favicon.svg',
+    name: 'SLockHub.com',
+    url: 'https://www.slockhub.com',
+    logo: 'https://www.slockhub.com/favicon.svg',
     description: 'Comprehensive smart lock guides covering protocols, security, installation, troubleshooting, and real-world applications.',
     sameAs: [],
   },
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Smart Lock Hub',
-    url: 'https://smartlockhub.com',
+    name: 'SLockHub.com',
+    url: 'https://www.slockhub.com',
   },
 ]
 

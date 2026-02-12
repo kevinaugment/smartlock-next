@@ -444,6 +444,8 @@ export default function TCOCalculator() {
           </div>
         </div>
 
+        <ToolRating toolSlug="lock-tco" />
+
         {/* Hidden Costs Warning */}
         <div className="max-w-7xl mx-auto mt-8">
           <div className="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-6">
@@ -474,8 +476,6 @@ export default function TCOCalculator() {
             </Link>
           </div>
         </div>
-
-        <ToolRating toolSlug="lock-tco" />
       </div>
     </div>
   )

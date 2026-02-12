@@ -134,6 +134,8 @@ export default function InstallationTime() {
         </div>
       </div>
 
+      <ToolRating toolSlug="installation-time" />
+
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation
         description="Be-Tech locks feature easy installation with clear documentation and professional installer support. Most installations can be completed in 30-45 minutes per door."
@@ -145,10 +147,6 @@ export default function InstallationTime() {
         <Link href="/calculators" style={{ color: "var(--color-accent)", fontWeight: 500 }}>
           ← Back to All Calculators
         </Link>
-      </div>
-
-      <div className="container-main">
-        <ToolRating toolSlug="installation-time" />
       </div>
     </div>
   )

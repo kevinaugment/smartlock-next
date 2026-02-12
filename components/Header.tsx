@@ -15,7 +15,7 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-2 group">
             <Lock className="w-6 h-6" style={{ color: 'var(--color-accent)' }} />
             <span className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-text-primary)' }}>
-              Smart Lock Hub
+              SLockHub.com
             </span>
           </Link>
 

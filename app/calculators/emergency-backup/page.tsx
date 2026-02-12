@@ -257,6 +257,8 @@ export default function EmergencyBackup() {
         </div>
       </div>
 
+      <ToolRating toolSlug="emergency-backup" />
+
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation
         description="Be-Tech smart locks feature multiple backup access methods including physical keys, backup PINs, 9V emergency power, and offline operation capabilities for maximum security."
@@ -268,10 +270,6 @@ export default function EmergencyBackup() {
         <Link href="/calculators" style={{ color: "var(--color-accent)", fontWeight: 500 }}>
           ← Back to All Calculators
         </Link>
-      </div>
-
-      <div className="container-main">
-        <ToolRating toolSlug="emergency-backup" />
       </div>
     </div>
   )

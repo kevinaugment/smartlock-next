@@ -5,7 +5,7 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Brands - Smart Lock Hub',
+  title: 'Smart Lock Brands - SLockHub.com',
   description: 'Overview of major smart lock brands and manufacturers with protocol support and best use cases.',
   alternates: { canonical: '/brands' },
 }

@@ -6,7 +6,7 @@ export async function GET() {
     JSON.stringify({
       status: 'ok',
       timestamp: new Date().toISOString(),
-      service: 'Smart Lock Hub',
+      service: 'SLockHub.com',
       version: '1.0.0',
     }),
     {

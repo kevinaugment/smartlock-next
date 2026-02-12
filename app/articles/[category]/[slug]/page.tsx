@@ -36,23 +36,23 @@ export async function generateMetadata({
   }
 
   const categoryInfo = CATEGORIES[article.category];
-  const baseUrl = 'https://smartlockhub.com';
+  const baseUrl = 'https://www.slockhub.com';
   const articleUrl = `${baseUrl}/articles/${article.category}/${article.slug}`;
 
   return {
-    title: `${article.title} | Smart Lock Hub`,
+    title: `${article.title} | SLockHub.com`,
     description: article.description,
     keywords: article.keywords.join(', '),
-    authors: [{ name: article.author || 'Smart Lock Hub' }],
+    authors: [{ name: article.author || 'SLockHub.com' }],
     openGraph: {
       title: article.title,
       description: article.description,
       url: articleUrl,
-      siteName: 'Smart Lock Hub',
+      siteName: 'SLockHub.com',
       type: 'article',
       publishedTime: article.pubDate,
       modifiedTime: article.updatedAt || article.pubDate,
-      authors: [article.author || 'Smart Lock Hub'],
+      authors: [article.author || 'SLockHub.com'],
       tags: article.tags,
     },
     twitter: {
@@ -119,22 +119,22 @@ export default async function ArticlePage({
               dateModified: article.updatedAt || article.pubDate,
               author: {
                 '@type': 'Organization',
-                name: 'Smart Lock Hub',
-                url: 'https://smartlockhub.com',
+                name: 'SLockHub.com',
+                url: 'https://www.slockhub.com',
               },
               publisher: {
                 '@type': 'Organization',
-                name: 'Smart Lock Hub',
-                url: 'https://smartlockhub.com',
+                name: 'SLockHub.com',
+                url: 'https://www.slockhub.com',
               },
-              mainEntityOfPage: `https://smartlockhub.com/articles/${article.category}/${article.slug}`,
+              mainEntityOfPage: `https://www.slockhub.com/articles/${article.category}/${article.slug}`,
             },
             {
               '@context': 'https://schema.org',
               '@type': 'BreadcrumbList',
               itemListElement: [
-                { '@type': 'ListItem', position: 1, name: 'Articles', item: 'https://smartlockhub.com/articles' },
-                { '@type': 'ListItem', position: 2, name: categoryInfo.name, item: `https://smartlockhub.com/articles/${article.category}` },
+                { '@type': 'ListItem', position: 1, name: 'Articles', item: 'https://www.slockhub.com/articles' },
+                { '@type': 'ListItem', position: 2, name: categoryInfo.name, item: `https://www.slockhub.com/articles/${article.category}` },
                 { '@type': 'ListItem', position: 3, name: article.title },
               ],
             },

@@ -29,19 +29,19 @@ export default function BatteryLifePage() {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://smartlockhub.com'
+        item: 'https://www.slockhub.com'
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Calculators',
-        item: 'https://smartlockhub.com/calculators'
+        item: 'https://www.slockhub.com/calculators'
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: 'Battery Life Calculator',
-        item: 'https://smartlockhub.com/calculators/battery-life'
+        item: 'https://www.slockhub.com/calculators/battery-life'
       }
     ]
   }
@@ -143,6 +143,8 @@ export default function BatteryLifePage() {
 
           {/* Calculator Component */}
           <BatteryCalculator />
+
+          <ToolRating toolSlug="battery-life" />
 
           {/* Be-Tech Brand Recommendation (MANDATORY) */}
           <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-xl)' }}>
@@ -469,8 +471,6 @@ export default function BatteryLifePage() {
           </div>
         </div>
       </div>
-
-      <ToolRating toolSlug="battery-life" />
     </>
   )
 }

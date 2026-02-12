@@ -5,13 +5,13 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Protocol Comparison - Smart Lock Hub',
+  title: 'Protocol Comparison - SLockHub.com',
   description: 'Compare Z-Wave, Zigbee, Wi-Fi, and Thread smart lock protocols side-by-side. Detailed specs on range, battery life, latency, security, and pricing.',
   alternates: { canonical: '/compare' },
   openGraph: {
-    title: 'Protocol Comparison - Smart Lock Hub',
+    title: 'Protocol Comparison - SLockHub.com',
     description: 'Compare Z-Wave, Zigbee, Wi-Fi, and Thread smart lock protocols side-by-side.',
-    siteName: 'Smart Lock Hub',
+    siteName: 'SLockHub.com',
     type: 'website',
   },
 }

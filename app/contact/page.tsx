@@ -3,8 +3,8 @@ import type { Metadata } from 'next'
 import { Mail, MessageCircle, BookOpen, Check } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Contact - Smart Lock Hub',
-  description: 'Get in touch with Smart Lock Hub. We are here to help with your smart lock questions.',
+  title: 'Contact - SLockHub.com',
+  description: 'Get in touch with SLockHub.com. We are here to help with your smart lock questions.',
   alternates: { canonical: '/contact' },
 }
 
@@ -29,8 +29,8 @@ export default function Contact() {
                 <div className="feature-item__icon" style={{ width: '2rem', height: '2rem', color: 'var(--color-accent)' }}><Mail className="w-8 h-8" /></div>
                 <div>
                   <h3 style={{ fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>Email</h3>
-                  <a href="mailto:support@smartlockhub.com" style={{ color: 'var(--color-accent)' }}>
-                    support@smartlockhub.com
+                  <a href="mailto:support@slockhub.com" style={{ color: 'var(--color-accent)' }}>
+                    support@slockhub.com
                   </a>
                 </div>
               </div>

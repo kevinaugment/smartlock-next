@@ -8,7 +8,7 @@ import {
 import type { ReactNode } from 'react'
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Calculators - Smart Lock Hub',
+  title: 'Smart Lock Calculators - SLockHub.com',
   description: 'Interactive smart lock calculators for TCO, battery life, signal strength, installation cost, and more.',
   alternates: { canonical: '/calculators' },
 }
@@ -149,7 +149,7 @@ export default function CalculatorsPage() {
     '@type': 'CollectionPage',
     name: 'Smart Lock Calculators',
     description: 'Interactive smart lock calculators for TCO, battery life, signal strength, installation cost, and more.',
-    url: 'https://smartlockhub.com/calculators',
+    url: 'https://www.slockhub.com/calculators',
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: calculators.length,
@@ -157,7 +157,7 @@ export default function CalculatorsPage() {
         '@type': 'ListItem',
         position: i + 1,
         name: calc.name,
-        url: `https://smartlockhub.com/calculators/${calc.slug}`,
+        url: `https://www.slockhub.com/calculators/${calc.slug}`,
       })),
     },
   }

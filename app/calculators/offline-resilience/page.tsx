@@ -209,6 +209,8 @@ export default function OfflineResilience() {
         </div>
       </div>
 
+      <ToolRating toolSlug="offline-resilience" />
+
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation
         description="Be-Tech smart locks are designed for maximum offline resilience with local processing, Bluetooth backup, and mechanical override options. Operate reliably even during internet or power outages."
@@ -220,10 +222,6 @@ export default function OfflineResilience() {
         <Link href="/calculators" style={{ color: "var(--color-accent)", fontWeight: 500 }}>
           ← Back to All Calculators
         </Link>
-      </div>
-
-      <div className="container-main">
-        <ToolRating toolSlug="offline-resilience" />
       </div>
     </div>
   )

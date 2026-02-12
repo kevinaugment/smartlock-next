@@ -11,6 +11,6 @@ export default function AdminLayout({
 }
 
 export const metadata = {
-  title: 'Admin - Smart Lock Hub',
-  description: 'Admin portal for Smart Lock Hub',
+  title: 'Admin - SLockHub.com',
+  description: 'Admin portal for SLockHub.com',
 }

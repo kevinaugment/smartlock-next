@@ -139,6 +139,8 @@ export default function FleetPlanner() {
         </div>
       </div>
 
+      <ToolRating toolSlug="fleet-planner" />
+
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation
         description="Be-Tech offers unified smart lock solutions across multiple protocols, helping you standardize your fleet while maintaining flexibility. Professional support for multi-property deployments."
@@ -150,10 +152,6 @@ export default function FleetPlanner() {
         <Link href="/calculators" style={{ color: "var(--color-accent)", fontWeight: 500 }}>
           ← Back to All Calculators
         </Link>
-      </div>
-
-      <div className="container-main">
-        <ToolRating toolSlug="fleet-planner" />
       </div>
     </div>
   )

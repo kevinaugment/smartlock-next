@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 import { getAllArticles } from '@/lib/articles/registry'
 
-const BASE_URL = 'https://smartlockhub.com'
+const BASE_URL = 'https://www.slockhub.com'
 // Evaluated once at build time — every deploy refreshes sitemap dates
 const BUILD_DATE = new Date().toISOString()
 

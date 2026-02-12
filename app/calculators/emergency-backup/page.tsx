@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { ShieldAlert, Check, AlertTriangle, Lightbulb } from 'lucide-react'
+import { ToolRating } from '@/components/ToolRating'
 
 export default function EmergencyBackup() {
   const [hasPhysicalKey, setHasPhysicalKey] = useState(true)
@@ -85,14 +87,14 @@ export default function EmergencyBackup() {
   const result = calculate()
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="container mx-auto px-4 py-12">
-        <Link href="/calculators" className="text-blue-600 text-sm mb-8 inline-block">← Back</Link>
-        
+    <div className="page-bg">
+      <div className="container-main section">
+        <Link href="/calculators" className="back-link">← Back</Link>
+
         <div className="text-center mb-12">
-          <div className="text-6xl mb-4">🆘</div>
+          <div className="page-header__icon"><ShieldAlert className="w-14 h-14 mx-auto" /></div>
           <h1 className="text-4xl font-bold mb-4">Emergency Backup Evaluator</h1>
-          <p className="text-xl text-gray-600">Evaluate your emergency unlock backup plan</p>
+          <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Evaluate your emergency unlock backup plan</p>
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -100,60 +102,59 @@ export default function EmergencyBackup() {
             <h2 className="text-2xl font-bold mb-6">Backup Systems</h2>
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="flex items-center gap-2 p-3 border-2 rounded hover:bg-gray-50 cursor-pointer">
-                  <input type="checkbox" checked={hasPhysicalKey} onChange={(e) => setHasPhysicalKey(e.target.checked)} className="w-5 h-5"/>
+                <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "2px solid var(--color-border)" }}>
+                  <input type="checkbox" checked={hasPhysicalKey} onChange={(e) => setHasPhysicalKey(e.target.checked)} className="w-5 h-5" />
                   <span className="font-medium">Physical Key Available</span>
                 </label>
                 {hasPhysicalKey && (
-                  <label className="flex items-center gap-2 p-3 border ml-6 rounded hover:bg-gray-50 cursor-pointer">
-                    <input type="checkbox" checked={keyStorageSecure} onChange={(e) => setKeyStorageSecure(e.target.checked)} className="w-4 h-4"/>
+                  <label className="flex items-center gap-2 p-3 ml-6 rounded cursor-pointer" style={{ border: "1px solid var(--color-border)" }}>
+                    <input type="checkbox" checked={keyStorageSecure} onChange={(e) => setKeyStorageSecure(e.target.checked)} className="w-4 h-4" />
                     <span className="text-sm">Key stored securely</span>
                   </label>
                 )}
               </div>
 
               <div className="space-y-2">
-                <label className="flex items-center gap-2 p-3 border-2 rounded hover:bg-gray-50 cursor-pointer">
-                  <input type="checkbox" checked={hasBackupPIN} onChange={(e) => setHasBackupPIN(e.target.checked)} className="w-5 h-5"/>
+                <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "2px solid var(--color-border)" }}>
+                  <input type="checkbox" checked={hasBackupPIN} onChange={(e) => setHasBackupPIN(e.target.checked)} className="w-5 h-5" />
                   <span className="font-medium">Backup PIN Code</span>
                 </label>
                 {hasBackupPIN && (
-                  <label className="flex items-center gap-2 p-3 border ml-6 rounded hover:bg-gray-50 cursor-pointer">
-                    <input type="checkbox" checked={pinDocumented} onChange={(e) => setPinDocumented(e.target.checked)} className="w-4 h-4"/>
+                  <label className="flex items-center gap-2 p-3 ml-6 rounded cursor-pointer" style={{ border: "1px solid var(--color-border)" }}>
+                    <input type="checkbox" checked={pinDocumented} onChange={(e) => setPinDocumented(e.target.checked)} className="w-4 h-4" />
                     <span className="text-sm">PIN documented securely</span>
                   </label>
                 )}
               </div>
 
-              <label className="flex items-center gap-2 p-3 border-2 rounded hover:bg-gray-50 cursor-pointer">
-                <input type="checkbox" checked={hasMobileApp} onChange={(e) => setHasMobileApp(e.target.checked)} className="w-5 h-5"/>
+              <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "2px solid var(--color-border)" }}>
+                <input type="checkbox" checked={hasMobileApp} onChange={(e) => setHasMobileApp(e.target.checked)} className="w-5 h-5" />
                 <span className="font-medium">Mobile App Access</span>
               </label>
 
-              <label className="flex items-center gap-2 p-3 border-2 rounded hover:bg-gray-50 cursor-pointer">
-                <input type="checkbox" checked={hasRemoteAccess} onChange={(e) => setHasRemoteAccess(e.target.checked)} className="w-5 h-5"/>
+              <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "2px solid var(--color-border)" }}>
+                <input type="checkbox" checked={hasRemoteAccess} onChange={(e) => setHasRemoteAccess(e.target.checked)} className="w-5 h-5" />
                 <span className="font-medium">Remote Unlock</span>
               </label>
 
-              <label className="flex items-center gap-2 p-3 border-2 rounded hover:bg-gray-50 cursor-pointer">
-                <input type="checkbox" checked={hasBluetoothBackup} onChange={(e) => setHasBluetoothBackup(e.target.checked)} className="w-5 h-5"/>
+              <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "2px solid var(--color-border)" }}>
+                <input type="checkbox" checked={hasBluetoothBackup} onChange={(e) => setHasBluetoothBackup(e.target.checked)} className="w-5 h-5" />
                 <span className="font-medium">Bluetooth Backup</span>
               </label>
 
-              <label className="flex items-center gap-2 p-3 border-2 rounded hover:bg-gray-50 cursor-pointer">
-                <input type="checkbox" checked={multiplePeople} onChange={(e) => setMultiplePeople(e.target.checked)} className="w-5 h-5"/>
+              <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "2px solid var(--color-border)" }}>
+                <input type="checkbox" checked={multiplePeople} onChange={(e) => setMultiplePeople(e.target.checked)} className="w-5 h-5" />
                 <span className="font-medium">Multiple People Have Access</span>
               </label>
             </div>
           </div>
 
           <div>
-            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${
-              result.grade === 'A' ? 'bg-gradient-to-br from-green-600 to-green-700' :
+            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.grade === 'A' ? 'bg-gradient-to-br from-green-600 to-green-700' :
               result.grade === 'B' ? 'bg-gradient-to-br from-blue-600 to-blue-700' :
-              result.grade === 'C' ? 'bg-gradient-to-br from-yellow-600 to-yellow-700' :
-              'bg-gradient-to-br from-red-600 to-red-700'
-            }`}>
+                result.grade === 'C' ? 'bg-gradient-to-br from-yellow-600 to-yellow-700' :
+                  'bg-gradient-to-br from-red-600 to-red-700'
+              }`}>
               <h2 className="text-xl font-bold mb-6">Backup Readiness</h2>
               <div className="text-center mb-8">
                 <div className="text-7xl font-bold mb-2">{result.grade}</div>
@@ -162,7 +163,7 @@ export default function EmergencyBackup() {
               </div>
               <div className="mb-6">
                 <div className="h-4 bg-white/20 rounded-full overflow-hidden">
-                  <div className="h-full bg-white transition-all" style={{width: `${result.score}%`}}/>
+                  <div className="h-full bg-white transition-all" style={{ width: `${result.score}%` }} />
                 </div>
               </div>
               <div className="space-y-2 text-sm bg-white/10 rounded-lg p-4">
@@ -185,7 +186,7 @@ export default function EmergencyBackup() {
           {result.strengths.length > 0 && (
             <div className="bg-green-50 border-2 border-green-200 p-6 rounded-lg">
               <h3 className="text-lg font-bold text-green-900 mb-3 flex items-center gap-2">
-                <span>✓</span>
+                <Check className="w-5 h-5" style={{ color: "var(--color-success)" }} />
                 <span>Strengths</span>
               </h3>
               <ul className="space-y-2">
@@ -197,9 +198,9 @@ export default function EmergencyBackup() {
           )}
 
           {result.weaknesses.length > 0 && (
-            <div className="bg-red-50 border-2 border-red-200 p-6 rounded-lg">
+            <div className="callout callout-danger">
               <h3 className="text-lg font-bold text-red-900 mb-3 flex items-center gap-2">
-                <span>⚠️</span>
+                <AlertTriangle className="w-5 h-5" style={{ color: "var(--color-danger)" }} />
                 <span>Weaknesses</span>
               </h3>
               <ul className="space-y-2">
@@ -211,9 +212,9 @@ export default function EmergencyBackup() {
           )}
 
           {result.recommendations.length > 0 && (
-            <div className="bg-blue-50 border-2 border-blue-200 p-6 rounded-lg">
+            <div className="callout callout-info">
               <h3 className="text-lg font-bold text-blue-900 mb-3 flex items-center gap-2">
-                <span>💡</span>
+                <Lightbulb className="w-5 h-5" style={{ color: "var(--color-accent)" }} />
                 <span>Recommendations</span>
               </h3>
               <ul className="space-y-2">
@@ -257,16 +258,20 @@ export default function EmergencyBackup() {
       </div>
 
       {/* Be-Tech Brand Recommendation */}
-      <BeTechCalculatorRecommendation 
+      <BeTechCalculatorRecommendation
         description="Be-Tech smart locks feature multiple backup access methods including physical keys, backup PINs, 9V emergency power, and offline operation capabilities for maximum security."
         badge="Emergency Ready"
       />
 
       {/* Back Link */}
       <div className="max-w-7xl mx-auto mt-8 mb-12">
-        <Link href="/calculators" className="text-blue-600 hover:text-blue-700 font-medium">
+        <Link href="/calculators" style={{ color: "var(--color-accent)", fontWeight: 500 }}>
           ← Back to All Calculators
         </Link>
+      </div>
+
+      <div className="container-main">
+        <ToolRating toolSlug="emergency-backup" />
       </div>
     </div>
   )

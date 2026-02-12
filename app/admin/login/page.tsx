@@ -44,32 +44,32 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">
+    <div className="page-bg" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'var(--space-md)' }}>
       <div className="max-w-md w-full">
         {/* Logo & Title */}
-        <div className="text-center mb-8">
+        <div className="text-center" style={{ marginBottom: 'var(--space-xl)' }}>
           <Link href="/" className="inline-block">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              🔐 Smart Lock Hub
+            <h1 style={{ fontSize: '2.25rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>
+              Smart Lock Hub
             </h1>
           </Link>
-          <p className="text-gray-600">Admin Portal</p>
+          <p style={{ color: 'var(--color-text-secondary)' }}>Admin Portal</p>
         </div>
 
         {/* Login Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Sign In</h2>
+        <div className="content-card">
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-lg)' }}>Sign In</h2>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-600 text-sm">{error}</p>
+            <div className="callout callout-danger" style={{ marginBottom: 'var(--space-lg)' }}>
+              <p style={{ fontSize: '0.875rem' }}>{error}</p>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
                 Email Address
               </label>
               <input
@@ -78,14 +78,14 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="form-input"
                 placeholder="admin@smartlock.com"
               />
             </div>
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
                 Password
               </label>
               <input
@@ -94,7 +94,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="form-input"
                 placeholder="••••••••"
               />
             </div>
@@ -103,7 +103,8 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn btn-primary w-full"
+              style={{ padding: 'var(--space-sm) var(--space-md)' }}
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -120,9 +121,9 @@ export default function LoginPage() {
           </form>
 
           {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
-            <p className="text-xs text-blue-800 font-semibold mb-2">📝 Demo Credentials:</p>
-            <p className="text-xs text-blue-700">
+          <div className="callout callout-info" style={{ marginTop: 'var(--space-lg)' }}>
+            <p style={{ fontSize: '0.75rem', fontWeight: 600, marginBottom: 'var(--space-xs)' }}>Demo Credentials:</p>
+            <p style={{ fontSize: '0.75rem' }}>
               <strong>Email:</strong> admin@smartlock.com<br />
               <strong>Password:</strong> admin123
             </p>
@@ -130,8 +131,8 @@ export default function LoginPage() {
         </div>
 
         {/* Back to Home */}
-        <div className="text-center mt-6">
-          <Link href="/" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+        <div className="text-center" style={{ marginTop: 'var(--space-lg)' }}>
+          <Link href="/" className="back-link">
             ← Back to Home
           </Link>
         </div>

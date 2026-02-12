@@ -62,6 +62,9 @@ Use this evidence-based diagnostic table to identify your issue instantly:
 
 ### Battery Type Comparison (AA Cells)
 
+<details>
+<summary>📊 Battery Specs Comparison Table (tap to expand)</summary>
+
 | Battery Type | Capacity | Voltage Under Load | Internal Resistance | Operating Temp | Cost | Best Use Case |
 |--------------|----------|-------------------|---------------------|----------------|------|---------------|
 | **Energizer L91 Lithium** | 3000mAh | 1.65V @ 200mA | 75mΩ | -40°C to +60°C | $3.00 | Commercial, STR, extreme climate |
@@ -86,6 +89,8 @@ Use this evidence-based diagnostic table to identify your issue instantly:
 | **Bluetooth** (August) | 18-24 months | 12-18 months | 6-9 months |
 
 *Based on 5 operations/day, RSSI -65dBm, 20°C ambient temperature*
+
+</details>
 
 📖 **[Complete Battery Life Guide](/installation/smart-lock-battery-life-guide)** - Covers:
 - Battery replacement procedures
@@ -131,7 +136,8 @@ Q2: Is lock WiFi-enabled?
           Common: Yale Assure (no WiFi), Schlage Connect
 ```
 
-**WiFi Lock Troubleshooting:**
+<details>
+<summary>📶 WiFi Lock Troubleshooting (5 Steps)</summary>
 
 ```
 Step 1: Check phone's BLE/WiFi
@@ -166,7 +172,10 @@ Step 5: Re-pair lock to WiFi
 └─ Success rate: 90% cumulative
 ```
 
-**Hub-Based Lock Troubleshooting:**
+</details>
+
+<details>
+<summary>🔌 Hub-Based Lock Troubleshooting (4 Steps)</summary>
 
 ```
 Step 1: Check hub power/status
@@ -198,6 +207,8 @@ Step 4: Re-pair lock to hub
 ├─ Lock should appear within 60 seconds
 └─ Success rate: 95% cumulative
 ```
+
+</details>
 
 **Still Not Working - Advanced Steps:**
 
@@ -447,7 +458,7 @@ Based on troubleshooting data analysis across 15,000+ support cases, certain bra
 
 ## Problem #4: PIN/Code Authentication Issues (8% of Problems)
 
-### Symptom: PIN Code Works in App But Not on Keypad {#pin-synchronization}
+### Symptom: PIN Code Works in App But Not on Keypad
 
 **What You See**:
 - Code works when entered via smartphone app
@@ -575,7 +586,7 @@ Step 4: Contact manufacturer support
 └─ Don't attempt further resets (may brick lock permanently)
 ```
 
-### Symptom: Lock Auto-Locks Immediately After Unlock {#firmware-reset}
+### Symptom: Lock Auto-Locks Immediately After Unlock
 
 **What You See**:
 - Unlock lock via app/keypad
@@ -860,11 +871,12 @@ Complete Reset Procedure:
    └─ Monitor for 24-48 hours before declaring success
 ```
 
-### Error Code Reference {#error-code-reference}
+### Error Code Reference
 
 Comprehensive error code database by manufacturer. Bookmark this section for quick troubleshooting.
 
-#### Yale Error Codes
+<details>
+<summary>Yale Error Codes (E01–E05)</summary>
 
 | Code | Model | Meaning | Root Cause | Solution | Urgency |
 |------|-------|---------|------------|----------|---------|
@@ -874,7 +886,10 @@ Comprehensive error code database by manufacturer. Bookmark this section for qui
 | **E04** | Assure Lock 2 | DoorSense error | Magnetic sensor not detecting | Realign door sensor <1/2" from magnet | 🟡 Medium |
 | **E05** | Assure Lock 2 | Communication error | Z-Wave/Zigbee link failure | Re-pair to hub, check mesh network | ⚠️ High |
 
-#### Schlage Error Codes
+</details>
+
+<details>
+<summary>Schlage Error Codes (16–21)</summary>
 
 | Code | Model | Meaning | Root Cause | Solution | Urgency |
 |------|-------|---------|------------|----------|---------|
@@ -885,7 +900,10 @@ Comprehensive error code database by manufacturer. Bookmark this section for qui
 | **20** | Encode Plus | Door ajar warning | DoorSense detects door open | Close door completely; check sensor alignment | 🟡 Medium |
 | **21** | Connect | Low Z-Wave signal | RSSI <-75dBm, weak hub connection | Add Z-Wave repeater, move hub closer | ⚠️ High |
 
-#### Kwikset Error Codes
+</details>
+
+<details>
+<summary>Kwikset Error Codes (Err 01–09)</summary>
 
 | Code | Model | Meaning | Root Cause | Solution | Urgency |
 |------|-------|---------|------------|----------|---------|
@@ -895,7 +913,10 @@ Comprehensive error code database by manufacturer. Bookmark this section for qui
 | **Err 07** | All Kwikset | Deadbolt binding | Excessive resistance during operation | Adjust strike plate, lubricate with graphite | ⚠️ High |
 | **Err 09** | Halo WiFi | Network error | WiFi connection lost, router unreachable | Check 2.4GHz WiFi enabled, re-pair to network | ⚠️ High |
 
-#### August Error Codes
+</details>
+
+<details>
+<summary>August Error Codes (-1001 to -3001)</summary>
 
 | Code | Message | Meaning | Root Cause | Solution | Urgency |
 |------|---------|---------|------------|----------|---------|
@@ -905,7 +926,10 @@ Comprehensive error code database by manufacturer. Bookmark this section for qui
 | **-2001** | "Bluetooth error" | BLE connection failed | Phone out of range or Bluetooth disabled | Enable Bluetooth, move closer to lock | 🟡 Medium |
 | **-3001** | "Bridge offline" | August Connect offline | Bridge lost power or network connection | Check Bridge power, internet connection | ⚠️ High |
 
-#### Be-Tech Error Codes (Commercial Grade)
+</details>
+
+<details>
+<summary>Be-Tech Error Codes — Commercial Grade (E10–E40)</summary>
 
 | Code | Model | Meaning | Root Cause | Solution | Urgency |
 |------|-------|---------|------------|----------|---------|
@@ -913,6 +937,8 @@ Comprehensive error code database by manufacturer. Bookmark this section for qui
 | **E20** | All Be-Tech | Motor overload | Excessive force or binding detected | Check door alignment, verify strike plate clearance | 🔴 Critical |
 | **E30** | Network models | Communication failure | Network link lost (Z-Wave/Ethernet) | Check network connection, re-establish pairing | ⚠️ High |
 | **E40** | RFID models | Card reader error | RFID antenna fault or interference | Power cycle, check for metal interference | 🟡 Medium |
+
+</details>
 
 **Diagnostic Tip**: If error persists after recommended solution, document error code and contact manufacturer support with:
 - Error code and frequency
@@ -1068,7 +1094,8 @@ Start with Quick Symptom Checker table at top of guide → Follow specific probl
 
 ## Real-World Troubleshooting Case Studies
 
-### Case Study 1: Intermittent Connectivity (Airbnb Host)
+<details>
+<summary>🏠 Case Study 1: Intermittent Connectivity — Airbnb Host (Battery Root Cause)</summary>
 
 **Problem Report:**
 ```
@@ -1111,9 +1138,10 @@ ROI calculation (STR application):
 
 **Lesson**: Battery internal resistance and voltage stability under load are critical for high-reliability applications. Energizer L91 or Duracell Ultra Lithium (DL1500) recommended for commercial/STR deployments.
 
----
+</details>
 
-### Case Study 2: Ghost Unlocks (Security Concern)
+<details>
+<summary>👻 Case Study 2: Ghost Unlocks — Security Concern (GPS Drift)</summary>
 
 **Problem Report:**
 ```
@@ -1177,9 +1205,10 @@ Geofence automation:
 
 **Lesson**: Automation rules need safeguards, especially for security-critical actions like unlocking.
 
----
+</details>
 
-### Case Study 3: Complete System Failure After Power Outage
+<details>
+<summary>⚡ Case Study 3: Complete System Failure After Power Outage (20-Unit Building)</summary>
 
 **Problem Report:**
 ```
@@ -1240,11 +1269,12 @@ Recovery prioritization:
 └─ Document everything for next time
 ```
 
----
+</details>
 
 ## Advanced Troubleshooting Techniques
 
-### Network Packet Analysis (Advanced Users)
+<details>
+<summary>📶 Network Packet Analysis (Advanced Users)</summary>
 
 **When to use:** Persistent connectivity issues, mysterious timeouts
 
@@ -1292,9 +1322,10 @@ Fix:
 └─ Result: Stable connection for months
 ```
 
----
+</details>
 
-### Firmware Debugging Mode
+<details>
+<summary>🔧 Firmware Debugging Mode (Yale & Schlage)</summary>
 
 **For stubborn firmware issues:**
 
@@ -1331,9 +1362,10 @@ LED patterns:
 └─ Solid green: Hardware OK, firmware issue
 ```
 
----
+</details>
 
-### Multi-Lock Fleet Troubleshooting
+<details>
+<summary>🏢 Multi-Lock Fleet Troubleshooting (10+ Locks)</summary>
 
 **Managing issues across 10+ locks:**
 
@@ -1386,7 +1418,7 @@ Proactive approach (monitoring):
 └─ Result: 85% reduction in emergency calls
 ```
 
----
+</details>
 
 ## Environmental Troubleshooting
 

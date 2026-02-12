@@ -111,7 +111,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
       <div className="lg:col-span-2 space-y-6">
         <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Project Parameters</h2>
-          
+
           <div className="space-y-6">
             {/* Lock Price */}
             <div>
@@ -124,7 +124,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                 max="600"
                 step="50"
                 value={inputs.lockPrice}
-                onChange={(e) => setInputs({...inputs, lockPrice: Number(e.target.value)})}
+                onChange={(e) => setInputs({ ...inputs, lockPrice: Number(e.target.value) })}
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
@@ -143,7 +143,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                 min="1"
                 max="50"
                 value={inputs.doorCount}
-                onChange={(e) => setInputs({...inputs, doorCount: Number(e.target.value)})}
+                onChange={(e) => setInputs({ ...inputs, doorCount: Number(e.target.value) })}
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
@@ -159,7 +159,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
               </label>
               <select
                 value={inputs.protocol}
-                onChange={(e) => setInputs({...inputs, protocol: e.target.value as any})}
+                onChange={(e) => setInputs({ ...inputs, protocol: e.target.value as any })}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="wifi">Wi-Fi (No hub, high battery cost)</option>
@@ -179,7 +179,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                 min="1"
                 max="10"
                 value={inputs.years}
-                onChange={(e) => setInputs({...inputs, years: Number(e.target.value)})}
+                onChange={(e) => setInputs({ ...inputs, years: Number(e.target.value) })}
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
@@ -199,7 +199,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                     type="radio"
                     value="diy"
                     checked={inputs.installType === 'diy'}
-                    onChange={(e) => setInputs({...inputs, installType: 'diy'})}
+                    onChange={(e) => setInputs({ ...inputs, installType: 'diy' })}
                     className="sr-only"
                   />
                   <span className="font-medium">DIY ($0)</span>
@@ -209,7 +209,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                     type="radio"
                     value="pro"
                     checked={inputs.installType === 'pro'}
-                    onChange={(e) => setInputs({...inputs, installType: 'pro'})}
+                    onChange={(e) => setInputs({ ...inputs, installType: 'pro' })}
                     className="sr-only"
                   />
                   <span className="font-medium">Professional</span>
@@ -228,7 +228,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                   max="200"
                   step="10"
                   value={inputs.installCostPerDoor}
-                  onChange={(e) => setInputs({...inputs, installCostPerDoor: Number(e.target.value)})}
+                  onChange={(e) => setInputs({ ...inputs, installCostPerDoor: Number(e.target.value) })}
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
@@ -244,7 +244,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                 min="1"
                 max="50"
                 value={inputs.dailyUsage}
-                onChange={(e) => setInputs({...inputs, dailyUsage: Number(e.target.value)})}
+                onChange={(e) => setInputs({ ...inputs, dailyUsage: Number(e.target.value) })}
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
               />
               <p className="text-xs text-gray-500 mt-1">Affects battery replacement frequency</p>
@@ -261,7 +261,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                 max="10"
                 step="0.5"
                 value={inputs.subscriptionPerDoorPerMonth}
-                onChange={(e) => setInputs({...inputs, subscriptionPerDoorPerMonth: Number(e.target.value)})}
+                onChange={(e) => setInputs({ ...inputs, subscriptionPerDoorPerMonth: Number(e.target.value) })}
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
               />
             </div>
@@ -325,7 +325,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
 
           <div className="mt-6 p-4 bg-white/10 rounded-lg">
             <p className="text-xs opacity-90">
-              💡 vs. Mechanical locks: +${result.deltaVsMechanical.toFixed(0)} over {inputs.years} years
+              vs. Mechanical locks: +${result.deltaVsMechanical.toFixed(0)} over {inputs.years} years
             </p>
           </div>
         </div>

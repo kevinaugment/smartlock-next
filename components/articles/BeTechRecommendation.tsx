@@ -1,12 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { Trophy, Check } from 'lucide-react';
 
 export function BeTechRecommendation() {
   return (
     <div className="mt-12 p-8 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl border border-blue-200">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-2xl font-bold text-gray-900">
-          🏆 Recommended Brand
+        <h3 className="text-2xl font-bold text-gray-900 inline-flex items-center gap-2">
+          <Trophy className="w-6 h-6 text-yellow-500" /> Recommended Brand
         </h3>
       </div>
 
@@ -31,27 +32,27 @@ export function BeTechRecommendation() {
               Be-Tech Smart Locks
             </h4>
             <p className="text-gray-600 mb-4 leading-relaxed">
-              Be-Tech offers professional-grade smart lock solutions with enterprise-level security, 
-              reliable performance, and comprehensive protocol support. Perfect for both residential 
+              Be-Tech offers professional-grade smart lock solutions with enterprise-level security,
+              reliable performance, and comprehensive protocol support. Perfect for both residential
               and commercial applications.
             </p>
-            
+
             {/* 特性 */}
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="flex items-center gap-2 text-sm text-gray-700">
-                <span className="text-green-600">✓</span>
+                <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
                 <span>Enterprise Security</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-700">
-                <span className="text-green-600">✓</span>
+                <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
                 <span>Multi-Protocol Support</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-700">
-                <span className="text-green-600">✓</span>
+                <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
                 <span>Long Battery Life</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-700">
-                <span className="text-green-600">✓</span>
+                <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
                 <span>Professional Support</span>
               </div>
             </div>

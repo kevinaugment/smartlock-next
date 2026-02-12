@@ -1,120 +1,105 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
+import { useState } from 'react'
+import {
+  ChevronDown, HelpCircle, Rocket, Lock, Battery,
+  Wifi, Wrench, Shield
+} from 'lucide-react'
+import type { ReactNode } from 'react'
 
-const categories = [
+interface FAQItem {
+  q: string
+  a: string
+  link?: { text: string; href: string }
+}
+
+interface FAQCategory {
+  name: string
+  icon: ReactNode
+  questions: FAQItem[]
+}
+
+const categories: FAQCategory[] = [
   {
     name: 'Getting Started',
-    icon: '🚀',
+    icon: <Rocket className="w-6 h-6" />,
     questions: [
       {
         q: 'What is a smart lock?',
-        a: 'A smart lock is an electronic lock that can be controlled remotely via smartphone, keypad, fingerprint, or other methods. It replaces or augments traditional mechanical locks with digital access control.',
+        a: 'A smart lock is an electronic lock that can be controlled remotely and offers features like keyless entry, activity logging, and integration with smart home systems.',
+        link: { text: 'Read our getting started guide', href: '/articles/guides' },
       },
       {
-        q: 'Do I need a hub for my smart lock?',
-        a: 'It depends on the protocol. Wi-Fi locks connect directly to your router (no hub needed). Zigbee and Z-Wave locks require a compatible hub. Thread locks need a Thread border router.',
-      },
-      {
-        q: 'How much does a smart lock system cost?',
-        a: 'Basic systems start around $150-200 for the lock plus $0-150 for a hub. Premium systems can cost $300-600. Use our TCO Calculator to estimate total ownership costs over time.',
-        link: '/calculators/lock-tco',
-      },
-      {
-        q: 'Can I install a smart lock myself?',
-        a: 'Most smart locks are designed for DIY installation and can be installed in 15-30 minutes with basic tools. However, if your door requires modification or wiring, professional installation is recommended.',
-        link: '/articles/installation',
+        q: 'How do I choose the right smart lock?',
+        a: 'Consider factors like your door type, desired protocol (Z-Wave, Zigbee, Wi-Fi, Thread), budget, and smart home ecosystem compatibility.',
+        link: { text: 'Try our Protocol Wizard', href: '/calculators/protocol-wizard' },
       },
     ],
   },
   {
-    name: 'Technical',
-    icon: '⚙️',
+    name: 'Protocols & Connectivity',
+    icon: <Wifi className="w-6 h-6" />,
     questions: [
       {
-        q: 'Which protocol should I choose?',
-        a: 'Z-Wave for maximum range and reliability, Zigbee for cost-effectiveness, Wi-Fi for no-hub convenience, Thread for future-proof installations. Use our Protocol Selection Wizard for personalized recommendations.',
-        link: '/calculators/protocol-wizard',
+        q: 'What is the difference between Z-Wave, Zigbee, and Wi-Fi locks?',
+        a: 'Each protocol has different strengths: Z-Wave offers dedicated frequency with minimal interference, Zigbee provides low power consumption with massive node support, and Wi-Fi requires no hub but uses more battery.',
+        link: { text: 'See detailed comparison', href: '/compare' },
       },
+      {
+        q: 'Do I need a smart home hub?',
+        a: 'It depends on the protocol. Wi-Fi locks connect directly to your router. Z-Wave and Zigbee locks require a compatible hub. Thread locks need a border router.',
+      },
+      {
+        q: 'What is Matter and how does it affect smart locks?',
+        a: 'Matter is a unified connectivity standard backed by major tech companies. It aims to ensure interoperability across brands and ecosystems. Thread-based locks are the most Matter-ready.',
+        link: { text: 'Read about Matter', href: '/articles/protocols' },
+      },
+    ],
+  },
+  {
+    name: 'Battery & Power',
+    icon: <Battery className="w-6 h-6" />,
+    questions: [
       {
         q: 'How long do smart lock batteries last?',
-        a: 'Wi-Fi locks: 3-6 months, Zigbee/Z-Wave: 12+ months, Thread: 10+ months. Battery life varies based on usage frequency and features enabled.',
-        link: '/calculators/battery-life',
+        a: 'Battery life varies by protocol and usage: Zigbee locks can last up to 18 months, Z-Wave and Thread about 12 months, and Wi-Fi locks typically 6 months.',
+        link: { text: 'Calculate your battery life', href: '/calculators/battery-life' },
       },
       {
-        q: 'What happens if my internet goes down?',
-        a: 'Zigbee and Z-Wave locks continue working locally via hub. Wi-Fi locks may lose remote access but keypad/fingerprint still work. Always have a physical key backup.',
-        link: '/calculators/offline-resilience',
+        q: 'What happens when the battery dies?',
+        a: 'Most smart locks have a physical key backup. Some models also support external emergency power via a 9V battery terminal on the exterior.',
+      },
+    ],
+  },
+  {
+    name: 'Security',
+    icon: <Shield className="w-6 h-6" />,
+    questions: [
+      {
+        q: 'Are smart locks safe?',
+        a: 'Modern smart locks use strong encryption (AES-128 or higher) and secure communication protocols. They are generally as secure or more secure than traditional locks when properly configured.',
+        link: { text: 'Read security analysis', href: '/articles/security' },
       },
       {
         q: 'Can smart locks be hacked?',
-        a: 'Like any connected device, smart locks have security risks. Choose locks with strong encryption (AES-128+), keep firmware updated, use unique codes, and avoid cheap off-brand devices.',
-        link: '/articles/security',
+        a: 'While no system is 100% immune, reputable smart locks are very difficult to hack. Look for locks with S2 (Z-Wave), AES-128 encryption, and regular firmware updates.',
       },
     ],
   },
   {
-    name: 'Compatibility',
-    icon: '🔧',
+    name: 'Installation',
+    icon: <Wrench className="w-6 h-6" />,
     questions: [
       {
-        q: 'Will a smart lock fit my door?',
-        a: 'Most smart locks fit standard doors (35-45mm thick, 60-70mm backset). Use our Door Compatibility Checker to verify your door specifications.',
-        link: '/calculators/compatibility',
+        q: 'Can I install a smart lock myself?',
+        a: 'Most residential smart locks are designed for DIY installation and can replace existing deadbolts in 15-30 minutes using basic tools.',
+        link: { text: 'Check door compatibility', href: '/calculators/compatibility' },
       },
       {
-        q: 'Can I use my existing keys?',
-        a: 'Most smart locks come with new cylinders and keys. Some models allow you to rekey to your existing keys, but this varies by manufacturer.',
-      },
-      {
-        q: 'Do smart locks work with HomeKit/Alexa/Google?',
-        a: 'Compatibility varies by lock and protocol. Thread locks work best with HomeKit. Zigbee locks integrate well with SmartThings and Alexa. Check manufacturer specifications.',
-        link: '/compare',
-      },
-    ],
-  },
-  {
-    name: 'Use Cases',
-    icon: '🏠',
-    questions: [
-      {
-        q: 'Are smart locks good for Airbnb/VRBO?',
-        a: 'Yes! Smart locks are ideal for short-term rentals. Generate unique codes per guest, automate check-in/out, and eliminate key handoffs. Calculate your ROI with our STR Calculator.',
-        link: '/calculators/str-roi',
-      },
-      {
-        q: 'Can I manage multiple properties?',
-        a: 'Yes. Choose a system with centralized management. Use consistent protocols across properties to simplify maintenance and reduce training costs.',
-        link: '/calculators/fleet-planner',
-      },
-      {
-        q: 'Do smart locks work for commercial buildings?',
-        a: 'Yes. Commercial-grade smart locks support hundreds of users, audit logs, scheduled access, and integration with enterprise systems.',
-        link: '/articles/integration',
-      },
-    ],
-  },
-  {
-    name: 'Maintenance',
-    icon: '🔋',
-    questions: [
-      {
-        q: 'How often do I need to change batteries?',
-        a: 'Wi-Fi locks every 3-6 months, mesh protocol locks every 12+ months. Most locks warn you weeks before batteries die. Always keep spare batteries.',
-      },
-      {
-        q: 'What happens when batteries die?',
-        a: 'Most smart locks have 9V emergency terminals for external power. Always keep a physical key as ultimate backup.',
-        link: '/calculators/emergency-backup',
-      },
-      {
-        q: 'Do smart locks need firmware updates?',
-        a: 'Yes. Updates fix bugs, patch security vulnerabilities, and add features. Most locks update via the hub/app. Enable automatic updates when possible.',
-      },
-      {
-        q: 'How do I clean and maintain my smart lock?',
-        a: 'Wipe with soft cloth, avoid moisture in electronic components, lubricate mechanical parts annually, check battery contacts for corrosion, test lock operation monthly.',
+        q: 'How much does professional installation cost?',
+        a: 'Professional installation typically costs $50-150 per lock for residential, and $150-300 per door for commercial installations.',
+        link: { text: 'Estimate installation cost', href: '/calculators/installation-cost' },
       },
     ],
   },
@@ -123,115 +108,84 @@ const categories = [
 export default function FAQ() {
   const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({})
 
-  const toggleItem = (categoryIndex: number, questionIndex: number) => {
-    const key = `${categoryIndex}-${questionIndex}`
-    setOpenItems(prev => ({ ...prev, [key]: !prev[key] }))
+  const toggleItem = (key: string) => {
+    setOpenItems((prev) => ({ ...prev, [key]: !prev[key] }))
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="text-6xl mb-6">❓</div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              Frequently Asked Questions
-            </h1>
-            <p className="text-xl text-gray-600">
-              Quick answers to common smart lock questions
-            </p>
+    <div className="page-wrapper-alt">
+      <div className="container-main section">
+        {/* Header */}
+        <div className="page-header">
+          <div className="page-header__icon">
+            <HelpCircle className="w-10 h-10" />
           </div>
+          <h1 className="page-header__title">Frequently Asked Questions</h1>
+          <p className="page-header__subtitle">
+            Find answers to common questions about smart lock systems
+          </p>
+        </div>
 
-          {/* Categories */}
-          <div className="space-y-8">
-            {categories.map((category, catIndex) => (
-              <div key={category.name} className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white">
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl">{category.icon}</span>
-                    <h2 className="text-2xl font-bold">{category.name}</h2>
-                  </div>
-                </div>
+        {/* FAQ Sections */}
+        <div className="max-w-3xl mx-auto space-y-8">
+          {categories.map((category) => (
+            <div key={category.name} className="card" style={{ padding: 'var(--space-xl)' }}>
+              {/* Category Header */}
+              <div className="flex items-center gap-3 mb-4" style={{ paddingBottom: 'var(--space-md)', borderBottom: '1px solid var(--color-border)' }}>
+                <span style={{ color: 'var(--color-accent)' }}>{category.icon}</span>
+                <h2 className="text-xl font-bold" style={{ color: 'var(--color-text-primary)' }}>{category.name}</h2>
+              </div>
 
-                <div className="p-6">
-                  <div className="space-y-4">
-                    {category.questions.map((item, qIndex) => {
-                      const key = `${catIndex}-${qIndex}`
-                      const isOpen = openItems[key]
+              {/* Questions */}
+              <div className="divide-y" style={{ borderColor: 'var(--color-border)' }}>
+                {category.questions.map((item) => {
+                  const key = `${category.name}-${item.q}`
+                  const isOpen = openItems[key]
 
-                      return (
-                        <div key={qIndex} className="border-b border-gray-200 pb-4 last:border-0">
-                          <button
-                            onClick={() => toggleItem(catIndex, qIndex)}
-                            className="w-full text-left flex items-start justify-between gap-4 py-2 group"
-                          >
-                            <span className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                              {item.q}
-                            </span>
-                            <svg
-                              className={`w-5 h-5 text-gray-500 flex-shrink-0 transition-transform ${
-                                isOpen ? 'rotate-180' : ''
-                              }`}
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
+                  return (
+                    <div key={item.q}>
+                      <button
+                        className="accordion-header"
+                        onClick={() => toggleItem(key)}
+                      >
+                        <span className="accordion-header__title">{item.q}</span>
+                        <ChevronDown
+                          className={`w-5 h-5 flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                          style={{ color: 'var(--color-text-muted)' }}
+                        />
+                      </button>
+                      {isOpen && (
+                        <div className="accordion-body">
+                          <p className="mb-3">{item.a}</p>
+                          {item.link && (
+                            <Link
+                              href={item.link.href}
+                              className="inline-flex items-center gap-1 text-sm font-medium"
+                              style={{ color: 'var(--color-accent)' }}
                             >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 9l-7 7-7-7"
-                              />
-                            </svg>
-                          </button>
-
-                          {isOpen && (
-                            <div className="mt-3 text-gray-700 leading-relaxed">
-                              <p>{item.a}</p>
-                              {item.link && (
-                                <Link
-                                  href={item.link}
-                                  className="inline-block mt-3 text-blue-600 hover:text-blue-700 font-semibold"
-                                >
-                                  Learn more →
-                                </Link>
-                              )}
-                            </div>
+                              {item.link.text} →
+                            </Link>
                           )}
                         </div>
-                      )
-                    })}
-                  </div>
-                </div>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
 
-          {/* CTA */}
-          <div className="mt-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-8 text-white text-center">
-            <h2 className="text-2xl font-bold mb-4">Still Have Questions?</h2>
-            <p className="text-lg opacity-90 mb-6">
-              Explore our comprehensive knowledge base or use our interactive calculators
+        {/* CTA */}
+        <div className="max-w-3xl mx-auto mt-16">
+          <div className="cta-section">
+            <h2 className="cta-section__title">Still Have Questions?</h2>
+            <p className="cta-section__subtitle">
+              Explore our knowledge base for detailed guides and documentation
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/articles"
-                className="px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-              >
-                Browse Articles
-              </Link>
-              <Link
-                href="/calculators"
-                className="px-8 py-4 bg-blue-700 text-white rounded-lg font-semibold hover:bg-blue-800 transition-colors border-2 border-white"
-              >
-                Try Calculators
-              </Link>
-              <Link
-                href="/contact"
-                className="px-8 py-4 bg-blue-700 text-white rounded-lg font-semibold hover:bg-blue-800 transition-colors border-2 border-white"
-              >
-                Contact Us
-              </Link>
+              <Link href="/articles" className="btn btn-primary btn-lg">Browse Articles</Link>
+              <Link href="/calculators" className="btn btn-secondary btn-lg">Try Calculators</Link>
             </div>
           </div>
         </div>

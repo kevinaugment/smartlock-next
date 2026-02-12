@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 const mockCategories = [
-  { id: 1, name: 'Protocols', slug: 'protocols', icon: '📡' },
-  { id: 2, name: 'Security', slug: 'security', icon: '🔒' },
-  { id: 3, name: 'Installation', slug: 'installation', icon: '🔋' },
-  { id: 4, name: 'Guides', slug: 'guides', icon: '🔧' },
-  { id: 5, name: 'Use Cases', slug: 'use-cases', icon: '🏢' },
-  { id: 6, name: 'Support', slug: 'support', icon: '💡' },
-  { id: 7, name: 'Integration', slug: 'integration', icon: '🔗' },
+  { id: 1, name: 'Protocols', slug: 'protocols' },
+  { id: 2, name: 'Security', slug: 'security' },
+  { id: 3, name: 'Installation', slug: 'installation' },
+  { id: 4, name: 'Guides', slug: 'guides' },
+  { id: 5, name: 'Use Cases', slug: 'use-cases' },
+  { id: 6, name: 'Support', slug: 'support' },
+  { id: 7, name: 'Integration', slug: 'integration' },
 ]
 
 export default function ArticlesManagement() {
@@ -44,38 +44,37 @@ export default function ArticlesManagement() {
   // 筛选文章
   const filteredArticles = articles.filter(article => {
     const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         article.description.toLowerCase().includes(searchTerm.toLowerCase())
+      article.description.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCategory = filterCategory === 'all' || article.category_id === filterCategory
     return matchesSearch && matchesCategory
   })
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="page-bg" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="animate-spin rounded-full h-12 w-12" style={{ borderBottom: '2px solid var(--color-accent)' }}></div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div>
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
+      <header className="content-card" style={{ borderRadius: 0, position: 'sticky', top: 0, zIndex: 10 }}>
+        <div className="container mx-auto" style={{ padding: 'var(--space-md)' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/admin" className="text-2xl font-bold text-gray-900">
-                🔐 Smart Lock Hub
+              <Link href="/admin" style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
+                Smart Lock Hub
               </Link>
-              <span className="text-sm px-3 py-1 bg-blue-100 text-blue-700 rounded-full font-semibold">
-                Articles
-              </span>
+              <span className="badge badge-accent">Articles</span>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">{user?.email}</span>
+              <span style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>{user?.email}</span>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 font-medium"
+                className="badge badge-danger"
+                style={{ cursor: 'pointer', padding: 'var(--space-xs) var(--space-md)', fontSize: '0.875rem', fontWeight: 500 }}
               >
                 Logout
               </button>
@@ -84,34 +83,34 @@ export default function ArticlesManagement() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto" style={{ padding: 'var(--space-xl) var(--space-md)' }}>
         {/* Breadcrumb */}
-        <div className="mb-6">
-          <Link href="/admin" className="text-blue-600 hover:text-blue-700 text-sm">
+        <div style={{ marginBottom: 'var(--space-lg)' }}>
+          <Link href="/admin" className="back-link">
             ← Back to Dashboard
           </Link>
         </div>
 
         {/* Page Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between" style={{ marginBottom: 'var(--space-xl)' }}>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Articles Management</h1>
-            <p className="text-gray-600">{filteredArticles.length} articles found</p>
+            <h1 style={{ fontSize: '1.875rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>Articles Management</h1>
+            <p style={{ color: 'var(--color-text-secondary)' }}>{filteredArticles.length} articles found</p>
           </div>
           <Link
             href="/admin/articles/new"
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            className="btn btn-primary"
           >
             + New Article
           </Link>
         </div>
 
         {/* Filters */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6">
+        <div className="card" style={{ marginBottom: 'var(--space-lg)' }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Search */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
                 Search Articles
               </label>
               <input
@@ -119,24 +118,24 @@ export default function ArticlesManagement() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search by title or description..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="form-input"
               />
             </div>
 
             {/* Category Filter */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
                 Filter by Category
               </label>
               <select
                 value={filterCategory}
                 onChange={(e) => setFilterCategory(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="form-input"
               >
                 <option value="all">All Categories</option>
                 {mockCategories.map(cat => (
                   <option key={cat.id} value={cat.id}>
-                    {cat.icon} {cat.name}
+                    {cat.name}
                   </option>
                 ))}
               </select>
@@ -145,83 +144,68 @@ export default function ArticlesManagement() {
         </div>
 
         {/* Articles Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
+        <div className="content-card overflow-hidden" style={{ padding: 0 }}>
+          <table className="data-table">
+            <thead>
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Title
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Category
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Reading Time
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Published
-                </th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Actions
-                </th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Reading Time</th>
+                <th>Published</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody>
               {filteredArticles.map((article) => {
                 const category = mockCategories.find(c => c.id === article.category_id)
                 return (
-                  <tr key={article.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4">
+                  <tr key={article.id}>
+                    <td>
                       <div className="flex items-start gap-3">
                         {article.featured && (
-                          <span className="text-yellow-500 text-lg">⭐</span>
+                          <span style={{ color: 'var(--color-warning)', fontSize: '1.125rem' }}>★</span>
                         )}
                         <div>
-                          <p className="font-medium text-gray-900">{article.title}</p>
-                          <p className="text-sm text-gray-500 mt-1 line-clamp-1">
+                          <p style={{ fontWeight: 500, color: 'var(--color-text-primary)' }}>{article.title}</p>
+                          <p className="line-clamp-1" style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>
                             {article.description}
                           </p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4">
-                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
-                        <span>{category?.icon}</span>
-                        <span>{category?.name}</span>
-                      </span>
+                    <td>
+                      <span className="badge badge-default">{category?.name}</span>
                     </td>
-                    <td className="px-6 py-4">
-                      <span className="inline-flex px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
-                        {article.status}
-                      </span>
+                    <td>
+                      <span className="badge badge-success">{article.status}</span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
+                    <td style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>
                       {article.reading_time} min
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
+                    <td style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>
                       {new Date(article.published_at).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 text-right">
+                    <td style={{ textAlign: 'right' }}>
                       <div className="flex items-center justify-end gap-2">
                         <Link
                           href={`/articles/${category?.slug}/${article.slug}`}
                           target="_blank"
-                          className="px-3 py-1 text-sm text-blue-600 hover:text-blue-700 font-medium"
+                          style={{ padding: 'var(--space-xs) var(--space-sm)', fontSize: '0.875rem', color: 'var(--color-accent)', fontWeight: 500 }}
                         >
                           View
                         </Link>
                         <Link
                           href={`/admin/articles/${article.id}/edit`}
-                          className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded hover:bg-blue-200 font-medium"
+                          className="badge badge-accent"
+                          style={{ cursor: 'pointer' }}
                         >
                           Edit
                         </Link>
                         <button
                           onClick={() => alert('Delete功能开发中')}
-                          className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 font-medium"
+                          className="badge badge-danger"
+                          style={{ cursor: 'pointer' }}
                         >
                           Delete
                         </button>
@@ -234,33 +218,33 @@ export default function ArticlesManagement() {
           </table>
 
           {filteredArticles.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-500">No articles found</p>
+            <div className="text-center" style={{ padding: 'var(--space-3xl)' }}>
+              <p style={{ color: 'var(--color-text-muted)' }}>No articles found</p>
             </div>
           )}
         </div>
 
         {/* Stats */}
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white p-4 rounded-lg border border-gray-200">
-            <p className="text-sm text-gray-600 mb-1">Total</p>
-            <p className="text-2xl font-bold text-gray-900">{articles.length}</p>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4" style={{ marginTop: 'var(--space-lg)' }}>
+          <div className="card">
+            <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: '2px' }}>Total</p>
+            <p style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>{articles.length}</p>
           </div>
-          <div className="bg-white p-4 rounded-lg border border-gray-200">
-            <p className="text-sm text-gray-600 mb-1">Published</p>
-            <p className="text-2xl font-bold text-green-600">
+          <div className="card">
+            <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: '2px' }}>Published</p>
+            <p style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-success)' }}>
               {articles.filter(a => a.status === 'published').length}
             </p>
           </div>
-          <div className="bg-white p-4 rounded-lg border border-gray-200">
-            <p className="text-sm text-gray-600 mb-1">Featured</p>
-            <p className="text-2xl font-bold text-yellow-600">
+          <div className="card">
+            <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: '2px' }}>Featured</p>
+            <p style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-warning)' }}>
               {articles.filter(a => a.featured).length}
             </p>
           </div>
-          <div className="bg-white p-4 rounded-lg border border-gray-200">
-            <p className="text-sm text-gray-600 mb-1">Total Words</p>
-            <p className="text-2xl font-bold text-gray-900">
+          <div className="card">
+            <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: '2px' }}>Total Words</p>
+            <p style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
               {articles.reduce((sum, a) => sum + a.word_count, 0).toLocaleString()}
             </p>
           </div>

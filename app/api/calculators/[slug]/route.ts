@@ -1,6 +1,6 @@
 export const runtime = 'edge'
 
-import { query } from '@/lib/db/client'
+import { query } from '@/lib/db'
 
 interface CalculatorMetadata {
   id: number
@@ -141,12 +141,12 @@ export async function GET(
           relatedCalculators: [],
           brands: []
         }),
-        { 
+        {
           status: 200,
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
             'Cache-Control': 'no-store'
-          } 
+          }
         }
       )
     }
@@ -285,13 +285,13 @@ export async function GET(
   } catch (error) {
     console.error('Error fetching calculator data:', error)
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         error: 'Internal server error',
         message: error instanceof Error ? error.message : 'Unknown error'
       }),
-      { 
-        status: 500, 
-        headers: { 'Content-Type': 'application/json' } 
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
       }
     )
   }

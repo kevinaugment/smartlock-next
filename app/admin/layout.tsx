@@ -4,7 +4,7 @@ export default function AdminLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="page-bg" style={{ minHeight: '100vh' }}>
       {children}
     </div>
   )

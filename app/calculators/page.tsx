@@ -1,10 +1,23 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
+import {
+  DollarSign, Battery, Signal, DoorOpen, Wand2, Home,
+  Link as LinkIcon, Radio, Building2, Key, Clock, Scale,
+  AlertTriangle, Zap, ClipboardList, Wrench, Calculator
+} from 'lucide-react'
+import type { ReactNode } from 'react'
 
-const calculators = [
+export const metadata: Metadata = {
+  title: 'Smart Lock Calculators - Smart Lock Hub',
+  description: 'Interactive smart lock calculators for TCO, battery life, signal strength, installation cost, and more.',
+  alternates: { canonical: '/calculators' },
+}
+
+const calculators: { name: string; slug: string; icon: ReactNode; description: string; features: string[]; complexity: string }[] = [
   {
     name: 'TCO Calculator',
     slug: 'lock-tco',
-    icon: '💰',
+    icon: <DollarSign className="w-8 h-8" />,
     description: 'Calculate total cost of ownership for smart lock deployments. Compare protocols, battery costs, and hub investments over time',
     features: ['Multi-year TCO analysis', 'Protocol comparison', 'Battery cost projection', 'ROI calculation'],
     complexity: 'Simple',
@@ -12,7 +25,7 @@ const calculators = [
   {
     name: 'Battery Life Calculator',
     slug: 'battery-life',
-    icon: '🔋',
+    icon: <Battery className="w-8 h-8" />,
     description: 'Estimate how long your smart lock batteries will last based on usage patterns and features',
     features: ['Usage frequency analysis', 'Battery type comparison', 'Feature impact calculation', 'Optimization tips'],
     complexity: 'Simple',
@@ -20,7 +33,7 @@ const calculators = [
   {
     name: 'Signal Strength Analyzer',
     slug: 'signal-strength',
-    icon: '📶',
+    icon: <Signal className="w-8 h-8" />,
     description: 'Analyze and optimize your smart lock\'s wireless signal strength for reliable operation',
     features: ['Signal quality assessment', 'Distance calculation', 'Interference detection', 'Improvement suggestions'],
     complexity: 'Moderate',
@@ -28,7 +41,7 @@ const calculators = [
   {
     name: 'Installation Cost Estimator',
     slug: 'installation-cost',
-    icon: '💰',
+    icon: <DollarSign className="w-8 h-8" />,
     description: 'Calculate the total cost of your smart lock installation including hardware and labor',
     features: ['Hardware cost breakdown', 'Labor estimation', 'Additional materials', 'Total project cost'],
     complexity: 'Simple',
@@ -36,7 +49,7 @@ const calculators = [
   {
     name: 'Door Compatibility Checker',
     slug: 'compatibility',
-    icon: '🚪',
+    icon: <DoorOpen className="w-8 h-8" />,
     description: 'Check if your door is compatible with different smart lock models',
     features: ['Door measurements', 'Material compatibility', 'Lock type matching', 'Installation difficulty'],
     complexity: 'Moderate',
@@ -44,7 +57,7 @@ const calculators = [
   {
     name: 'Protocol Selection Wizard',
     slug: 'protocol-wizard',
-    icon: '🧙‍♂️',
+    icon: <Wand2 className="w-8 h-8" />,
     description: 'Get personalized protocol recommendations based on your specific requirements and priorities',
     features: ['Smart recommendation engine', 'Multi-factor scoring', 'Pros/cons analysis', 'Ecosystem matching'],
     complexity: 'Moderate',
@@ -52,7 +65,7 @@ const calculators = [
   {
     name: 'STR ROI Calculator',
     slug: 'str-roi',
-    icon: '🏠',
+    icon: <Home className="w-8 h-8" />,
     description: 'Calculate ROI and payback time for smart locks in short-term rental properties',
     features: ['Labor time savings', 'Lockout cost reduction', 'Lost key savings', 'Payback analysis'],
     complexity: 'Simple',
@@ -60,7 +73,7 @@ const calculators = [
   {
     name: 'Mesh Node Planner',
     slug: 'mesh-planner',
-    icon: '🔗',
+    icon: <LinkIcon className="w-8 h-8" />,
     description: 'Estimate required mesh repeaters for your deployment by floor and area',
     features: ['Node count calculation', 'Coverage analysis', 'Cost estimation', 'Placement guidelines'],
     complexity: 'Simple',
@@ -68,7 +81,7 @@ const calculators = [
   {
     name: 'RF Coverage Estimator',
     slug: 'rf-coverage',
-    icon: '📡',
+    icon: <Radio className="w-8 h-8" />,
     description: 'Plan mesh network topology and calculate signal coverage for your building',
     features: ['Coverage area calculation', 'Hub requirement', 'Signal quality analysis', 'Placement recommendations'],
     complexity: 'Moderate',
@@ -76,7 +89,7 @@ const calculators = [
   {
     name: 'Multi-Property Fleet Planner',
     slug: 'fleet-planner',
-    icon: '🏢',
+    icon: <Building2 className="w-8 h-8" />,
     description: 'Analyze protocol fragmentation and plan unified fleet across properties',
     features: ['Fragmentation scoring', 'Unification cost analysis', 'Maintenance savings', 'Payback calculation'],
     complexity: 'Moderate',
@@ -84,7 +97,7 @@ const calculators = [
   {
     name: 'Credential Capacity Planner',
     slug: 'credential-planner',
-    icon: '🔑',
+    icon: <Key className="w-8 h-8" />,
     description: 'Check if your locks can handle all employee, contractor, and guest credentials',
     features: ['Capacity utilization', 'User type breakdown', 'Overflow detection', 'Upgrade recommendations'],
     complexity: 'Simple',
@@ -92,7 +105,7 @@ const calculators = [
   {
     name: 'Installation Time Estimator',
     slug: 'installation-time',
-    icon: '⏱️',
+    icon: <Clock className="w-8 h-8" />,
     description: 'Estimate technician hours, crew-days, and total labor cost for installation projects',
     features: ['Time per door calculation', 'Labor cost estimation', 'Crew planning', 'Project timeline'],
     complexity: 'Simple',
@@ -100,7 +113,7 @@ const calculators = [
   {
     name: 'Subscription vs Purchase',
     slug: 'subscription-compare',
-    icon: '⚖️',
+    icon: <Scale className="w-8 h-8" />,
     description: 'Compare long-term costs of cloud subscription versus local system purchase',
     features: ['Multi-year cost analysis', 'Break-even calculation', 'Pros/cons comparison', 'TCO projection'],
     complexity: 'Simple',
@@ -108,7 +121,7 @@ const calculators = [
   {
     name: 'Offline Resilience Scorecard',
     slug: 'offline-resilience',
-    icon: '🔋',
+    icon: <Battery className="w-8 h-8" />,
     description: 'Score how well your locks work during internet and power outages',
     features: ['Resilience scoring', 'Weakness identification', 'Backup system evaluation', 'Improvement recommendations'],
     complexity: 'Moderate',
@@ -116,181 +129,182 @@ const calculators = [
   {
     name: 'Emergency Backup Evaluator',
     slug: 'emergency-backup',
-    icon: '🆘',
+    icon: <AlertTriangle className="w-8 h-8" />,
     description: 'Evaluate your emergency unlock backup plan robustness',
     features: ['Backup method assessment', 'Risk analysis', 'Security evaluation', 'Emergency scenario planning'],
     complexity: 'Simple',
   },
 ]
 
-const categories = [
-  { name: 'Power & Energy', icon: '⚡', calculators: ['battery-life'] },
-  { name: 'Connectivity', icon: '📡', calculators: ['signal-strength'] },
-  { name: 'Planning & Budget', icon: '📋', calculators: ['installation-cost'] },
-  { name: 'Hardware', icon: '🔧', calculators: ['compatibility'] },
+const categories: { name: string; icon: ReactNode; calculators: string[] }[] = [
+  { name: 'Power & Energy', icon: <Zap className="w-7 h-7" />, calculators: ['battery-life'] },
+  { name: 'Connectivity', icon: <Radio className="w-7 h-7" />, calculators: ['signal-strength'] },
+  { name: 'Planning & Budget', icon: <ClipboardList className="w-7 h-7" />, calculators: ['installation-cost'] },
+  { name: 'Hardware', icon: <Wrench className="w-7 h-7" />, calculators: ['compatibility'] },
 ]
 
 export default function CalculatorsPage() {
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Smart Lock Calculators',
+    description: 'Interactive smart lock calculators for TCO, battery life, signal strength, installation cost, and more.',
+    url: 'https://smartlockhub.com/calculators',
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: calculators.length,
+      itemListElement: calculators.map((calc, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: calc.name,
+        url: `https://smartlockhub.com/calculators/${calc.slug}`,
+      })),
+    },
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-12">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            🧮 Smart Lock Calculators
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Interactive tools to help you make informed decisions about smart lock systems.
-            Get instant calculations and expert recommendations.
-          </p>
-        </div>
-
-        {/* Categories */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Browse by Category</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {categories.map((category) => (
-              <div
-                key={category.name}
-                className="p-6 bg-white rounded-lg border-2 border-gray-200 hover:border-blue-400 transition-colors"
-              >
-                <div className="text-3xl mb-2">{category.icon}</div>
-                <h3 className="font-semibold text-gray-900 mb-1">{category.name}</h3>
-                <p className="text-sm text-gray-600">{category.calculators.length} tool{category.calculators.length > 1 ? 's' : ''}</p>
-              </div>
-            ))}
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <div className="page-wrapper-alt">
+        <div className="container-main section">
+          {/* Header */}
+          <div className="page-header">
+            <div className="page-header__icon">
+              <Calculator className="w-10 h-10" />
+            </div>
+            <h1 className="page-header__title">Smart Lock Calculators</h1>
+            <p className="page-header__subtitle">
+              Interactive tools to help you make informed decisions about smart lock systems.
+              Get instant calculations and expert recommendations.
+            </p>
           </div>
-        </div>
 
-        {/* Calculators Grid */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">All Calculators</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {calculators.map((calculator) => (
-              <Link
-                key={calculator.slug}
-                href={`/calculators/${calculator.slug}`}
-                className="group block bg-white rounded-xl shadow-md hover:shadow-xl transition-all border-2 border-gray-100 hover:border-blue-400 overflow-hidden"
-              >
-                <div className="p-8">
-                  {/* Header */}
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="text-5xl">{calculator.icon}</div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                        {calculator.name}
-                      </h3>
-                      <div className="flex items-center gap-2">
-                        <span className={`text-xs px-2 py-1 rounded-full font-semibold ${
-                          calculator.complexity === 'Simple' 
-                            ? 'bg-green-100 text-green-700' 
-                            : 'bg-yellow-100 text-yellow-700'
-                        }`}>
-                          {calculator.complexity}
-                        </span>
-                      </div>
-                    </div>
-                    <svg 
-                      className="w-6 h-6 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all flex-shrink-0" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-gray-600 mb-4">
-                    {calculator.description}
+          {/* Categories */}
+          <div className="mb-16">
+            <h2 className="section-title">Browse by Category</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {categories.map((category) => (
+                <div key={category.name} className="card card-hover">
+                  <div className="mb-2" style={{ color: 'var(--color-accent)' }}>{category.icon}</div>
+                  <h3 className="font-semibold mb-1" style={{ color: 'var(--color-text-primary)' }}>{category.name}</h3>
+                  <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+                    {category.calculators.length} tool{category.calculators.length > 1 ? 's' : ''}
                   </p>
+                </div>
+              ))}
+            </div>
+          </div>
 
-                  {/* Features */}
-                  <div className="space-y-2">
-                    {calculator.features.map((feature, index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm text-gray-600">
-                        <svg className="w-4 h-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>{feature}</span>
+          {/* Calculators Grid */}
+          <div className="mb-16">
+            <h2 className="section-title">All Calculators</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {calculators.map((calculator) => (
+                <Link
+                  key={calculator.slug}
+                  href={`/calculators/${calculator.slug}`}
+                  className="group block card card-hover overflow-hidden"
+                  style={{ padding: 0 }}
+                >
+                  <div style={{ padding: 'var(--space-xl)' }}>
+                    {/* Header */}
+                    <div className="flex items-start gap-4 mb-4">
+                      <div style={{ color: 'var(--color-accent)' }}>{calculator.icon}</div>
+                      <div className="flex-1">
+                        <h3
+                          className="text-lg font-bold mb-2 group-hover:text-[var(--color-accent)] transition-colors"
+                          style={{ color: 'var(--color-text-primary)' }}
+                        >
+                          {calculator.name}
+                        </h3>
+                        <div className="flex items-center gap-2">
+                          <span className={`badge ${calculator.complexity === 'Simple' ? 'badge-success' : 'badge-warning'}`}>
+                            {calculator.complexity}
+                          </span>
+                        </div>
                       </div>
-                    ))}
+                      <svg
+                        className="w-5 h-5 group-hover:translate-x-1 transition-transform flex-shrink-0"
+                        style={{ color: 'var(--color-text-muted)' }}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+
+                    {/* Description */}
+                    <p className="mb-4" style={{ color: 'var(--color-text-secondary)' }}>
+                      {calculator.description}
+                    </p>
+
+                    {/* Features */}
+                    <div className="space-y-2">
+                      {calculator.features.map((feature, index) => (
+                        <div key={index} className="feature-item">
+                          <svg className="feature-item__icon feature-item__icon--success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
+
+                  {/* Footer */}
+                  <div
+                    className="group-hover:bg-[var(--color-accent-subtle)] transition-colors"
+                    style={{
+                      padding: 'var(--space-md) var(--space-xl)',
+                      background: 'var(--color-bg-alt)',
+                    }}
+                  >
+                    <span className="font-semibold text-sm" style={{ color: 'var(--color-accent)' }}>
+                      Try Calculator →
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Features Section */}
+          <div className="card-elevated mb-16" style={{ padding: 'var(--space-2xl)', background: 'var(--color-accent-subtle)' }}>
+            <h2 className="section-title section-title--center">Why Use Our Calculators?</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { icon: <Zap className="w-7 h-7" />, title: 'Instant Results', desc: 'Get immediate calculations without waiting' },
+                { icon: <Calculator className="w-7 h-7" />, title: 'Expert Algorithms', desc: 'Based on industry standards and real data' },
+                { icon: <Wrench className="w-7 h-7" />, title: 'Customizable', desc: 'Adjust parameters to match your exact needs' },
+              ].map((f) => (
+                <div key={f.title} className="text-center">
+                  <div
+                    className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4"
+                    style={{ background: 'var(--color-accent)', color: 'var(--color-text-on-accent)' }}
+                  >
+                    {f.icon}
+                  </div>
+                  <h3 className="font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>{f.title}</h3>
+                  <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{f.desc}</p>
                 </div>
-
-                {/* Footer */}
-                <div className="px-8 py-4 bg-gray-50 group-hover:bg-blue-50 transition-colors">
-                  <span className="text-blue-600 font-semibold text-sm">
-                    Try Calculator →
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* Features Section */}
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 md:p-12 mb-16">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-              Why Use Our Calculators?
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Instant Results</h3>
-              <p className="text-sm text-gray-600">Get immediate calculations without waiting</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Expert Algorithms</h3>
-              <p className="text-sm text-gray-600">Based on industry standards and real data</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                </svg>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Customizable</h3>
-              <p className="text-sm text-gray-600">Adjust parameters to match your exact needs</p>
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* CTA Section */}
-        <div className="text-center bg-white rounded-2xl border-2 border-gray-200 p-8 md:p-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-            Need More Information?
-          </h2>
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            Explore our comprehensive knowledge base for detailed guides and articles about smart lock systems
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/articles"
-              className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-            >
-              Browse Articles
-            </Link>
-            <Link
-              href="/"
-              className="px-8 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
-            >
-              Back to Home
-            </Link>
+          {/* CTA Section */}
+          <div className="cta-section">
+            <h2 className="cta-section__title">Need More Information?</h2>
+            <p className="cta-section__subtitle">
+              Explore our comprehensive knowledge base for detailed guides and articles about smart lock systems
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/articles" className="btn btn-primary btn-lg">Browse Articles</Link>
+              <Link href="/" className="btn btn-secondary btn-lg">Back to Home</Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

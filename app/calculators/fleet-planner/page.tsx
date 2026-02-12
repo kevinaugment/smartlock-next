@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { Building2, Wrench, DollarSign, BarChart3 } from 'lucide-react'
+import { ToolRating } from '@/components/ToolRating'
 
 export default function FleetPlanner() {
   const [properties, setProperties] = useState(10)
@@ -23,10 +25,10 @@ export default function FleetPlanner() {
     const trainingSavings = protocolCount > 1 ? properties * 100 : 0
     const annualSavings = maintenanceSavings + trainingSavings
     const paybackYears = annualSavings > 0 ? unificationCost / annualSavings : 0
-    
-    return { 
-      totalLocks, 
-      protocolCount, 
+
+    return {
+      totalLocks,
+      protocolCount,
       fragmentationScore,
       unificationCost,
       maintenanceSavings,
@@ -40,14 +42,14 @@ export default function FleetPlanner() {
   const result = calculate()
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="container mx-auto px-4 py-12">
-        <Link href="/calculators" className="text-blue-600 text-sm mb-8 inline-block">← Back</Link>
-        
+    <div className="page-bg">
+      <div className="container-main section">
+        <Link href="/calculators" className="back-link">← Back</Link>
+
         <div className="text-center mb-12">
-          <div className="text-6xl mb-4">🏢</div>
+          <div className="page-header__icon"><Building2 className="w-14 h-14 mx-auto" /></div>
           <h1 className="text-4xl font-bold mb-4">Multi-Property Fleet Planner</h1>
-          <p className="text-xl text-gray-600">Analyze protocol fragmentation across your property portfolio</p>
+          <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Analyze protocol fragmentation across your property portfolio</p>
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -56,18 +58,18 @@ export default function FleetPlanner() {
             <div className="space-y-6">
               <div>
                 <label className="block mb-2 font-medium">Number of Properties: {properties}</label>
-                <input type="range" min="1" max="100" value={properties} onChange={(e) => setProperties(Number(e.target.value))} className="w-full"/>
+                <input type="range" min="1" max="100" value={properties} onChange={(e) => setProperties(Number(e.target.value))} className="w-full" />
               </div>
               <div>
                 <label className="block mb-2 font-medium">Avg Locks per Property: {avgLocksPerProperty}</label>
-                <input type="range" min="1" max="20" value={avgLocksPerProperty} onChange={(e) => setAvgLocksPerProperty(Number(e.target.value))} className="w-full"/>
+                <input type="range" min="1" max="20" value={avgLocksPerProperty} onChange={(e) => setAvgLocksPerProperty(Number(e.target.value))} className="w-full" />
               </div>
               <div>
                 <label className="block mb-2 font-medium">Current Protocols in Use</label>
                 <div className="space-y-2">
                   {['zigbee', 'zwave', 'wifi', 'thread'].map(p => (
-                    <label key={p} className="flex items-center gap-2 p-3 border rounded hover:bg-gray-50 cursor-pointer">
-                      <input type="checkbox" checked={currentProtocols.includes(p)} onChange={() => toggleProtocol(p)} className="w-4 h-4"/>
+                    <label key={p} className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "1px solid var(--color-border)" }}>
+                      <input type="checkbox" checked={currentProtocols.includes(p)} onChange={() => toggleProtocol(p)} className="w-4 h-4" />
                       <span className="capitalize">{p}</span>
                     </label>
                   ))}
@@ -77,11 +79,10 @@ export default function FleetPlanner() {
           </div>
 
           <div>
-            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${
-              result.fragmentationScore < 30 ? 'bg-gradient-to-br from-green-600 to-green-700' :
+            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.fragmentationScore < 30 ? 'bg-gradient-to-br from-green-600 to-green-700' :
               result.fragmentationScore < 60 ? 'bg-gradient-to-br from-yellow-600 to-yellow-700' :
-              'bg-gradient-to-br from-red-600 to-red-700'
-            }`}>
+                'bg-gradient-to-br from-red-600 to-red-700'
+              }`}>
               <h2 className="text-xl font-bold mb-6">Fragmentation Analysis</h2>
               <div className="text-center mb-8">
                 <div className="text-6xl font-bold mb-2">{result.fragmentationScore}</div>
@@ -119,36 +120,40 @@ export default function FleetPlanner() {
         <div className="max-w-6xl mx-auto mt-12 bg-white p-8 rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold mb-6">Unification Benefits</h2>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
-              <div className="text-3xl mb-2">🔧</div>
+            <div className="text-center p-4 rounded-lg" style={{ background: "var(--color-accent-subtle)" }}>
+              <div className="text-blue-600 mb-2"><Wrench className="w-8 h-8 mx-auto" /></div>
               <div className="font-semibold mb-2">Simpler Maintenance</div>
-              <div className="text-sm text-gray-600">One protocol = one skill set</div>
+              <div className="link-card__desc">One protocol = one skill set</div>
             </div>
-            <div className="text-center p-4 bg-green-50 rounded-lg">
-              <div className="text-3xl mb-2">💰</div>
+            <div className="text-center p-4 rounded-lg" style={{ background: "var(--color-success-subtle)" }}>
+              <div className="text-green-600 mb-2"><DollarSign className="w-8 h-8 mx-auto" /></div>
               <div className="font-semibold mb-2">Bulk Discounts</div>
-              <div className="text-sm text-gray-600">Better pricing at scale</div>
+              <div className="link-card__desc">Better pricing at scale</div>
             </div>
-            <div className="text-center p-4 bg-purple-50 rounded-lg">
-              <div className="text-3xl mb-2">📊</div>
+            <div className="text-center p-4 rounded-lg" style={{ background: "#f3e8ff" }}>
+              <div className="text-purple-600 mb-2"><BarChart3 className="w-8 h-8 mx-auto" /></div>
               <div className="font-semibold mb-2">Unified Management</div>
-              <div className="text-sm text-gray-600">Single dashboard for all</div>
+              <div className="link-card__desc">Single dashboard for all</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Be-Tech Brand Recommendation */}
-      <BeTechCalculatorRecommendation 
+      <BeTechCalculatorRecommendation
         description="Be-Tech offers unified smart lock solutions across multiple protocols, helping you standardize your fleet while maintaining flexibility. Professional support for multi-property deployments."
         badge="Fleet Ready"
       />
 
       {/* Back Link */}
       <div className="max-w-6xl mx-auto mt-8 mb-12">
-        <Link href="/calculators" className="text-blue-600 hover:text-blue-700 font-medium">
+        <Link href="/calculators" style={{ color: "var(--color-accent)", fontWeight: 500 }}>
           ← Back to All Calculators
         </Link>
+      </div>
+
+      <div className="container-main">
+        <ToolRating toolSlug="fleet-planner" />
       </div>
     </div>
   )

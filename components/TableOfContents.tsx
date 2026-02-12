@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { List, ArrowUp, Printer, Link2 } from 'lucide-react'
 import type { Heading } from '@/lib/markdown'
 
 interface TableOfContentsProps {
@@ -22,7 +23,6 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
       { rootMargin: '-20% 0% -35% 0%' }
     )
 
-    // Observe all headings
     headings.forEach((heading) => {
       const element = document.getElementById(heading.id)
       if (element) observer.observe(element)
@@ -46,11 +46,15 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 
   return (
     <nav className="sticky top-24 hidden lg:block">
-      <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-        <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4 flex items-center gap-2">
-          <span>📑</span> Table of Contents
+      <div className="card" style={{ padding: 'var(--space-xl)' }}>
+        <h2
+          className="text-sm font-bold uppercase mb-4 flex items-center gap-2"
+          style={{ color: 'var(--color-text-primary)', letterSpacing: '0.05em' }}
+        >
+          <List className="w-4 h-4" style={{ color: 'var(--color-accent)' }} />
+          Table of Contents
         </h2>
-        <ul className="space-y-2 text-sm">
+        <ul className="space-y-1 text-sm">
           {headings.map((heading) => (
             <li
               key={heading.id}
@@ -59,14 +63,12 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
               <a
                 href={`#${heading.id}`}
                 onClick={(e) => handleClick(e, heading.id)}
-                className={`
-                  block py-1 px-3 rounded-md transition-all duration-200
-                  ${
-                    activeId === heading.id
-                      ? 'bg-blue-50 text-blue-700 font-semibold border-l-2 border-blue-600 -ml-[2px]'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-l-2 border-transparent -ml-[2px]'
-                  }
-                `}
+                className="block py-1 px-3 rounded-md transition-all"
+                style={{
+                  color: activeId === heading.id ? 'var(--color-accent)' : 'var(--color-text-secondary)',
+                  background: activeId === heading.id ? 'var(--color-accent-subtle)' : 'transparent',
+                  fontWeight: activeId === heading.id ? 600 : 400,
+                }}
               >
                 {heading.text}
               </a>
@@ -76,22 +78,27 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
       </div>
 
       {/* Quick Actions */}
-      <div className="mt-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-200 p-4 shadow-sm">
-        <h3 className="text-xs font-bold text-gray-700 uppercase tracking-wide mb-3">
+      <div className="card mt-4" style={{ padding: 'var(--space-md) var(--space-lg)', background: 'var(--color-bg-alt)' }}>
+        <h3
+          className="text-xs font-bold uppercase mb-3"
+          style={{ color: 'var(--color-text-muted)', letterSpacing: '0.05em' }}
+        >
           Quick Actions
         </h3>
-        <div className="space-y-2 text-sm">
+        <div className="space-y-1 text-sm">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="w-full flex items-center gap-2 text-left text-gray-600 hover:text-blue-600 transition-colors"
+            className="w-full flex items-center gap-2 text-left py-1 transition-colors"
+            style={{ color: 'var(--color-text-secondary)' }}
           >
-            <span>⬆️</span> Back to top
+            <ArrowUp className="w-4 h-4" /> Back to top
           </button>
           <button
             onClick={() => window.print()}
-            className="w-full flex items-center gap-2 text-left text-gray-600 hover:text-blue-600 transition-colors"
+            className="w-full flex items-center gap-2 text-left py-1 transition-colors"
+            style={{ color: 'var(--color-text-secondary)' }}
           >
-            <span>🖨️</span> Print article
+            <Printer className="w-4 h-4" /> Print article
           </button>
           <button
             onClick={() => {
@@ -99,9 +106,10 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
               navigator.clipboard.writeText(url)
               alert('Link copied to clipboard!')
             }}
-            className="w-full flex items-center gap-2 text-left text-gray-600 hover:text-blue-600 transition-colors"
+            className="w-full flex items-center gap-2 text-left py-1 transition-colors"
+            style={{ color: 'var(--color-text-secondary)' }}
           >
-            <span>🔗</span> Copy link
+            <Link2 className="w-4 h-4" /> Copy link
           </button>
         </div>
       </div>

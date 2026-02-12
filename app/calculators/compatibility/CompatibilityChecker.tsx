@@ -159,7 +159,7 @@ export default function CompatibilityChecker() {
       <div className="lg:col-span-2 space-y-6">
         <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Door Specifications</h2>
-          
+
           <div className="space-y-6">
             {/* Door Material */}
             <div>
@@ -178,7 +178,7 @@ export default function CompatibilityChecker() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Door Thickness: {doorThickness}mm ({(doorThickness / 25.4).toFixed(2)}")
               </label>
-              <input type="range" min="30" max="70" value={doorThickness} onChange={(e) => setDoorThickness(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
+              <input type="range" min="30" max="70" value={doorThickness} onChange={(e) => setDoorThickness(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
                 <span>30mm (1-1/4")</span>
                 <span className="text-green-600">44mm (1-3/4" std)</span>
@@ -215,11 +215,11 @@ export default function CompatibilityChecker() {
               <label className="block text-sm font-medium text-gray-700 mb-3">Additional Factors</label>
               <div className="space-y-2">
                 <label className="flex items-center">
-                  <input type="checkbox" checked={hasExistingDeadbolt} onChange={(e) => setHasExistingDeadbolt(e.target.checked)} className="w-4 h-4 text-blue-600 border-gray-300 rounded"/>
+                  <input type="checkbox" checked={hasExistingDeadbolt} onChange={(e) => setHasExistingDeadbolt(e.target.checked)} className="w-4 h-4 text-blue-600 border-gray-300 rounded" />
                   <span className="ml-2 text-gray-700">Has existing deadbolt (replacement)</span>
                 </label>
                 <label className="flex items-center">
-                  <input type="checkbox" checked={isDoorHung} onChange={(e) => setIsDoorHung(e.target.checked)} className="w-4 h-4 text-blue-600 border-gray-300 rounded"/>
+                  <input type="checkbox" checked={isDoorHung} onChange={(e) => setIsDoorHung(e.target.checked)} className="w-4 h-4 text-blue-600 border-gray-300 rounded" />
                   <span className="ml-2 text-gray-700">Door is already hung (not pre-install)</span>
                 </label>
                 <div className="flex items-center gap-4 mt-3">
@@ -252,7 +252,7 @@ export default function CompatibilityChecker() {
 
           {result.issues.length > 0 && (
             <div className="mb-4 p-3 bg-white/10 rounded-lg">
-              <p className="text-xs font-semibold mb-2">❌ Critical Issues:</p>
+              <p className="text-xs font-semibold mb-2">Critical Issues:</p>
               <ul className="text-xs space-y-1 opacity-90">
                 {result.issues.map((issue, i) => <li key={i}>• {issue}</li>)}
               </ul>
@@ -261,7 +261,7 @@ export default function CompatibilityChecker() {
 
           {result.warnings.length > 0 && (
             <div className="mb-4 p-3 bg-white/10 rounded-lg">
-              <p className="text-xs font-semibold mb-2">⚠️ Warnings:</p>
+              <p className="text-xs font-semibold mb-2">Warnings:</p>
               <ul className="text-xs space-y-1 opacity-90">
                 {result.warnings.map((warn, i) => <li key={i}>• {warn}</li>)}
               </ul>
@@ -270,7 +270,7 @@ export default function CompatibilityChecker() {
 
           {result.recommendations.length > 0 && (
             <div className="p-3 bg-white/10 rounded-lg">
-              <p className="text-xs font-semibold mb-2">💡 Recommendations:</p>
+              <p className="text-xs font-semibold mb-2">Recommendations:</p>
               <ul className="text-xs space-y-1 opacity-90">
                 {result.recommendations.map((rec, i) => <li key={i}>• {rec}</li>)}
               </ul>

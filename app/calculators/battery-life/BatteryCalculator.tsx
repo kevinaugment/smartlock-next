@@ -58,42 +58,42 @@ export default function BatteryCalculator() {
 
   const calculateBatteryLife = () => {
     const protocolInfo = protocolData.find(p => p.protocol === protocol) || protocolData[0]
-    
+
     // Battery capacity by type (mAh)
     const batteryCapacity: Record<string, number> = {
       'alkaline': 2800,
       'lithium': 3000,
       'rechargeable': 2000
     }
-    
+
     const capacityMah = batteryCapacity[batteryType]
-    
+
     // Calculate daily power consumption
     const activeMinutesPerDay = dailyUsage * 0.5 // 30 seconds per operation
     const idleMinutesPerDay = 1440 - activeMinutesPerDay
-    
+
     const dailyActiveMwh = (protocolInfo.activePowerMw * activeMinutesPerDay) / 60
     const dailyIdleMwh = (protocolInfo.idlePowerMw * idleMinutesPerDay) / 60
     const dailyTotalMwh = dailyActiveMwh + dailyIdleMwh
-    
+
     // Additional features power draw
     let featureMultiplier = 1.0
     if (hasKeypad) featureMultiplier *= 1.08 // Keypad backlight
     if (hasAutoLock) featureMultiplier *= 1.05 // Motor engagement
-    
+
     const adjustedDailyMwh = dailyTotalMwh * featureMultiplier
-    
+
     // Temperature compensation
     let tempFactor = 1.0
     if (temperature === 'cold') tempFactor = 0.7 // -10°C to 0°C
     if (temperature === 'hot') tempFactor = 0.9 // 35°C to 45°C
-    
+
     // Battery voltage: AA = 1.5V, total energy = capacity * voltage
     const totalEnergyMwh = (capacityMah * 1.5) * tempFactor
-    
+
     // Calculate days
     const estimatedDays = Math.floor(totalEnergyMwh / adjustedDailyMwh)
-    
+
     return {
       days: estimatedDays,
       months: Math.floor(estimatedDays / 30),
@@ -110,7 +110,7 @@ export default function BatteryCalculator() {
       <div className="lg:col-span-2 space-y-6">
         <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Battery Configuration</h2>
-          
+
           <div className="space-y-6">
             {/* Protocol */}
             <div>
@@ -254,14 +254,14 @@ export default function BatteryCalculator() {
 
           <div className="mt-6 p-4 bg-white/10 rounded-lg">
             <p className="text-xs opacity-90">
-              💡 <strong>Tip:</strong> {
-                protocol === 'wifi' 
+              <strong>Tip:</strong> {
+                protocol === 'wifi'
                   ? 'Wi-Fi locks drain batteries 4× faster. Consider Zigbee for longer life.'
                   : temperature === 'cold'
-                  ? 'Cold temperatures reduce capacity by 30%. Use lithium batteries.'
-                  : dailyUsage > 30
-                  ? 'Heavy usage detected. Consider rechargeable batteries.'
-                  : 'Optimal configuration! Expect consistent performance.'
+                    ? 'Cold temperatures reduce capacity by 30%. Use lithium batteries.'
+                    : dailyUsage > 30
+                      ? 'Heavy usage detected. Consider rechargeable batteries.'
+                      : 'Optimal configuration! Expect consistent performance.'
               }
             </p>
           </div>

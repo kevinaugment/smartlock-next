@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { WifiOff, AlertTriangle, Lightbulb, Check } from 'lucide-react'
+import { ToolRating } from '@/components/ToolRating'
 
 export default function OfflineResilience() {
   const [protocol, setProtocol] = useState('zigbee')
@@ -70,14 +72,14 @@ export default function OfflineResilience() {
   const result = calculate()
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="container mx-auto px-4 py-12">
-        <Link href="/calculators" className="text-blue-600 text-sm mb-8 inline-block">← Back</Link>
-        
+    <div className="page-bg">
+      <div className="container-main section">
+        <Link href="/calculators" className="back-link">← Back</Link>
+
         <div className="text-center mb-12">
-          <div className="text-6xl mb-4">🔋</div>
+          <div className="page-header__icon"><WifiOff className="w-14 h-14 mx-auto" /></div>
           <h1 className="text-4xl font-bold mb-4">Offline Resilience Scorecard</h1>
-          <p className="text-xl text-gray-600">Evaluate how well your system works during outages</p>
+          <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Evaluate how well your system works during outages</p>
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -94,24 +96,24 @@ export default function OfflineResilience() {
                 </select>
               </div>
               <div className="space-y-3">
-                <label className="flex items-center gap-2 p-3 border rounded hover:bg-gray-50 cursor-pointer">
-                  <input type="checkbox" checked={hasLocalHub} onChange={(e) => setHasLocalHub(e.target.checked)} className="w-4 h-4"/>
+                <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "1px solid var(--color-border)" }}>
+                  <input type="checkbox" checked={hasLocalHub} onChange={(e) => setHasLocalHub(e.target.checked)} className="w-4 h-4" />
                   <span>Has Local Hub/Controller</span>
                 </label>
-                <label className="flex items-center gap-2 p-3 border rounded hover:bg-gray-50 cursor-pointer">
-                  <input type="checkbox" checked={hasBackupPower} onChange={(e) => setHasBackupPower(e.target.checked)} className="w-4 h-4"/>
+                <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "1px solid var(--color-border)" }}>
+                  <input type="checkbox" checked={hasBackupPower} onChange={(e) => setHasBackupPower(e.target.checked)} className="w-4 h-4" />
                   <span>Has Backup Power (UPS)</span>
                 </label>
-                <label className="flex items-center gap-2 p-3 border rounded hover:bg-gray-50 cursor-pointer">
-                  <input type="checkbox" checked={hasPhysicalKey} onChange={(e) => setHasPhysicalKey(e.target.checked)} className="w-4 h-4"/>
+                <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "1px solid var(--color-border)" }}>
+                  <input type="checkbox" checked={hasPhysicalKey} onChange={(e) => setHasPhysicalKey(e.target.checked)} className="w-4 h-4" />
                   <span>Has Physical Key Backup</span>
                 </label>
-                <label className="flex items-center gap-2 p-3 border rounded hover:bg-gray-50 cursor-pointer">
-                  <input type="checkbox" checked={hasBackupCodes} onChange={(e) => setHasBackupCodes(e.target.checked)} className="w-4 h-4"/>
+                <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "1px solid var(--color-border)" }}>
+                  <input type="checkbox" checked={hasBackupCodes} onChange={(e) => setHasBackupCodes(e.target.checked)} className="w-4 h-4" />
                   <span>Has Offline PIN Codes</span>
                 </label>
-                <label className="flex items-center gap-2 p-3 border rounded hover:bg-gray-50 cursor-pointer">
-                  <input type="checkbox" checked={cloudRequired} onChange={(e) => setCloudRequired(e.target.checked)} className="w-4 h-4"/>
+                <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "1px solid var(--color-border)" }}>
+                  <input type="checkbox" checked={cloudRequired} onChange={(e) => setCloudRequired(e.target.checked)} className="w-4 h-4" />
                   <span>Cloud Connection Required</span>
                 </label>
               </div>
@@ -119,12 +121,11 @@ export default function OfflineResilience() {
           </div>
 
           <div>
-            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${
-              result.grade === 'A' ? 'bg-gradient-to-br from-green-600 to-green-700' :
+            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.grade === 'A' ? 'bg-gradient-to-br from-green-600 to-green-700' :
               result.grade === 'B' ? 'bg-gradient-to-br from-blue-600 to-blue-700' :
-              result.grade === 'C' ? 'bg-gradient-to-br from-yellow-600 to-yellow-700' :
-              'bg-gradient-to-br from-red-600 to-red-700'
-            }`}>
+                result.grade === 'C' ? 'bg-gradient-to-br from-yellow-600 to-yellow-700' :
+                  'bg-gradient-to-br from-red-600 to-red-700'
+              }`}>
               <h2 className="text-xl font-bold mb-6">Resilience Score</h2>
               <div className="text-center mb-8">
                 <div className="text-7xl font-bold mb-2">{result.grade}</div>
@@ -133,7 +134,7 @@ export default function OfflineResilience() {
               </div>
               <div className="mb-6">
                 <div className="h-4 bg-white/20 rounded-full overflow-hidden">
-                  <div className="h-full bg-white transition-all" style={{width: `${result.score}%`}}/>
+                  <div className="h-full bg-white transition-all" style={{ width: `${result.score}%` }} />
                 </div>
               </div>
               <div className="space-y-2 text-sm bg-white/10 rounded-lg p-4">
@@ -152,8 +153,8 @@ export default function OfflineResilience() {
 
         {result.issues.length > 0 && (
           <div className="max-w-6xl mx-auto mt-12 grid md:grid-cols-2 gap-6">
-            <div className="bg-red-50 border-2 border-red-200 p-6 rounded-lg">
-              <h3 className="text-lg font-bold text-red-900 mb-3">⚠️ Issues Found</h3>
+            <div className="callout callout-danger">
+              <h3 className="text-lg font-bold text-red-900 mb-3 inline-flex items-center gap-2"><AlertTriangle className="w-5 h-5" style={{ color: "var(--color-danger)" }} /> Issues Found</h3>
               <ul className="space-y-2">
                 {result.issues.map((issue, i) => (
                   <li key={i} className="text-sm text-red-800 flex items-start gap-2">
@@ -163,12 +164,12 @@ export default function OfflineResilience() {
                 ))}
               </ul>
             </div>
-            <div className="bg-blue-50 border-2 border-blue-200 p-6 rounded-lg">
-              <h3 className="text-lg font-bold text-blue-900 mb-3">💡 Recommendations</h3>
+            <div className="callout callout-info">
+              <h3 className="text-lg font-bold text-blue-900 mb-3 inline-flex items-center gap-2"><Lightbulb className="w-5 h-5" style={{ color: "var(--color-accent)" }} /> Recommendations</h3>
               <ul className="space-y-2">
                 {result.recommendations.map((rec, i) => (
                   <li key={i} className="text-sm text-blue-800 flex items-start gap-2">
-                    <span className="mt-1">✓</span>
+                    <Check className="check-item__icon" style={{ color: "var(--color-accent)" }} />
                     <span>{rec}</span>
                   </li>
                 ))}
@@ -182,7 +183,7 @@ export default function OfflineResilience() {
           <div className="grid md:grid-cols-3 gap-6">
             <div>
               <h3 className="font-semibold mb-2 text-blue-700">Power Resilience</h3>
-              <ul className="text-sm space-y-1 text-gray-700">
+              <ul className="space-y-1" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
                 <li>• UPS for hub (4-8 hours)</li>
                 <li>• Lock batteries (6-12 months)</li>
                 <li>• Generator backup option</li>
@@ -190,7 +191,7 @@ export default function OfflineResilience() {
             </div>
             <div>
               <h3 className="font-semibold mb-2 text-green-700">Network Resilience</h3>
-              <ul className="text-sm space-y-1 text-gray-700">
+              <ul className="space-y-1" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
                 <li>• Local mesh network</li>
                 <li>• No cloud dependency</li>
                 <li>• Failover internet (LTE)</li>
@@ -198,7 +199,7 @@ export default function OfflineResilience() {
             </div>
             <div>
               <h3 className="font-semibold mb-2 text-purple-700">Access Resilience</h3>
-              <ul className="text-sm space-y-1 text-gray-700">
+              <ul className="space-y-1" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
                 <li>• Physical key backup</li>
                 <li>• Offline PIN codes</li>
                 <li>• Multiple unlock methods</li>
@@ -209,16 +210,20 @@ export default function OfflineResilience() {
       </div>
 
       {/* Be-Tech Brand Recommendation */}
-      <BeTechCalculatorRecommendation 
+      <BeTechCalculatorRecommendation
         description="Be-Tech smart locks are designed for maximum offline resilience with local processing, Bluetooth backup, and mechanical override options. Operate reliably even during internet or power outages."
         badge="Offline Capable"
       />
 
       {/* Back Link */}
       <div className="max-w-6xl mx-auto mt-8 mb-12">
-        <Link href="/calculators" className="text-blue-600 hover:text-blue-700 font-medium">
+        <Link href="/calculators" style={{ color: "var(--color-accent)", fontWeight: 500 }}>
           ← Back to All Calculators
         </Link>
+      </div>
+
+      <div className="container-main">
+        <ToolRating toolSlug="offline-resilience" />
       </div>
     </div>
   )

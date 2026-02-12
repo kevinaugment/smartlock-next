@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { Timer } from 'lucide-react'
+import { ToolRating } from '@/components/ToolRating'
 
 export default function InstallationTime() {
   const [doorCount, setDoorCount] = useState(10)
@@ -21,7 +23,7 @@ export default function InstallationTime() {
     const crewDays = Math.ceil(hoursPerTech / 8)
     const laborCost = totalHours * laborRate
     const costPerDoor = laborCost / doorCount
-    
+
     return {
       totalMinutes,
       totalHours: Math.round(totalHours * 10) / 10,
@@ -36,14 +38,14 @@ export default function InstallationTime() {
   const result = calculate()
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="container mx-auto px-4 py-12">
-        <Link href="/calculators" className="text-blue-600 text-sm mb-8 inline-block">← Back</Link>
-        
+    <div className="page-bg">
+      <div className="container-main section">
+        <Link href="/calculators" className="back-link">← Back</Link>
+
         <div className="text-center mb-12">
-          <div className="text-6xl mb-4">⏱️</div>
+          <div className="page-header__icon"><Timer className="w-14 h-14 mx-auto" /></div>
           <h1 className="text-4xl font-bold mb-4">Installation Time Estimator</h1>
-          <p className="text-xl text-gray-600">Estimate technician hours and labor cost</p>
+          <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Estimate technician hours and labor cost</p>
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -52,7 +54,7 @@ export default function InstallationTime() {
             <div className="space-y-6">
               <div>
                 <label className="block mb-2 font-medium">Number of Doors: {doorCount}</label>
-                <input type="range" min="1" max="100" value={doorCount} onChange={(e) => setDoorCount(Number(e.target.value))} className="w-full"/>
+                <input type="range" min="1" max="100" value={doorCount} onChange={(e) => setDoorCount(Number(e.target.value))} className="w-full" />
               </div>
               <div>
                 <label className="block mb-2 font-medium">Door Type</label>
@@ -64,18 +66,18 @@ export default function InstallationTime() {
                 </select>
               </div>
               <div>
-                <label className="flex items-center gap-2 p-3 border rounded hover:bg-gray-50 cursor-pointer">
-                  <input type="checkbox" checked={wireRequired} onChange={(e) => setWireRequired(e.target.checked)} className="w-4 h-4"/>
+                <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "1px solid var(--color-border)" }}>
+                  <input type="checkbox" checked={wireRequired} onChange={(e) => setWireRequired(e.target.checked)} className="w-4 h-4" />
                   <span>Wiring Required (+30 min/door)</span>
                 </label>
               </div>
               <div>
                 <label className="block mb-2 font-medium">Number of Technicians: {technicianCount}</label>
-                <input type="range" min="1" max="10" value={technicianCount} onChange={(e) => setTechnicianCount(Number(e.target.value))} className="w-full"/>
+                <input type="range" min="1" max="10" value={technicianCount} onChange={(e) => setTechnicianCount(Number(e.target.value))} className="w-full" />
               </div>
               <div>
                 <label className="block mb-2 font-medium">Labor Rate: ${laborRate}/hour</label>
-                <input type="range" min="50" max="150" step="5" value={laborRate} onChange={(e) => setLaborRate(Number(e.target.value))} className="w-full"/>
+                <input type="range" min="50" max="150" step="5" value={laborRate} onChange={(e) => setLaborRate(Number(e.target.value))} className="w-full" />
               </div>
             </div>
           </div>
@@ -116,33 +118,37 @@ export default function InstallationTime() {
         <div className="max-w-6xl mx-auto mt-12 bg-white p-8 rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold mb-6">Time Breakdown</h2>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
+            <div className="text-center p-4 rounded-lg" style={{ background: "var(--color-accent-subtle)" }}>
               <div className="text-2xl font-bold text-blue-700 mb-1">{Math.round(result.totalHours * 0.6)}h</div>
-              <div className="text-sm text-gray-600">Physical Installation</div>
+              <div className="link-card__desc">Physical Installation</div>
             </div>
-            <div className="text-center p-4 bg-green-50 rounded-lg">
+            <div className="text-center p-4 rounded-lg" style={{ background: "var(--color-success-subtle)" }}>
               <div className="text-2xl font-bold text-green-700 mb-1">{Math.round(result.totalHours * 0.25)}h</div>
-              <div className="text-sm text-gray-600">Testing & Setup</div>
+              <div className="link-card__desc">Testing & Setup</div>
             </div>
-            <div className="text-center p-4 bg-purple-50 rounded-lg">
+            <div className="text-center p-4 rounded-lg" style={{ background: "#f3e8ff" }}>
               <div className="text-2xl font-bold text-purple-700 mb-1">{Math.round(result.totalHours * 0.15)}h</div>
-              <div className="text-sm text-gray-600">Cleanup & Documentation</div>
+              <div className="link-card__desc">Cleanup & Documentation</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Be-Tech Brand Recommendation */}
-      <BeTechCalculatorRecommendation 
+      <BeTechCalculatorRecommendation
         description="Be-Tech locks feature easy installation with clear documentation and professional installer support. Most installations can be completed in 30-45 minutes per door."
         badge="Quick Install"
       />
 
       {/* Back Link */}
       <div className="max-w-6xl mx-auto mt-8 mb-12">
-        <Link href="/calculators" className="text-blue-600 hover:text-blue-700 font-medium">
+        <Link href="/calculators" style={{ color: "var(--color-accent)", fontWeight: 500 }}>
           ← Back to All Calculators
         </Link>
+      </div>
+
+      <div className="container-main">
+        <ToolRating toolSlug="installation-time" />
       </div>
     </div>
   )

@@ -9,6 +9,7 @@ import { CATEGORIES } from '@/lib/articles/types';
 import { ArticleHeader } from '@/components/articles/ArticleHeader';
 import { ArticleContent } from '@/components/articles/ArticleContent';
 import { BeTechRecommendation } from '@/components/articles/BeTechRecommendation';
+import { ReadingProgress } from '@/components/articles/ReadingProgress';
 
 // 静态生成所有文章页面
 export async function generateStaticParams() {
@@ -26,7 +27,7 @@ export async function generateMetadata({
   params: { category: string; slug: string };
 }): Promise<Metadata> {
   const article = getArticleBySlug(params.slug);
-  
+
   if (!article || article.category !== params.category) {
     return {
       title: 'Article Not Found',
@@ -72,7 +73,7 @@ export default async function ArticlePage({
 }) {
   // 从注册表获取文章元数据
   const article = getArticleBySlug(params.slug);
-  
+
   // 验证文章存在且分类匹配
   if (!article || article.category !== params.category) {
     notFound();
@@ -103,28 +104,64 @@ export default async function ArticlePage({
   const categoryInfo = CATEGORIES[article.category];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <article className="container mx-auto px-4 py-8 md:py-12 max-w-4xl">
+    <div className="page-bg">
+      <ReadingProgress />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            {
+              '@context': 'https://schema.org',
+              '@type': 'Article',
+              headline: article.title,
+              description: article.description,
+              datePublished: article.pubDate,
+              dateModified: article.updatedAt || article.pubDate,
+              author: {
+                '@type': 'Organization',
+                name: 'Smart Lock Hub',
+                url: 'https://smartlockhub.com',
+              },
+              publisher: {
+                '@type': 'Organization',
+                name: 'Smart Lock Hub',
+                url: 'https://smartlockhub.com',
+              },
+              mainEntityOfPage: `https://smartlockhub.com/articles/${article.category}/${article.slug}`,
+            },
+            {
+              '@context': 'https://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Articles', item: 'https://smartlockhub.com/articles' },
+                { '@type': 'ListItem', position: 2, name: categoryInfo.name, item: `https://smartlockhub.com/articles/${article.category}` },
+                { '@type': 'ListItem', position: 3, name: article.title },
+              ],
+            },
+          ]),
+        }}
+      />
+      <article className="container-main" style={{ padding: 'var(--space-xl) var(--space-md)', maxWidth: '56rem', margin: '0 auto' }}>
         {/* 面包屑导航 */}
-        <nav className="mb-6 text-sm bg-white px-4 py-3 rounded-lg border border-gray-200 inline-flex items-center gap-2">
-          <Link href="/articles" className="text-blue-600 hover:text-blue-700 hover:underline font-medium">
-            📚 Articles
+        <nav className="breadcrumb" style={{ marginBottom: 'var(--space-lg)' }}>
+          <Link href="/articles" className="">
+            Articles
           </Link>
-          <span className="text-gray-400">›</span>
-          <Link href={`/articles/${article.category}`} className="text-blue-600 hover:text-blue-700 hover:underline font-medium">
+          <span className="breadcrumb__separator">›</span>
+          <Link href={`/articles/${article.category}`} className="">
             {categoryInfo.name}
           </Link>
-          <span className="text-gray-400">›</span>
-          <span className="text-gray-700 font-medium truncate max-w-xs">{article.title}</span>
+          <span className="breadcrumb__separator">›</span>
+          <span className="breadcrumb__current">{article.title}</span>
         </nav>
 
         {/* 文章头部 */}
-        <div className="bg-white p-8 md:p-12 rounded-xl shadow-sm border border-gray-200 mb-8">
+        <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
           <ArticleHeader article={article} />
         </div>
 
         {/* 文章内容 */}
-        <div className="bg-white p-8 md:p-12 rounded-xl shadow-sm border border-gray-100 mb-8">
+        <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
           <ArticleContent content={content} />
         </div>
 
@@ -133,8 +170,8 @@ export default async function ArticlePage({
 
         {/* 相关文章 */}
         {relatedArticles.length > 0 && (
-          <section className="mt-12 border-t border-gray-200 pt-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          <section style={{ marginTop: 'var(--space-3xl)', paddingTop: 'var(--space-3xl)', borderTop: '1px solid var(--color-border)' }}>
+            <h2 className="section-title">
               Related Articles
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -142,15 +179,15 @@ export default async function ArticlePage({
                 <Link
                   key={related.slug}
                   href={`/articles/${related.category}/${related.slug}`}
-                  className="block p-6 bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-all hover:border-blue-300"
+                  className="link-card"
                 >
-                  <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
+                  <h3 className="link-card__title line-clamp-2">
                     {related.title}
                   </h3>
-                  <p className="text-sm text-gray-600 line-clamp-3">
+                  <p className="link-card__desc line-clamp-3">
                     {related.description}
                   </p>
-                  <div className="mt-4 text-blue-600 text-sm font-medium">
+                  <div style={{ marginTop: 'var(--space-md)', color: 'var(--color-accent)', fontSize: '0.875rem', fontWeight: 500 }}>
                     Read more →
                   </div>
                 </Link>
@@ -160,11 +197,8 @@ export default async function ArticlePage({
         )}
 
         {/* 返回链接 */}
-        <div className="mt-12 pt-8 border-t border-gray-200">
-          <Link
-            href={`/articles/${article.category}`}
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
-          >
+        <div style={{ marginTop: 'var(--space-3xl)', paddingTop: 'var(--space-xl)', borderTop: '1px solid var(--color-border)' }}>
+          <Link href={`/articles/${article.category}`} className="back-link">
             ← Back to {categoryInfo.name}
           </Link>
         </div>

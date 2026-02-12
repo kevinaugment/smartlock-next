@@ -184,12 +184,12 @@ export default function ProtocolWizard() {
       {/* Questionnaire */}
       <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Requirements</h2>
-        
+
         <div className="space-y-6">
           {/* Doors */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Number of Smart Locks: {answers.doors}</label>
-            <input type="range" min="1" max="30" value={answers.doors} onChange={(e) => setAnswers({...answers, doors: Number(e.target.value)})} className="w-full"/>
+            <input type="range" min="1" max="30" value={answers.doors} onChange={(e) => setAnswers({ ...answers, doors: Number(e.target.value) })} className="w-full" />
             <div className="flex justify-between text-xs text-gray-500 mt-1">
               <span>1 door</span>
               <span>30 doors</span>
@@ -199,7 +199,7 @@ export default function ProtocolWizard() {
           {/* Environment */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Environment</label>
-            <select value={answers.environment} onChange={(e) => setAnswers({...answers, environment: e.target.value as any})} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
+            <select value={answers.environment} onChange={(e) => setAnswers({ ...answers, environment: e.target.value as any })} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
               <option value="residential">Residential (Home/Apartment)</option>
               <option value="commercial">Commercial (Office/Building)</option>
               <option value="outdoor">Outdoor/Exposed Location</option>
@@ -209,7 +209,7 @@ export default function ProtocolWizard() {
           {/* Internet */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Internet Reliability</label>
-            <select value={answers.internet} onChange={(e) => setAnswers({...answers, internet: e.target.value as any})} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
+            <select value={answers.internet} onChange={(e) => setAnswers({ ...answers, internet: e.target.value as any })} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
               <option value="excellent">Excellent (Fiber, stable Wi-Fi)</option>
               <option value="good">Good (Occasional outages)</option>
               <option value="unreliable">Unreliable (Frequent issues)</option>
@@ -219,7 +219,7 @@ export default function ProtocolWizard() {
           {/* Priority */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Top Priority</label>
-            <select value={answers.priority} onChange={(e) => setAnswers({...answers, priority: e.target.value as any})} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
+            <select value={answers.priority} onChange={(e) => setAnswers({ ...answers, priority: e.target.value as any })} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
               <option value="battery">Battery Life (12+ months)</option>
               <option value="speed">Response Speed (&lt;200ms)</option>
               <option value="range">Range/Penetration (thick walls)</option>
@@ -230,7 +230,7 @@ export default function ProtocolWizard() {
           {/* Ecosystem */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Smart Home Ecosystem</label>
-            <select value={answers.ecosystem} onChange={(e) => setAnswers({...answers, ecosystem: e.target.value as any})} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
+            <select value={answers.ecosystem} onChange={(e) => setAnswers({ ...answers, ecosystem: e.target.value as any })} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
               <option value="none">None (starting fresh)</option>
               <option value="homekit">Apple HomeKit</option>
               <option value="alexa">Amazon Alexa</option>
@@ -242,7 +242,7 @@ export default function ProtocolWizard() {
           {/* Technical */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Technical Skill Level</label>
-            <select value={answers.technical} onChange={(e) => setAnswers({...answers, technical: e.target.value as any})} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
+            <select value={answers.technical} onChange={(e) => setAnswers({ ...answers, technical: e.target.value as any })} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
               <option value="beginner">Beginner (plug-and-play)</option>
               <option value="intermediate">Intermediate (some setup OK)</option>
               <option value="expert">Expert (full control)</option>
@@ -254,7 +254,7 @@ export default function ProtocolWizard() {
       {/* Top Recommendation */}
       <div className={`bg-gradient-to-br ${getScoreColor(topChoice.score)} rounded-lg shadow-xl p-8 text-white`}>
         <div className="text-center mb-6">
-          <div className="text-5xl mb-2">🏆</div>
+          <div className="text-5xl mb-2" style={{ color: 'var(--color-accent)' }}>★</div>
           <h2 className="text-3xl font-bold mb-2">Recommended: {topChoice.name}</h2>
           <div className="text-xl opacity-90">{topChoice.match} ({topChoice.score}% compatibility)</div>
         </div>

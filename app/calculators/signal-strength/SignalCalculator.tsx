@@ -77,40 +77,40 @@ export default function SignalCalculator() {
 
   const calculateSignal = () => {
     let protocolInfo = protocolData.find(p => p.protocol === protocol) || protocolData[0]
-    
+
     // Apply Z-Wave regional frequency
     if (protocol === 'zwave') {
       const regionalFreq = zwaveFrequencies[zwaveRegion]
       protocolInfo = { ...protocolInfo, frequency: regionalFreq.freq, wavelength: regionalFreq.wavelength }
     }
-    
+
     // Free Space Path Loss (FSPL) per ITU-R P.525-4: FSPL(dB) = 20*log10(d) + 20*log10(f) - 27.55
     const distanceMeters = distance
     const frequencyMHz = protocolInfo.frequency
     const fspl = 20 * Math.log10(distanceMeters) + 20 * Math.log10(frequencyMHz) - 27.55
-    
+
     // Wall attenuation
     const wallLoss = wallCount * materialAttenuation[wallType]
-    
+
     // Interference margin (dB)
     const interferenceMargin = {
       low: 0,
       medium: 5,
       high: 10
     }[interference] || 0
-    
+
     // Environment factor
     const envFactor = environment === 'outdoor' ? 0 : 3 // Indoor adds multipath
-    
+
     // Total path loss
     const totalPathLoss = fspl + wallLoss + interferenceMargin + envFactor
-    
+
     // Received Signal Strength (dBm)
     const rssi = protocolInfo.txPower - totalPathLoss
-    
+
     // Link margin (dBm) - how much above sensitivity
     const linkMargin = rssi - protocolInfo.rxSensitivity
-    
+
     // Convert to percentage (0-100)
     // Excellent: >20dB margin, Poor: <5dB margin
     let signalPercent = 0
@@ -120,7 +120,7 @@ export default function SignalCalculator() {
     else if (linkMargin >= 5) signalPercent = 55
     else if (linkMargin >= 0) signalPercent = 30
     else signalPercent = Math.max(0, 30 + linkMargin * 3) // Negative margin
-    
+
     return {
       signalPercent: Math.round(signalPercent),
       rssi: Math.round(rssi),
@@ -133,13 +133,13 @@ export default function SignalCalculator() {
   }
 
   const result = calculateSignal()
-  
+
   const getSignalQuality = (signal: number) => {
-    if (signal >= 80) return { label: 'Excellent', color: 'text-green-600', bgColor: 'bg-green-600', icon: '📶' }
-    if (signal >= 60) return { label: 'Good', color: 'text-blue-600', bgColor: 'bg-blue-600', icon: '📶' }
-    if (signal >= 40) return { label: 'Fair', color: 'text-yellow-600', bgColor: 'bg-yellow-600', icon: '📡' }
-    if (signal >= 20) return { label: 'Poor', color: 'text-orange-600', bgColor: 'bg-orange-600', icon: '⚠️' }
-    return { label: 'No Signal', color: 'text-red-600', bgColor: 'bg-red-600', icon: '❌' }
+    if (signal >= 80) return { label: 'Excellent', color: 'text-green-600', bgColor: 'bg-green-600', icon: '●' }
+    if (signal >= 60) return { label: 'Good', color: 'text-blue-600', bgColor: 'bg-blue-600', icon: '●' }
+    if (signal >= 40) return { label: 'Fair', color: 'text-yellow-600', bgColor: 'bg-yellow-600', icon: '~' }
+    if (signal >= 20) return { label: 'Poor', color: 'text-orange-600', bgColor: 'bg-orange-600', icon: '!' }
+    return { label: 'No Signal', color: 'text-red-600', bgColor: 'bg-red-600', icon: '✕' }
   }
 
   const quality = getSignalQuality(result.signalPercent)
@@ -158,7 +158,7 @@ export default function SignalCalculator() {
       <div className="lg:col-span-2 space-y-6">
         <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Signal Analysis Parameters</h2>
-          
+
           <div className="space-y-6">
             {/* Protocol */}
             <div>
@@ -296,11 +296,10 @@ export default function SignalCalculator() {
 
       {/* Results Section */}
       <div className="lg:col-span-1">
-        <div className={`rounded-lg shadow-lg p-8 text-white sticky top-4 bg-gradient-to-br ${
-          result.signalPercent >= 60 ? 'from-green-600 to-green-700' : 
-          result.signalPercent >= 40 ? 'from-yellow-600 to-yellow-700' : 
-          'from-red-600 to-red-700'
-        }`}>
+        <div className={`rounded-lg shadow-lg p-8 text-white sticky top-4 bg-gradient-to-br ${result.signalPercent >= 60 ? 'from-green-600 to-green-700' :
+          result.signalPercent >= 40 ? 'from-yellow-600 to-yellow-700' :
+            'from-red-600 to-red-700'
+          }`}>
           <h2 className="text-xl font-bold mb-6">Signal Analysis Result</h2>
 
           <div className="text-center mb-6">
@@ -313,7 +312,7 @@ export default function SignalCalculator() {
           {/* Signal Bar */}
           <div className="mb-6">
             <div className="h-3 bg-white/20 rounded-full overflow-hidden">
-              <div 
+              <div
                 className="h-full bg-white transition-all duration-500"
                 style={{ width: `${result.signalPercent}%` }}
               />

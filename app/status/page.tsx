@@ -1,5 +1,13 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { queryOne, query } from '@/lib/db'
+import { Search, CheckCircle, XCircle, HelpCircle } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: 'System Status - Smart Lock Hub',
+  description: 'Real-time status of Smart Lock Hub services and database connectivity.',
+  robots: 'noindex',
+}
 
 export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
@@ -14,7 +22,7 @@ interface StatusCheck {
 
 export default async function StatusPage() {
   const checks: StatusCheck[] = []
-  
+
   // Test database connection
   try {
     const articlesResult = await queryOne<{ count: number }>('SELECT COUNT(*) as count FROM articles')
@@ -23,7 +31,7 @@ export default async function StatusPage() {
       status: 'success',
       message: 'Database connected'
     })
-    
+
     checks.push({
       name: 'Articles Table',
       status: 'success',
@@ -37,7 +45,7 @@ export default async function StatusPage() {
       message: e instanceof Error ? e.message : 'Connection failed'
     })
   }
-  
+
   // Test categories
   try {
     const categories = await query('SELECT id, name, slug FROM categories ORDER BY id')
@@ -56,35 +64,31 @@ export default async function StatusPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-16">
+    <div className="page-bg">
+      <div className="container-main section">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              🔍 System Status
-            </h1>
-            <p className="text-lg text-gray-600">
+          <div className="page-header">
+            <div className="page-header__icon"><Search className="w-8 h-8" /></div>
+            <h1 className="page-header__title">System Status</h1>
+            <p className="page-header__subtitle">
               Real-time status of Smart Lock Hub services
             </p>
           </div>
 
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <div className="space-y-6">
+          <div className="content-card">
+            <div className="form-group">
               {checks.map((check, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-4 p-4 rounded-lg border border-gray-200"
-                >
-                  <div className="text-2xl">
-                    {check.status === 'success' && '✅'}
-                    {check.status === 'error' && '❌'}
-                    {check.status === 'unknown' && '❓'}
+                <div key={index} className="card" style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-md)' }}>
+                  <div>
+                    {check.status === 'success' && <CheckCircle className="w-6 h-6" style={{ color: 'var(--color-success)' }} />}
+                    {check.status === 'error' && <XCircle className="w-6 h-6" style={{ color: 'var(--color-danger)' }} />}
+                    {check.status === 'unknown' && <HelpCircle className="w-6 h-6" style={{ color: 'var(--color-text-muted)' }} />}
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900">{check.name}</h3>
-                    <p className="text-sm text-gray-600 mt-1">{check.message}</p>
+                    <h3 style={{ fontWeight: 600, color: 'var(--color-text-primary)' }}>{check.name}</h3>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginTop: 'var(--space-xs)' }}>{check.message}</p>
                     {check.details && (
-                      <pre className="mt-2 text-xs bg-gray-50 p-2 rounded overflow-x-auto">
+                      <pre style={{ marginTop: 'var(--space-sm)', fontSize: '0.75rem', background: 'var(--color-bg-alt)', padding: 'var(--space-sm)', borderRadius: 'var(--radius-md)', overflow: 'auto' }}>
                         {JSON.stringify(check.details, null, 2)}
                       </pre>
                     )}
@@ -93,29 +97,26 @@ export default async function StatusPage() {
               ))}
             </div>
 
-            <div className="mt-8 pt-6 border-t border-gray-200">
-              <div className="grid grid-cols-2 gap-4 text-sm">
+            <div style={{ marginTop: 'var(--space-xl)', paddingTop: 'var(--space-lg)', borderTop: '1px solid var(--color-border)' }}>
+              <div className="grid grid-cols-2 gap-4" style={{ fontSize: '0.875rem' }}>
                 <div>
-                  <span className="font-semibold">Platform:</span> Vercel Edge
+                  <span style={{ fontWeight: 600 }}>Platform:</span> Vercel Edge
                 </div>
                 <div>
-                  <span className="font-semibold">Database:</span> Turso (LibSQL)
+                  <span style={{ fontWeight: 600 }}>Database:</span> Turso (LibSQL)
                 </div>
                 <div>
-                  <span className="font-semibold">Runtime:</span> Edge Runtime
+                  <span style={{ fontWeight: 600 }}>Runtime:</span> Edge Runtime
                 </div>
                 <div>
-                  <span className="font-semibold">Timestamp:</span> {new Date().toISOString()}
+                  <span style={{ fontWeight: 600 }}>Timestamp:</span> {new Date().toISOString()}
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="text-center mt-8">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
-            >
+          <div style={{ textAlign: 'center', marginTop: 'var(--space-xl)' }}>
+            <Link href="/" className="back-link">
               ← Back to Home
             </Link>
           </div>

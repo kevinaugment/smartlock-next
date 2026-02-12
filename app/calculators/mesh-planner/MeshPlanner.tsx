@@ -54,37 +54,37 @@ export default function MeshPlanner() {
   const calculate = (): MeshResult => {
     const prot = MESH_DATA.protocols[protocol]
     const wall = MESH_DATA.wallAttenuation[wallType]
-    
+
     const totalLocks = floors * locksPerFloor
-    
+
     // Effective range considering wall attenuation
     const effectiveRange = Math.round(prot.range / wall.factor)
-    
+
     // Calculate coverage area per node (circle area)
     const coverageArea = Math.PI * effectiveRange * effectiveRange
-    
+
     // Locks density per floor
     const locksPerM2 = locksPerFloor / floorArea
-    
+
     // Estimate locks per node coverage
     const locksInNodeRange = coverageArea * locksPerM2
-    
+
     // Nodes needed per floor (with 20% redundancy for reliability)
     const nodesPerFloor = Math.max(1, Math.ceil((locksPerFloor / Math.max(1, locksInNodeRange - 1)) * 1.2))
-    
+
     // Total nodes across all floors
     const totalNodes = nodesPerFloor * floors
-    
+
     // Estimate hops (maximum distance across floor)
     const floorDiameter = Math.sqrt(floorArea) * 1.4 // Diagonal distance
     const hopsRequired = Math.min(prot.maxHops, Math.ceil(floorDiameter / effectiveRange))
-    
+
     // Redundancy factor (how many paths available)
     const redundancy = Math.floor(totalNodes / Math.max(1, totalLocks / 10))
-    
+
     const nodeCost = prot.nodeCost
     const totalCost = totalNodes * nodeCost
-    
+
     return {
       totalLocks,
       totalNodes,
@@ -107,14 +107,14 @@ export default function MeshPlanner() {
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Building Configuration</h2>
-            
+
             <div className="space-y-6">
               {/* Floors */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Number of Floors: {floors}
                 </label>
-                <input type="range" min="1" max="20" value={floors} onChange={(e) => setFloors(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
+                <input type="range" min="1" max="20" value={floors} onChange={(e) => setFloors(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
                   <span>1 floor</span>
                   <span>20 floors</span>
@@ -126,7 +126,7 @@ export default function MeshPlanner() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Smart Locks per Floor: {locksPerFloor}
                 </label>
-                <input type="range" min="1" max="50" value={locksPerFloor} onChange={(e) => setLocksPerFloor(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
+                <input type="range" min="1" max="50" value={locksPerFloor} onChange={(e) => setLocksPerFloor(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
                   <span>1 lock</span>
                   <span>50 locks</span>
@@ -138,7 +138,7 @@ export default function MeshPlanner() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Floor Area: {floorArea}m² ({Math.round(floorArea * 10.764)}sqft)
                 </label>
-                <input type="range" min="50" max="1000" step="50" value={floorArea} onChange={(e) => setFloorArea(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
+                <input type="range" min="50" max="1000" step="50" value={floorArea} onChange={(e) => setFloorArea(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
                   <span>50m² (small)</span>
                   <span>1000m² (large)</span>
@@ -218,12 +218,12 @@ export default function MeshPlanner() {
             </div>
 
             <div className="mt-6 p-4 bg-white/10 rounded-lg text-xs">
-              <p className="mb-2"><strong>💡 Recommendation:</strong></p>
+              <p className="mb-2"><strong>Recommendation:</strong></p>
               <p>{
                 result.totalNodes < 3 ? 'Minimal mesh. Consider Wi-Fi as alternative.' :
-                result.totalNodes < 10 ? 'Good mesh topology. Reliable coverage expected.' :
-                result.totalNodes < 20 ? 'Complex mesh. Plan placement carefully.' :
-                'Large deployment. Consider professional site survey.'
+                  result.totalNodes < 10 ? 'Good mesh topology. Reliable coverage expected.' :
+                    result.totalNodes < 20 ? 'Complex mesh. Plan placement carefully.' :
+                      'Large deployment. Consider professional site survey.'
               }</p>
             </div>
           </div>

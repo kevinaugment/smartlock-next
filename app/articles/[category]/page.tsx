@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import { getArticlesByCategory, getAllArticles } from '@/lib/articles/registry';
 import { CATEGORIES } from '@/lib/articles/types';
 
@@ -12,82 +13,122 @@ export async function generateStaticParams() {
   }));
 }
 
+// 动态生成分类页 SEO metadata
+export async function generateMetadata({
+  params,
+}: {
+  params: { category: string };
+}): Promise<Metadata> {
+  const categoryInfo = CATEGORIES[params.category];
+  if (!categoryInfo) {
+    return { title: 'Category Not Found' };
+  }
+  return {
+    title: `${categoryInfo.name} - Smart Lock Hub`,
+    description: categoryInfo.description,
+    alternates: { canonical: `/articles/${params.category}` },
+    openGraph: {
+      title: `${categoryInfo.name} - Smart Lock Hub`,
+      description: categoryInfo.description,
+      siteName: 'Smart Lock Hub',
+      type: 'website',
+    },
+  };
+}
+
 export default function CategoryPage({
   params,
 }: {
   params: { category: string };
 }) {
   const category = CATEGORIES[params.category];
-  
+
   if (!category) {
     notFound();
   }
 
   const articles = getArticlesByCategory(params.category);
-  
+
   // 按发布日期排序（最新的在前）
-  const sortedArticles = [...articles].sort((a, b) => 
+  const sortedArticles = [...articles].sort((a, b) =>
     new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
   );
 
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `${category.name} - Smart Lock Hub`,
+    description: category.description,
+    url: `https://smartlockhub.com/articles/${params.category}`,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: sortedArticles.length,
+      itemListElement: sortedArticles.map((article, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: article.title,
+        url: `https://smartlockhub.com/articles/${params.category}/${article.slug}`,
+      })),
+    },
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <Link href="/articles" className="text-blue-600 hover:text-blue-700 font-medium">
-              ← Back to All Articles
-            </Link>
-          </div>
-
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">{category.name}</h1>
-            <p className="text-xl text-gray-600 mb-4">{category.description}</p>
-            <p className="text-sm text-gray-500">{sortedArticles.length} articles</p>
-          </div>
-
-          {sortedArticles.length === 0 ? (
-            <div className="text-center py-12 bg-gray-50 rounded-lg">
-              <p className="text-gray-600">No articles in this category yet.</p>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <div className="page-bg">
+        <div className="container-main section">
+          <div className="max-w-4xl mx-auto">
+            <div style={{ marginBottom: 'var(--space-xl)' }}>
+              <Link href="/articles" className="back-link">
+                ← Back to All Articles
+              </Link>
             </div>
-          ) : (
-            <div className="space-y-6">
-              {sortedArticles.map((article) => (
-                <Link
-                  key={article.slug}
-                  href={`/articles/${params.category}/${article.slug}`}
-                  className="block group bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:border-blue-300 transition-all"
-                >
-                  <div className="flex items-center gap-3 mb-3">
-                    {article.isPillar && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                        ⭐ Pillar
-                      </span>
-                    )}
-                    {article.featured && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        ✨ Featured
-                      </span>
-                    )}
-                  </div>
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                    {article.title}
-                  </h2>
-                  <p className="text-gray-600 mb-4 line-clamp-2">{article.description}</p>
-                  <div className="flex items-center gap-4 text-sm text-gray-500">
-                    <span>{new Date(article.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                    <span>• {article.readingTime} min read</span>
-                    <span>• {article.wordCount.toLocaleString()} words</span>
-                    <span className="ml-auto text-blue-600 group-hover:translate-x-1 transition-transform">
-                      Read more →
-                    </span>
-                  </div>
-                </Link>
-              ))}
+
+            <div className="page-header">
+              <h1 className="page-header__title">{category.name}</h1>
+              <p className="page-header__subtitle">{category.description}</p>
+              <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{sortedArticles.length} articles</p>
             </div>
-          )}
+
+            {sortedArticles.length === 0 ? (
+              <div className="card" style={{ textAlign: 'center', padding: 'var(--space-3xl)' }}>
+                <p style={{ color: 'var(--color-text-secondary)' }}>No articles in this category yet.</p>
+              </div>
+            ) : (
+              <div className="form-group">
+                {sortedArticles.map((article) => (
+                  <Link
+                    key={article.slug}
+                    href={`/articles/${params.category}/${article.slug}`}
+                    className="link-card group"
+                  >
+                    <div className="flex items-center gap-3" style={{ marginBottom: 'var(--space-sm)' }}>
+                      {article.isPillar && (
+                        <span className="badge badge-featured">Pillar</span>
+                      )}
+                      {article.featured && (
+                        <span className="badge badge-accent">Featured</span>
+                      )}
+                    </div>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-sm)' }} className="group-hover:text-[var(--color-accent)] transition-colors">
+                      {article.title}
+                    </h2>
+                    <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)' }} className="line-clamp-2">{article.description}</p>
+                    <div className="flex items-center gap-4" style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>
+                      <span>{new Date(article.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                      <span>• {article.readingTime} min read</span>
+                      <span>• {article.wordCount.toLocaleString()} words</span>
+                      <span className="ml-auto group-hover:translate-x-1 transition-transform" style={{ color: 'var(--color-accent)' }}>
+                        Read more →
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

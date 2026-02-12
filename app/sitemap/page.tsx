@@ -1,89 +1,72 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 
+export const metadata: Metadata = {
+  title: 'Sitemap - Smart Lock Hub',
+  description: 'Complete sitemap of Smart Lock Hub — browse all articles, calculators, guides, and tools.',
+  alternates: { canonical: '/sitemap' },
+}
+
 const categories = [
-  { name: 'Protocols', slug: 'protocols', icon: '📡' },
-  { name: 'Security', slug: 'security', icon: '🔒' },
-  { name: 'Installation', slug: 'installation', icon: '🔋' },
-  { name: 'Guides', slug: 'guides', icon: '🔧' },
-  { name: 'Use Cases', slug: 'use-cases', icon: '🏢' },
-  { name: 'Support', slug: 'support', icon: '💡' },
-  { name: 'Integration', slug: 'integration', icon: '🔗' },
+  { name: 'Protocols', slug: 'protocols' },
+  { name: 'Security', slug: 'security' },
+  { name: 'Installation', slug: 'installation' },
+  { name: 'Guides', slug: 'guides' },
+  { name: 'Use Cases', slug: 'use-cases' },
+  { name: 'Support', slug: 'support' },
+  { name: 'Integration', slug: 'integration' },
 ]
 
 const calculators = [
-  'TCO Calculator',
-  'Battery Life Calculator',
-  'Protocol Selection Wizard',
-  'Signal Strength Analyzer',
-  'STR ROI Calculator',
-  'Installation Cost Estimator',
-  'Door Compatibility Checker',
-  'Mesh Node Planner',
-  'RF Coverage Estimator',
-  'Multi-Property Fleet Planner',
-  'Credential Capacity Planner',
-  'Installation Time Estimator',
-  'Subscription vs Purchase',
-  'Offline Resilience Scorecard',
-  'Emergency Backup Evaluator',
+  { name: 'TCO Calculator', slug: 'lock-tco' },
+  { name: 'Battery Life Calculator', slug: 'battery-life' },
+  { name: 'Protocol Selection Wizard', slug: 'protocol-wizard' },
+  { name: 'Signal Strength Analyzer', slug: 'signal-strength' },
+  { name: 'STR ROI Calculator', slug: 'str-roi' },
+  { name: 'Installation Cost Estimator', slug: 'installation-cost' },
+  { name: 'Door Compatibility Checker', slug: 'compatibility' },
+  { name: 'Mesh Node Planner', slug: 'mesh-planner' },
+  { name: 'RF Coverage Estimator', slug: 'rf-coverage' },
+  { name: 'Multi-Property Fleet Planner', slug: 'fleet-planner' },
+  { name: 'Credential Capacity Planner', slug: 'credential-planner' },
+  { name: 'Installation Time Estimator', slug: 'installation-time' },
+  { name: 'Subscription vs Purchase', slug: 'subscription-compare' },
+  { name: 'Offline Resilience Scorecard', slug: 'offline-resilience' },
+  { name: 'Emergency Backup Evaluator', slug: 'emergency-backup' },
 ]
 
 export default function Sitemap() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-16">
+    <div className="page-bg">
+      <div className="container-main section">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">Sitemap</h1>
-          <p className="text-xl text-gray-600 mb-12">
+          <h1 className="page-header__title" style={{ marginBottom: 'var(--space-md)' }}>Sitemap</h1>
+          <p className="page-subtitle" style={{ marginBottom: 'var(--space-3xl)' }}>
             Complete overview of all pages on Smart Lock Hub
           </p>
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Main Pages */}
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Main Pages</h2>
+            <div className="content-card">
+              <h2 className="section-title">Main Pages</h2>
               <ul className="space-y-3">
-                <li>
-                  <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium">
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/about" className="text-blue-600 hover:text-blue-700 font-medium">
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="text-blue-600 hover:text-blue-700 font-medium">
-                    Contact
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/privacy" className="text-blue-600 hover:text-blue-700 font-medium">
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/terms" className="text-blue-600 hover:text-blue-700 font-medium">
-                    Terms of Service
-                  </Link>
-                </li>
+                <li><Link href="/" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>Home</Link></li>
+                <li><Link href="/about" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>About</Link></li>
+                <li><Link href="/contact" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>Contact</Link></li>
+                <li><Link href="/privacy" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>Privacy Policy</Link></li>
+                <li><Link href="/terms" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>Terms of Service</Link></li>
               </ul>
             </div>
 
             {/* Articles */}
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Knowledge Base</h2>
+            <div className="content-card">
+              <h2 className="section-title">Knowledge Base</h2>
               <ul className="space-y-3">
-                <li>
-                  <Link href="/articles" className="text-blue-600 hover:text-blue-700 font-medium">
-                    All Articles (49+)
-                  </Link>
-                </li>
+                <li><Link href="/articles" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>All Articles (49+)</Link></li>
                 {categories.map(cat => (
                   <li key={cat.slug}>
-                    <Link href={`/articles/${cat.slug}`} className="text-blue-600 hover:text-blue-700 font-medium">
-                      {cat.icon} {cat.name}
+                    <Link href={`/articles/${cat.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 500 }}>
+                      {cat.name}
                     </Link>
                   </li>
                 ))}
@@ -91,72 +74,56 @@ export default function Sitemap() {
             </div>
 
             {/* Calculators */}
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 md:col-span-2">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Interactive Calculators (15)</h2>
+            <div className="content-card md:col-span-2">
+              <h2 className="section-title">Interactive Calculators (15)</h2>
               <div className="grid md:grid-cols-3 gap-4">
-                {calculators.map((calc, i) => (
-                  <div key={i} className="text-blue-600 hover:text-blue-700 font-medium">
-                    • {calc}
-                  </div>
+                {calculators.map((calc) => (
+                  <Link key={calc.slug} href={`/calculators/${calc.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 500 }}>
+                    • {calc.name}
+                  </Link>
                 ))}
               </div>
-              <div className="mt-4">
-                <Link href="/calculators" className="text-blue-600 hover:text-blue-700 font-semibold">
+              <div style={{ marginTop: 'var(--space-md)' }}>
+                <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
                   View All Calculators →
                 </Link>
               </div>
             </div>
 
             {/* Admin */}
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Admin Portal</h2>
+            <div className="content-card">
+              <h2 className="section-title">Admin Portal</h2>
               <ul className="space-y-3">
-                <li>
-                  <Link href="/admin/login" className="text-blue-600 hover:text-blue-700 font-medium">
-                    Admin Login
-                  </Link>
-                </li>
-                <li className="text-gray-500 text-sm">
+                <li><Link href="/admin/login" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>Admin Login</Link></li>
+                <li style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
                   (Dashboard and management pages require authentication)
                 </li>
               </ul>
             </div>
 
             {/* API */}
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">API Endpoints</h2>
+            <div className="content-card">
+              <h2 className="section-title">API Endpoints</h2>
               <ul className="space-y-3">
+                <li><Link href="/api/categories" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>/api/categories</Link></li>
                 <li>
-                  <Link href="/api/categories" className="text-blue-600 hover:text-blue-700 font-medium">
-                    /api/categories
-                  </Link>
-                </li>
-                <li>
-                  <span className="text-gray-500 font-medium">/api/auth/login</span>
-                  <span className="text-xs text-gray-400 ml-2">(POST only)</span>
+                  <span style={{ color: 'var(--color-text-muted)', fontWeight: 500 }}>/api/auth/login</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginLeft: 'var(--space-sm)' }}>(POST only)</span>
                 </li>
               </ul>
             </div>
           </div>
 
-          <div className="mt-12 bg-blue-50 rounded-xl border-2 border-blue-200 p-8 text-center">
-            <h3 className="text-xl font-bold text-gray-900 mb-3">Can't Find What You're Looking For?</h3>
-            <p className="text-gray-700 mb-4">
+          <div className="info-box" style={{ marginTop: 'var(--space-3xl)', textAlign: 'center' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-sm)' }}>
+              Can&apos;t Find What You&apos;re Looking For?
+            </h3>
+            <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)' }}>
               Use our search or browse by category
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/articles"
-                className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-              >
-                Browse Articles
-              </Link>
-              <Link
-                href="/contact"
-                className="px-6 py-3 bg-white text-blue-600 border-2 border-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
-              >
-                Contact Us
-              </Link>
+            <div className="grid-actions">
+              <Link href="/articles" className="btn btn-primary">Browse Articles</Link>
+              <Link href="/contact" className="btn btn-secondary">Contact Us</Link>
             </div>
           </div>
         </div>

@@ -2,7 +2,7 @@
  * 数据库模型定义
  */
 
-import { query, queryOne, execute } from './client'
+import { query, queryOne, execute } from '@/lib/db'
 
 // ============================================
 // 用户模型
@@ -41,7 +41,7 @@ export const UserModel = {
        VALUES (?, ?, ?, ?, ?, ?)`,
       [user.email, user.password_hash, user.name, user.role, user.avatar_url, user.is_active]
     )
-    return result.meta.rows_written
+    return result
   },
 }
 
@@ -261,3 +261,48 @@ export const SettingModel = {
     )
   },
 }
+
+// ============================================
+// 工具评分模型
+// ============================================
+export interface ToolRating {
+  id: number
+  tool_slug: string
+  is_helpful: number  // 1 = helpful, 0 = not helpful
+  ip_hash: string
+  created_at: string
+}
+
+export interface RatingAggregate {
+  total: number
+  helpful: number
+}
+
+export const ToolRatingModel = {
+  async submit(slug: string, isHelpful: boolean, ipHash: string): Promise<void> {
+    await execute(
+      `INSERT INTO tool_ratings (tool_slug, is_helpful, ip_hash, created_at)
+       VALUES (?, ?, ?, datetime('now'))
+       ON CONFLICT(tool_slug, ip_hash) DO UPDATE SET is_helpful = ?, created_at = datetime('now')`,
+      [slug, isHelpful ? 1 : 0, ipHash, isHelpful ? 1 : 0]
+    )
+  },
+
+  async getAggregate(slug: string): Promise<RatingAggregate> {
+    const result = await queryOne<{ total: number; helpful: number }>(
+      `SELECT COUNT(*) as total, SUM(is_helpful) as helpful
+       FROM tool_ratings WHERE tool_slug = ?`,
+      [slug]
+    )
+    return { total: result?.total || 0, helpful: result?.helpful || 0 }
+  },
+
+  async hasVoted(slug: string, ipHash: string): Promise<boolean> {
+    const result = await queryOne<{ cnt: number }>(
+      'SELECT COUNT(*) as cnt FROM tool_ratings WHERE tool_slug = ? AND ip_hash = ?',
+      [slug, ipHash]
+    )
+    return (result?.cnt || 0) > 0
+  },
+}
+

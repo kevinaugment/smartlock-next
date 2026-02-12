@@ -106,7 +106,7 @@ export default function CostCalculator() {
       <div className="lg:col-span-2 space-y-6">
         <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Installation Parameters</h2>
-          
+
           <div className="space-y-6">
             {/* Lock Type */}
             <div>
@@ -192,7 +192,7 @@ export default function CostCalculator() {
                     onChange={(e) => setNeedsWiring(e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <span className="ml-2 text-gray-700">Wiring Required (+${LABOR_RATES.electrician*2}/lock)</span>
+                  <span className="ml-2 text-gray-700">Wiring Required (+${LABOR_RATES.electrician * 2}/lock)</span>
                 </label>
                 <label className="flex items-center">
                   <input
@@ -279,12 +279,12 @@ export default function CostCalculator() {
 
           <div className="p-4 bg-white/10 rounded-lg">
             <p className="text-xs opacity-90">
-              <strong>💡 Tip:</strong> {
-                installer === 'diy' 
+              <strong>Tip:</strong> {
+                installer === 'diy'
                   ? 'DIY saves labor cost but requires 2-3 hours skill time per lock.'
                   : cost.total / quantity > 400
-                  ? `At $${(cost.total/quantity).toFixed(0)}/lock, consider bulk discount negotiation.`
-                  : 'Professional installation includes warranty and proper alignment.'
+                    ? `At $${(cost.total / quantity).toFixed(0)}/lock, consider bulk discount negotiation.`
+                    : 'Professional installation includes warranty and proper alignment.'
               }
             </p>
           </div>

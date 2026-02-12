@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { DollarSign, Lightbulb, AlertTriangle } from 'lucide-react'
+import { ToolRating } from '@/components/ToolRating'
 
 interface TCOInputs {
   lockPrice: number
@@ -94,20 +96,20 @@ export default function TCOCalculator() {
   const result = calculateTCO()
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="container mx-auto px-4 py-12">
+    <div className="page-bg">
+      <div className="container-main section">
         <div className="mb-8">
-          <Link href="/calculators" className="text-blue-600 hover:text-blue-700 text-sm">
+          <Link href="/calculators" style={{ color: "var(--color-accent)", fontSize: "0.875rem" }}>
             ← Back to Calculators
           </Link>
         </div>
 
         <div className="text-center mb-12">
-          <div className="text-6xl mb-4">💰</div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <div className="page-header__icon"><DollarSign className="w-14 h-14 mx-auto" /></div>
+          <h1 className="page-header__title">
             Smart Lock TCO Calculator
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="page-header__subtitle">
             Calculate total cost of ownership for your smart lock deployment over time
           </p>
         </div>
@@ -115,13 +117,13 @@ export default function TCOCalculator() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {/* Input Section */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Project Parameters</h2>
-              
+            <div className="content-card">
+              <h2 className="section-title">Project Parameters</h2>
+
               <div className="space-y-6">
                 {/* Lock Price */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
                     Lock Price per Unit: ${inputs.lockPrice}
                   </label>
                   <input
@@ -130,10 +132,10 @@ export default function TCOCalculator() {
                     max="600"
                     step="50"
                     value={inputs.lockPrice}
-                    onChange={(e) => setInputs({...inputs, lockPrice: Number(e.target.value)})}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    onChange={(e) => setInputs({ ...inputs, lockPrice: Number(e.target.value) })}
+                    className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: "var(--color-border)" }}
                   />
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <div className="flex justify-between" style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>
                     <span>$50</span>
                     <span>$600</span>
                   </div>
@@ -141,7 +143,7 @@ export default function TCOCalculator() {
 
                 {/* Door Count */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
                     Number of Doors: {inputs.doorCount}
                   </label>
                   <input
@@ -149,10 +151,10 @@ export default function TCOCalculator() {
                     min="1"
                     max="50"
                     value={inputs.doorCount}
-                    onChange={(e) => setInputs({...inputs, doorCount: Number(e.target.value)})}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    onChange={(e) => setInputs({ ...inputs, doorCount: Number(e.target.value) })}
+                    className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: "var(--color-border)" }}
                   />
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <div className="flex justify-between" style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>
                     <span>1 door</span>
                     <span>50 doors</span>
                   </div>
@@ -160,13 +162,13 @@ export default function TCOCalculator() {
 
                 {/* Protocol */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
                     Protocol
                   </label>
                   <select
                     value={inputs.protocol}
-                    onChange={(e) => setInputs({...inputs, protocol: e.target.value as any})}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    onChange={(e) => setInputs({ ...inputs, protocol: e.target.value as any })}
+                    className="form-input"
                   >
                     <option value="wifi">Wi-Fi (No hub, high battery cost)</option>
                     <option value="zigbee">Zigbee (Low cost hub, efficient)</option>
@@ -177,7 +179,7 @@ export default function TCOCalculator() {
 
                 {/* Timeframe */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
                     Timeframe: {inputs.years} years
                   </label>
                   <input
@@ -185,10 +187,10 @@ export default function TCOCalculator() {
                     min="1"
                     max="10"
                     value={inputs.years}
-                    onChange={(e) => setInputs({...inputs, years: Number(e.target.value)})}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    onChange={(e) => setInputs({ ...inputs, years: Number(e.target.value) })}
+                    className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: "var(--color-border)" }}
                   />
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <div className="flex justify-between" style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>
                     <span>1 year</span>
                     <span>10 years</span>
                   </div>
@@ -196,7 +198,7 @@ export default function TCOCalculator() {
 
                 {/* Installation */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
                     Installation Type
                   </label>
                   <div className="grid grid-cols-2 gap-4">
@@ -205,7 +207,7 @@ export default function TCOCalculator() {
                         type="radio"
                         value="diy"
                         checked={inputs.installType === 'diy'}
-                        onChange={(e) => setInputs({...inputs, installType: 'diy'})}
+                        onChange={(e) => setInputs({ ...inputs, installType: 'diy' })}
                         className="sr-only"
                       />
                       <span className="font-medium">DIY ($0)</span>
@@ -215,7 +217,7 @@ export default function TCOCalculator() {
                         type="radio"
                         value="pro"
                         checked={inputs.installType === 'pro'}
-                        onChange={(e) => setInputs({...inputs, installType: 'pro'})}
+                        onChange={(e) => setInputs({ ...inputs, installType: 'pro' })}
                         className="sr-only"
                       />
                       <span className="font-medium">Professional</span>
@@ -225,7 +227,7 @@ export default function TCOCalculator() {
 
                 {inputs.installType === 'pro' && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
                       Installation Cost per Door: ${inputs.installCostPerDoor}
                     </label>
                     <input
@@ -234,15 +236,15 @@ export default function TCOCalculator() {
                       max="200"
                       step="10"
                       value={inputs.installCostPerDoor}
-                      onChange={(e) => setInputs({...inputs, installCostPerDoor: Number(e.target.value)})}
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                      onChange={(e) => setInputs({ ...inputs, installCostPerDoor: Number(e.target.value) })}
+                      className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: "var(--color-border)" }}
                     />
                   </div>
                 )}
 
                 {/* Daily Usage */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
                     Daily Operations: {inputs.dailyUsage} times
                   </label>
                   <input
@@ -250,15 +252,15 @@ export default function TCOCalculator() {
                     min="1"
                     max="50"
                     value={inputs.dailyUsage}
-                    onChange={(e) => setInputs({...inputs, dailyUsage: Number(e.target.value)})}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    onChange={(e) => setInputs({ ...inputs, dailyUsage: Number(e.target.value) })}
+                    className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: "var(--color-border)" }}
                   />
                   <p className="text-xs text-gray-500 mt-1">Affects battery replacement frequency</p>
                 </div>
 
                 {/* Subscription */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
                     Monthly Subscription per Door: ${inputs.subscriptionPerDoorPerMonth}
                   </label>
                   <input
@@ -267,8 +269,8 @@ export default function TCOCalculator() {
                     max="10"
                     step="0.5"
                     value={inputs.subscriptionPerDoorPerMonth}
-                    onChange={(e) => setInputs({...inputs, subscriptionPerDoorPerMonth: Number(e.target.value)})}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    onChange={(e) => setInputs({ ...inputs, subscriptionPerDoorPerMonth: Number(e.target.value) })}
+                    className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: "var(--color-border)" }}
                   />
                 </div>
               </div>
@@ -331,7 +333,7 @@ export default function TCOCalculator() {
 
               <div className="mt-6 p-4 bg-white/10 rounded-lg">
                 <p className="text-xs opacity-90">
-                  💡 vs. Mechanical locks: +${result.deltaVsMechanical.toFixed(0)} over {inputs.years} years
+                  <Lightbulb className="w-4 h-4 inline" /> vs. Mechanical locks: +${result.deltaVsMechanical.toFixed(0)} over {inputs.years} years
                 </p>
               </div>
             </div>
@@ -340,25 +342,25 @@ export default function TCOCalculator() {
 
         {/* Cost Breakdown Chart */}
         <div className="max-w-7xl mx-auto mt-12">
-          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Cost Breakdown</h2>
+          <div className="content-card">
+            <h2 className="section-title">Cost Breakdown</h2>
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium text-gray-700">Hardware</span>
-                  <span className="text-sm text-gray-600">{result.hardwareShare.toFixed(1)}%</span>
+                  <span style={{ fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)" }}>Hardware</span>
+                  <span className="link-card__desc">{result.hardwareShare.toFixed(1)}%</span>
                 </div>
-                <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-3 rounded-full overflow-hidden" style={{ background: "var(--color-border)" }}>
                   <div className="h-full bg-blue-600" style={{ width: `${result.hardwareShare}%` }} />
                 </div>
               </div>
               {result.batteriesShare > 0 && (
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium text-gray-700">Batteries</span>
-                    <span className="text-sm text-gray-600">{result.batteriesShare.toFixed(1)}%</span>
+                    <span style={{ fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)" }}>Batteries</span>
+                    <span className="link-card__desc">{result.batteriesShare.toFixed(1)}%</span>
                   </div>
-                  <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-3 rounded-full overflow-hidden" style={{ background: "var(--color-border)" }}>
                     <div className="h-full bg-yellow-600" style={{ width: `${result.batteriesShare}%` }} />
                   </div>
                 </div>
@@ -366,10 +368,10 @@ export default function TCOCalculator() {
               {result.subscriptionsShare > 0 && (
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium text-gray-700">Subscriptions</span>
-                    <span className="text-sm text-gray-600">{result.subscriptionsShare.toFixed(1)}%</span>
+                    <span style={{ fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)" }}>Subscriptions</span>
+                    <span className="link-card__desc">{result.subscriptionsShare.toFixed(1)}%</span>
                   </div>
-                  <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-3 rounded-full overflow-hidden" style={{ background: "var(--color-border)" }}>
                     <div className="h-full bg-red-600" style={{ width: `${result.subscriptionsShare}%` }} />
                   </div>
                 </div>
@@ -380,32 +382,32 @@ export default function TCOCalculator() {
 
         {/* Recommended Brand - Be-Tech */}
         <div className="max-w-7xl mx-auto mt-8">
-          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+          <div className="content-card">
             <div className="flex items-center gap-6">
               <div className="flex-shrink-0">
-                <div className="w-20 h-20 bg-gray-50 rounded-lg p-2 flex items-center justify-center border border-gray-200">
-                  <img 
-                    src="/images/brands/be-tech-logo.png" 
-                    alt="Be-Tech Logo" 
+                <div className="card" style={{ width: "5rem", height: "5rem", padding: "var(--space-sm)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <img
+                    src="/images/brands/be-tech-logo.png"
+                    alt="Be-Tech Logo"
                     className="w-full h-full object-contain"
                   />
                 </div>
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="text-lg font-bold text-gray-900">Recommended: Be-Tech</h3>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                  <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--color-text-primary)" }}>Recommended: Be-Tech</h3>
+                  <span className="badge badge-accent">
                     Multi-Protocol
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 mb-3">
+                <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-sm)" }}>
                   Professional smart lock manufacturer supporting Wi-Fi, Zigbee, Z-Wave, and Thread protocols. Competitive TCO with excellent battery life.
                 </p>
                 <a
                   href="https://www.betechlock.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  style={{ fontSize: "0.875rem", color: "var(--color-accent)", fontWeight: 500 }}
                 >
                   Visit Official Website →
                 </a>
@@ -416,12 +418,12 @@ export default function TCOCalculator() {
 
         {/* Methodology */}
         <div className="max-w-7xl mx-auto mt-12">
-          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Calculation Methodology</h2>
+          <div className="content-card">
+            <h2 className="section-title">Calculation Methodology</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Hub/Gateway Costs</h3>
-                <ul className="space-y-2 text-sm text-gray-700">
+                <h3 style={{ fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)" }}>Hub/Gateway Costs</h3>
+                <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
                   <li><strong>Wi-Fi:</strong> $0 (uses existing router)</li>
                   <li><strong>Zigbee:</strong> $80 (SmartThings, Aqara Hub)</li>
                   <li><strong>Z-Wave:</strong> $120 (Z-Wave controller)</li>
@@ -429,8 +431,8 @@ export default function TCOCalculator() {
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Battery Life Assumptions</h3>
-                <ul className="space-y-2 text-sm text-gray-700">
+                <h3 style={{ fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)" }}>Battery Life Assumptions</h3>
+                <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
                   <li><strong>Wi-Fi:</strong> 3 months (always-on radio)</li>
                   <li><strong>Zigbee:</strong> 12 months (low-power mesh)</li>
                   <li><strong>Z-Wave:</strong> 12 months (low-power mesh)</li>
@@ -445,8 +447,8 @@ export default function TCOCalculator() {
         {/* Hidden Costs Warning */}
         <div className="max-w-7xl mx-auto mt-8">
           <div className="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-yellow-900 mb-3">⚠️ Hidden Costs Not Included</h3>
-            <ul className="space-y-2 text-sm text-yellow-800">
+            <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--color-warning)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><AlertTriangle className="w-5 h-5" style={{ color: "var(--color-warning)" }} /> Hidden Costs Not Included</h3>
+            <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-warning)" }}>
               <li>• <strong>Door modifications</strong> ($20-100 if backset/thickness incompatible)</li>
               <li>• <strong>Mesh repeaters</strong> ($15-30 each if Zigbee/Z-Wave needs range extension)</li>
               <li>• <strong>Lock replacement</strong> (mechanical wear typically 7-10 years)</li>
@@ -456,22 +458,24 @@ export default function TCOCalculator() {
 
         {/* Related Resources */}
         <div className="max-w-7xl mx-auto mt-8">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Related Resources</h3>
+          <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-md)" }}>Related Resources</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Link href="/articles/protocols" className="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all">
-              <h4 className="font-semibold text-gray-900 mb-2">Protocol Comparison</h4>
-              <p className="text-sm text-gray-600">Compare all protocols</p>
+            <Link href="/articles/protocols" className="link-card">
+              <h4 className="link-card__title">Protocol Comparison</h4>
+              <p className="link-card__desc">Compare all protocols</p>
             </Link>
-            <Link href="/calculators/battery-life" className="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all">
-              <h4 className="font-semibold text-gray-900 mb-2">Battery Life Calculator</h4>
-              <p className="text-sm text-gray-600">Detailed battery analysis</p>
+            <Link href="/calculators/battery-life" className="link-card">
+              <h4 className="link-card__title">Battery Life Calculator</h4>
+              <p className="link-card__desc">Detailed battery analysis</p>
             </Link>
-            <Link href="/calculators" className="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all">
-              <h4 className="font-semibold text-gray-900 mb-2">All Calculators</h4>
-              <p className="text-sm text-gray-600">More planning tools</p>
+            <Link href="/calculators" className="link-card">
+              <h4 className="link-card__title">All Calculators</h4>
+              <p className="link-card__desc">More planning tools</p>
             </Link>
           </div>
         </div>
+
+        <ToolRating toolSlug="lock-tco" />
       </div>
     </div>
   )

@@ -1,9 +1,19 @@
-import Link from 'next/link'
 import type { Metadata } from 'next'
+import Link from 'next/link'
+import {
+  ArrowRight, Radio, Wifi, Home, Zap, CheckCircle, XCircle, GitCompareArrows
+} from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Protocol Comparison - Smart Lock Hub',
-  description: 'Side-by-side comparison of Z-Wave, Zigbee, Wi-Fi, Thread, and Matter smart lock protocols.',
+  description: 'Compare Z-Wave, Zigbee, Wi-Fi, and Thread smart lock protocols side-by-side. Detailed specs on range, battery life, latency, security, and pricing.',
+  alternates: { canonical: '/compare' },
+  openGraph: {
+    title: 'Protocol Comparison - Smart Lock Hub',
+    description: 'Compare Z-Wave, Zigbee, Wi-Fi, and Thread smart lock protocols side-by-side.',
+    siteName: 'Smart Lock Hub',
+    type: 'website',
+  },
 }
 
 const protocols = [
@@ -12,260 +22,209 @@ const protocols = [
     frequency: '908 MHz',
     range: '40m',
     batteryLife: '12 months',
-    latency: '100-200ms',
+    latency: '<100ms',
+    maxNodes: '232',
+    security: 'S2 AES-128',
     hubRequired: 'Yes',
-    hubCost: '$120',
-    interference: 'Very Low',
-    meshSupport: 'Yes',
-    deviceLimit: '232',
-    security: 'AES-128',
-    pros: ['Excellent range', 'No 2.4GHz interference', 'Reliable mesh', 'Low power'],
-    cons: ['Requires hub', 'Higher hub cost', 'Fewer devices'],
-    bestFor: 'Large homes, commercial',
-    color: 'blue',
+    price: '$$',
+    color: 'zwave' as const,
+    pros: ['Low power consumption', 'No WiFi interference', 'Excellent mesh routing', 'Dedicated frequency band'],
+    cons: ['Hub required', 'Limited bandwidth', 'Lower node density', 'Proprietary protocol'],
   },
   {
     name: 'Zigbee',
     frequency: '2.4 GHz',
-    range: '30m',
-    batteryLife: '12 months',
-    latency: '80-150ms',
-    hubRequired: 'Yes',
-    hubCost: '$80',
-    interference: 'Low',
-    meshSupport: 'Yes',
-    deviceLimit: '65,000',
+    range: '20m',
+    batteryLife: '18 months',
+    latency: '<50ms',
+    maxNodes: '65,000',
     security: 'AES-128',
-    pros: ['Low cost hub', 'Massive device support', 'Great battery life', 'Wide adoption'],
-    cons: ['2.4GHz interference', 'Requires hub'],
-    bestFor: 'Smart home ecosystems',
-    color: 'green',
+    hubRequired: 'Yes',
+    price: '$',
+    color: 'zigbee' as const,
+    pros: ['Massive node support', 'Low power', 'Fast response', 'Cost-effective'],
+    cons: ['WiFi interference potential', 'Hub required', 'Shorter range', 'Complex mesh management'],
   },
   {
     name: 'Wi-Fi',
     frequency: '2.4/5 GHz',
-    range: '50m',
-    batteryLife: '3-6 months',
-    latency: '50-100ms',
+    range: '30m',
+    batteryLife: '6 months',
+    latency: '<200ms',
+    maxNodes: 'Varies',
+    security: 'WPA3',
     hubRequired: 'No',
-    hubCost: '$0',
-    interference: 'High',
-    meshSupport: 'No',
-    deviceLimit: 'Router limited',
-    security: 'WPA2/WPA3',
-    pros: ['No hub needed', 'Fast response', 'Easy setup', 'Remote access built-in'],
-    cons: ['Poor battery life', 'Cloud dependent', 'Higher power consumption'],
-    bestFor: 'Tech-savvy users, small deployments',
-    color: 'purple',
+    price: '$$$',
+    color: 'wifi' as const,
+    pros: ['No hub needed', 'Easy setup', 'Remote access built-in', 'Wide compatibility'],
+    cons: ['High power consumption', 'Network congestion', 'Shorter battery life', 'Security concerns'],
   },
   {
     name: 'Thread',
     frequency: '2.4 GHz',
-    range: '28m',
-    batteryLife: '10 months',
-    latency: '60-120ms',
-    hubRequired: 'Yes',
-    hubCost: '$150',
-    interference: 'Low',
-    meshSupport: 'Yes',
-    deviceLimit: '500+',
-    security: 'AES-128',
-    pros: ['Low latency', 'IPv6 native', 'Matter compatible', 'Self-healing mesh'],
-    cons: ['Expensive hub', 'Limited lock options', 'Newer technology'],
-    bestFor: 'Future-proof installations',
-    color: 'orange',
+    range: '30m',
+    batteryLife: '12+ months',
+    latency: '<50ms',
+    maxNodes: '250+',
+    security: 'DTLS',
+    hubRequired: 'Border Router',
+    price: '$$',
+    color: 'thread' as const,
+    pros: ['Matter compatible', 'Self-healing mesh', 'Low power', 'IP-based'],
+    cons: ['Newer technology', 'Limited devices', 'Border router needed', 'Evolving standard'],
   },
 ]
 
-export default function Compare() {
+const comparisonRows = [
+  { label: 'Frequency', key: 'frequency' as const },
+  { label: 'Range', key: 'range' as const },
+  { label: 'Battery Life', key: 'batteryLife' as const },
+  { label: 'Latency', key: 'latency' as const },
+  { label: 'Max Nodes', key: 'maxNodes' as const },
+  { label: 'Security', key: 'security' as const },
+  { label: 'Hub Required', key: 'hubRequired' as const },
+  { label: 'Price Range', key: 'price' as const },
+]
+
+const protocolColors = {
+  zwave: 'text-protocol-zwave',
+  zigbee: 'text-protocol-zigbee',
+  wifi: 'text-protocol-wifi',
+  thread: 'text-protocol-thread',
+}
+
+export default function ComparePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">Protocol Comparison</h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Side-by-side comparison of major smart lock protocols to help you choose
-            </p>
+    <div className="page-wrapper-alt">
+      <div className="container-main section">
+        {/* Header */}
+        <div className="page-header">
+          <div className="page-header__icon">
+            <GitCompareArrows className="w-10 h-10" />
           </div>
+          <h1 className="page-header__title">Protocol Comparison</h1>
+          <p className="page-header__subtitle">
+            Compare smart lock communication protocols side-by-side to find the best fit for your needs
+          </p>
+        </div>
 
-          {/* Quick Decision Guide */}
-          <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-8 text-white mb-12">
-            <h2 className="text-2xl font-bold mb-6">Quick Decision Guide</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="font-semibold mb-2">Choose Z-Wave if:</h3>
-                <ul className="space-y-1 text-sm opacity-90">
-                  <li>• You need maximum range and reliability</li>
-                  <li>• You have thick walls or metal obstacles</li>
-                  <li>• You're deploying in a large building</li>
-                </ul>
+        {/* Quick Decision Guide */}
+        <div className="mb-16">
+          <h2 className="section-title section-title--center">Quick Decision Guide</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {[
+              { q: 'Best Battery Life', a: 'Zigbee — up to 18 months', protocol: 'zigbee' as const },
+              { q: 'Easiest Setup', a: 'Wi-Fi — no hub required', protocol: 'wifi' as const },
+              { q: 'Most Reliable', a: 'Z-Wave — dedicated frequency', protocol: 'zwave' as const },
+              { q: 'Future-Proof', a: 'Thread — Matter compatible', protocol: 'thread' as const },
+            ].map((item) => (
+              <div key={item.q} className="card" style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-md)' }}>
+                <div style={{ color: 'var(--color-accent)', marginTop: '2px' }}>
+                  <CheckCircle className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="font-bold mb-1" style={{ color: 'var(--color-text-primary)' }}>{item.q}</h3>
+                  <p className={`text-sm font-medium ${protocolColors[item.protocol]}`}>
+                    {item.a}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-semibold mb-2">Choose Zigbee if:</h3>
-                <ul className="space-y-1 text-sm opacity-90">
-                  <li>• You want lower initial cost</li>
-                  <li>• You have existing smart home devices</li>
-                  <li>• You need many devices in ecosystem</li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Choose Wi-Fi if:</h3>
-                <ul className="space-y-1 text-sm opacity-90">
-                  <li>• You want no additional hub</li>
-                  <li>• Battery replacement is not a concern</li>
-                  <li>• You need fastest response time</li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Choose Thread if:</h3>
-                <ul className="space-y-1 text-sm opacity-90">
-                  <li>• You want future-proof technology</li>
-                  <li>• Matter compatibility is important</li>
-                  <li>• You can invest in newer ecosystem</li>
-                </ul>
-              </div>
-            </div>
+            ))}
           </div>
+        </div>
 
-          {/* Comparison Table */}
-          <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden mb-12">
+        {/* Comparison Table */}
+        <div className="mb-16">
+          <h2 className="section-title">Detailed Comparison</h2>
+          <div className="card overflow-hidden" style={{ padding: 0 }}>
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
+              <table className="data-table">
+                <thead>
                   <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Feature</th>
-                    {protocols.map(p => (
-                      <th key={p.name} className={`px-6 py-4 text-center text-sm font-semibold text-${p.color}-700`}>
+                    <th>Feature</th>
+                    {protocols.map((p) => (
+                      <th key={p.name} className={protocolColors[p.color]}>
                         {p.name}
                       </th>
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
-                  <tr>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Frequency</td>
-                    {protocols.map(p => (
-                      <td key={p.name} className="px-6 py-4 text-sm text-gray-700 text-center">{p.frequency}</td>
-                    ))}
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Typical Range</td>
-                    {protocols.map(p => (
-                      <td key={p.name} className="px-6 py-4 text-sm text-gray-700 text-center">{p.range}</td>
-                    ))}
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Battery Life</td>
-                    {protocols.map(p => (
-                      <td key={p.name} className="px-6 py-4 text-sm text-gray-700 text-center font-semibold">{p.batteryLife}</td>
-                    ))}
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Latency</td>
-                    {protocols.map(p => (
-                      <td key={p.name} className="px-6 py-4 text-sm text-gray-700 text-center">{p.latency}</td>
-                    ))}
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Hub Required</td>
-                    {protocols.map(p => (
-                      <td key={p.name} className="px-6 py-4 text-sm text-gray-700 text-center">{p.hubRequired}</td>
-                    ))}
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Hub Cost</td>
-                    {protocols.map(p => (
-                      <td key={p.name} className="px-6 py-4 text-sm text-gray-700 text-center font-semibold">{p.hubCost}</td>
-                    ))}
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Interference</td>
-                    {protocols.map(p => (
-                      <td key={p.name} className="px-6 py-4 text-sm text-gray-700 text-center">{p.interference}</td>
-                    ))}
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Mesh Network</td>
-                    {protocols.map(p => (
-                      <td key={p.name} className="px-6 py-4 text-sm text-gray-700 text-center">{p.meshSupport}</td>
-                    ))}
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Device Limit</td>
-                    {protocols.map(p => (
-                      <td key={p.name} className="px-6 py-4 text-sm text-gray-700 text-center">{p.deviceLimit}</td>
-                    ))}
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Security</td>
-                    {protocols.map(p => (
-                      <td key={p.name} className="px-6 py-4 text-sm text-gray-700 text-center">{p.security}</td>
-                    ))}
-                  </tr>
+                <tbody>
+                  {comparisonRows.map((row) => (
+                    <tr key={row.key}>
+                      <td className="font-medium" style={{ color: 'var(--color-text-primary)' }}>
+                        {row.label}
+                      </td>
+                      {protocols.map((p) => (
+                        <td key={p.name} className="mono-value" style={{ fontSize: '0.875rem' }}>
+                          {p[row.key]}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
           </div>
+        </div>
 
-          {/* Detailed Cards */}
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            {protocols.map(protocol => (
-              <div key={protocol.name} className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-8">
-                <h3 className={`text-2xl font-bold text-${protocol.color}-700 mb-4`}>{protocol.name}</h3>
-                
-                <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-2">Pros:</h4>
-                  <ul className="space-y-2">
-                    {protocol.pros.map((pro, i) => (
-                      <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
-                        <span className="text-green-600 mt-0.5">✓</span>
-                        <span>{pro}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-2">Cons:</h4>
-                  <ul className="space-y-2">
-                    {protocol.cons.map((con, i) => (
-                      <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
-                        <span className="text-red-600 mt-0.5">✗</span>
-                        <span>{con}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className={`p-4 bg-${protocol.color}-50 rounded-lg`}>
-                  <div className="font-semibold text-gray-900 mb-1">Best For:</div>
-                  <div className="text-sm text-gray-700">{protocol.bestFor}</div>
+        {/* Pros & Cons */}
+        <div className="mb-16">
+          <h2 className="section-title section-title--center">Pros & Cons</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {protocols.map((protocol) => (
+              <div key={protocol.name} className="card" style={{ padding: 'var(--space-xl)' }}>
+                <h3 className={`text-xl font-bold mb-4 ${protocolColors[protocol.color]}`}>
+                  {protocol.name}
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Pros */}
+                  <div>
+                    <h4 className="text-sm font-bold uppercase mb-3" style={{ color: 'var(--color-success)', letterSpacing: '0.05em' }}>
+                      Advantages
+                    </h4>
+                    <ul className="space-y-2">
+                      {protocol.pros.map((pro) => (
+                        <li key={pro} className="flex items-center gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+                          <CheckCircle className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--color-success)' }} />
+                          {pro}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  {/* Cons */}
+                  <div>
+                    <h4 className="text-sm font-bold uppercase mb-3" style={{ color: 'var(--color-danger)', letterSpacing: '0.05em' }}>
+                      Limitations
+                    </h4>
+                    <ul className="space-y-2">
+                      {protocol.cons.map((con) => (
+                        <li key={con} className="flex items-center gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+                          <XCircle className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--color-danger)' }} />
+                          {con}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
+        </div>
 
-          {/* CTA */}
-          <div className="text-center bg-white rounded-xl shadow-lg border border-gray-200 p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Need Help Deciding?</h2>
-            <p className="text-gray-600 mb-6">
-              Use our interactive wizard to get personalized recommendations
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/calculators/protocol-wizard"
-                className="px-8 py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-              >
-                Try Protocol Wizard
-              </Link>
-              <Link
-                href="/calculators/lock-tco"
-                className="px-8 py-4 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
-              >
-                Compare Costs
-              </Link>
-            </div>
+        {/* CTA */}
+        <div className="cta-section">
+          <h2 className="cta-section__title">Need Help Deciding?</h2>
+          <p className="cta-section__subtitle">
+            Try our Protocol Selection Wizard for a personalized recommendation
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/calculators/protocol-wizard" className="btn btn-primary btn-lg">
+              Try Protocol Wizard <ArrowRight className="w-5 h-5" />
+            </Link>
+            <Link href="/articles/protocols" className="btn btn-secondary btn-lg">
+              Read Protocol Guides
+            </Link>
           </div>
         </div>
       </div>

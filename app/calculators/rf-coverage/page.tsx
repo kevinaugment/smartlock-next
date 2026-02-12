@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { Radio, MapPin, AlertTriangle, Check } from 'lucide-react'
+import { ToolRating } from '@/components/ToolRating'
 
 export default function RFCoverage() {
   const [buildingLength, setBuildingLength] = useState(30)
@@ -21,21 +23,21 @@ export default function RFCoverage() {
     const hubsNeeded = Math.ceil(area / coverage) + 1
     const locksPerHub = Math.ceil(lockCount / hubsNeeded)
     const signalQuality = lockCount / hubsNeeded < 15 ? 'Excellent' : lockCount / hubsNeeded < 25 ? 'Good' : 'Fair'
-    
+
     return { area, effectiveRange: Math.round(effectiveRange), hubsNeeded, locksPerHub, signalQuality, coverage: Math.round(coverage) }
   }
 
   const result = calculate()
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="container mx-auto px-4 py-12">
-        <Link href="/calculators" className="text-blue-600 text-sm mb-8 inline-block">← Back</Link>
-        
+    <div className="page-bg">
+      <div className="container-main section">
+        <Link href="/calculators" className="back-link">← Back</Link>
+
         <div className="text-center mb-12">
-          <div className="text-6xl mb-4">📡</div>
+          <div className="page-header__icon"><Radio className="w-14 h-14 mx-auto" /></div>
           <h1 className="text-4xl font-bold mb-4">RF Coverage Estimator</h1>
-          <p className="text-xl text-gray-600">Plan mesh network topology and signal coverage</p>
+          <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Plan mesh network topology and signal coverage</p>
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -44,19 +46,19 @@ export default function RFCoverage() {
             <div className="space-y-6">
               <div>
                 <label className="block mb-2 font-medium">Building Length: {buildingLength}m</label>
-                <input type="range" min="10" max="100" value={buildingLength} onChange={(e) => setBuildingLength(Number(e.target.value))} className="w-full"/>
+                <input type="range" min="10" max="100" value={buildingLength} onChange={(e) => setBuildingLength(Number(e.target.value))} className="w-full" />
               </div>
               <div>
                 <label className="block mb-2 font-medium">Building Width: {buildingWidth}m</label>
-                <input type="range" min="10" max="100" value={buildingWidth} onChange={(e) => setBuildingWidth(Number(e.target.value))} className="w-full"/>
+                <input type="range" min="10" max="100" value={buildingWidth} onChange={(e) => setBuildingWidth(Number(e.target.value))} className="w-full" />
               </div>
               <div>
                 <label className="block mb-2 font-medium">Floors: {floors}</label>
-                <input type="range" min="1" max="20" value={floors} onChange={(e) => setFloors(Number(e.target.value))} className="w-full"/>
+                <input type="range" min="1" max="20" value={floors} onChange={(e) => setFloors(Number(e.target.value))} className="w-full" />
               </div>
               <div>
                 <label className="block mb-2 font-medium">Total Locks: {lockCount}</label>
-                <input type="range" min="1" max="100" value={lockCount} onChange={(e) => setLockCount(Number(e.target.value))} className="w-full"/>
+                <input type="range" min="1" max="100" value={lockCount} onChange={(e) => setLockCount(Number(e.target.value))} className="w-full" />
               </div>
               <div>
                 <label className="block mb-2 font-medium">Protocol</label>
@@ -79,11 +81,10 @@ export default function RFCoverage() {
           </div>
 
           <div>
-            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${
-              result.signalQuality === 'Excellent' ? 'bg-gradient-to-br from-green-600 to-green-700' :
+            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.signalQuality === 'Excellent' ? 'bg-gradient-to-br from-green-600 to-green-700' :
               result.signalQuality === 'Good' ? 'bg-gradient-to-br from-blue-600 to-blue-700' :
-              'bg-gradient-to-br from-yellow-600 to-yellow-700'
-            }`}>
+                'bg-gradient-to-br from-yellow-600 to-yellow-700'
+              }`}>
               <h2 className="text-xl font-bold mb-6">Coverage Analysis</h2>
               <div className="text-center mb-8">
                 <div className="text-6xl font-bold mb-2">{result.hubsNeeded}</div>
@@ -119,8 +120,8 @@ export default function RFCoverage() {
 
         <div className="max-w-6xl mx-auto mt-12 grid md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="font-semibold mb-3">📍 Hub Placement</h3>
-            <ul className="text-sm space-y-2 text-gray-700">
+            <h3 className="font-semibold mb-3 inline-flex items-center gap-2"><MapPin className="w-5 h-5" style={{ color: "var(--color-accent)" }} /> Hub Placement</h3>
+            <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
               <li>• Central locations</li>
               <li>• Away from metal</li>
               <li>• Height: 2m optimal</li>
@@ -128,8 +129,8 @@ export default function RFCoverage() {
             </ul>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="font-semibold mb-3">⚠️ Obstacles</h3>
-            <ul className="text-sm space-y-2 text-gray-700">
+            <h3 className="font-semibold mb-3 inline-flex items-center gap-2"><AlertTriangle className="w-5 h-5" style={{ color: "var(--color-warning)" }} /> Obstacles</h3>
+            <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
               <li>• Metal reduces 50%</li>
               <li>• Concrete reduces 40%</li>
               <li>• Water reduces 30%</li>
@@ -137,8 +138,8 @@ export default function RFCoverage() {
             </ul>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="font-semibold mb-3">✓ Best Practices</h3>
-            <ul className="text-sm space-y-2 text-gray-700">
+            <h3 className="font-semibold mb-3 inline-flex items-center gap-2"><Check className="w-5 h-5" style={{ color: "var(--color-success)" }} /> Best Practices</h3>
+            <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
               <li>• Test before final install</li>
               <li>• Add 20% redundancy</li>
               <li>• Document coverage map</li>
@@ -149,16 +150,20 @@ export default function RFCoverage() {
       </div>
 
       {/* Be-Tech Brand Recommendation */}
-      <BeTechCalculatorRecommendation 
+      <BeTechCalculatorRecommendation
         description="Be-Tech locks feature excellent RF signal quality and mesh network support across all protocols. Optimized antenna design ensures reliable coverage even in challenging environments."
         badge="Strong Signal"
       />
 
       {/* Back Link */}
       <div className="max-w-6xl mx-auto mt-8 mb-12">
-        <Link href="/calculators" className="text-blue-600 hover:text-blue-700 font-medium">
+        <Link href="/calculators" style={{ color: "var(--color-accent)", fontWeight: 500 }}>
           ← Back to All Calculators
         </Link>
+      </div>
+
+      <div className="container-main">
+        <ToolRating toolSlug="rf-coverage" />
       </div>
     </div>
   )

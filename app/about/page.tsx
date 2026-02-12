@@ -1,203 +1,151 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import {
+  BookOpen, Calculator, Shield, Wrench, Building2, Globe,
+  Wifi, Lock, Key, Cpu, Info
+} from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'About - Smart Lock Hub',
-  description: 'Learn about Smart Lock Hub - your comprehensive resource for smart lock knowledge, tools, and expert guidance.',
+  description: 'Learn about Smart Lock Hub — your comprehensive resource for smart lock knowledge, tools, and expert guidance.',
+  alternates: { canonical: '/about' },
 }
 
-export default function About() {
+
+export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-16">
-        {/* Hero */}
-        <div className="text-center mb-16">
-          <div className="text-6xl mb-6">🔐</div>
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">About Smart Lock Hub</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+    <div className="page-wrapper-alt">
+      <div className="container-main section">
+        {/* Header */}
+        <div className="page-header">
+          <div className="page-header__icon">
+            <Info className="w-10 h-10" />
+          </div>
+          <h1 className="page-header__title">About Smart Lock Hub</h1>
+          <p className="page-header__subtitle">
             Your comprehensive resource for smart lock knowledge, tools, and expert guidance
           </p>
         </div>
 
         {/* Mission */}
-        <div className="max-w-4xl mx-auto mb-16">
-          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 md:p-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
-            <p className="text-lg text-gray-700 leading-relaxed mb-4">
-              Smart Lock Hub was created to provide property owners, managers, and installers with 
-              the knowledge and tools they need to make informed decisions about smart lock systems.
-            </p>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              We believe that access control technology should be accessible to everyone, not just 
-              large enterprises. Our goal is to demystify smart locks through comprehensive guides, 
-              practical calculators, and real-world insights.
+        <div className="max-w-3xl mx-auto mb-16">
+          <div className="card-elevated" style={{ padding: 'var(--space-2xl)' }}>
+            <h2 className="section-title section-title--center">Our Mission</h2>
+            <p className="text-center" style={{ color: 'var(--color-text-secondary)', fontSize: '1.125rem', lineHeight: '1.75' }}>
+              We aim to empower property managers, security professionals, and homeowners with the knowledge and tools
+              they need to make confidence decisions about smart lock systems. Through comprehensive guides,
+              interactive calculators, and transparent protocol comparisons, we are dedicated to simplifying the complex
+              world of smart lock technology.
             </p>
           </div>
         </div>
 
         {/* What We Offer */}
-        <div className="max-w-6xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">What We Offer</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-blue-50 rounded-xl p-8 border-2 border-blue-200">
-              <div className="text-4xl mb-4">📚</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Knowledge Base</h3>
-              <p className="text-gray-700 mb-4">
-                49+ in-depth articles covering protocols, security, installation, troubleshooting, 
-                and use cases. Written by experts with real-world experience.
-              </p>
-              <Link href="/articles" className="text-blue-600 hover:text-blue-700 font-semibold">
-                Browse Articles →
-              </Link>
-            </div>
-
-            <div className="bg-green-50 rounded-xl p-8 border-2 border-green-200">
-              <div className="text-4xl mb-4">🧮</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Interactive Calculators</h3>
-              <p className="text-gray-700 mb-4">
-                15 specialized tools for cost analysis, protocol selection, capacity planning, 
-                and deployment optimization. All free to use.
-              </p>
-              <Link href="/calculators" className="text-green-600 hover:text-green-700 font-semibold">
-                Try Calculators →
-              </Link>
-            </div>
-
-            <div className="bg-purple-50 rounded-xl p-8 border-2 border-purple-200">
-              <div className="text-4xl mb-4">🎯</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Practical Guidance</h3>
-              <p className="text-gray-700 mb-4">
-                Real-world examples, best practices, and actionable recommendations based on 
-                thousands of successful deployments.
-              </p>
-              <Link href="/articles/guides" className="text-purple-600 hover:text-purple-700 font-semibold">
-                View Guides →
-              </Link>
-            </div>
+        <div className="mb-16">
+          <h2 className="section-title section-title--center">What We Offer</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {[
+              {
+                icon: <BookOpen className="w-8 h-8" />,
+                title: 'Knowledge Base',
+                desc: '49+ in-depth articles covering protocols, security, installation, troubleshooting, and real-world applications'
+              },
+              {
+                icon: <Calculator className="w-8 h-8" />,
+                title: 'Interactive Calculators',
+                desc: '15 specialized tools to estimate battery life, calculate costs, check compatibility, and plan installations'
+              },
+              {
+                icon: <Shield className="w-8 h-8" />,
+                title: 'Expert Guidance',
+                desc: 'Protocol comparisons, brand reviews, and industry best practices to help you choose the right solution'
+              },
+            ].map((item) => (
+              <div key={item.title} className="card card-hover text-center">
+                <div
+                  className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                  style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}
+                >
+                  {item.icon}
+                </div>
+                <h3 className="text-lg font-bold mb-3" style={{ color: 'var(--color-text-primary)' }}>{item.title}</h3>
+                <p className="text-sm" style={{ color: 'var(--color-text-secondary)', lineHeight: '1.6' }}>{item.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Stats */}
-        <div className="max-w-4xl mx-auto mb-16">
-          <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-8 md:p-12 text-white">
-            <h2 className="text-3xl font-bold mb-8 text-center">By the Numbers</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              <div className="text-center">
-                <div className="text-4xl font-bold mb-2">49+</div>
-                <div className="text-blue-100">Articles</div>
+        <div className="card-elevated mb-16" style={{ padding: 'var(--space-2xl)', background: 'var(--color-accent-subtle)' }}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { value: '49+', label: 'Articles' },
+              { value: '15', label: 'Calculators' },
+              { value: '6', label: 'Categories' },
+              { value: '4', label: 'Protocols' },
+            ].map((stat) => (
+              <div key={stat.label} className="stat-block">
+                <div className="stat-block__value">{stat.value}</div>
+                <div className="stat-block__label">{stat.label}</div>
               </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold mb-2">15</div>
-                <div className="text-blue-100">Calculators</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold mb-2">7</div>
-                <div className="text-blue-100">Categories</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold mb-2">100%</div>
-                <div className="text-blue-100">Free</div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
-        {/* Coverage */}
-        <div className="max-w-6xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Topics We Cover</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                <span>📡</span>
-                <span>Protocols & Technology</span>
-              </h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Z-Wave, Zigbee, Wi-Fi, Thread, Matter</li>
-                <li>• Protocol comparison and selection</li>
-                <li>• Mesh networking and range optimization</li>
-                <li>• Future-proof technology planning</li>
-              </ul>
-            </div>
-
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                <span>🔒</span>
-                <span>Security & Privacy</span>
-              </h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Encryption and authentication</li>
-                <li>• Vulnerability analysis</li>
-                <li>• Data privacy and compliance</li>
-                <li>• Best security practices</li>
-              </ul>
-            </div>
-
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                <span>🔋</span>
-                <span>Installation & Setup</span>
-              </h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Door compatibility checking</li>
-                <li>• Installation procedures</li>
-                <li>• Battery optimization</li>
-                <li>• Troubleshooting guides</li>
-              </ul>
-            </div>
-
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                <span>🏢</span>
-                <span>Use Cases & Planning</span>
-              </h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Short-term rentals (Airbnb, VRBO)</li>
-                <li>• Multi-family properties</li>
-                <li>• Commercial buildings</li>
-                <li>• Enterprise deployments</li>
-              </ul>
-            </div>
+        {/* Topics We Cover */}
+        <div className="mb-16">
+          <h2 className="section-title section-title--center">Topics We Cover</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+            {[
+              { icon: <Wifi className="w-5 h-5" />, label: 'Wireless Protocols' },
+              { icon: <Lock className="w-5 h-5" />, label: 'Security Analysis' },
+              { icon: <Key className="w-5 h-5" />, label: 'Access Management' },
+              { icon: <Wrench className="w-5 h-5" />, label: 'Installation & Setup' },
+              { icon: <Building2 className="w-5 h-5" />, label: 'Commercial Deployments' },
+              { icon: <Cpu className="w-5 h-5" />, label: 'Smart Home Integration' },
+              { icon: <Shield className="w-5 h-5" />, label: 'Privacy & Compliance' },
+              { icon: <Globe className="w-5 h-5" />, label: 'Industry Standards' },
+              { icon: <Calculator className="w-5 h-5" />, label: 'Cost & ROI Analysis' },
+            ].map((topic) => (
+              <div key={topic.label} className="flex items-center gap-3 card" style={{ padding: 'var(--space-md) var(--space-lg)' }}>
+                <span style={{ color: 'var(--color-accent)' }}>{topic.icon}</span>
+                <span className="font-medium" style={{ color: 'var(--color-text-primary)' }}>{topic.label}</span>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Technology */}
-        <div className="max-w-4xl mx-auto mb-16">
-          <div className="bg-gray-50 rounded-xl border border-gray-200 p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Built with Modern Technology</h2>
-            <p className="text-gray-700 mb-4">
-              Smart Lock Hub is built on Next.js 14 and deployed on Cloudflare's global network 
-              for maximum performance and reliability.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <span className="px-4 py-2 bg-white rounded-lg border border-gray-300 text-sm font-medium">Next.js 14</span>
-              <span className="px-4 py-2 bg-white rounded-lg border border-gray-300 text-sm font-medium">React 18</span>
-              <span className="px-4 py-2 bg-white rounded-lg border border-gray-300 text-sm font-medium">TypeScript</span>
-              <span className="px-4 py-2 bg-white rounded-lg border border-gray-300 text-sm font-medium">Tailwind CSS</span>
-              <span className="px-4 py-2 bg-white rounded-lg border border-gray-300 text-sm font-medium">Cloudflare D1</span>
-              <span className="px-4 py-2 bg-white rounded-lg border border-gray-300 text-sm font-medium">Edge Runtime</span>
+        {/* Technology Stack */}
+        <div className="mb-16">
+          <h2 className="section-title section-title--center">Built with Modern Technology</h2>
+          <div className="max-w-3xl mx-auto">
+            <div className="card" style={{ padding: 'var(--space-xl)' }}>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                {[
+                  { name: 'Next.js 14', desc: 'React Framework' },
+                  { name: 'Cloudflare', desc: 'Global CDN' },
+                  { name: 'TypeScript', desc: 'Type Safety' },
+                  { name: 'Tailwind', desc: 'CSS Framework' },
+                ].map((tech) => (
+                  <div key={tech.name}>
+                    <p className="font-bold" style={{ color: 'var(--color-text-primary)' }}>{tech.name}</p>
+                    <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>{tech.desc}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
         {/* CTA */}
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Get Started</h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Explore our knowledge base or try our interactive calculators
+        <div className="cta-section">
+          <h2 className="cta-section__title">Ready to Explore?</h2>
+          <p className="cta-section__subtitle">
+            Dive into our knowledge base or try our calculators
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/articles"
-              className="px-8 py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-            >
-              Browse Articles
-            </Link>
-            <Link
-              href="/calculators"
-              className="px-8 py-4 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
-            >
-              Try Calculators
-            </Link>
+            <Link href="/articles" className="btn btn-primary btn-lg">Browse Articles</Link>
+            <Link href="/calculators" className="btn btn-secondary btn-lg">Try Calculators</Link>
           </div>
         </div>
       </div>

@@ -1,15 +1,19 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import {
+  Lock, Home, Shield, DoorOpen, Key, Sparkles, AlertTriangle, Check, X
+} from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Brands - Smart Lock Hub',
   description: 'Overview of major smart lock brands and manufacturers with protocol support and best use cases.',
+  alternates: { canonical: '/brands' },
 }
 
 const brands = [
   {
     name: 'Yale',
-    logo: '🔐',
+    logo: <Lock className="w-9 h-9" />,
     protocols: ['Zigbee', 'Z-Wave', 'Wi-Fi', 'Thread'],
     priceRange: '$150-$300',
     rating: 4.5,
@@ -20,7 +24,7 @@ const brands = [
   },
   {
     name: 'August',
-    logo: '🏠',
+    logo: <Home className="w-9 h-9" />,
     protocols: ['Wi-Fi', 'Zigbee'],
     priceRange: '$200-$280',
     rating: 4.3,
@@ -31,7 +35,7 @@ const brands = [
   },
   {
     name: 'Schlage',
-    logo: '🔒',
+    logo: <Shield className="w-9 h-9" />,
     protocols: ['Zigbee', 'Z-Wave', 'Wi-Fi'],
     priceRange: '$180-$350',
     rating: 4.6,
@@ -42,7 +46,7 @@ const brands = [
   },
   {
     name: 'Kwikset',
-    logo: '🚪',
+    logo: <DoorOpen className="w-9 h-9" />,
     protocols: ['Zigbee', 'Z-Wave'],
     priceRange: '$120-$250',
     rating: 4.2,
@@ -53,7 +57,7 @@ const brands = [
   },
   {
     name: 'Aqara',
-    logo: '🔑',
+    logo: <Key className="w-9 h-9" />,
     protocols: ['Zigbee', 'Thread'],
     priceRange: '$180-$250',
     rating: 4.4,
@@ -64,7 +68,7 @@ const brands = [
   },
   {
     name: 'Level',
-    logo: '✨',
+    logo: <Sparkles className="w-9 h-9" />,
     protocols: ['Thread', 'Wi-Fi'],
     priceRange: '$230-$330',
     rating: 4.4,
@@ -88,171 +92,158 @@ const features = [
 
 export default function Brands() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">Smart Lock Brands</h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Overview of major smart lock manufacturers, their protocols, and best use cases
-            </p>
-          </div>
+    <div className="page-bg">
+      <div className="container-main section">
+        <div className="page-header">
+          <h1 className="page-header__title">Smart Lock Brands</h1>
+          <p className="page-header__subtitle">
+            Overview of major smart lock manufacturers, their protocols, and best use cases
+          </p>
+        </div>
 
-          {/* Disclaimer */}
-          <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6 mb-12">
-            <h3 className="font-bold text-gray-900 mb-2">⚠️ Important Note</h3>
-            <p className="text-sm text-gray-700">
-              We are not affiliated with any manufacturers listed here. Information is provided for 
-              educational purposes. Always verify specifications with official sources before purchasing. 
-              Prices and features subject to change.
-            </p>
-          </div>
+        {/* Disclaimer */}
+        <div className="callout callout-warning" style={{ marginBottom: 'var(--space-3xl)' }}>
+          <p className="callout-title" style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+            <AlertTriangle className="w-5 h-5" /> Important Note
+          </p>
+          <p>
+            We are not affiliated with any manufacturers listed here. Information is provided for
+            educational purposes. Always verify specifications with official sources before purchasing.
+            Prices and features subject to change.
+          </p>
+        </div>
 
-          {/* Brand Cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {brands.map(brand => (
-              <div key={brand.name} className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden hover:border-blue-400 transition-all">
-                <div className="bg-gradient-to-r from-gray-800 to-gray-900 p-6 text-white">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-4xl">{brand.logo}</span>
-                    <div>
-                      <h3 className="text-2xl font-bold">{brand.name}</h3>
-                      <div className="text-sm opacity-90">{brand.priceRange}</div>
-                    </div>
+        {/* Brand Cards */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          {brands.map(brand => (
+            <div key={brand.name} className="card card-hover" style={{ padding: 0, overflow: 'hidden' }}>
+              <div style={{ background: 'var(--color-bg-dark)', padding: 'var(--space-xl)', color: 'var(--color-text-inverse)' }}>
+                <div className="flex items-center gap-3 mb-3">
+                  <span style={{ color: 'var(--color-text-inverse)' }}>{brand.logo}</span>
+                  <div>
+                    <h3 style={{ fontSize: '1.5rem', fontWeight: 700 }}>{brand.name}</h3>
+                    <div style={{ fontSize: '0.875rem', opacity: 0.9 }}>{brand.priceRange}</div>
                   </div>
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className={`text-lg ${i < Math.floor(brand.rating) ? 'text-yellow-400' : 'text-gray-600'}`}>
-                        ★
-                      </span>
+                </div>
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} style={{ fontSize: '1.125rem', color: i < Math.floor(brand.rating) ? '#facc15' : 'var(--color-text-muted)' }}>
+                      ★
+                    </span>
+                  ))}
+                  <span style={{ marginLeft: 'var(--space-sm)', fontSize: '0.875rem' }}>{brand.rating}/5</span>
+                </div>
+              </div>
+
+              <div style={{ padding: 'var(--space-xl)' }}>
+                <div style={{ marginBottom: 'var(--space-md)' }}>
+                  <h4 className="form-label">Protocols:</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {brand.protocols.map(p => (
+                      <span key={p} className="badge badge-accent">{p}</span>
                     ))}
-                    <span className="ml-2 text-sm">{brand.rating}/5</span>
                   </div>
                 </div>
 
-                <div className="p-6">
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-gray-900 mb-2">Protocols:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {brand.protocols.map(p => (
-                        <span key={p} className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
-                          {p}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                <div style={{ marginBottom: 'var(--space-md)' }}>
+                  <h4 className="form-label">Pros:</h4>
+                  <ul className="space-y-1">
+                    {brand.pros.map((pro, i) => (
+                      <li key={i} className="check-item">
+                        <Check className="check-item__icon check-item__icon--success" />
+                        <span>{pro}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-gray-900 mb-2">Pros:</h4>
-                    <ul className="space-y-1">
-                      {brand.pros.map((pro, i) => (
-                        <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
-                          <span className="text-green-600 mt-0.5">✓</span>
-                          <span>{pro}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                <div style={{ marginBottom: 'var(--space-md)' }}>
+                  <h4 className="form-label">Cons:</h4>
+                  <ul className="space-y-1">
+                    {brand.cons.map((con, i) => (
+                      <li key={i} className="check-item">
+                        <X className="check-item__icon check-item__icon--danger" />
+                        <span>{con}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-gray-900 mb-2">Cons:</h4>
-                    <ul className="space-y-1">
-                      {brand.cons.map((con, i) => (
-                        <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
-                          <span className="text-red-600 mt-0.5">✗</span>
-                          <span>{con}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                <div style={{ paddingTop: 'var(--space-md)', borderTop: '1px solid var(--color-border)' }}>
+                  <div style={{ fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>Best For:</div>
+                  <div style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>{brand.bestFor}</div>
+                </div>
 
-                  <div className="pt-4 border-t border-gray-200">
-                    <div className="font-semibold text-gray-900 mb-1">Best For:</div>
-                    <div className="text-sm text-gray-700">{brand.bestFor}</div>
-                  </div>
-
-                  <div className="mt-4 pt-4 border-t border-gray-200">
-                    <div className="text-xs text-gray-600 mb-2">Works with:</div>
-                    <div className="flex flex-wrap gap-1">
-                      {brand.ecosystems.map(eco => (
-                        <span key={eco} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
-                          {eco}
-                        </span>
-                      ))}
-                    </div>
+                <div style={{ marginTop: 'var(--space-md)', paddingTop: 'var(--space-md)', borderTop: '1px solid var(--color-border)' }}>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-sm)' }}>Works with:</div>
+                  <div className="flex flex-wrap gap-1">
+                    {brand.ecosystems.map(eco => (
+                      <span key={eco} className="badge badge-default">{eco}</span>
+                    ))}
                   </div>
                 </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Common Features */}
+        <div className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+          <h2 className="section-title">Common Features to Look For</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {features.map(feature => (
+              <div key={feature.name} className="card" style={{ padding: 'var(--space-md)', background: 'var(--color-bg-alt)' }}>
+                <h3 style={{ fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>{feature.name}</h3>
+                <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>{feature.description}</p>
               </div>
             ))}
           </div>
+        </div>
 
-          {/* Common Features */}
-          <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Common Features to Look For</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {features.map(feature => (
-                <div key={feature.name} className="p-4 bg-gray-50 rounded-lg">
-                  <h3 className="font-semibold text-gray-900 mb-1">{feature.name}</h3>
-                  <p className="text-sm text-gray-600">{feature.description}</p>
-                </div>
-              ))}
+        {/* Buying Guide */}
+        <div className="cta-section" style={{ marginBottom: 'var(--space-3xl)' }}>
+          <h2 className="cta-section__title" style={{ fontSize: '1.75rem' }}>Buying Considerations</h2>
+          <div className="grid md:grid-cols-3 gap-6" style={{ textAlign: 'left' }}>
+            <div>
+              <h3 style={{ fontWeight: 600, marginBottom: 'var(--space-sm)', fontSize: '1.125rem' }}>Protocol</h3>
+              <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
+                Choose based on your existing smart home ecosystem and future plans.
+                Thread/Matter for future-proofing, Z-Wave for reliability.
+              </p>
+            </div>
+            <div>
+              <h3 style={{ fontWeight: 600, marginBottom: 'var(--space-sm)', fontSize: '1.125rem' }}>Security Rating</h3>
+              <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
+                Look for ANSI/BHMA Grade 1 (highest) or Grade 2 certification.
+                Commercial applications should use Grade 1 only.
+              </p>
+            </div>
+            <div>
+              <h3 style={{ fontWeight: 600, marginBottom: 'var(--space-sm)', fontSize: '1.125rem' }}>Battery Type</h3>
+              <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
+                AA batteries are most common and convenient. Some use CR123A lithium.
+                Consider battery life and replacement cost.
+              </p>
             </div>
           </div>
+        </div>
 
-          {/* Buying Guide */}
-          <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-8 text-white mb-12">
-            <h2 className="text-3xl font-bold mb-6">Buying Considerations</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div>
-                <h3 className="font-semibold mb-2 text-lg">Protocol</h3>
-                <p className="text-sm opacity-90">
-                  Choose based on your existing smart home ecosystem and future plans. 
-                  Thread/Matter for future-proofing, Z-Wave for reliability.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2 text-lg">Security Rating</h3>
-                <p className="text-sm opacity-90">
-                  Look for ANSI/BHMA Grade 1 (highest) or Grade 2 certification. 
-                  Commercial applications should use Grade 1 only.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2 text-lg">Battery Type</h3>
-                <p className="text-sm opacity-90">
-                  AA batteries are most common and convenient. Some use CR123A lithium. 
-                  Consider battery life and replacement cost.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Tools */}
-          <div className="text-center bg-white rounded-xl shadow-lg border border-gray-200 p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Need Help Choosing?</h2>
-            <p className="text-gray-600 mb-6">
-              Use our interactive tools to find the perfect smart lock for your needs
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/calculators/protocol-wizard"
-                className="px-8 py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-              >
-                Protocol Wizard
-              </Link>
-              <Link
-                href="/calculators/lock-tco"
-                className="px-8 py-4 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
-              >
-                Cost Calculator
-              </Link>
-              <Link
-                href="/compare"
-                className="px-8 py-4 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
-              >
-                Compare Protocols
-              </Link>
-            </div>
+        {/* Tools */}
+        <div className="content-card" style={{ textAlign: 'center' }}>
+          <h2 className="section-title section-title--center">Need Help Choosing?</h2>
+          <p className="page-subtitle" style={{ marginBottom: 'var(--space-xl)' }}>
+            Use our interactive tools to find the perfect smart lock for your needs
+          </p>
+          <div className="grid-actions">
+            <Link href="/calculators/protocol-wizard" className="btn btn-primary btn-lg">
+              Protocol Wizard
+            </Link>
+            <Link href="/calculators/lock-tco" className="btn btn-secondary btn-lg">
+              Cost Calculator
+            </Link>
+            <Link href="/compare" className="btn btn-secondary btn-lg">
+              Compare Protocols
+            </Link>
           </div>
         </div>
       </div>

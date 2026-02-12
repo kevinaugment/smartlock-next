@@ -106,14 +106,14 @@ export default function STRCalculator() {
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Your STR Portfolio</h2>
-            
+
             <div className="space-y-6">
               {/* Properties */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Number of Properties: {properties}
                 </label>
-                <input type="range" min="1" max="50" value={properties} onChange={(e) => setProperties(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
+                <input type="range" min="1" max="50" value={properties} onChange={(e) => setProperties(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
                   <span>1 property</span>
                   <span>50 properties</span>
@@ -125,7 +125,7 @@ export default function STRCalculator() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Monthly Bookings per Property: {bookings}
                 </label>
-                <input type="range" min="1" max="30" value={bookings} onChange={(e) => setBookings(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
+                <input type="range" min="1" max="30" value={bookings} onChange={(e) => setBookings(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
                   <span>1/month (33% occ)</span>
                   <span>30/month (100% occ)</span>
@@ -137,7 +137,7 @@ export default function STRCalculator() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Manual Check-in Time (when needed): {handoffTime} minutes
                 </label>
-                <input type="range" min="10" max="60" step="5" value={handoffTime} onChange={(e) => setHandoffTime(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
+                <input type="range" min="10" max="60" step="5" value={handoffTime} onChange={(e) => setHandoffTime(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                 <p className="text-xs text-gray-500 mt-1">Travel + coordination for problem check-ins (~35% of bookings need human intervention). Most use self-check-in.</p>
               </div>
 
@@ -146,7 +146,7 @@ export default function STRCalculator() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Lockouts per Property per Year: {lockouts}
                 </label>
-                <input type="range" min="0" max="12" value={lockouts} onChange={(e) => setLockouts(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
+                <input type="range" min="0" max="12" value={lockouts} onChange={(e) => setLockouts(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                 <p className="text-xs text-gray-500 mt-1">Industry avg: 0.5-1 lockouts/year (AirDNA 2025 data)</p>
               </div>
 
@@ -155,7 +155,7 @@ export default function STRCalculator() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Lost Keys per Property per Year: {lostKeys}
                 </label>
-                <input type="range" min="0" max="6" value={lostKeys} onChange={(e) => setLostKeys(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
+                <input type="range" min="0" max="6" value={lostKeys} onChange={(e) => setLostKeys(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                 <p className="text-xs text-gray-500 mt-1">Requires full lock rekeying ($175 avg)</p>
               </div>
 
@@ -176,14 +176,14 @@ export default function STRCalculator() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Property Manager/Your Hourly Rate: ${laborRate}/hr
                 </label>
-                <input type="range" min="15" max="75" step="5" value={laborRate} onChange={(e) => setLaborRate(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"/>
+                <input type="range" min="15" max="75" step="5" value={laborRate} onChange={(e) => setLaborRate(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                 <p className="text-xs text-gray-500 mt-1">Industry avg: $25-35/hr (2025 data)</p>
               </div>
 
               {/* Guest Compensation */}
               <div>
                 <label className="flex items-center">
-                  <input type="checkbox" checked={guestComp} onChange={(e) => setGuestComp(e.target.checked)} className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"/>
+                  <input type="checkbox" checked={guestComp} onChange={(e) => setGuestComp(e.target.checked)} className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
                   <span className="ml-2 text-sm text-gray-700">Include guest experience premium ($2/booking smooth check-in)</span>
                 </label>
               </div>
@@ -241,10 +241,10 @@ export default function STRCalculator() {
             <div className="p-4 bg-white/10 rounded-lg text-xs">
               <p className="mb-2"><strong>Time Saved:</strong> {result.hoursSaved} hours/year</p>
               <p className="mb-2"><strong>Check-ins Automated:</strong> {result.yearlyHandoffs}/year</p>
-              <p><strong>💡 Tip:</strong> {
+              <p><strong>Tip:</strong> {
                 result.payback < 6 ? 'Excellent payback! Strong case for immediate implementation.' :
-                result.payback < 12 ? 'Good ROI. Typical for mid-size STR operations.' :
-                'Consider starting with highest-turnover properties first.'
+                  result.payback < 12 ? 'Good ROI. Typical for mid-size STR operations.' :
+                    'Consider starting with highest-turnover properties first.'
               }</p>
             </div>
           </div>

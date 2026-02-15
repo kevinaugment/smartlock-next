@@ -13,7 +13,7 @@ const categories = [
   { name: 'Installation', slug: 'installation' },
   { name: 'Guides', slug: 'guides' },
   { name: 'Use Cases', slug: 'use-cases' },
-  { name: 'Support', slug: 'support' },
+  { name: 'Resources', slug: 'resources' },
   { name: 'Integration', slug: 'integration' },
 ]
 

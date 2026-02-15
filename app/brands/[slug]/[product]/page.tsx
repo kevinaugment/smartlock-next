@@ -235,7 +235,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                 <Link href="/calculators/lock-tco" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center' }}>
                                     Total Cost of Ownership
                                 </Link>
-                                <Link href="/calculators/compatibility-checker" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center' }}>
+                                <Link href="/calculators/compatibility" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center' }}>
                                     Door Compatibility
                                 </Link>
                             </div>

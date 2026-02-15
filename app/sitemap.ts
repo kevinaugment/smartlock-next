@@ -110,7 +110,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]
 
     // Article category pages
-    const categories = ['guides', 'installation', 'protocols', 'security', 'integration', 'use-cases', 'support']
+    const categories = ['guides', 'installation', 'protocols', 'security', 'integration', 'use-cases', 'resources']
     const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => ({
         url: `${BASE_URL}/articles/${cat}`,
         lastModified: BUILD_DATE,

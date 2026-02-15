@@ -201,7 +201,7 @@ export default function SignalCalculator() {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
       {/* Input Section */}
       <div className="lg:col-span-2 space-y-6">
-        <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
+        <div className="rounded-lg shadow-lg border p-8" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Signal Analysis Parameters</h2>
 
           <div className="space-y-6">
@@ -392,10 +392,11 @@ export default function SignalCalculator() {
 
       {/* Results Section */}
       <div className="lg:col-span-1">
-        <div className={`rounded-lg shadow-lg p-8 text-white sticky top-4 bg-gradient-to-br ${result.signalPercent >= 60 ? 'from-green-600 to-green-700' :
-          result.signalPercent >= 40 ? 'from-yellow-600 to-yellow-700' :
-            'from-red-600 to-red-700'
-          }`}>
+        <div className="rounded-lg shadow-lg p-8 text-white sticky top-4" style={{
+          background: result.signalPercent >= 60 ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' :
+            result.signalPercent >= 40 ? 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))' :
+              'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
+        }}>
           <h2 className="text-xl font-bold mb-6">Signal Analysis Result</h2>
 
           <div className="text-center mb-6">

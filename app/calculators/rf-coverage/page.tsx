@@ -76,7 +76,7 @@ export default function RFCoverage() {
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
+          <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
             <h2 className="text-2xl font-bold mb-6">Building Specifications</h2>
             <div className="space-y-6">
               <div>
@@ -153,10 +153,11 @@ export default function RFCoverage() {
           </div>
 
           <div>
-            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.signalQuality === 'Excellent' ? 'bg-gradient-to-br from-green-600 to-green-700' :
-              result.signalQuality === 'Good' ? 'bg-gradient-to-br from-blue-600 to-blue-700' :
-                'bg-gradient-to-br from-yellow-600 to-yellow-700'
-              }`}>
+            <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{
+              background: result.signalQuality === 'Excellent' ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' :
+                result.signalQuality === 'Good' ? 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' :
+                  'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))'
+            }}>
               <h2 className="text-xl font-bold mb-6">Coverage Analysis</h2>
               <div className="text-center mb-8">
                 <div className="text-6xl font-bold mb-2">{result.hubsNeeded}</div>
@@ -191,7 +192,7 @@ export default function RFCoverage() {
         </div>
 
         <div className="max-w-6xl mx-auto mt-12 grid md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="p-6 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
             <h3 className="font-semibold mb-3 inline-flex items-center gap-2"><MapPin className="w-5 h-5" style={{ color: "var(--color-accent)" }} /> Hub Placement</h3>
             <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
               <li>• Central locations</li>
@@ -200,7 +201,7 @@ export default function RFCoverage() {
               <li>• Avoid corners</li>
             </ul>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="p-6 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
             <h3 className="font-semibold mb-3 inline-flex items-center gap-2"><AlertTriangle className="w-5 h-5" style={{ color: "var(--color-warning)" }} /> Obstacles</h3>
             <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
               <li>• Metal reduces 50%</li>
@@ -209,7 +210,7 @@ export default function RFCoverage() {
               <li>• Glass minimal impact</li>
             </ul>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="p-6 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
             <h3 className="font-semibold mb-3 inline-flex items-center gap-2"><Check className="w-5 h-5" style={{ color: "var(--color-success)" }} /> Best Practices</h3>
             <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
               <li>• Test before final install</li>

@@ -185,7 +185,7 @@ export default function ProtocolWizardPage() {
                   ].map(p => (
                     <div key={p.name} className="flex items-center gap-4">
                       <div className="w-24" style={{ fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)" }}>{p.name}</div>
-                      <div className="flex-1 bg-gray-100 rounded-full h-8 relative">
+                      <div className="flex-1 rounded-full h-8 relative" style={{ background: 'var(--color-border)' }}>
                         <div className={`absolute inset-y-0 left-0 ${p.color} rounded-full flex items-center justify-end pr-3`} style={{ width: `${(p.months / 12) * 100}%` }}>
                           <span className="text-xs font-semibold text-white">{p.months} mo</span>
                         </div>
@@ -269,7 +269,7 @@ export default function ProtocolWizardPage() {
                     <li>✓ Advanced automation features</li>
                   </ul>
                 </div>
-                <div className="border-2 border-purple-500 rounded-lg p-6">
+                <div className="rounded-lg p-6" style={{ border: "2px solid var(--color-accent)" }}>
                   <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)" }}>Choose Thread If:</h3>
                   <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
                     <li>✓ Apple HomeKit primary</li>
@@ -299,7 +299,7 @@ export default function ProtocolWizardPage() {
                     <li>✓ Retrofit existing deadbolt</li>
                   </ul>
                 </div>
-                <div className="border-2 border-gray-300 rounded-lg p-6 bg-gray-50">
+                <div className="rounded-lg p-6" style={{ border: '2px solid var(--color-border)', background: 'var(--color-surface)' }}>
                   <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)" }}>Pro Tip</h3>
                   <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
                     For 10+ locks, Zigbee/Z-Wave mesh saves $400-800 over 5 years vs Wi-Fi (battery + hub cost). Use our TCO calculator for exact ROI.
@@ -309,10 +309,10 @@ export default function ProtocolWizardPage() {
             </div>
           </div>
 
-          
+
           <RelatedResources calculatorSlug="protocol-selection-wizard" />
 
-{/* Related Resources */}
+          {/* Related Resources */}
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">Related Calculators</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -338,7 +338,7 @@ export default function ProtocolWizardPage() {
           <div className="max-w-4xl mx-auto mt-12 mb-12">
             <div className="info-box">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-2xl font-bold text-gray-900">Technical Standards & Sources</h3>
+                <h3 className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>Technical Standards & Sources</h3>
                 <span className="badge badge-success">Verified Feb 2026</span>
               </div>
               <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-lg)" }}>All protocol comparisons based on official standards and manufacturer specifications</p>

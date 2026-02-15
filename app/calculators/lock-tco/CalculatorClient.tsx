@@ -109,7 +109,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
       {/* Input Section */}
       <div className="lg:col-span-2 space-y-6">
-        <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
+        <div className="rounded-lg shadow-lg border p-8" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Project Parameters</h2>
 
           <div className="space-y-6">
@@ -125,7 +125,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                 step="50"
                 value={inputs.lockPrice}
                 onChange={(e) => setInputs({ ...inputs, lockPrice: Number(e.target.value) })}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }}
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
                 <span>$50</span>
@@ -144,7 +144,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                 max="50"
                 value={inputs.doorCount}
                 onChange={(e) => setInputs({ ...inputs, doorCount: Number(e.target.value) })}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }}
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
                 <span>1 door</span>
@@ -180,7 +180,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                 max="10"
                 value={inputs.years}
                 onChange={(e) => setInputs({ ...inputs, years: Number(e.target.value) })}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }}
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
                 <span>1 year</span>
@@ -229,7 +229,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                   step="10"
                   value={inputs.installCostPerDoor}
                   onChange={(e) => setInputs({ ...inputs, installCostPerDoor: Number(e.target.value) })}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }}
                 />
               </div>
             )}
@@ -245,7 +245,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                 max="50"
                 value={inputs.dailyUsage}
                 onChange={(e) => setInputs({ ...inputs, dailyUsage: Number(e.target.value) })}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }}
               />
               <p className="text-xs text-gray-500 mt-1">Affects battery replacement frequency</p>
             </div>
@@ -262,7 +262,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                 step="0.5"
                 value={inputs.subscriptionPerDoorPerMonth}
                 onChange={(e) => setInputs({ ...inputs, subscriptionPerDoorPerMonth: Number(e.target.value) })}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }}
               />
             </div>
           </div>
@@ -271,7 +271,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
 
       {/* Results Section */}
       <div className="lg:col-span-1">
-        <div className="bg-gradient-to-br from-green-600 to-green-700 rounded-lg shadow-lg p-8 text-white sticky top-4">
+        <div className="rounded-lg shadow-lg p-8 text-white sticky top-4" style={{ background: 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' }}>
           <h2 className="text-xl font-bold mb-6">Total Cost of Ownership</h2>
 
           <div className="text-center mb-8">
@@ -333,7 +333,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
 
       {/* Cost Breakdown Chart */}
       <div className="lg:col-span-3">
-        <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
+        <div className="rounded-lg shadow-lg border p-8" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Cost Breakdown</h2>
           <div className="space-y-4">
             <div>
@@ -341,7 +341,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                 <span className="text-sm font-medium text-gray-700">Hardware</span>
                 <span className="text-sm text-gray-600">{result.hardwareShare.toFixed(1)}%</span>
               </div>
-              <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div className="h-3 rounded-full overflow-hidden" style={{ background: 'var(--color-border)' }}>
                 <div className="h-full bg-blue-600" style={{ width: `${result.hardwareShare}%` }} />
               </div>
             </div>
@@ -351,7 +351,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                   <span className="text-sm font-medium text-gray-700">Batteries</span>
                   <span className="text-sm text-gray-600">{result.batteriesShare.toFixed(1)}%</span>
                 </div>
-                <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-3 rounded-full overflow-hidden" style={{ background: 'var(--color-border)' }}>
                   <div className="h-full bg-yellow-600" style={{ width: `${result.batteriesShare}%` }} />
                 </div>
               </div>
@@ -362,7 +362,7 @@ export default function CalculatorClient({ protocols }: CalculatorClientProps) {
                   <span className="text-sm font-medium text-gray-700">Subscriptions</span>
                   <span className="text-sm text-gray-600">{result.subscriptionsShare.toFixed(1)}%</span>
                 </div>
-                <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-3 rounded-full overflow-hidden" style={{ background: 'var(--color-border)' }}>
                   <div className="h-full bg-red-600" style={{ width: `${result.subscriptionsShare}%` }} />
                 </div>
               </div>

@@ -84,7 +84,7 @@ export default function FleetPlanner() {
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
+          <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
             <h2 className="text-2xl font-bold mb-6">Portfolio Details</h2>
             <div className="space-y-6">
               <div>
@@ -152,10 +152,11 @@ export default function FleetPlanner() {
           </div>
 
           <div>
-            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.fragmentationScore < 30 ? 'bg-gradient-to-br from-green-600 to-green-700' :
-              result.fragmentationScore < 60 ? 'bg-gradient-to-br from-yellow-600 to-yellow-700' :
-                'bg-gradient-to-br from-red-600 to-red-700'
-              }`}>
+            <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{
+              background: result.fragmentationScore < 30 ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' :
+                result.fragmentationScore < 60 ? 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))' :
+                  'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
+            }}>
               <h2 className="text-xl font-bold mb-6">Fragmentation Analysis</h2>
               <div className="text-center mb-8">
                 <div className="text-6xl font-bold mb-2">{result.fragmentationScore}</div>
@@ -199,7 +200,7 @@ export default function FleetPlanner() {
           </div>
         </div>
 
-        <div className="max-w-6xl mx-auto mt-12 bg-white p-8 rounded-lg shadow-lg">
+        <div className="max-w-6xl mx-auto mt-12 p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
           <h2 className="text-2xl font-bold mb-6">Unification Benefits</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center p-4 rounded-lg" style={{ background: "var(--color-accent-subtle)" }}>
@@ -212,7 +213,7 @@ export default function FleetPlanner() {
               <div className="font-semibold mb-2">Bulk Discounts</div>
               <div className="link-card__desc">Better pricing at scale</div>
             </div>
-            <div className="text-center p-4 rounded-lg" style={{ background: "#f3e8ff" }}>
+            <div className="text-center p-4 rounded-lg" style={{ background: "var(--color-accent-subtle)" }}>
               <div className="text-purple-600 mb-2"><BarChart3 className="w-8 h-8 mx-auto" /></div>
               <div className="font-semibold mb-2">Unified Management</div>
               <div className="link-card__desc">Single dashboard for all</div>

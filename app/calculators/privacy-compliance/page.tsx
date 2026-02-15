@@ -157,7 +157,7 @@ export default function PrivacyComplianceEvaluator() {
         // Normalize
         score = Math.max(0, Math.min(100, score))
         const grade = score >= 85 ? 'A' : score >= 70 ? 'B' : score >= 55 ? 'C' : score >= 40 ? 'D' : 'F'
-        const gradeColor = score >= 85 ? 'from-green-600 to-green-700' : score >= 70 ? 'from-blue-600 to-blue-700' : score >= 55 ? 'from-yellow-600 to-yellow-700' : score >= 40 ? 'from-orange-600 to-orange-700' : 'from-red-600 to-red-700'
+        const gradeColor = score >= 85 ? 'var(--color-success)' : score >= 70 ? 'var(--color-accent)' : score >= 55 ? 'var(--color-warning)' : score >= 40 ? '#ea580c' : 'var(--color-danger)'
 
         return { score, grade, gradeColor, dpiaRequired, applicableLaws, risks, recommendations }
     }, [collectsBiometric, biometricType, cloudStorage, dataRetention, auditTrailAccess, userConsent, operatingRegion, propertyType, sharesWithThirdParty, encryptsAtRest, encryptsInTransit, hasPrivacyPolicy])
@@ -192,7 +192,7 @@ export default function PrivacyComplianceEvaluator() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-white p-8 rounded-lg shadow-lg">
+                        <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
                             <h2 className="text-2xl font-bold mb-6">System Configuration</h2>
                             <div className="space-y-6">
                                 {/* Operating Region */}
@@ -226,7 +226,7 @@ export default function PrivacyComplianceEvaluator() {
                                                 className="p-3 rounded-lg border-2 text-sm font-medium transition-all text-center"
                                                 style={{
                                                     borderColor: propertyType === opt.value ? 'var(--color-accent)' : 'var(--color-border)',
-                                                    background: propertyType === opt.value ? 'var(--color-accent-subtle)' : 'white',
+                                                    background: propertyType === opt.value ? 'var(--color-accent-subtle)' : 'var(--color-surface)',
                                                     color: propertyType === opt.value ? 'var(--color-accent)' : 'var(--color-text-secondary)',
                                                 }}>
                                                 {opt.label}
@@ -248,7 +248,7 @@ export default function PrivacyComplianceEvaluator() {
                                                     className="p-2 rounded-lg border-2 text-sm capitalize"
                                                     style={{
                                                         borderColor: biometricType === t ? 'var(--color-accent)' : 'var(--color-border)',
-                                                        background: biometricType === t ? 'var(--color-accent-subtle)' : 'white',
+                                                        background: biometricType === t ? 'var(--color-accent-subtle)' : 'var(--color-surface)',
                                                     }}>
                                                     {t}
                                                 </button>
@@ -334,7 +334,7 @@ export default function PrivacyComplianceEvaluator() {
 
                     {/* Results */}
                     <div className="lg:col-span-1">
-                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 bg-gradient-to-br ${result.gradeColor}`}>
+                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: `linear-gradient(135deg, ${result.gradeColor}, ${result.gradeColor})` }}>
                             <h2 className="text-xl font-bold mb-4">Compliance Score</h2>
                             <div className="text-center mb-6">
                                 <div className="text-7xl font-bold mb-1">{result.grade}</div>
@@ -364,12 +364,12 @@ export default function PrivacyComplianceEvaluator() {
                         <h2 className="text-2xl font-bold mb-6">Identified Risks</h2>
                         <div className="space-y-3">
                             {result.risks.map((risk, i) => (
-                                <div key={i} className="flex items-start gap-3 p-4 rounded-lg bg-white shadow" style={{ borderLeft: `4px solid ${risk.level === 'high' ? 'var(--color-danger)' : risk.level === 'medium' ? 'var(--color-warning)' : 'var(--color-success)'}` }}>
+                                <div key={i} className="flex items-start gap-3 p-4 rounded-lg shadow" style={{ background: risk.level === 'high' ? 'var(--color-danger-subtle, #fef2f2)' : risk.level === 'medium' ? 'var(--color-warning-subtle, #fffbeb)' : 'var(--color-success-subtle, #f0fdf4)' }}>
                                     {risk.level === 'high' ? <X className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--color-danger)' }} /> :
                                         risk.level === 'medium' ? <AlertTriangle className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--color-warning)' }} /> :
                                             <Info className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--color-success)' }} />}
                                     <div>
-                                        <span className={`text-xs font-bold uppercase ${risk.level === 'high' ? 'text-red-600' : risk.level === 'medium' ? 'text-amber-600' : 'text-green-600'}`}>
+                                        <span className="text-xs font-bold uppercase" style={{ color: risk.level === 'high' ? 'var(--color-danger)' : risk.level === 'medium' ? 'var(--color-warning)' : 'var(--color-success)' }}>
                                             {risk.level} risk
                                         </span>
                                         <p className="text-sm mt-1">{risk.text}</p>
@@ -384,7 +384,7 @@ export default function PrivacyComplianceEvaluator() {
                 {result.recommendations.length > 0 && (
                     <div className="max-w-7xl mx-auto mt-8">
                         <h2 className="text-2xl font-bold mb-6">Recommendations</h2>
-                        <div className="bg-white rounded-lg shadow-lg p-6">
+                        <div className="rounded-lg shadow-lg p-6" style={{ background: 'var(--color-surface)' }}>
                             <ul className="space-y-3">
                                 {result.recommendations.map((rec, i) => (
                                     <li key={i} className="flex items-start gap-3">

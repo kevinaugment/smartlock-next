@@ -4,7 +4,7 @@ export default function CalculatorsLayout({ children }: { children: React.ReactN
     return (
         <>
             {children}
-            <div className="container-main" style={{ maxWidth: '56rem', margin: '0 auto', padding: '0 var(--space-md)' }}>
+            <div className="max-w-6xl mx-auto" style={{ padding: '0 var(--space-md)' }}>
                 <CalculatorRelatedContent />
             </div>
         </>

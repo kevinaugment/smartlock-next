@@ -127,7 +127,7 @@ export default function FAQ() {
         </div>
 
         {/* FAQ Sections */}
-        <div className="max-w-3xl mx-auto space-y-8">
+        <div className="max-w-4xl mx-auto space-y-8">
           {categories.map((category) => (
             <div key={category.name} className="card" style={{ padding: 'var(--space-xl)' }}>
               {/* Category Header */}
@@ -177,7 +177,7 @@ export default function FAQ() {
         </div>
 
         {/* CTA */}
-        <div className="max-w-3xl mx-auto mt-16">
+        <div className="max-w-4xl mx-auto mt-16">
           <div className="cta-section">
             <h2 className="cta-section__title">Still Have Questions?</h2>
             <p className="cta-section__subtitle">

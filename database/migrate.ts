@@ -123,6 +123,24 @@ async function main() {
         'Product Seed Data (series + SKUs + tags)'
     )
 
+    // Step 3.5: Seed expansion brands + products
+    totalFailures += await runSQLFile(
+        join(baseDir, 'seeds', 'brands-expansion-seed.sql'),
+        'Brand Expansion Data (8 new brands + products)'
+    )
+
+    // Step 3.6: Seed expansion #2 brands + products
+    totalFailures += await runSQLFile(
+        join(baseDir, 'seeds', 'brands-expansion-2-seed.sql'),
+        'Brand Expansion #2 Data (6 more brands + products)'
+    )
+
+    // Step 3.7: Seed expansion #3 brands + products
+    totalFailures += await runSQLFile(
+        join(baseDir, 'seeds', 'brands-expansion-3-seed.sql'),
+        'Brand Expansion #3 Data (7 brands + existing brand products)'
+    )
+
     // Step 4: Seed top_n_pages
     totalFailures += await runSQLFile(
         join(baseDir, 'seeds', 'top-n-pages-seed.sql'),

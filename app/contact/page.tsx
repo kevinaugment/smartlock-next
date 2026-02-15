@@ -13,7 +13,7 @@ export default function Contact() {
   return (
     <div className="page-bg">
       <div className="container-main section">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="page-header">
             <div className="page-header__icon"><Mail className="w-14 h-14" /></div>
             <h1 className="page-header__title">Contact Us</h1>
@@ -79,7 +79,7 @@ export default function Contact() {
               </li>
               <li className="check-item">
                 <Check className="check-item__icon" style={{ color: 'var(--color-accent)' }} />
-                <span style={{ color: 'var(--color-text-secondary)' }}>Review our <a href="/articles/support" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Troubleshooting Guides</a> for technical issues</span>
+                <span style={{ color: 'var(--color-text-secondary)' }}>Review our <a href="/articles/guides" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Troubleshooting Guides</a> for technical issues</span>
               </li>
             </ul>
           </div>

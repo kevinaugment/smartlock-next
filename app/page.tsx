@@ -35,96 +35,102 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* Hero — Industrial Authority + SVG Topology */}
-      <section className="hero hero--topo hero--left">
-        {/* SVG Topology Background */}
-        <div className="hero__topo-bg" aria-hidden="true">
-          <svg viewBox="0 0 1200 500" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            {/* Network nodes */}
-            <circle cx="180" cy="120" r="6" fill="#22d3ee" />
-            <circle cx="420" cy="80" r="4" fill="#22d3ee" />
-            <circle cx="650" cy="160" r="8" fill="#22d3ee" />
-            <circle cx="900" cy="100" r="5" fill="#22d3ee" />
-            <circle cx="1050" cy="200" r="6" fill="#22d3ee" />
-            <circle cx="300" cy="280" r="5" fill="#22d3ee" />
-            <circle cx="550" cy="350" r="7" fill="#22d3ee" />
-            <circle cx="780" cy="300" r="4" fill="#22d3ee" />
-            <circle cx="1000" cy="380" r="6" fill="#22d3ee" />
-            <circle cx="150" cy="400" r="4" fill="#22d3ee" />
-
-            {/* Connection lines */}
-            <line x1="180" y1="120" x2="420" y2="80" stroke="#22d3ee" strokeWidth="1" opacity="0.4" />
-            <line x1="420" y1="80" x2="650" y2="160" stroke="#22d3ee" strokeWidth="1" opacity="0.3" />
-            <line x1="650" y1="160" x2="900" y2="100" stroke="#22d3ee" strokeWidth="1" opacity="0.4" />
-            <line x1="900" y1="100" x2="1050" y2="200" stroke="#22d3ee" strokeWidth="1" opacity="0.3" />
-            <line x1="180" y1="120" x2="300" y2="280" stroke="#22d3ee" strokeWidth="1" opacity="0.3" />
-            <line x1="300" y1="280" x2="550" y2="350" stroke="#22d3ee" strokeWidth="1" opacity="0.4" />
-            <line x1="550" y1="350" x2="780" y2="300" stroke="#22d3ee" strokeWidth="1" opacity="0.3" />
-            <line x1="780" y1="300" x2="1000" y2="380" stroke="#22d3ee" strokeWidth="1" opacity="0.4" />
-            <line x1="650" y1="160" x2="550" y2="350" stroke="#22d3ee" strokeWidth="1" opacity="0.2" />
-            <line x1="420" y1="80" x2="300" y2="280" stroke="#22d3ee" strokeWidth="1" opacity="0.2" />
-            <line x1="900" y1="100" x2="780" y2="300" stroke="#22d3ee" strokeWidth="1" opacity="0.2" />
-            <line x1="1050" y1="200" x2="1000" y2="380" stroke="#22d3ee" strokeWidth="1" opacity="0.3" />
-            <line x1="150" y1="400" x2="300" y2="280" stroke="#22d3ee" strokeWidth="1" opacity="0.3" />
-            <line x1="150" y1="400" x2="550" y2="350" stroke="#22d3ee" strokeWidth="1" opacity="0.2" />
-
-            {/* Lock icon (simplified keyhole) */}
-            <g transform="translate(640, 140)" opacity="0.6">
-              <rect x="-14" y="-4" width="28" height="22" rx="3" stroke="#22d3ee" strokeWidth="1.5" fill="none" />
-              <path d="M0-4 L0-14 A10 10 0 0 1 10-14 A10 10 0 0 1 10-4" stroke="#22d3ee" strokeWidth="1.5" fill="none" />
-              <circle cx="0" cy="8" r="3" fill="#22d3ee" opacity="0.5" />
-            </g>
-
-            {/* Secondary lock icon */}
-            <g transform="translate(300, 270) scale(0.7)" opacity="0.4">
-              <rect x="-14" y="-4" width="28" height="22" rx="3" stroke="#22d3ee" strokeWidth="1.5" fill="none" />
-              <path d="M0-4 L0-14 A10 10 0 0 1 10-14 A10 10 0 0 1 10-4" stroke="#22d3ee" strokeWidth="1.5" fill="none" />
-            </g>
-
-            {/* Signal waves (radio) */}
-            <g transform="translate(900, 95)" opacity="0.4">
-              <path d="M5-8 A12 12 0 0 1 5 8" stroke="#22d3ee" strokeWidth="1" fill="none" />
-              <path d="M9-12 A18 18 0 0 1 9 12" stroke="#22d3ee" strokeWidth="1" fill="none" />
-            </g>
-          </svg>
+      {/* Hero — Precision Engineering + Animated Mesh Gradient */}
+      <section className="hero hero--mesh noise-overlay" style={{ background: 'var(--color-bg-dark)' }}>
+        {/* Animated Mesh Gradient Background */}
+        <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', zIndex: 0 }}>
+          {/* Light Orb 1 — Cyan */}
+          <div style={{
+            position: 'absolute', top: '10%', left: '15%', width: '500px', height: '500px',
+            borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.35) 0%, transparent 70%)',
+            filter: 'blur(120px)', animation: 'meshFloat1 12s ease-in-out infinite',
+          }} />
+          {/* Light Orb 2 — Indigo */}
+          <div style={{
+            position: 'absolute', top: '30%', right: '10%', width: '450px', height: '450px',
+            borderRadius: '50%', background: 'radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 70%)',
+            filter: 'blur(120px)', animation: 'meshFloat2 15s ease-in-out infinite',
+          }} />
+          {/* Light Orb 3 — Violet accent */}
+          <div style={{
+            position: 'absolute', bottom: '5%', left: '40%', width: '350px', height: '350px',
+            borderRadius: '50%', background: 'radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%)',
+            filter: 'blur(120px)', animation: 'meshFloat3 10s ease-in-out infinite',
+          }} />
         </div>
 
-        <div className="container-main">
-          <div className="max-w-3xl">
-            <h1 className="hero__title">
-              Smart Lock<br />Engineering Hub
-            </h1>
-            <p className="hero__subtitle">
-              Technical guides, decision tools, and protocol documentation for access control systems
-            </p>
-            <div className="grid-actions">
-              <Link href="/articles" className="btn btn-primary btn-lg">
-                <BookOpen className="w-5 h-5" /> Explore 70+ Expert Guides
-              </Link>
-              <Link href="/calculators" className="btn btn-secondary btn-lg">
-                <Calculator className="w-5 h-5" /> Calculate Costs &amp; Compare
-              </Link>
+        <div className="container-main" style={{ position: 'relative', zIndex: 2 }}>
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center" style={{ minHeight: '420px' }}>
+            {/* Left — Text Content (60%) */}
+            <div className="lg:col-span-3">
+              <h1 className="hero__title" style={{ letterSpacing: '-0.03em' }}>
+                Smart Lock<br />Engineering Hub
+              </h1>
+              <p className="hero__subtitle" style={{ maxWidth: '32rem' }}>
+                Technical guides, decision tools, and protocol documentation for access control systems
+              </p>
+              <div className="grid-actions" style={{ justifyContent: 'flex-start' }}>
+                <Link href="/articles" className="btn btn-gradient btn-lg" style={{ borderRadius: 'var(--radius-lg)' }}>
+                  <BookOpen className="w-5 h-5" /> Explore 70+ Expert Guides
+                </Link>
+                <Link href="/calculators" className="btn btn-glass btn-lg" style={{ borderRadius: 'var(--radius-lg)' }}>
+                  <Calculator className="w-5 h-5" /> Calculate Costs &amp; Compare
+                </Link>
+              </div>
+            </div>
+
+            {/* Right — Floating Calculator Preview (40%) */}
+            <div className="lg:col-span-2 hidden lg:block">
+              <div className="glass-panel--dark gradient-stripe--top" style={{ padding: 'var(--space-xl)', position: 'relative' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 'var(--space-md)', fontFamily: 'var(--font-mono)' }}>
+                  TCO Calculator Preview
+                </div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-sm)', marginBottom: 'var(--space-lg)' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '2.5rem', fontWeight: 700, lineHeight: 1, background: 'var(--gradient-brand)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                    $794
+                  </span>
+                  <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>over 5 years</span>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+                  {[
+                    { label: 'Hardware', value: '$600', pct: 76 },
+                    { label: 'Hub/Gateway', value: '$80', pct: 10 },
+                    { label: 'Battery', value: '$60', pct: 8 },
+                    { label: 'Labor', value: '$54', pct: 6 },
+                  ].map((item) => (
+                    <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-md)', fontSize: '0.8125rem' }}>
+                      <span style={{ width: '5rem', color: 'var(--color-text-muted)' }}>{item.label}</span>
+                      <div style={{ flex: 1, height: '4px', background: 'rgba(255,255,255,0.06)', borderRadius: '99px', overflow: 'hidden' }}>
+                        <div style={{ width: `${item.pct}%`, height: '100%', background: 'var(--gradient-brand)', borderRadius: '99px' }} />
+                      </div>
+                      <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-text-inverse)', fontWeight: 600, width: '3rem', textAlign: 'right' }}>{item.value}</span>
+                    </div>
+                  ))}
+                </div>
+                <Link href="/calculators/lock-tco" className="btn btn-glass" style={{ width: '100%', marginTop: 'var(--space-lg)', textAlign: 'center', justifyContent: 'center', fontSize: '0.8125rem' }}>
+                  Open Full Calculator →
+                </Link>
+              </div>
             </div>
           </div>
 
-          {/* Inline Stats */}
-          <div className="hero__stats">
-            <div>
-              <div className="hero__stat-value">70+</div>
-              <div className="hero__stat-label">Technical Articles</div>
-            </div>
-            <div>
-              <div className="hero__stat-value">24</div>
-              <div className="hero__stat-label">Interactive Tools</div>
-            </div>
-            <div>
-              <div className="hero__stat-value">7</div>
-              <div className="hero__stat-label">Topic Categories</div>
-            </div>
-            <div>
-              <div className="hero__stat-value">100%</div>
-              <div className="hero__stat-label">Free & Open</div>
-            </div>
+          {/* Stats — Glassmorphism Mini Cards */}
+          <div className="stagger-reveal" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--space-md)', marginTop: 'var(--space-3xl)' }}>
+            {[
+              { value: '70+', label: 'Technical Articles' },
+              { value: '32', label: 'Interactive Tools' },
+              { value: '7', label: 'Topic Categories' },
+              { value: '100%', label: 'Free & Open' },
+            ].map((stat) => (
+              <div key={stat.label} className="glass-panel" style={{ padding: 'var(--space-lg)', textAlign: 'center' }}>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.75rem', fontWeight: 700, color: 'var(--color-accent)', lineHeight: 1, marginBottom: 'var(--space-xs)' }}>
+                  {stat.value}
+                </div>
+                <div style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>
+                  {stat.label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -199,7 +205,7 @@ const categories = [
   { name: 'Installation', slug: 'installation', icon: <Battery className="w-8 h-8" />, description: 'Battery & installation guides' },
   { name: 'Guides', slug: 'guides', icon: <Wrench className="w-8 h-8" />, description: 'Troubleshooting & problem solving' },
   { name: 'Use Cases', slug: 'use-cases', icon: <Building2 className="w-8 h-8" />, description: 'Real-world applications' },
-  { name: 'Support', slug: 'support', icon: <Lightbulb className="w-8 h-8" />, description: 'Quick support & how-to' },
+  { name: 'Resources', slug: 'resources', icon: <Lightbulb className="w-8 h-8" />, description: 'Guides, templates & references' },
   { name: 'Integration', slug: 'integration', icon: <LinkIcon className="w-8 h-8" />, description: 'System integration & APIs' },
 ]
 

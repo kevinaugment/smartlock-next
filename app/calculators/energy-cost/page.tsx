@@ -120,7 +120,7 @@ export default function EnergyCostCalculator() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-white p-8 rounded-lg shadow-lg">
+                        <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
                             <h2 className="text-2xl font-bold mb-6">System Configuration</h2>
                             <div className="space-y-6">
                                 <div>
@@ -221,7 +221,7 @@ export default function EnergyCostCalculator() {
 
                     {/* Results */}
                     <div className="lg:col-span-1">
-                        <div className="bg-gradient-to-br from-amber-600 to-amber-700 p-8 rounded-lg shadow-lg text-white sticky top-4">
+                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))' }}>
                             <h2 className="text-xl font-bold mb-6">Energy Cost</h2>
                             <div className="text-center mb-6">
                                 <div className="text-5xl font-bold mb-1">${result.annualCost}</div>

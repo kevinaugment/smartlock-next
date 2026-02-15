@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Lock } from 'lucide-react'
+import { Lock, ShieldCheck, Award, FileCheck } from 'lucide-react'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -11,6 +11,7 @@ export default function Footer() {
           {/* About */}
           <div>
             <div className="flex items-center gap-2 mb-4">
+              <div className="header-brand-bar" />
               <Lock className="w-6 h-6" style={{ color: 'var(--color-accent)' }} />
               <span className="text-lg font-bold" style={{ color: 'var(--color-text-inverse)' }}>SLockHub.com</span>
             </div>
@@ -67,8 +68,27 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Gradient Divider */}
+        <hr className="footer-gradient-divider mt-8" />
+
+        {/* Compliance Badges */}
+        <div className="compliance-badges mt-6 mb-6">
+          <span className="compliance-badge">
+            <ShieldCheck className="compliance-badge__icon" />
+            ANSI/BHMA Compliant
+          </span>
+          <span className="compliance-badge">
+            <Award className="compliance-badge__icon" />
+            UL 437 Standards
+          </span>
+          <span className="compliance-badge">
+            <FileCheck className="compliance-badge__icon" />
+            ADA Accessible
+          </span>
+        </div>
+
         {/* Bottom Bar */}
-        <div className="mt-8 pt-8" style={{ borderTop: '1px solid var(--color-bg-dark-secondary)' }}>
+        <div className="pt-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
               © {currentYear} SLockHub.com. All rights reserved.
@@ -76,7 +96,6 @@ export default function Footer() {
             <div className="flex gap-6 text-sm">
               <Link href="/sitemap">Sitemap</Link>
               <Link href="/status">System Status</Link>
-              <Link href="/api/health">API Health</Link>
             </div>
           </div>
         </div>

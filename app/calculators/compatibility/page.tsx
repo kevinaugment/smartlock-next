@@ -220,7 +220,7 @@ export default function CompatibilityPage() {
                 </div>
                 <div className="rounded-lg p-6" style={{ border: "2px solid var(--color-border)" }}>
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center"><Ruler className="w-6 h-6" style={{ color: "var(--color-text-secondary)" }} /></div>
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'var(--color-surface-alt, #f3f4f6)' }}><Ruler className="w-6 h-6" style={{ color: "var(--color-text-secondary)" }} /></div>
                     <h3 style={{ fontWeight: 600, color: "var(--color-text-primary)" }}>Measurements</h3>
                   </div>
                   <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-sm)" }}><strong>How to Measure</strong></p>
@@ -234,10 +234,10 @@ export default function CompatibilityPage() {
             </div>
           </div>
 
-          
+
           <RelatedResources calculatorSlug="door-lock-compatibility-checker" />
 
-{/* Related Resources */}
+          {/* Related Resources */}
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">Related Resources</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

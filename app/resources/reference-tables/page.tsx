@@ -134,7 +134,7 @@ export default function ReferenceTablesPage() {
                                     <th className="text-protocol-zigbee">Zigbee 3.0</th>
                                     <th className="text-protocol-wifi">Wi-Fi</th>
                                     <th className="text-protocol-thread">Thread</th>
-                                    <th style={{ color: '#8b5cf6' }}>BLE</th>
+                                    <th className="text-protocol-ble">BLE</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -321,7 +321,7 @@ export default function ReferenceTablesPage() {
                                     <td>$4-8 / year</td>
                                 </tr>
                                 <tr>
-                                    <td className="font-medium" style={{ color: '#8b5cf6' }}>BLE Only</td>
+                                    <td className="font-medium text-protocol-ble">BLE Only</td>
                                     <td>12-24 months</td>
                                     <td className="font-mono text-sm">~10 mW (active)</td>
                                     <td>CR2032 / AA</td>

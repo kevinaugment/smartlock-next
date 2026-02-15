@@ -229,11 +229,12 @@ export default function BLERangeCalculator() {
                     </div>
 
                     <div>
-                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.reliabilityScore >= 95 ? 'bg-gradient-to-br from-green-600 to-green-700' :
-                                result.reliabilityScore >= 80 ? 'bg-gradient-to-br from-blue-600 to-blue-700' :
-                                    result.reliabilityScore >= 50 ? 'bg-gradient-to-br from-yellow-600 to-yellow-700' :
-                                        'bg-gradient-to-br from-red-600 to-red-700'
-                            }`}>
+                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{
+                            background: result.reliabilityScore >= 95 ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' :
+                                result.reliabilityScore >= 80 ? 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' :
+                                    result.reliabilityScore >= 50 ? 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))' :
+                                        'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
+                        }}>
                             <h2 className="text-xl font-bold mb-6">Signal Analysis</h2>
                             <div className="text-center mb-8">
                                 <div className="text-5xl font-bold mb-2">{result.reliabilityScore}%</div>

@@ -467,7 +467,7 @@ export default function BuyingGuidePage() {
                     </p>
                 </div>
 
-                <div className="max-w-3xl mx-auto space-y-16">
+                <div className="max-w-4xl mx-auto space-y-16">
 
                     {/* Protocol Overview Diagram */}
                     <section>
@@ -497,7 +497,7 @@ export default function BuyingGuidePage() {
                 </div>
 
                 {/* CTA Section */}
-                <div className="max-w-3xl mx-auto mt-16">
+                <div className="max-w-4xl mx-auto mt-16">
                     <div className="cta-section">
                         <h2 className="cta-section__title">Ready to Compare Specific Models?</h2>
                         <p className="cta-section__subtitle">

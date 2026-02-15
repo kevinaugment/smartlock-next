@@ -182,7 +182,7 @@ export default function STRROIPage() {
               <div className="callout callout-success">
                 <h4 style={{ fontWeight: 700, color: "var(--color-success)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><BarChart3 className="w-5 h-5" style={{ color: "var(--color-success)" }} /> Typical ROI Scenarios (2026 Data)</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  <div className="bg-white p-4 rounded">
+                  <div className="p-4 rounded" style={{ background: 'var(--color-surface)' }}>
                     <p className="link-card__title">Single Property (12 bookings/mo)</p>
                     <ul className="space-y-1" style={{ color: "var(--color-text-secondary)" }}>
                       <li>• Hardware: $220</li>
@@ -191,7 +191,7 @@ export default function STRROIPage() {
                       <li>• Year 1 ROI: +175-265%</li>
                     </ul>
                   </div>
-                  <div className="bg-white p-4 rounded">
+                  <div className="p-4 rounded" style={{ background: 'var(--color-surface)' }}>
                     <p className="link-card__title">Small Portfolio (5 properties)</p>
                     <ul className="space-y-1" style={{ color: "var(--color-text-secondary)" }}>
                       <li>• Hardware: $1,100</li>
@@ -200,7 +200,7 @@ export default function STRROIPage() {
                       <li>• Year 1 ROI: +180-265%</li>
                     </ul>
                   </div>
-                  <div className="bg-white p-4 rounded">
+                  <div className="p-4 rounded" style={{ background: 'var(--color-surface)' }}>
                     <p className="link-card__title">Large Portfolio (20+ properties)</p>
                     <ul className="space-y-1" style={{ color: "var(--color-text-secondary)" }}>
                       <li>• Hardware: $4,400</li>
@@ -278,7 +278,7 @@ export default function STRROIPage() {
                   <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "var(--space-sm)" }}>Requires technical setup but fully automatable</p>
                 </div>
                 <div className="card">
-                  <h3 style={{ fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><Smartphone className="w-5 h-5" style={{ color: "#7c3aed" }} /> Manual Management</h3>
+                  <h3 style={{ fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><Smartphone className="w-5 h-5" style={{ color: "var(--color-accent)" }} /> Manual Management</h3>
                   <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
                     <li>• August app (30 sec/code)</li>
                     <li>• Yale app (quick setup)</li>
@@ -292,10 +292,10 @@ export default function STRROIPage() {
             </div>
           </div>
 
-          
+
           <RelatedResources calculatorSlug="short-term-rental-roi-calculator" />
 
-{/* Related Resources */}
+          {/* Related Resources */}
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">Related Calculators</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

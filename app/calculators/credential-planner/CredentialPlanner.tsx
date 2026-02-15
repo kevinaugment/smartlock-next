@@ -102,16 +102,16 @@ export default function CredentialPlanner() {
 
     // Status determination
     let status = 'Safe'
-    let statusColor = 'from-green-600 to-green-700'
+    let statusColor = 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))'
     if (utilization >= 90) {
       status = 'Critical'
-      statusColor = 'from-red-600 to-red-700'
+      statusColor = 'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
     } else if (utilization >= CAPACITY_THRESHOLDS.warning) {
       status = 'High'
-      statusColor = 'from-orange-600 to-orange-700'
+      statusColor = 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))'
     } else if (utilization >= CAPACITY_THRESHOLDS.safe) {
       status = 'Warning'
-      statusColor = 'from-yellow-600 to-yellow-700'
+      statusColor = 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))'
     }
 
     // Recommendation
@@ -158,7 +158,7 @@ export default function CredentialPlanner() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Input Section */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
+          <div className="rounded-lg shadow-lg border p-8" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Credential Requirements</h2>
 
             <div className="space-y-6">
@@ -167,7 +167,7 @@ export default function CredentialPlanner() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Permanent Employees: {employees}
                 </label>
-                <input type="range" min="0" max="200" value={employees} onChange={(e) => setEmployees(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="0" max="200" value={employees} onChange={(e) => setEmployees(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
                   <span>0 employees</span>
                   <span>200 employees</span>
@@ -179,7 +179,7 @@ export default function CredentialPlanner() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Contractors/Temporary Staff: {contractors}
                 </label>
-                <input type="range" min="0" max="100" value={contractors} onChange={(e) => setContractors(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="0" max="100" value={contractors} onChange={(e) => setContractors(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
                   <span>0 contractors</span>
                   <span>100 contractors</span>
@@ -191,7 +191,7 @@ export default function CredentialPlanner() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Guest/Delivery Codes (concurrent active): {guests}
                 </label>
-                <input type="range" min="0" max="300" value={guests} onChange={(e) => setGuests(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="0" max="300" value={guests} onChange={(e) => setGuests(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <p className="text-xs text-gray-500 mt-1">Time-limited codes for visitors, deliveries, cleaners</p>
               </div>
 
@@ -200,7 +200,7 @@ export default function CredentialPlanner() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Monthly Turnover Rate: {monthlyTurnover}%
                 </label>
-                <input type="range" min="0" max="30" value={monthlyTurnover} onChange={(e) => setMonthlyTurnover(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="0" max="30" value={monthlyTurnover} onChange={(e) => setMonthlyTurnover(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <p className="text-xs text-gray-500 mt-1">Employee/contractor churn requiring credential changes</p>
               </div>
 
@@ -222,7 +222,7 @@ export default function CredentialPlanner() {
               {/* New Professional Fields */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Avg. Doors per Person: {multiDoorAccess}</label>
-                <input type="range" min="1" max="20" value={multiDoorAccess} onChange={(e) => setMultiDoorAccess(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="1" max="20" value={multiDoorAccess} onChange={(e) => setMultiDoorAccess(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <p className="text-xs text-gray-500 mt-1">Average number of doors each person needs access to</p>
               </div>
 
@@ -270,7 +270,7 @@ export default function CredentialPlanner() {
 
         {/* Results Section */}
         <div className="lg:col-span-1">
-          <div className={`bg-gradient-to-br ${result.statusColor} rounded-lg shadow-xl p-8 text-white sticky top-4`}>
+          <div className="rounded-lg shadow-xl p-8 text-white sticky top-4" style={{ background: result.statusColor }}>
             <h2 className="text-xl font-bold mb-6">Capacity Analysis</h2>
 
             <div className="text-center mb-8">

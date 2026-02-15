@@ -172,7 +172,7 @@ export default function MeshPlannerPage() {
                 <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-md)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><Link2 className="w-5 h-5" style={{ color: "var(--color-accent)" }} /> Mesh Topology Patterns</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Star Topology */}
-                  <div className="text-center bg-white p-4 rounded-lg">
+                  <div className="text-center p-4 rounded-lg" style={{ background: 'var(--color-surface)' }}>
                     <svg viewBox="0 0 100 100" className="w-full h-32 mb-3">
                       {/* Hub in center */}
                       <circle cx="50" cy="50" r="8" fill="#3B82F6" stroke="#1E40AF" strokeWidth="2" />
@@ -194,7 +194,7 @@ export default function MeshPlannerPage() {
                   </div>
 
                   {/* Mesh Topology */}
-                  <div className="text-center bg-white p-4 rounded-lg border-2 border-purple-300">
+                  <div className="text-center p-4 rounded-lg border-2" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-accent)' }}>
                     <svg viewBox="0 0 100 100" className="w-full h-32 mb-3">
                       {/* 7 nodes in mesh */}
                       {[[50, 15], [20, 35], [80, 35], [15, 65], [50, 60], [85, 65], [50, 90]].map((pos, i) => (
@@ -207,12 +207,12 @@ export default function MeshPlannerPage() {
                         return <line key={`line-${i}`} x1={posA[0]} y1={posA[1]} x2={posB[0]} y2={posB[1]} stroke="#C4B5FD" strokeWidth="1.5" opacity="0.6" />
                       })}
                     </svg>
-                    <p className="text-xs font-semibold text-purple-900 mb-1">Mesh Topology <Check className="w-3 h-3 inline" style={{ color: "#7c3aed" }} /></p>
+                    <p className="text-xs font-semibold mb-1" style={{ color: 'var(--color-text-primary)' }}>Mesh Topology <Check className="w-3 h-3 inline" style={{ color: "var(--color-accent)" }} /></p>
                     <p style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)" }}>Multiple paths between nodes. Self-healing if any node fails. Recommended.</p>
                   </div>
 
                   {/* Tree Topology */}
-                  <div className="text-center bg-white p-4 rounded-lg">
+                  <div className="text-center p-4 rounded-lg" style={{ background: 'var(--color-surface)' }}>
                     <svg viewBox="0 0 100 100" className="w-full h-32 mb-3">
                       {/* Root */}
                       <circle cx="50" cy="15" r="7" fill="#3B82F6" stroke="#1E40AF" strokeWidth="2" />
@@ -244,7 +244,7 @@ export default function MeshPlannerPage() {
                     <span className="inline-block w-3 h-3 rounded-full ml-3 mr-1" style={{ background: "var(--color-warning)" }}></span> Router nodes
                     <span className="inline-block w-3 h-3 rounded-full ml-3 mr-1" style={{ background: "var(--color-success)" }}></span> End devices (locks)
                   </p>
-                  <p className="text-xs text-purple-800 font-semibold mt-2"><Lightbulb className="w-3 h-3 inline" /> Mesh topology provides best reliability for 5+ locks</p>
+                  <p className="text-xs font-semibold mt-2" style={{ color: 'var(--color-accent)' }}><Lightbulb className="w-3 h-3 inline" /> Mesh topology provides best reliability for 5+ locks</p>
                 </div>
               </div>
             </div>
@@ -345,10 +345,10 @@ export default function MeshPlannerPage() {
             </div>
           </div>
 
-          
+
           <RelatedResources calculatorSlug="mesh-node-planner" />
 
-{/* Related Resources */}
+          {/* Related Resources */}
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">Related Calculators</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

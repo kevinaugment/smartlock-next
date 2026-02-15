@@ -279,7 +279,7 @@ export default function BatteryCalculator() {
 
       {/* Results Section */}
       <div className="lg:col-span-1">
-        <div className="bg-gradient-to-br from-green-600 to-green-700 rounded-lg shadow-lg p-8 text-white sticky top-4">
+        <div className="rounded-lg shadow-lg p-8 text-white sticky top-4" style={{ background: 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' }}>
           <h2 className="text-xl font-bold mb-6">Estimated Battery Life</h2>
 
           <div className="text-center mb-8">

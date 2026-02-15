@@ -456,81 +456,64 @@ export default function TCOCalculator() {
             </div>
           </div>
 
-          {/* Results Section */}
+          {/* Results Section — Glassmorphism Dashboard */}
           <div className="lg:col-span-1">
-            <div className="bg-gradient-to-br from-green-600 to-green-700 rounded-lg shadow-lg p-8 text-white sticky top-4">
-              <h2 className="text-xl font-bold mb-6">Total Cost of Ownership</h2>
-
-              <div className="text-center mb-8">
-                <div className="text-5xl font-bold mb-2">${result.total.toFixed(0)}</div>
-                <div className="text-lg opacity-90">over {inputs.years} years</div>
+            <div className="result-panel-v2">
+              <div className="result-panel-v2__header">
+                <h2 style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', fontFamily: 'var(--font-mono)', marginBottom: 'var(--space-md)' }}>
+                  Total Cost of Ownership
+                </h2>
+                <div className="result-panel-v2__value">${result.total.toFixed(0)}</div>
+                <div className="result-panel-v2__label">over {inputs.years} years · {inputs.doorCount} door{inputs.doorCount > 1 ? 's' : ''}</div>
               </div>
 
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between items-center pb-3 border-b border-white/20">
-                  <span className="text-sm opacity-90">Hardware</span>
-                  <span className="font-semibold">${result.hardware.toFixed(0)}</span>
+              <div className="result-panel-v2__body">
+                {/* Cost Breakdown Bars */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)', marginBottom: 'var(--space-lg)' }}>
+                  {[
+                    { label: 'Hardware', value: result.hardware, pct: result.hardwareShare },
+                    ...(result.hub > 0 ? [{ label: 'Hub/Gateway', value: result.hub, pct: result.total > 0 ? (result.hub / result.total) * 100 : 0 }] : []),
+                    ...(result.install > 0 ? [{ label: 'Installation', value: result.install, pct: result.total > 0 ? (result.install / result.total) * 100 : 0 }] : []),
+                    { label: 'Batteries', value: result.batteries, pct: result.batteriesShare },
+                    ...(result.subscriptions > 0 ? [{ label: 'Subscriptions', value: result.subscriptions, pct: result.subscriptionsShare }] : []),
+                    ...(result.cloudPlatform > 0 ? [{ label: 'Cloud Platform', value: result.cloudPlatform, pct: result.cloudShare }] : []),
+                    ...(result.maintenance > 0 ? [{ label: 'Maintenance', value: result.maintenance, pct: result.maintenanceShare }] : []),
+                    ...(result.warranty > 0 ? [{ label: 'Warranty Repairs', value: result.warranty, pct: result.total > 0 ? (result.warranty / result.total) * 100 : 0 }] : []),
+                  ].map((item) => (
+                    <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-md)', fontSize: '0.8125rem' }}>
+                      <span style={{ width: '6rem', color: 'var(--color-text-muted)', flexShrink: 0 }}>{item.label}</span>
+                      <div style={{ flex: 1, height: '4px', background: 'rgba(255,255,255,0.06)', borderRadius: '99px', overflow: 'hidden' }}>
+                        <div style={{ width: `${Math.max(item.pct, 1)}%`, height: '100%', background: 'var(--gradient-brand)', borderRadius: '99px', transition: 'width 0.3s ease' }} />
+                      </div>
+                      <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-text-inverse)', fontWeight: 600, width: '4rem', textAlign: 'right' }}>${item.value.toFixed(0)}</span>
+                    </div>
+                  ))}
                 </div>
-                {result.hub > 0 && (
-                  <div className="flex justify-between items-center pb-3 border-b border-white/20">
-                    <span className="text-sm opacity-90">Hub/Gateway</span>
-                    <span className="font-semibold">${result.hub.toFixed(0)}</span>
-                  </div>
-                )}
-                {result.install > 0 && (
-                  <div className="flex justify-between items-center pb-3 border-b border-white/20">
-                    <span className="text-sm opacity-90">Installation</span>
-                    <span className="font-semibold">${result.install.toFixed(0)}</span>
-                  </div>
-                )}
-                <div className="flex justify-between items-center pb-3 border-b border-white/20">
-                  <span className="text-sm opacity-90">Batteries ({inputs.years}yr)</span>
-                  <span className="font-semibold">${result.batteries.toFixed(0)}</span>
-                </div>
-                {result.subscriptions > 0 && (
-                  <div className="flex justify-between items-center pb-3 border-b border-white/20">
-                    <span className="text-sm opacity-90">Subscriptions</span>
-                    <span className="font-semibold">${result.subscriptions.toFixed(0)}</span>
-                  </div>
-                )}
-                {result.cloudPlatform > 0 && (
-                  <div className="flex justify-between items-center pb-3 border-b border-white/20">
-                    <span className="text-sm opacity-90">Cloud Platform</span>
-                    <span className="font-semibold">${result.cloudPlatform.toFixed(0)}</span>
-                  </div>
-                )}
-                {result.maintenance > 0 && (
-                  <div className="flex justify-between items-center pb-3 border-b border-white/20">
-                    <span className="text-sm opacity-90">Maintenance</span>
-                    <span className="font-semibold">${result.maintenance.toFixed(0)}</span>
-                  </div>
-                )}
-                {result.warranty > 0 && (
-                  <div className="flex justify-between items-center pb-3 border-b border-white/20">
-                    <span className="text-sm opacity-90">Out-of-Warranty Repairs</span>
-                    <span className="font-semibold">${result.warranty.toFixed(0)}</span>
-                  </div>
-                )}
-              </div>
 
-              <div className="space-y-2 text-sm bg-white/10 rounded-lg p-4">
-                <div className="flex justify-between">
-                  <span className="opacity-90">Per year:</span>
-                  <span className="font-semibold">${result.annualCost.toFixed(0)}</span>
+                {/* Insight Cards */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-sm)' }}>
+                  <div className="insight-card">
+                    <div className="insight-card__value">${result.annualCost.toFixed(0)}</div>
+                    <div className="insight-card__label">Per year</div>
+                  </div>
+                  <div className="insight-card">
+                    <div className="insight-card__value">${result.perDoorCost.toFixed(0)}</div>
+                    <div className="insight-card__label">Per door</div>
+                  </div>
+                  <div className="insight-card">
+                    <div className="insight-card__value">${result.perDoorPerDay.toFixed(2)}</div>
+                    <div className="insight-card__label">Per door/day</div>
+                  </div>
+                  <div className="insight-card">
+                    <div className="insight-card__value" style={{ color: result.deltaVsMechanical > 0 ? 'var(--color-warning)' : 'var(--color-accent)' }}>
+                      {result.deltaVsMechanical > 0 ? '+' : ''}${result.deltaVsMechanical.toFixed(0)}
+                    </div>
+                    <div className="insight-card__label">vs. Mechanical</div>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="opacity-90">Per door:</span>
-                  <span className="font-semibold">${result.perDoorCost.toFixed(0)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="opacity-90">Per door/day:</span>
-                  <span className="font-semibold">${result.perDoorPerDay.toFixed(2)}</span>
-                </div>
-              </div>
 
-              <div className="mt-6 p-4 bg-white/10 rounded-lg">
-                <p className="text-xs opacity-90">
-                  <Lightbulb className="w-4 h-4 inline" /> vs. Mechanical locks: +${result.deltaVsMechanical.toFixed(0)} over {inputs.years} years
+                <p style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)', marginTop: 'var(--space-md)', opacity: 0.7, textAlign: 'center' }}>
+                  Based on ANSI/BHMA industry standards
                 </p>
               </div>
             </div>

@@ -234,10 +234,11 @@ export default function PoEPowerBudgetCalculator() {
                     </div>
 
                     <div>
-                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.budgetUtilization <= 80 ? 'bg-gradient-to-br from-green-600 to-green-700' :
-                                result.budgetUtilization <= 100 ? 'bg-gradient-to-br from-yellow-600 to-yellow-700' :
-                                    'bg-gradient-to-br from-red-600 to-red-700'
-                            }`}>
+                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{
+                            background: result.budgetUtilization <= 80 ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' :
+                                result.budgetUtilization <= 100 ? 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))' :
+                                    'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
+                        }}>
                             <h2 className="text-xl font-bold mb-6">Power Budget</h2>
                             <div className="text-center mb-8">
                                 <div className="text-5xl font-bold mb-2">{result.totalPower}W</div>

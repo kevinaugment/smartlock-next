@@ -72,7 +72,7 @@ export default function InstallationTime() {
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
+          <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
             <h2 className="text-2xl font-bold mb-6">Project Details</h2>
             <div className="space-y-6">
               <div>
@@ -144,7 +144,7 @@ export default function InstallationTime() {
           </div>
 
           <div>
-            <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-8 rounded-lg shadow-lg text-white sticky top-4">
+            <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))' }}>
               <h2 className="text-xl font-bold mb-6">Time & Cost Estimate</h2>
               <div className="text-center mb-8">
                 <div className="text-6xl font-bold mb-2">{result.crewDays}</div>
@@ -182,7 +182,7 @@ export default function InstallationTime() {
           </div>
         </div>
 
-        <div className="max-w-6xl mx-auto mt-12 bg-white p-8 rounded-lg shadow-lg">
+        <div className="max-w-6xl mx-auto mt-12 p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
           <h2 className="text-2xl font-bold mb-6">Time Breakdown</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center p-4 rounded-lg" style={{ background: "var(--color-accent-subtle)" }}>
@@ -193,7 +193,7 @@ export default function InstallationTime() {
               <div className="text-2xl font-bold text-green-700 mb-1">{Math.round(result.totalHours * 0.25)}h</div>
               <div className="link-card__desc">Testing & Setup</div>
             </div>
-            <div className="text-center p-4 rounded-lg" style={{ background: "#f3e8ff" }}>
+            <div className="text-center p-4 rounded-lg" style={{ background: "var(--color-accent-subtle)" }}>
               <div className="text-2xl font-bold text-purple-700 mb-1">{Math.round(result.totalHours * 0.15)}h</div>
               <div className="link-card__desc">Cleanup & Documentation</div>
             </div>

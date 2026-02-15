@@ -137,28 +137,28 @@ export default function CredentialPlannerPage() {
                 </div>
 
                 <div>
-                  <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-md)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><CreditCard className="w-5 h-5" style={{ color: "#7c3aed" }} /> RFID/NFC Cards & Tags</h3>
+                  <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-md)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><CreditCard className="w-5 h-5" style={{ color: "var(--color-accent)" }} /> RFID/NFC Cards & Tags</h3>
                   <ul className="space-y-3" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
                     <li className="flex items-start gap-2">
-                      <span style={{ color: "#7c3aed" }}>•</span>
+                      <span style={{ color: "var(--color-accent)" }}>•</span>
                       <div>
                         <strong>Protocols:</strong> RFID (125kHz, 13.56MHz HID), NFC (ISO 14443A/B, ISO 15693). NFC compatible with smartphones.
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span style={{ color: "#7c3aed" }}>•</span>
+                      <span style={{ color: "var(--color-accent)" }}>•</span>
                       <div>
                         <strong>Security:</strong> Encrypted chip IDs (Mifare DESFire EV3, HID iCLASS SE). Cloning-resistant. Disable lost cards remotely.
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span style={{ color: "#7c3aed" }}>•</span>
+                      <span style={{ color: "var(--color-accent)" }}>•</span>
                       <div>
                         <strong>Advantages:</strong> No memorization needed. Faster entry (0.5-1 sec vs 3-5 sec PIN). Durability (5-10 year lifespan).
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span style={{ color: "#7c3aed" }}>•</span>
+                      <span style={{ color: "var(--color-accent)" }}>•</span>
                       <div>
                         <strong>Capacity:</strong> Same as PIN (share credential slots). Card cost: $2-10 (RFID), $5-15 (NFC).
                       </div>
@@ -374,10 +374,10 @@ export default function CredentialPlannerPage() {
             </div>
           </div>
 
-          
+
           <RelatedResources calculatorSlug="credential-capacity-planner" />
 
-{/* Related Resources */}
+          {/* Related Resources */}
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">Related Calculators</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

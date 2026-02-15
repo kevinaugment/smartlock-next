@@ -196,11 +196,11 @@ export default function PinStrengthChecker() {
     )
 
     const gradeColors: Record<string, string> = {
-        A: 'from-green-600 to-green-700',
-        B: 'from-blue-600 to-blue-700',
-        C: 'from-yellow-600 to-yellow-700',
-        D: 'from-orange-600 to-orange-700',
-        F: 'from-red-600 to-red-700',
+        A: 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))',
+        B: 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))',
+        C: 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))',
+        D: 'linear-gradient(to bottom right, #ea580c, #c2410c)',
+        F: 'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))',
     }
 
     return (
@@ -238,7 +238,7 @@ export default function PinStrengthChecker() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                     {/* Input Section */}
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-white p-8 rounded-lg shadow-lg">
+                        <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
                             <h2 className="text-2xl font-bold mb-6">Enter Your PIN</h2>
                             <div className="space-y-6">
                                 {/* PIN Input */}
@@ -356,7 +356,7 @@ export default function PinStrengthChecker() {
 
                     {/* Results Panel */}
                     <div className="lg:col-span-1">
-                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 bg-gradient-to-br ${gradeColors[result.grade]}`}>
+                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: gradeColors[result.grade] }}>
                             <h2 className="text-xl font-bold mb-6">Security Assessment</h2>
                             <div className="text-center mb-8">
                                 <div className="text-7xl font-bold mb-2">{pin ? result.grade : '—'}</div>
@@ -457,7 +457,7 @@ export default function PinStrengthChecker() {
                             { length: '6-char alphanumeric', entropy: '35.7 bits', combos: '56.8 billion', time: '~1,806 years' },
                             { length: '8-char alphanumeric', entropy: '47.6 bits', combos: '218 trillion', time: '~6.9M years' },
                         ].map((ref, i) => (
-                            <div key={i} className="bg-white p-5 rounded-lg shadow border" style={{ borderColor: 'var(--color-border)' }}>
+                            <div key={i} className="p-5 rounded-lg shadow border" style={{ borderColor: 'var(--color-border)', background: 'var(--color-surface)' }}>
                                 <h3 className="font-bold mb-2" style={{ color: 'var(--color-text-primary)' }}>{ref.length}</h3>
                                 <div className="space-y-1 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
                                     <div className="flex justify-between"><span>Entropy:</span><span className="font-medium">{ref.entropy}</span></div>

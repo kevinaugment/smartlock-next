@@ -101,7 +101,7 @@ export default function CyberRiskScorecard() {
 
         const totalScore = authScore + encScore + fwScore + netScore + physScore
         const grade = totalScore >= 85 ? 'A' : totalScore >= 70 ? 'B' : totalScore >= 55 ? 'C' : totalScore >= 40 ? 'D' : 'F'
-        const gradeColor = totalScore >= 85 ? 'from-green-600 to-green-700' : totalScore >= 70 ? 'from-blue-600 to-blue-700' : totalScore >= 55 ? 'from-yellow-600 to-yellow-700' : totalScore >= 40 ? 'from-orange-600 to-orange-700' : 'from-red-600 to-red-700'
+        const gradeColor = totalScore >= 85 ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' : totalScore >= 70 ? 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' : totalScore >= 55 ? 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))' : totalScore >= 40 ? 'linear-gradient(to bottom right, #ea580c, #c2410c)' : 'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
 
         if (risks.length === 0) mitigations.push('Your security posture looks strong — maintain regular firmware updates and credential rotation')
 
@@ -152,7 +152,7 @@ export default function CyberRiskScorecard() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                     <div className="lg:col-span-2 space-y-6">
                         {/* Authentication */}
-                        <div className="bg-white p-8 rounded-lg shadow-lg">
+                        <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
                             <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Lock className="w-5 h-5" style={{ color: 'var(--color-accent)' }} /> Authentication</h2>
                             <div className="space-y-4">
                                 <div>
@@ -199,7 +199,7 @@ export default function CyberRiskScorecard() {
                         </div>
 
                         {/* Encryption */}
-                        <div className="bg-white p-8 rounded-lg shadow-lg">
+                        <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
                             <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Lock className="w-5 h-5" style={{ color: 'var(--color-accent)' }} /> Encryption</h2>
                             <div className="space-y-4">
                                 <div>
@@ -226,7 +226,7 @@ export default function CyberRiskScorecard() {
                         </div>
 
                         {/* Firmware */}
-                        <div className="bg-white p-8 rounded-lg shadow-lg">
+                        <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
                             <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><RefreshCw className="w-5 h-5" style={{ color: 'var(--color-accent)' }} /> Firmware</h2>
                             <div className="space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
@@ -260,7 +260,7 @@ export default function CyberRiskScorecard() {
 
                         {/* Network + Physical */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="bg-white p-6 rounded-lg shadow-lg">
+                            <div className="p-6 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
                                 <h2 className="text-lg font-bold mb-4 flex items-center gap-2"><Wifi className="w-5 h-5" style={{ color: 'var(--color-accent)' }} /> Network</h2>
                                 <div className="space-y-3">
                                     {[
@@ -275,7 +275,7 @@ export default function CyberRiskScorecard() {
                                     ))}
                                 </div>
                             </div>
-                            <div className="bg-white p-6 rounded-lg shadow-lg">
+                            <div className="p-6 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
                                 <h2 className="text-lg font-bold mb-4 flex items-center gap-2"><ShieldAlert className="w-5 h-5" style={{ color: 'var(--color-accent)' }} /> Physical</h2>
                                 <div className="space-y-3">
                                     <label className="flex items-center gap-2 p-2 rounded border cursor-pointer text-sm" style={{ borderColor: 'var(--color-border)' }}>
@@ -298,7 +298,7 @@ export default function CyberRiskScorecard() {
 
                     {/* Results */}
                     <div className="lg:col-span-1">
-                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 bg-gradient-to-br ${result.gradeColor}`}>
+                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: result.gradeColor }}>
                             <h2 className="text-xl font-bold mb-4">Cyber Risk Score</h2>
                             <div className="text-center mb-6">
                                 <div className="text-7xl font-bold mb-1">{result.grade}</div>
@@ -331,15 +331,15 @@ export default function CyberRiskScorecard() {
                         <h2 className="text-2xl font-bold mb-6">Identified Vulnerabilities</h2>
                         <div className="space-y-3">
                             {result.risks.map((risk, i) => (
-                                <div key={i} className="flex items-start gap-3 p-4 rounded-lg bg-white shadow">
+                                <div key={i} className="flex items-start gap-3 p-4 rounded-lg shadow" style={{ background: 'var(--color-surface)' }}>
                                     {risk.severity === 'critical' ? <X className="w-5 h-5 mt-0.5 flex-shrink-0 text-red-600" /> :
                                         risk.severity === 'high' ? <AlertTriangle className="w-5 h-5 mt-0.5 flex-shrink-0 text-orange-500" /> :
                                             risk.severity === 'medium' ? <AlertTriangle className="w-5 h-5 mt-0.5 flex-shrink-0 text-amber-500" /> :
                                                 <Info className="w-5 h-5 mt-0.5 flex-shrink-0 text-blue-500" />}
                                     <div>
                                         <span className={`text-xs font-bold uppercase ${risk.severity === 'critical' ? 'text-red-600' :
-                                                risk.severity === 'high' ? 'text-orange-600' :
-                                                    risk.severity === 'medium' ? 'text-amber-600' : 'text-blue-600'
+                                            risk.severity === 'high' ? 'text-orange-600' :
+                                                risk.severity === 'medium' ? 'text-amber-600' : 'text-blue-600'
                                             }`}>{risk.severity}</span>
                                         <p className="text-sm mt-1">{risk.text}</p>
                                     </div>
@@ -353,7 +353,7 @@ export default function CyberRiskScorecard() {
                 {result.mitigations.length > 0 && (
                     <div className="max-w-7xl mx-auto mt-8">
                         <h2 className="text-2xl font-bold mb-6">Recommended Mitigations</h2>
-                        <div className="bg-white rounded-lg shadow-lg p-6">
+                        <div className="rounded-lg shadow-lg p-6" style={{ background: 'var(--color-surface)' }}>
                             <ul className="space-y-3">
                                 {result.mitigations.map((m, i) => (
                                     <li key={i} className="flex items-start gap-3">

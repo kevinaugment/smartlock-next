@@ -129,7 +129,7 @@ export default function OfflineResilience() {
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
+          <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
             <h2 className="text-2xl font-bold mb-6">System Configuration</h2>
             <div className="space-y-6">
               <div>
@@ -208,11 +208,12 @@ export default function OfflineResilience() {
           </div>
 
           <div>
-            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.grade === 'A' ? 'bg-gradient-to-br from-green-600 to-green-700' :
-              result.grade === 'B' ? 'bg-gradient-to-br from-blue-600 to-blue-700' :
-                result.grade === 'C' ? 'bg-gradient-to-br from-yellow-600 to-yellow-700' :
-                  'bg-gradient-to-br from-red-600 to-red-700'
-              }`}>
+            <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{
+              background: result.grade === 'A' ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' :
+                result.grade === 'B' ? 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' :
+                  result.grade === 'C' ? 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))' :
+                    'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
+            }}>
               <h2 className="text-xl font-bold mb-6">Resilience Score</h2>
               <div className="text-center mb-8">
                 <div className="text-7xl font-bold mb-2">{result.grade}</div>
@@ -265,7 +266,7 @@ export default function OfflineResilience() {
           </div>
         )}
 
-        <div className="max-w-6xl mx-auto mt-12 bg-white p-8 rounded-lg shadow-lg">
+        <div className="max-w-6xl mx-auto mt-12 p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
           <h2 className="text-2xl font-bold mb-6">Resilience Best Practices</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div>

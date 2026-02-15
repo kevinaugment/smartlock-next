@@ -119,6 +119,15 @@ export default async function ArticlePage({
     'bia-calculator': 'lock-tco',
     'rto-rpo-planner': 'emergency-backup',
     'failover-tester': 'offline-resilience',
+    'rental-roi-calculator': 'str-roi',
+    'turnover-time-estimator': 'installation-time',
+    'integration-roi-calculator': 'hotel-roi',
+    'api-compatibility-checker': 'compatibility',
+    'offline-resilience-scorecard': 'offline-resilience',
+    'privacy-impact-assessment': 'privacy-compliance',
+    'data-retention-calculator': 'security-compliance',
+    'log-analyzer': 'security-compliance',
+    'anomaly-detector': 'cyber-risk',
   };
   const relatedTools = (article.relatedTools || [])
     .map(tool => CALC_SLUG_MAP[tool] || tool)

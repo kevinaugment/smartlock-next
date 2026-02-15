@@ -82,7 +82,7 @@ export default function SubscriptionCompare() {
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
+          <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
             <h2 className="text-2xl font-bold mb-6">Comparison Parameters</h2>
             <div className="space-y-6">
               <div>
@@ -135,8 +135,9 @@ export default function SubscriptionCompare() {
           </div>
 
           <div>
-            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.winner === 'local' ? 'bg-gradient-to-br from-green-600 to-green-700' : 'bg-gradient-to-br from-blue-600 to-blue-700'
-              }`}>
+            <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{
+              background: result.winner === 'local' ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' : 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))'
+            }}>
               <h2 className="text-xl font-bold mb-6">Cost Comparison</h2>
               <div className="text-center mb-8">
                 <div className="text-6xl font-bold mb-2">${result.difference}</div>
@@ -172,7 +173,7 @@ export default function SubscriptionCompare() {
         </div>
 
         <div className="max-w-6xl mx-auto mt-12 grid md:grid-cols-2 gap-6">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="p-6 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
             <h3 className="text-lg font-bold mb-4 text-blue-700 inline-flex items-center gap-2"><Cloud className="w-5 h-5" /> Subscription Model</h3>
             <div className="space-y-3">
               <div className="flex items-start gap-2">
@@ -197,7 +198,7 @@ export default function SubscriptionCompare() {
               </div>
             </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="p-6 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
             <h3 className="text-lg font-bold mb-4 text-green-700 inline-flex items-center gap-2"><Home className="w-5 h-5" /> Local Solution</h3>
             <div className="space-y-3">
               <div className="flex items-start gap-2">

@@ -12,12 +12,12 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
       <div className="flex items-center gap-2 mb-4">
         <span className="badge badge-accent">{article.category}</span>
         {article.isPillar && (
-          <span className="badge" style={{ background: '#f3e8ff', color: '#7c3aed' }}>
+          <span className="badge" style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}>
             <Star className="w-3 h-3" /> Pillar Article
           </span>
         )}
         {article.featured && (
-          <span className="badge" style={{ background: '#fef3c7', color: '#92400e' }}>
+          <span className="badge" style={{ background: 'var(--color-warning-subtle, #fef3c7)', color: 'var(--color-warning-text, #92400e)' }}>
             <Sparkles className="w-3 h-3" /> Featured
           </span>
         )}

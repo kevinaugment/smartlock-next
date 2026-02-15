@@ -142,7 +142,7 @@ export default function EmergencyBackup() {
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
+          <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
             <h2 className="text-2xl font-bold mb-6">Backup Systems</h2>
             <div className="space-y-4">
               <div className="space-y-2">
@@ -227,11 +227,12 @@ export default function EmergencyBackup() {
           </div>
 
           <div>
-            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.grade === 'A' ? 'bg-gradient-to-br from-green-600 to-green-700' :
-              result.grade === 'B' ? 'bg-gradient-to-br from-blue-600 to-blue-700' :
-                result.grade === 'C' ? 'bg-gradient-to-br from-yellow-600 to-yellow-700' :
-                  'bg-gradient-to-br from-red-600 to-red-700'
-              }`}>
+            <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{
+              background: result.grade === 'A' ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' :
+                result.grade === 'B' ? 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' :
+                  result.grade === 'C' ? 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))' :
+                    'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
+            }}>
               <h2 className="text-xl font-bold mb-6">Backup Readiness</h2>
               <div className="text-center mb-8">
                 <div className="text-7xl font-bold mb-2">{result.grade}</div>
@@ -303,7 +304,7 @@ export default function EmergencyBackup() {
           )}
         </div>
 
-        <div className="max-w-6xl mx-auto mt-12 bg-gradient-to-br from-purple-600 to-purple-700 p-8 rounded-lg text-white">
+        <div className="max-w-6xl mx-auto mt-12 p-8 rounded-lg text-white" style={{ background: 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' }}>
           <h2 className="text-2xl font-bold mb-4">Emergency Scenarios to Plan For</h2>
           <div className="grid md:grid-cols-2 gap-4 text-sm">
             <div className="flex items-start gap-2">

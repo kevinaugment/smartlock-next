@@ -129,7 +129,7 @@ export default function MeshPlanner() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Input Section */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
+          <div className="rounded-lg shadow-lg border p-8" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Building Configuration</h2>
 
             <div className="space-y-6">
@@ -138,7 +138,7 @@ export default function MeshPlanner() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Number of Floors: {floors}
                 </label>
-                <input type="range" min="1" max="20" value={floors} onChange={(e) => setFloors(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="1" max="20" value={floors} onChange={(e) => setFloors(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
                   <span>1 floor</span>
                   <span>20 floors</span>
@@ -150,7 +150,7 @@ export default function MeshPlanner() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Smart Locks per Floor: {locksPerFloor}
                 </label>
-                <input type="range" min="1" max="50" value={locksPerFloor} onChange={(e) => setLocksPerFloor(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="1" max="50" value={locksPerFloor} onChange={(e) => setLocksPerFloor(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
                   <span>1 lock</span>
                   <span>50 locks</span>
@@ -162,7 +162,7 @@ export default function MeshPlanner() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Floor Area: {floorArea}m² ({Math.round(floorArea * 10.764)}sqft)
                 </label>
-                <input type="range" min="50" max="1000" step="50" value={floorArea} onChange={(e) => setFloorArea(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="50" max="1000" step="50" value={floorArea} onChange={(e) => setFloorArea(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
                   <span>50m² (small)</span>
                   <span>1000m² (large)</span>
@@ -242,7 +242,7 @@ export default function MeshPlanner() {
 
         {/* Results Section */}
         <div className="lg:col-span-1">
-          <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-lg shadow-xl p-8 text-white sticky top-4">
+          <div className="rounded-lg shadow-xl p-8 text-white sticky top-4" style={{ background: 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' }}>
             <h2 className="text-xl font-bold mb-6">Mesh Requirements</h2>
 
             <div className="text-center mb-8">

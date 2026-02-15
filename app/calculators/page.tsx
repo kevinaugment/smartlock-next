@@ -8,6 +8,7 @@ import {
   Lock, Volume2, Shield, ShieldAlert, Ruler
 } from 'lucide-react'
 import type { ReactNode } from 'react'
+import CalculatorDiscovery from '@/components/CalculatorDiscovery'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Calculators - SLockHub.com',
@@ -314,106 +315,26 @@ export default function CalculatorsPage() {
             </div>
             <h1 className="page-header__title">Smart Lock Calculators</h1>
             <p className="page-header__subtitle">
-              Interactive tools to help you make informed decisions about smart lock systems.
-              Get instant calculations and expert recommendations.
+              {calculators.length} interactive tools for TCO analysis, signal planning, compliance checking, and more.
             </p>
           </div>
 
-          {/* Categories */}
-          <div className="mb-16">
-            <h2 className="section-title">Browse by Category</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {categories.map((category) => (
-                <div key={category.name} className="card card-hover">
-                  <div className="mb-2 text-color-accent">{category.icon}</div>
-                  <h3 className="font-semibold mb-1 text-color-primary">{category.name}</h3>
-                  <p className="text-sm text-color-secondary">
-                    {category.calculators.length} tool{category.calculators.length > 1 ? 's' : ''}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Calculators Grid */}
-          <div className="mb-16">
-            <h2 className="section-title">All Calculators</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {calculators.map((calculator) => (
-                <Link
-                  key={calculator.slug}
-                  href={`/calculators/${calculator.slug}`}
-                  className="group block card card-hover overflow-hidden p-0"
-                >
-                  <div className="p-8">
-                    {/* Header */}
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className="text-color-accent">{calculator.icon}</div>
-                      <div className="flex-1">
-                        <h3
-                          className="text-lg font-bold mb-2 text-color-primary group-hover:text-cyan-600 transition-colors"
-                        >
-                          {calculator.name}
-                        </h3>
-                        <div className="flex items-center gap-2">
-                          <span className={`badge ${calculator.complexity === 'Simple' ? 'badge-success' : 'badge-warning'}`}>
-                            {calculator.complexity}
-                          </span>
-                        </div>
-                      </div>
-                      <svg
-                        className="w-5 h-5 group-hover:translate-x-1 transition-transform flex-shrink-0 text-color-muted"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
-
-                    {/* Description */}
-                    <p className="mb-4 text-color-secondary">
-                      {calculator.description}
-                    </p>
-
-                    {/* Features */}
-                    <div className="space-y-2">
-                      {calculator.features.map((feature, index) => (
-                        <div key={index} className="feature-item">
-                          <svg className="feature-item__icon feature-item__icon--success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                          <span className="text-sm text-color-secondary">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Footer */}
-                  <div
-                    className="group-hover:bg-cyan-50 transition-colors p-4 px-8 bg-slate-50"
-                  >
-                    <span className="font-semibold text-sm text-color-accent">
-                      Try Calculator →
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
+          {/* Interactive Discovery (Client Component) */}
+          <CalculatorDiscovery calculators={calculators} categories={categories} />
 
           {/* Features Section */}
-          <div className="card-elevated mb-16 p-12 bg-cyan-50">
+          <div className="card-elevated mb-16 p-12" style={{ background: 'var(--color-bg-alt)' }}>
             <h2 className="section-title section-title--center">Why Use Our Calculators?</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 { icon: <Zap className="w-7 h-7" />, title: 'Instant Results', desc: 'Get immediate calculations without waiting' },
-                { icon: <Calculator className="w-7 h-7" />, title: 'Expert Algorithms', desc: 'Based on industry standards and real data' },
+                { icon: <Calculator className="w-7 h-7" />, title: 'Expert Algorithms', desc: 'Based on ANSI/BHMA standards and real data' },
                 { icon: <Wrench className="w-7 h-7" />, title: 'Customizable', desc: 'Adjust parameters to match your exact needs' },
               ].map((f) => (
                 <div key={f.title} className="text-center">
                   <div
-                    className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 bg-cyan-600 text-white"
+                    className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4"
+                    style={{ background: 'var(--color-accent)', color: 'white' }}
                   >
                     {f.icon}
                   </div>

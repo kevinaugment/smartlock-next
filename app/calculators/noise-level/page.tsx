@@ -90,16 +90,16 @@ export default function NoiseLevelEstimator() {
 
         if (estimatedDb <= ambient - 5) {
             suitability = 'Excellent'
-            suitabilityColor = 'from-green-600 to-green-700'
+            suitabilityColor = 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))'
         } else if (estimatedDb <= ambient + 5) {
             suitability = 'Acceptable'
-            suitabilityColor = 'from-blue-600 to-blue-700'
+            suitabilityColor = 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))'
         } else if (estimatedDb <= ambient + 15) {
             suitability = 'Noticeable'
-            suitabilityColor = 'from-yellow-600 to-yellow-700'
+            suitabilityColor = 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))'
         } else {
             suitability = 'Too Loud'
-            suitabilityColor = 'from-red-600 to-red-700'
+            suitabilityColor = 'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
         }
 
         // Find closest comparison
@@ -157,7 +157,7 @@ export default function NoiseLevelEstimator() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-white p-8 rounded-lg shadow-lg">
+                        <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
                             <h2 className="text-2xl font-bold mb-6">Lock Configuration</h2>
                             <div className="space-y-6">
                                 {/* Motor Type */}
@@ -260,7 +260,7 @@ export default function NoiseLevelEstimator() {
 
                     {/* Results */}
                     <div className="lg:col-span-1">
-                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 bg-gradient-to-br ${result.suitabilityColor}`}>
+                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: result.suitabilityColor }}>
                             <h2 className="text-xl font-bold mb-4">Noise Assessment</h2>
                             <div className="text-center mb-6">
                                 <div className="text-6xl font-bold mb-1">{result.estimatedDb}</div>
@@ -304,7 +304,7 @@ export default function NoiseLevelEstimator() {
                         <Info className="w-6 h-6" style={{ color: 'var(--color-accent)' }} />
                         Noise Level Reference Scale
                     </h2>
-                    <div className="bg-white rounded-lg shadow-lg p-6">
+                    <div className="rounded-lg shadow-lg p-6" style={{ background: 'var(--color-surface)' }}>
                         <div className="space-y-3">
                             {NOISE_COMPARISONS.map((comp) => {
                                 const width = (comp.db / 80) * 100
@@ -322,7 +322,7 @@ export default function NoiseLevelEstimator() {
                                                         width: `${width}%`,
                                                         background: isLockLevel
                                                             ? 'var(--color-accent)'
-                                                            : comp.db <= 40 ? '#22c55e' : comp.db <= 60 ? '#f59e0b' : '#ef4444',
+                                                            : comp.db <= 40 ? 'var(--color-success)' : comp.db <= 60 ? 'var(--color-warning)' : 'var(--color-danger)',
                                                     }}
                                                 />
                                             </div>

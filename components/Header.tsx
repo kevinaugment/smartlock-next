@@ -13,11 +13,18 @@ export default function Header() {
         <div className="flex items-center justify-between" style={{ height: 'var(--header-height)' }}>
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
+            <div className="header-brand-bar" />
             <Lock className="w-6 h-6" style={{ color: 'var(--color-accent)' }} />
             <span className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-text-primary)' }}>
               SLockHub.com
             </span>
           </Link>
+
+          {/* Trust Signal */}
+          <div className="trust-signal">
+            <span className="trust-signal__dot" />
+            Trusted by 500+ Property Managers
+          </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">

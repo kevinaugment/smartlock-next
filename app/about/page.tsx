@@ -28,7 +28,7 @@ export default function AboutPage() {
         </div>
 
         {/* Mission */}
-        <div className="max-w-3xl mx-auto mb-16">
+        <div className="max-w-4xl mx-auto mb-16">
           <div className="card-elevated" style={{ padding: 'var(--space-2xl)' }}>
             <h2 className="section-title section-title--center">Our Mission</h2>
             <p className="text-center" style={{ color: 'var(--color-text-secondary)', fontSize: '1.125rem', lineHeight: '1.75' }}>
@@ -43,7 +43,7 @@ export default function AboutPage() {
         {/* What We Offer */}
         <div className="mb-16">
           <h2 className="section-title section-title--center">What We Offer</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {[
               {
                 icon: <BookOpen className="w-8 h-8" />,
@@ -95,7 +95,7 @@ export default function AboutPage() {
         {/* Topics We Cover */}
         <div className="mb-16">
           <h2 className="section-title section-title--center">Topics We Cover</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
             {[
               { icon: <Wifi className="w-5 h-5" />, label: 'Wireless Protocols' },
               { icon: <Lock className="w-5 h-5" />, label: 'Security Analysis' },
@@ -118,7 +118,7 @@ export default function AboutPage() {
         {/* Technology Stack */}
         <div className="mb-16">
           <h2 className="section-title section-title--center">Built with Modern Technology</h2>
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <div className="card" style={{ padding: 'var(--space-xl)' }}>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                 {[

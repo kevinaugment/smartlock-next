@@ -173,10 +173,10 @@ export default function ProtocolWizard() {
   const topChoice = results[0]
 
   const getScoreColor = (score: number) => {
-    if (score >= 90) return 'from-green-600 to-green-700'
-    if (score >= 75) return 'from-blue-600 to-blue-700'
-    if (score >= 60) return 'from-yellow-600 to-yellow-700'
-    return 'from-gray-600 to-gray-700'
+    if (score >= 90) return 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))'
+    if (score >= 75) return 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))'
+    if (score >= 60) return 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))'
+    return 'linear-gradient(to bottom right, #6b7280, #4b5563)'
   }
 
   return (
@@ -252,7 +252,7 @@ export default function ProtocolWizard() {
       </div>
 
       {/* Top Recommendation */}
-      <div className={`bg-gradient-to-br ${getScoreColor(topChoice.score)} rounded-lg shadow-xl p-8 text-white`}>
+      <div className="rounded-lg shadow-xl p-8 text-white" style={{ background: getScoreColor(topChoice.score) }}>
         <div className="text-center mb-6">
           <div className="text-5xl mb-2 text-white/90">★</div>
           <h2 className="text-3xl font-bold mb-2">Recommended: {topChoice.name}</h2>

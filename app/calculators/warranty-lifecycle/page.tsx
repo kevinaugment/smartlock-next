@@ -202,7 +202,7 @@ export default function WarrantyLifecycleCalculator() {
                     </div>
 
                     <div>
-                        <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-8 rounded-lg shadow-lg text-white sticky top-4">
+                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' }}>
                             <h2 className="text-xl font-bold mb-6">Lifecycle Analysis</h2>
                             <div className="text-center mb-8">
                                 <div className="text-5xl font-bold mb-2">{result.expectedLifespan} yr</div>

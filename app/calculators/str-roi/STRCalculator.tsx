@@ -106,10 +106,10 @@ export default function STRCalculator() {
   const result = calculate()
 
   const getROIColor = (roi: number) => {
-    if (roi >= 200) return 'from-green-600 to-green-700'
-    if (roi >= 100) return 'from-blue-600 to-blue-700'
-    if (roi >= 50) return 'from-yellow-600 to-yellow-700'
-    return 'from-orange-600 to-orange-700'
+    if (roi >= 200) return 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))'
+    if (roi >= 100) return 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))'
+    if (roi >= 50) return 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))'
+    return 'linear-gradient(to bottom right, #ea580c, #c2410c)'
   }
 
   const getROILabel = (roi: number) => {
@@ -124,7 +124,7 @@ export default function STRCalculator() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Input Section */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
+          <div className="rounded-lg shadow-lg border p-8" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Your STR Portfolio</h2>
 
             <div className="space-y-6">
@@ -133,7 +133,7 @@ export default function STRCalculator() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Number of Properties: {properties}
                 </label>
-                <input type="range" min="1" max="50" value={properties} onChange={(e) => setProperties(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="1" max="50" value={properties} onChange={(e) => setProperties(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
                   <span>1 property</span>
                   <span>50 properties</span>
@@ -145,7 +145,7 @@ export default function STRCalculator() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Monthly Bookings per Property: {bookings}
                 </label>
-                <input type="range" min="1" max="30" value={bookings} onChange={(e) => setBookings(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="1" max="30" value={bookings} onChange={(e) => setBookings(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
                   <span>1/month (33% occ)</span>
                   <span>30/month (100% occ)</span>
@@ -157,7 +157,7 @@ export default function STRCalculator() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Manual Check-in Time (when needed): {handoffTime} minutes
                 </label>
-                <input type="range" min="10" max="60" step="5" value={handoffTime} onChange={(e) => setHandoffTime(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="10" max="60" step="5" value={handoffTime} onChange={(e) => setHandoffTime(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <p className="text-xs text-gray-500 mt-1">Travel + coordination for problem check-ins (~35% of bookings need human intervention). Most use self-check-in.</p>
               </div>
 
@@ -166,7 +166,7 @@ export default function STRCalculator() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Lockouts per Property per Year: {lockouts}
                 </label>
-                <input type="range" min="0" max="12" value={lockouts} onChange={(e) => setLockouts(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="0" max="12" value={lockouts} onChange={(e) => setLockouts(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <p className="text-xs text-gray-500 mt-1">Industry avg: 0.5-1 lockouts/year (AirDNA 2026 data)</p>
               </div>
 
@@ -175,7 +175,7 @@ export default function STRCalculator() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Lost Keys per Property per Year: {lostKeys}
                 </label>
-                <input type="range" min="0" max="6" value={lostKeys} onChange={(e) => setLostKeys(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="0" max="6" value={lostKeys} onChange={(e) => setLostKeys(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <p className="text-xs text-gray-500 mt-1">Requires full lock rekeying ($175 avg)</p>
               </div>
 
@@ -196,7 +196,7 @@ export default function STRCalculator() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Property Manager/Your Hourly Rate: ${laborRate}/hr
                 </label>
-                <input type="range" min="15" max="75" step="5" value={laborRate} onChange={(e) => setLaborRate(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="15" max="75" step="5" value={laborRate} onChange={(e) => setLaborRate(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <p className="text-xs text-gray-500 mt-1">Industry avg: $25-35/hr (2026 data)</p>
               </div>
 
@@ -233,7 +233,7 @@ export default function STRCalculator() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   PMS Integration Cost: ${pmsIntegration}/month per property
                 </label>
-                <input type="range" min="0" max="50" step="5" value={pmsIntegration} onChange={(e) => setPmsIntegration(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="0" max="50" step="5" value={pmsIntegration} onChange={(e) => setPmsIntegration(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <p className="text-xs text-gray-500 mt-1">Guesty, Hostaway, etc. (many offer free tiers)</p>
               </div>
 
@@ -241,7 +241,7 @@ export default function STRCalculator() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Cleaning Turnovers per Day: {cleaningTurnover}
                 </label>
-                <input type="range" min="0" max="4" value={cleaningTurnover} onChange={(e) => setCleaningTurnover(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="0" max="4" value={cleaningTurnover} onChange={(e) => setCleaningTurnover(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <p className="text-xs text-gray-500 mt-1">Each turnover saves ~10 min on key coordination</p>
               </div>
 
@@ -249,7 +249,7 @@ export default function STRCalculator() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Annual Insurance Discount: ${insuranceDiscount}/property
                 </label>
-                <input type="range" min="0" max="200" step="25" value={insuranceDiscount} onChange={(e) => setInsuranceDiscount(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <input type="range" min="0" max="200" step="25" value={insuranceDiscount} onChange={(e) => setInsuranceDiscount(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }} />
                 <p className="text-xs text-gray-500 mt-1">Some insurers discount 5-15% for smart locks</p>
               </div>
             </div>
@@ -258,7 +258,7 @@ export default function STRCalculator() {
 
         {/* Results Section */}
         <div className="lg:col-span-1">
-          <div className={`bg-gradient-to-br ${getROIColor(result.roi)} rounded-lg shadow-xl p-8 text-white sticky top-4`}>
+          <div className="rounded-lg shadow-xl p-8 text-white sticky top-4" style={{ background: getROIColor(result.roi) }}>
             <h2 className="text-xl font-bold mb-6">Annual ROI Summary</h2>
 
             <div className="text-center mb-8">

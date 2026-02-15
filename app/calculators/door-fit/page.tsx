@@ -138,7 +138,7 @@ export default function DoorFitChecker() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                     {/* Inputs */}
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-white p-8 rounded-lg shadow-lg">
+                        <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
                             <h2 className="text-2xl font-bold mb-6">Door Measurements</h2>
                             <div className="space-y-6">
                                 {/* Thickness */}
@@ -249,7 +249,7 @@ export default function DoorFitChecker() {
 
                     {/* Results Panel */}
                     <div className="lg:col-span-1">
-                        <div className="bg-gradient-to-br from-cyan-600 to-cyan-700 p-8 rounded-lg shadow-lg text-white sticky top-4">
+                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' }}>
                             <h2 className="text-xl font-bold mb-4">Compatibility Results</h2>
                             <div className="text-center mb-6">
                                 <div className="text-6xl font-bold mb-2">{results.compatible.length}</div>
@@ -365,7 +365,7 @@ export default function DoorFitChecker() {
                         Standard Door Measurements
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="bg-white p-6 rounded-lg shadow border" style={{ borderColor: 'var(--color-border)' }}>
+                        <div className="p-6 rounded-lg shadow border" style={{ borderColor: 'var(--color-border)', background: 'var(--color-surface)' }}>
                             <h3 className="font-bold mb-3" style={{ color: 'var(--color-text-primary)' }}>Residential Standard</h3>
                             <div className="space-y-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
                                 <div>Thickness: <strong>35-44mm (1-3/8&quot; to 1-3/4&quot;)</strong></div>
@@ -374,7 +374,7 @@ export default function DoorFitChecker() {
                                 <div>Material: <strong>Wood or Fiberglass</strong></div>
                             </div>
                         </div>
-                        <div className="bg-white p-6 rounded-lg shadow border" style={{ borderColor: 'var(--color-border)' }}>
+                        <div className="p-6 rounded-lg shadow border" style={{ borderColor: 'var(--color-border)', background: 'var(--color-surface)' }}>
                             <h3 className="font-bold mb-3" style={{ color: 'var(--color-text-primary)' }}>Commercial Standard</h3>
                             <div className="space-y-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
                                 <div>Thickness: <strong>44-57mm (1-3/4&quot; to 2-1/4&quot;)</strong></div>
@@ -383,7 +383,7 @@ export default function DoorFitChecker() {
                                 <div>Material: <strong>Metal or Wood</strong></div>
                             </div>
                         </div>
-                        <div className="bg-white p-6 rounded-lg shadow border" style={{ borderColor: 'var(--color-border)' }}>
+                        <div className="p-6 rounded-lg shadow border" style={{ borderColor: 'var(--color-border)', background: 'var(--color-surface)' }}>
                             <h3 className="font-bold mb-3" style={{ color: 'var(--color-text-primary)' }}>Extra-Thick / Custom</h3>
                             <div className="space-y-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
                                 <div>Thickness: <strong>57-90mm (2-1/4&quot; to 3-1/2&quot;)</strong></div>

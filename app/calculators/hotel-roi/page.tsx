@@ -129,7 +129,7 @@ export default function HotelROI() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-white p-8 rounded-lg shadow-lg">
+                        <div className="p-8 rounded-lg shadow-lg" style={{ background: 'var(--color-surface)' }}>
                             <h2 className="text-2xl font-bold mb-6">Property Details</h2>
                             <div className="space-y-6">
                                 {/* Room Count */}
@@ -276,7 +276,7 @@ export default function HotelROI() {
 
                     {/* Results Panel */}
                     <div className="lg:col-span-1">
-                        <div className="bg-gradient-to-br from-indigo-600 to-indigo-800 p-8 rounded-lg shadow-lg text-white sticky top-4">
+                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' }}>
                             <h2 className="text-xl font-bold mb-6">ROI Summary</h2>
                             <div className="text-center mb-6">
                                 <div className="text-5xl font-bold mb-1">{result.paybackMonths}</div>

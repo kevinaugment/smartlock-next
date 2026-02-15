@@ -36,6 +36,36 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
 
     return (
         <div className="page-bg">
+            {/* Structured Data: BreadcrumbList + ItemList */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify([
+                        {
+                            '@context': 'https://schema.org',
+                            '@type': 'BreadcrumbList',
+                            itemListElement: [
+                                { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.slockhub.com' },
+                                { '@type': 'ListItem', position: 2, name: 'Brands', item: 'https://www.slockhub.com/brands' },
+                                { '@type': 'ListItem', position: 3, name: pageData.title },
+                            ],
+                        },
+                        ...(pageData.products.length > 0 ? [{
+                            '@context': 'https://schema.org',
+                            '@type': 'ItemList',
+                            name: pageData.h1_title || pageData.title,
+                            description: pageData.intro_text || '',
+                            numberOfItems: pageData.products.length,
+                            itemListElement: pageData.products.map((product, i) => ({
+                                '@type': 'ListItem',
+                                position: i + 1,
+                                name: `${product.brand_name} ${product.name}`,
+                                url: `https://www.slockhub.com/brands/${product.brand_slug}/${product.slug}`,
+                            })),
+                        }] : []),
+                    ]),
+                }}
+            />
             <div className="container-main section">
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-2" style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xl)' }}>

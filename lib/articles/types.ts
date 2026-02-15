@@ -19,6 +19,8 @@ export interface ArticleMetadata {
   relatedTools?: string[];
   author?: string;
   updatedAt?: string;
+  faqs?: { question: string; answer: string }[];
+  howToSteps?: { name: string; text: string }[];
 }
 
 export interface ArticleData {

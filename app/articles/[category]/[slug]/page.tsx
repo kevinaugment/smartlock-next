@@ -150,6 +150,14 @@ export default async function ArticlePage({
     'fire-compliance': 'Fire Code Compliance Checker',
     'guest-code': 'Guest Code Planner',
     'ble-range': 'BLE Range Calculator',
+    'cyber-risk': 'Cyber Risk Calculator',
+    'pin-strength': 'PIN Strength Analyzer',
+    'door-fit': 'Door Fit Checker',
+    'hotel-roi': 'Hotel ROI Calculator',
+    'energy-cost': 'Energy Cost Calculator',
+    'noise-level': 'Noise Level Calculator',
+    'retrofit-advisor': 'Retrofit Advisor',
+    'privacy-compliance': 'Privacy Compliance Checker',
   };
 
   const categoryInfo = CATEGORIES[article.category];
@@ -189,6 +197,30 @@ export default async function ArticlePage({
                 { '@type': 'ListItem', position: 3, name: article.title },
               ],
             },
+            ...(article.faqs && article.faqs.length > 0 ? [{
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: article.faqs.map(faq => ({
+                '@type': 'Question',
+                name: faq.question,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: faq.answer,
+                },
+              })),
+            }] : []),
+            ...(article.howToSteps && article.howToSteps.length > 0 ? [{
+              '@context': 'https://schema.org',
+              '@type': 'HowTo',
+              name: article.title,
+              description: article.description,
+              step: article.howToSteps.map((step, i) => ({
+                '@type': 'HowToStep',
+                position: i + 1,
+                name: step.name,
+                text: step.text,
+              })),
+            }] : []),
           ]),
         }}
       />

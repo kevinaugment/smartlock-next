@@ -6,7 +6,11 @@ const nextConfig = {
   // Image optimization (Vercel built-in)
   images: {
     formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
   },
+
+  // Enable response compression
+  compress: true,
 
   // Page extensions
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],

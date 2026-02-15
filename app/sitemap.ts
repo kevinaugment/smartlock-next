@@ -72,6 +72,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.5,
         },
         {
+            url: `${BASE_URL}/resources/glossary`,
+            lastModified: BUILD_DATE,
+            changeFrequency: 'monthly',
+            priority: 0.6,
+        },
+        {
+            url: `${BASE_URL}/resources/reference-tables`,
+            lastModified: BUILD_DATE,
+            changeFrequency: 'monthly',
+            priority: 0.6,
+        },
+        {
+            url: `${BASE_URL}/resources/installation-guides`,
+            lastModified: BUILD_DATE,
+            changeFrequency: 'monthly',
+            priority: 0.6,
+        },
+        {
+            url: `${BASE_URL}/resources/buying-guide`,
+            lastModified: BUILD_DATE,
+            changeFrequency: 'monthly',
+            priority: 0.6,
+        },
+        {
             url: `${BASE_URL}/compare`,
             lastModified: BUILD_DATE,
             changeFrequency: 'monthly',
@@ -122,6 +146,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     let brandPages: MetadataRoute.Sitemap = []
     let productPages: MetadataRoute.Sitemap = []
     let bestPages: MetadataRoute.Sitemap = []
+    let comparisonPages: MetadataRoute.Sitemap = []
 
     try {
         const brands = await BrandModel.getAll()
@@ -131,6 +156,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             changeFrequency: 'weekly' as const,
             priority: 0.8,
         }))
+
+        // Brand comparison pages (all combinations)
+        for (let i = 0; i < brands.length; i++) {
+            for (let j = i + 1; j < brands.length; j++) {
+                comparisonPages.push({
+                    url: `${BASE_URL}/compare/${brands[i].slug}-vs-${brands[j].slug}`,
+                    lastModified: BUILD_DATE,
+                    changeFrequency: 'monthly' as const,
+                    priority: 0.7,
+                })
+            }
+        }
 
         const products = await ProductModel.getAll(200, 0)
         productPages = products.map((p) => ({
@@ -151,11 +188,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         // Database not available — skip dynamic pages gracefully
     }
 
+    // Protocol pages (static list)
+    const protocolSlugs = ['z-wave', 'zigbee', 'wifi', 'bluetooth', 'thread', 'matter']
+    const protocolPages: MetadataRoute.Sitemap = [
+        {
+            url: `${BASE_URL}/protocols`,
+            lastModified: BUILD_DATE,
+            changeFrequency: 'monthly' as const,
+            priority: 0.7,
+        },
+        ...protocolSlugs.map((slug) => ({
+            url: `${BASE_URL}/protocols/${slug}`,
+            lastModified: BUILD_DATE,
+            changeFrequency: 'monthly' as const,
+            priority: 0.7,
+        })),
+    ]
+
     return [
         ...staticPages,
         ...categoryPages,
         ...articlePages,
         ...calculatorPages,
+        ...protocolPages,
+        ...comparisonPages,
         ...brandPages,
         ...productPages,
         ...bestPages,

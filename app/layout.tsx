@@ -49,6 +49,13 @@ export const metadata: Metadata = {
     title: 'SLockHub.com - Expert Guides & Tools',
     description: 'Comprehensive smart lock guides covering protocols, security, installation, troubleshooting, and real-world applications.',
   },
+  robots: {
+    index: true,
+    follow: true,
+    'max-image-preview': 'large',
+    'max-snippet': -1,
+    'max-video-preview': -1,
+  },
 }
 
 export default function RootLayout({
@@ -77,6 +84,12 @@ export default function RootLayout({
             gtag('config', 'G-RY8C070WKJ');
           `}
         </Script>
+        {/* Google Adsense — 替换 ca-pub-XXXXXXXXXX 为你的 Publisher ID */}
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   )

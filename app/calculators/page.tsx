@@ -4,7 +4,8 @@ import {
   DollarSign, Battery, Signal, DoorOpen, Wand2, Home,
   Link as LinkIcon, Radio, Building2, Key, Clock, Scale,
   AlertTriangle, Zap, ClipboardList, Wrench, Calculator,
-  Users, ShieldCheck, GitCompare, Timer, Wifi, Flame, KeyRound, Bluetooth
+  Users, ShieldCheck, GitCompare, Timer, Wifi, Flame, KeyRound, Bluetooth,
+  Lock, Volume2, Shield, ShieldAlert, Ruler
 } from 'lucide-react'
 import type { ReactNode } from 'react'
 
@@ -207,14 +208,78 @@ const calculators: { name: string; slug: string; icon: ReactNode; description: s
     features: ['RSSI estimation', 'Path loss calculation', 'Obstacle attenuation', 'Reliability score'],
     complexity: 'Moderate',
   },
+  {
+    name: 'PIN Security Strength Checker',
+    slug: 'pin-strength',
+    icon: <Lock className="w-8 h-8" />,
+    description: 'Evaluate PIN entropy, detect weak patterns, and calculate brute-force resistance',
+    features: ['Pattern detection', 'Entropy calculation', 'Brute-force time', 'Security grading'],
+    complexity: 'Simple',
+  },
+  {
+    name: 'Door Measurement Fit Checker',
+    slug: 'door-fit',
+    icon: <Ruler className="w-8 h-8" />,
+    description: 'Enter your door measurements to find compatible smart lock models instantly',
+    features: ['Thickness matching', 'Backset verification', 'Bore diameter check', 'Material compatibility'],
+    complexity: 'Simple',
+  },
+  {
+    name: 'Retrofit vs Replace Advisor',
+    slug: 'retrofit-advisor',
+    icon: <GitCompare className="w-8 h-8" />,
+    description: 'Should you retrofit your existing lock or buy a full smart lock replacement?',
+    features: ['Cost comparison', 'Feature analysis', 'Time estimation', 'Renter-friendly options'],
+    complexity: 'Simple',
+  },
+  {
+    name: 'Hotel & Hospitality ROI',
+    slug: 'hotel-roi',
+    icon: <Building2 className="w-8 h-8" />,
+    description: 'Calculate ROI for smart lock deployment in hotels — keycard elimination, labor savings, and more',
+    features: ['Keycard savings', 'Front desk labor', 'Lockout reduction', '5-year ROI'],
+    complexity: 'Moderate',
+  },
+  {
+    name: 'Energy Cost Calculator',
+    slug: 'energy-cost',
+    icon: <Zap className="w-8 h-8" />,
+    description: 'Calculate the ongoing electricity and battery costs of your smart lock fleet',
+    features: ['Protocol comparison', 'Battery vs PoE', 'CO₂ estimation', 'Solar panel sizing'],
+    complexity: 'Simple',
+  },
+  {
+    name: 'Noise Level Estimator',
+    slug: 'noise-level',
+    icon: <Volume2 className="w-8 h-8" />,
+    description: 'Estimate smart lock operating noise and check environment suitability',
+    features: ['Motor type analysis', 'dB estimation', 'Environment rating', 'Noise comparison scale'],
+    complexity: 'Simple',
+  },
+  {
+    name: 'Privacy & Data Compliance',
+    slug: 'privacy-compliance',
+    icon: <Shield className="w-8 h-8" />,
+    description: 'Assess GDPR, CCPA, and biometric privacy compliance for smart lock data practices',
+    features: ['GDPR/CCPA scoring', 'Biometric law check', 'DPIA assessment', 'Risk identification'],
+    complexity: 'Moderate',
+  },
+  {
+    name: 'Cyber Risk Scorecard',
+    slug: 'cyber-risk',
+    icon: <ShieldAlert className="w-8 h-8" />,
+    description: 'Evaluate the digital attack surface of your smart lock deployment across 5 categories',
+    features: ['Authentication audit', 'Encryption check', 'Firmware analysis', 'Vulnerability report'],
+    complexity: 'Moderate',
+  },
 ]
 
 const categories: { name: string; icon: ReactNode; calculators: string[] }[] = [
-  { name: 'Power & Energy', icon: <Zap className="w-7 h-7" />, calculators: ['battery-life', 'poe-power'] },
+  { name: 'Power & Energy', icon: <Zap className="w-7 h-7" />, calculators: ['battery-life', 'poe-power', 'energy-cost'] },
   { name: 'Connectivity', icon: <Radio className="w-7 h-7" />, calculators: ['signal-strength', 'ble-range', 'rf-coverage', 'mesh-planner', 'network-bandwidth'] },
-  { name: 'Planning & Budget', icon: <ClipboardList className="w-7 h-7" />, calculators: ['lock-tco', 'installation-cost', 'installation-time', 'subscription-compare', 'str-roi', 'fleet-planner', 'warranty-lifecycle'] },
-  { name: 'Hardware', icon: <Wrench className="w-7 h-7" />, calculators: ['compatibility', 'lock-compare', 'fire-compliance'] },
-  { name: 'Security & Compliance', icon: <ShieldCheck className="w-7 h-7" />, calculators: ['security-compliance', 'offline-resilience', 'emergency-backup', 'credential-planner', 'access-capacity', 'guest-code'] },
+  { name: 'Planning & Budget', icon: <ClipboardList className="w-7 h-7" />, calculators: ['lock-tco', 'installation-cost', 'installation-time', 'subscription-compare', 'str-roi', 'fleet-planner', 'warranty-lifecycle', 'hotel-roi', 'retrofit-advisor'] },
+  { name: 'Hardware', icon: <Wrench className="w-7 h-7" />, calculators: ['compatibility', 'lock-compare', 'fire-compliance', 'door-fit', 'noise-level'] },
+  { name: 'Security & Compliance', icon: <ShieldCheck className="w-7 h-7" />, calculators: ['security-compliance', 'offline-resilience', 'emergency-backup', 'credential-planner', 'access-capacity', 'guest-code', 'pin-strength', 'privacy-compliance', 'cyber-risk'] },
   { name: 'Comparison & Selection', icon: <Wand2 className="w-7 h-7" />, calculators: ['protocol-wizard', 'lock-compare'] },
 ]
 

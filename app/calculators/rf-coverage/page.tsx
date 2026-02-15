@@ -15,17 +15,51 @@ export default function RFCoverage() {
   const [protocol, setProtocol] = useState('zigbee')
   const [wallDensity, setWallDensity] = useState('medium')
 
+  // New professional fields
+  const [buildingType, setBuildingType] = useState('offices')
+  const [hasMeshRepeaters, setHasMeshRepeaters] = useState(false)
+  const [repeaterCount, setRepeaterCount] = useState(0)
+  const [interferenceLevel, setInterferenceLevel] = useState('medium')
+  const [ceilingHeight, setCeilingHeight] = useState('standard')
+
   const calculate = () => {
     const area = buildingLength * buildingWidth * floors
     const protocolRange = { zigbee: 30, zwave: 40, wifi: 25, thread: 28 }[protocol] || 30
     const wallPenalty = { low: 0.9, medium: 0.7, high: 0.5 }[wallDensity] || 0.7
-    const effectiveRange = protocolRange * wallPenalty
-    const coverage = Math.PI * effectiveRange * effectiveRange
-    const hubsNeeded = Math.ceil(area / coverage) + 1
-    const locksPerHub = Math.ceil(lockCount / hubsNeeded)
-    const signalQuality = lockCount / hubsNeeded < 15 ? 'Excellent' : lockCount / hubsNeeded < 25 ? 'Good' : 'Fair'
 
-    return { area, effectiveRange: Math.round(effectiveRange), hubsNeeded, locksPerHub, signalQuality, coverage: Math.round(coverage) }
+    // Building type layout factor
+    const layoutFactor: Record<string, number> = { 'open-plan': 1.2, offices: 0.85, 'hotel-corridor': 0.7, apartments: 0.6 }
+    const layoutMul = layoutFactor[buildingType] || 0.85
+
+    // Interference reduction
+    const interferencePenalty: Record<string, number> = { low: 1.0, medium: 0.9, high: 0.75 }
+    const intMul = interferencePenalty[interferenceLevel] || 0.9
+
+    // Ceiling height propagation factor
+    const ceilingFactor: Record<string, number> = { standard: 1.0, high: 0.9, warehouse: 0.75 }
+    const ceilMul = ceilingFactor[ceilingHeight] || 1.0
+
+    const effectiveRange = protocolRange * wallPenalty * layoutMul * intMul * ceilMul
+    const coverage = Math.PI * effectiveRange * effectiveRange
+
+    // Mesh repeaters extend coverage
+    const repeaterExtension = hasMeshRepeaters && repeaterCount > 0 ? repeaterCount * coverage * 0.6 : 0
+    const totalCoverage = area
+    const effectiveCoverageCapacity = coverage + (repeaterExtension / Math.max(1, Math.ceil(area / coverage)))
+
+    const hubsNeeded = Math.max(1, Math.ceil(area / effectiveCoverageCapacity))
+    const locksPerHub = Math.ceil(lockCount / hubsNeeded)
+    const signalQuality = locksPerHub < 15 ? 'Excellent' : locksPerHub < 25 ? 'Good' : 'Fair'
+
+    return {
+      area,
+      effectiveRange: Math.round(effectiveRange),
+      hubsNeeded,
+      locksPerHub,
+      signalQuality,
+      coverage: Math.round(coverage),
+      repeatersActive: hasMeshRepeaters ? repeaterCount : 0
+    }
   }
 
   const result = calculate()
@@ -78,6 +112,43 @@ export default function RFCoverage() {
                   <option value="high">High (Many walls)</option>
                 </select>
               </div>
+              <div>
+                <label className="block mb-2 font-medium">Building Layout</label>
+                <select value={buildingType} onChange={(e) => setBuildingType(e.target.value)} className="w-full p-3 border rounded-lg">
+                  <option value="open-plan">Open Plan (best coverage)</option>
+                  <option value="offices">Office Partitions (standard)</option>
+                  <option value="hotel-corridor">Hotel / Corridor (linear)</option>
+                  <option value="apartments">Apartments (isolated units)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Interference Level</label>
+                <select value={interferenceLevel} onChange={(e) => setInterferenceLevel(e.target.value)} className="w-full p-3 border rounded-lg">
+                  <option value="low">Low (few electronics nearby)</option>
+                  <option value="medium">Medium (typical office)</option>
+                  <option value="high">High (industrial / dense WiFi)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Ceiling Height</label>
+                <select value={ceilingHeight} onChange={(e) => setCeilingHeight(e.target.value)} className="w-full p-3 border rounded-lg">
+                  <option value="standard">Standard (2.4–3m)</option>
+                  <option value="high">High Ceiling (3–5m)</option>
+                  <option value="warehouse">Warehouse / Industrial (5m+)</option>
+                </select>
+              </div>
+              <div>
+                <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: '1px solid var(--color-border)' }}>
+                  <input type="checkbox" checked={hasMeshRepeaters} onChange={(e) => setHasMeshRepeaters(e.target.checked)} className="w-4 h-4" />
+                  <span>Has Mesh Repeaters / Range Extenders</span>
+                </label>
+              </div>
+              {hasMeshRepeaters && (
+                <div>
+                  <label className="block mb-2 font-medium">Number of Repeaters: {repeaterCount}</label>
+                  <input type="range" min="0" max="10" value={repeaterCount} onChange={(e) => setRepeaterCount(Number(e.target.value))} className="w-full" />
+                </div>
+              )}
             </div>
           </div>
 
@@ -152,7 +223,7 @@ export default function RFCoverage() {
 
       <ToolRating toolSlug="rf-coverage" />
 
-          <RelatedResources calculatorSlug="rf-coverage-estimator" />
+      <RelatedResources calculatorSlug="rf-coverage-estimator" />
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

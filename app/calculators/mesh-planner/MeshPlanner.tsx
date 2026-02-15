@@ -47,9 +47,16 @@ interface MeshResult {
 export default function MeshPlanner() {
   const [floors, setFloors] = useState(2)
   const [locksPerFloor, setLocksPerFloor] = useState(5)
-  const [floorArea, setFloorArea] = useState(150) // m²
+  const [floorArea, setFloorArea] = useState(150)
   const [wallType, setWallType] = useState<keyof typeof MESH_DATA.wallAttenuation>('drywall')
   const [protocol, setProtocol] = useState<keyof typeof MESH_DATA.protocols>('zigbee')
+
+  // New professional fields
+  const [floorLayout, setFloorLayout] = useState('offices')
+  const [hasExistingNetwork, setHasExistingNetwork] = useState(false)
+  const [redundancyLevel, setRedundancyLevel] = useState('standard')
+  const [environmentType, setEnvironmentType] = useState('commercial')
+  const [powerAvailability, setPowerAvailability] = useState('outlets-everywhere')
 
   const calculate = (): MeshResult => {
     const prot = MESH_DATA.protocols[protocol]
@@ -57,10 +64,18 @@ export default function MeshPlanner() {
 
     const totalLocks = floors * locksPerFloor
 
-    // Effective range considering wall attenuation
-    const effectiveRange = Math.round(prot.range / wall.factor)
+    // Floor layout efficiency factor
+    const layoutEfficiency: Record<string, number> = { open: 1.3, corridor: 0.9, offices: 1.0, hotel: 0.85 }
+    const layoutMul = layoutEfficiency[floorLayout] || 1.0
 
-    // Calculate coverage area per node (circle area)
+    // Environment interference
+    const envFactor: Record<string, number> = { residential: 1.0, commercial: 0.95, industrial: 0.8 }
+    const envMul = envFactor[environmentType] || 0.95
+
+    // Effective range considering wall attenuation, layout, and environment
+    const effectiveRange = Math.round(prot.range / wall.factor * layoutMul * envMul)
+
+    // Calculate coverage area per node
     const coverageArea = Math.PI * effectiveRange * effectiveRange
 
     // Locks density per floor
@@ -69,21 +84,30 @@ export default function MeshPlanner() {
     // Estimate locks per node coverage
     const locksInNodeRange = coverageArea * locksPerM2
 
-    // Nodes needed per floor (with 20% redundancy for reliability)
-    const nodesPerFloor = Math.max(1, Math.ceil((locksPerFloor / Math.max(1, locksInNodeRange - 1)) * 1.2))
+    // Redundancy multiplier
+    const redundancyMul: Record<string, number> = { minimal: 1.0, standard: 1.2, enterprise: 1.5 }
+    const redMul = redundancyMul[redundancyLevel] || 1.2
+
+    // Nodes needed per floor
+    const nodesPerFloor = Math.max(1, Math.ceil((locksPerFloor / Math.max(1, locksInNodeRange - 1)) * redMul))
 
     // Total nodes across all floors
     const totalNodes = nodesPerFloor * floors
 
-    // Estimate hops (maximum distance across floor)
-    const floorDiameter = Math.sqrt(floorArea) * 1.4 // Diagonal distance
+    // Estimate hops
+    const floorDiameter = Math.sqrt(floorArea) * 1.4
     const hopsRequired = Math.min(prot.maxHops, Math.ceil(floorDiameter / effectiveRange))
 
-    // Redundancy factor (how many paths available)
+    // Redundancy factor
     const redundancy = Math.floor(totalNodes / Math.max(1, totalLocks / 10))
 
     const nodeCost = prot.nodeCost
-    const totalCost = totalNodes * nodeCost
+    // Existing network discount
+    const networkDiscount = hasExistingNetwork ? 0.7 : 1.0
+    const totalCost = Math.round(totalNodes * nodeCost * networkDiscount)
+
+    // Power availability note (affects node placement but not count)
+    const powerNote = powerAvailability === 'poe-available' ? ' (PoE reduces wiring cost)' : powerAvailability === 'limited' ? ' (limited outlets may increase wiring cost)' : ''
 
     return {
       totalLocks,
@@ -166,6 +190,51 @@ export default function MeshPlanner() {
                   <option value="thread">Thread 1.3 (25m range, 32 hops, 2.4GHz)</option>
                 </select>
                 <p className="text-xs text-gray-500 mt-1">IEEE 802.15.4 / ITU-T G.9959 specs</p>
+              </div>
+
+              {/* New Professional Fields */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Floor Layout</label>
+                <select value={floorLayout} onChange={(e) => setFloorLayout(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                  <option value="open">Open Plan (best node efficiency)</option>
+                  <option value="offices">Office Partitions (standard)</option>
+                  <option value="corridor">Corridor Layout (linear)</option>
+                  <option value="hotel">Hotel / Residential Units (worst)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Redundancy Level</label>
+                <select value={redundancyLevel} onChange={(e) => setRedundancyLevel(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                  <option value="minimal">Minimal (×1.0 — budget, lower reliability)</option>
+                  <option value="standard">Standard (×1.2 — recommended)</option>
+                  <option value="enterprise">Enterprise (×1.5 — maximum reliability)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Environment Type</label>
+                <select value={environmentType} onChange={(e) => setEnvironmentType(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                  <option value="residential">Residential (low interference)</option>
+                  <option value="commercial">Commercial (moderate interference)</option>
+                  <option value="industrial">Industrial (high interference)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Power Outlet Availability</label>
+                <select value={powerAvailability} onChange={(e) => setPowerAvailability(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                  <option value="outlets-everywhere">Outlets Available Everywhere</option>
+                  <option value="limited">Limited Outlets (may need wiring)</option>
+                  <option value="poe-available">PoE Available (Power over Ethernet)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: '1px solid var(--color-border)' }}>
+                  <input type="checkbox" checked={hasExistingNetwork} onChange={(e) => setHasExistingNetwork(e.target.checked)} className="w-4 h-4" />
+                  <span className="text-sm font-medium text-gray-700">Has Existing Network Infrastructure (−30% cost)</span>
+                </label>
               </div>
             </div>
           </div>

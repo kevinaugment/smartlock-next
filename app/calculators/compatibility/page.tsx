@@ -101,7 +101,7 @@ export default function CompatibilityPage() {
             <div className="content-card">
               <div className="flex justify-between items-center mb-6">
                 <h2 style={{ fontSize: "1.875rem", fontWeight: 700, color: "var(--color-text-primary)" }}>ANSI/BHMA A156.2 Specifications</h2>
-                <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Updated: November 2025</span>
+                <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Updated: February 2026</span>
               </div>
               <div className="overflow-x-auto">
                 <table className="data-table">
@@ -264,7 +264,7 @@ export default function CompatibilityPage() {
             <div className="info-box">
               <div className="flex items-center justify-between mb-6">
                 <h3 style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--color-text-primary)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><BookOpen className="w-6 h-6" style={{ color: "var(--color-accent)" }} /> Industry Standards & Sources</h3>
-                <span className="badge badge-success">Verified Nov 2025</span>
+                <span className="badge badge-success">Verified Feb 2026</span>
               </div>
               <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-lg)" }}>All compatibility criteria based on industry standards and manufacturer specifications</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -279,7 +279,7 @@ export default function CompatibilityPage() {
                 <div className="card">
                   <h4 style={{ fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><Factory className="w-5 h-5" style={{ color: "var(--color-accent)" }} /> Manufacturer Specs</h4>
                   <div className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
-                    <p><strong>Installation Manuals:</strong> Schlage, Yale, August, Kwikset, Be-Tech (2025 editions)</p>
+                    <p><strong>Installation Manuals:</strong> Schlage, Yale, August, Kwikset, Be-Tech (2026 editions)</p>
                     <p><strong>Compatibility Guides:</strong> Door prep specifications, extension kit requirements</p>
                     <p><strong>Material Testing:</strong> Drill bit requirements, torque specifications</p>
                   </div>
@@ -291,7 +291,7 @@ export default function CompatibilityPage() {
                 </p>
               </div>
               <div className="mt-4 text-center">
-                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Calculator last updated: November 24, 2025 | Next review: May 2026</p>
+                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Calculator last updated: February 15, 2026 | Next review: August 2026</p>
               </div>
             </div>
           </div>

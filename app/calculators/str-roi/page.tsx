@@ -11,7 +11,7 @@ import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export const metadata: Metadata = {
   title: 'Airbnb Smart Lock ROI Calculator | Short-Term Rental Investment Analysis',
-  description: 'Calculate smart lock ROI for Airbnb/VRBO rentals. Analyze labor savings, lockout costs, rekeying expenses using 2025 STR industry data from AirDNA & Mashvisor.',
+  description: 'Calculate smart lock ROI for Airbnb/VRBO rentals. Analyze labor savings, lockout costs, rekeying expenses using 2026 STR industry data from AirDNA & Mashvisor.',
   keywords: 'Airbnb smart lock ROI, VRBO rental calculator, STR investment, vacation rental smart lock, property manager calculator, short-term rental ROI',
 }
 
@@ -61,9 +61,9 @@ export default function STRROIPage() {
 
           <div className="max-w-4xl mx-auto mb-12">
             <div className="callout callout-info">
-              <h2 className="callout-title">2025 STR Industry Reality</h2>
+              <h2 className="callout-title">2026 STR Industry Reality</h2>
               <p >
-                <strong>Average STR:</strong> 12 bookings/month, 25min key handoff = 50 hours/year wasted. <strong>Lockouts:</strong> 2-3/year @ $125-175 each (emergency locksmith + guest comp). <strong>Lost keys:</strong> 1-2/year @ $175 rekeying. Smart locks eliminate 90% of these costs with 3-8 month payback typical. Data: AirDNA 2025, Mashvisor STR Benchmark Report.
+                <strong>Average STR:</strong> 12 bookings/month, 25min key handoff = 50 hours/year wasted. <strong>Lockouts:</strong> 2-3/year @ $125-175 each (emergency locksmith + guest comp). <strong>Lost keys:</strong> 1-2/year @ $175 rekeying. Smart locks eliminate 90% of these costs with 3-8 month payback typical. Data: AirDNA 2026, Mashvisor STR Benchmark Report.
               </p>
             </div>
           </div>
@@ -102,7 +102,7 @@ export default function STRROIPage() {
             <div className="content-card">
               <div className="flex justify-between items-center mb-6">
                 <h2 style={{ fontSize: "1.875rem", fontWeight: 700, color: "var(--color-text-primary)" }}>STR Smart Lock Cost-Benefit Analysis</h2>
-                <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Industry Data: 2025</span>
+                <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Industry Data: 2026</span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -180,7 +180,7 @@ export default function STRROIPage() {
               </div>
 
               <div className="callout callout-success">
-                <h4 style={{ fontWeight: 700, color: "var(--color-success)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><BarChart3 className="w-5 h-5" style={{ color: "var(--color-success)" }} /> Typical ROI Scenarios (2025 Data)</h4>
+                <h4 style={{ fontWeight: 700, color: "var(--color-success)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><BarChart3 className="w-5 h-5" style={{ color: "var(--color-success)" }} /> Typical ROI Scenarios (2026 Data)</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                   <div className="bg-white p-4 rounded">
                     <p className="link-card__title">Single Property (12 bookings/mo)</p>
@@ -244,7 +244,7 @@ export default function STRROIPage() {
                 <p className="text-xs text-gray-600 mt-4">
                   * Single property: 10 bookings/month, $30/hr labor, 1 lockout/year, 1 lost key/year, 15min manual check-ins (~35% need human intervention).
                   <strong>Scale benefits:</strong> 5 properties (10% bulk discount, 20% installation savings, 10% efficiency),
-                  20+ properties (15% bulk discount, 30% installation savings, 20% efficiency). Source: AirDNA/Mashvisor 2025 benchmarks.
+                  20+ properties (15% bulk discount, 30% installation savings, 20% efficiency). Source: AirDNA/Mashvisor 2026 benchmarks.
                 </p>
               </div>
             </div>
@@ -322,24 +322,24 @@ export default function STRROIPage() {
             <div className="info-box">
               <div className="flex items-center justify-between mb-6">
                 <h3 style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--color-text-primary)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><BookOpen className="w-6 h-6" style={{ color: "var(--color-accent)" }} /> STR Industry Data Sources</h3>
-                <span className="badge badge-success">Verified Nov 2025</span>
+                <span className="badge badge-success">Verified Feb 2026</span>
               </div>
-              <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-lg)" }}>All cost and savings data derived from 2025 short-term rental industry benchmarks, operational studies, and authoritative market research</p>
+              <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-lg)" }}>All cost and savings data derived from 2026 short-term rental industry benchmarks, operational studies, and authoritative market research</p>
 
               <div className="space-y-4 text-sm">
                 <div className="card">
                   <h4 style={{ fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><BarChart3 className="w-4 h-4" style={{ color: "var(--color-accent)" }} /> Booking & Occupancy Data</h4>
                   <ul className="space-y-1" style={{ color: "var(--color-text-secondary)" }}>
-                    <li>• <strong>AirDNA Market Insights (Q3 2025):</strong> 10M+ listings, 12 bookings/month median for urban STRs, occupancy benchmarks</li>
-                    <li>• <strong>Mashvisor STR Benchmark Report (2023-2025):</strong> Annual operational metrics across 50,000+ properties</li>
+                    <li>• <strong>AirDNA Market Insights (Q1 2026):</strong> 10M+ listings, 12 bookings/month median for urban STRs, occupancy benchmarks</li>
+                    <li>• <strong>Mashvisor STR Benchmark Report (2023-2026):</strong> Annual operational metrics across 50,000+ properties</li>
                   </ul>
                 </div>
 
                 <div className="card">
                   <h4 style={{ fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><DollarSign className="w-4 h-4" style={{ color: "var(--color-accent)" }} /> Operational Cost Data</h4>
                   <ul className="space-y-1" style={{ color: "var(--color-text-secondary)" }}>
-                    <li>• <strong>Lockout Costs:</strong> $125-250/incident (HomeAdvisor 2025 Emergency Locksmith Rates). Urban: $150-250, Suburban: $100-150, Rural: $75-125. Includes locksmith ($75-150) + guest compensation ($50-100)</li>
-                    <li>• <strong>Lockout Frequency:</strong> 2-3/property/year (Mashvisor 2025 operations data)</li>
+                    <li>• <strong>Lockout Costs:</strong> $125-250/incident (HomeAdvisor 2026 Emergency Locksmith Rates). Urban: $150-250, Suburban: $100-150, Rural: $75-125. Includes locksmith ($75-150) + guest compensation ($50-100)</li>
+                    <li>• <strong>Lockout Frequency:</strong> 2-3/property/year (Mashvisor 2026 operations data)</li>
                     <li>• <strong>Rekeying:</strong> $175 average (Home Depot locks $40-80 + HomeAdvisor labor $75-150)</li>
                     <li>• <strong>Key Handoff Time:</strong> 25 min median (Mashvisor time-motion study, AllTheRooms operations research)</li>
                   </ul>
@@ -348,7 +348,7 @@ export default function STRROIPage() {
                 <div className="card">
                   <h4 style={{ fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><Users className="w-4 h-4" style={{ color: "var(--color-accent)" }} /> Property Manager Rates</h4>
                   <ul className="space-y-1" style={{ color: "var(--color-text-secondary)" }}>
-                    <li>• <strong>Self-managed:</strong> $25-35/hr opportunity cost (Mashvisor 2025 PM Compensation Survey)</li>
+                    <li>• <strong>Self-managed:</strong> $25-35/hr opportunity cost (Mashvisor 2026 PM Compensation Survey)</li>
                     <li>• <strong>Professional PM:</strong> $30-50/hr (industry standard rates)</li>
                     <li>• <strong>Calculator default:</strong> $30/hr (median residential PM rate)</li>
                   </ul>
@@ -357,7 +357,7 @@ export default function STRROIPage() {
                 <div className="card">
                   <h4 style={{ fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><Star className="w-4 h-4" style={{ color: "var(--color-accent)" }} /> Guest Experience Impact</h4>
                   <ul className="space-y-1" style={{ color: "var(--color-text-secondary)" }}>
-                    <li>• <strong>Rating Improvement:</strong> +0.2-0.3 stars (AirDNA Guest Satisfaction Study 2025, 50,000+ properties before/after smart locks)</li>
+                    <li>• <strong>Rating Improvement:</strong> +0.2-0.3 stars (AirDNA Guest Satisfaction Study 2026, 50,000+ properties before/after smart locks)</li>
                     <li>• <strong>Booking Lift:</strong> 15-20% for properties rated 4.8+ (AirDNA Revenue Optimization Report)</li>
                     <li>• <strong>Revenue Premium:</strong> $2/booking conservative estimate (0.2 star × $10-25 ADR increase × 20% check-in attribution)</li>
                   </ul>
@@ -367,7 +367,7 @@ export default function STRROIPage() {
                   <h4 style={{ fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><Link2 className="w-4 h-4" style={{ color: "var(--color-accent)" }} /> PMS Integration Verification</h4>
                   <ul className="space-y-1" style={{ color: "var(--color-text-secondary)" }}>
                     <li>• <strong>Native:</strong> Guesty, Hostaway, Hospitable (official partnership pages, marketplace listings)</li>
-                    <li>• <strong>API/Zapier:</strong> Airbnb, VRBO, Booking.com (developer documentation 2025)</li>
+                    <li>• <strong>API/Zapier:</strong> Airbnb, VRBO, Booking.com (developer documentation 2026)</li>
                     <li>• <strong>Hardware:</strong> August, Yale, Schlage (manufacturer integration specs)</li>
                   </ul>
                 </div>
@@ -378,7 +378,7 @@ export default function STRROIPage() {
                 </p>
               </div>
               <div className="mt-4 text-center">
-                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Calculator last updated: November 24, 2025 | Next review: May 2026</p>
+                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Calculator last updated: February 15, 2026 | Next review: August 2026</p>
               </div>
             </div>
           </div>

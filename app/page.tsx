@@ -99,10 +99,10 @@ export default function HomePage() {
             </p>
             <div className="grid-actions">
               <Link href="/articles" className="btn btn-primary btn-lg">
-                <BookOpen className="w-5 h-5" /> Browse Knowledge Base
+                <BookOpen className="w-5 h-5" /> Explore 70+ Expert Guides
               </Link>
               <Link href="/calculators" className="btn btn-secondary btn-lg">
-                <Calculator className="w-5 h-5" /> Try Calculators
+                <Calculator className="w-5 h-5" /> Calculate Costs &amp; Compare
               </Link>
             </div>
           </div>
@@ -110,11 +110,11 @@ export default function HomePage() {
           {/* Inline Stats */}
           <div className="hero__stats">
             <div>
-              <div className="hero__stat-value">49+</div>
+              <div className="hero__stat-value">70+</div>
               <div className="hero__stat-label">Technical Articles</div>
             </div>
             <div>
-              <div className="hero__stat-value">15</div>
+              <div className="hero__stat-value">24</div>
               <div className="hero__stat-label">Interactive Tools</div>
             </div>
             <div>
@@ -181,7 +181,7 @@ export default function HomePage() {
           </div>
           <div className="text-center mt-10">
             <Link href="/calculators" className="btn btn-ghost">
-              View All 15 Calculators
+              View All 24 Calculators
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>

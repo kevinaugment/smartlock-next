@@ -48,12 +48,12 @@ export default function AboutPage() {
               {
                 icon: <BookOpen className="w-8 h-8" />,
                 title: 'Knowledge Base',
-                desc: '49+ in-depth articles covering protocols, security, installation, troubleshooting, and real-world applications'
+                desc: '70+ in-depth articles covering protocols, security, installation, troubleshooting, and real-world applications'
               },
               {
                 icon: <Calculator className="w-8 h-8" />,
                 title: 'Interactive Calculators',
-                desc: '15 specialized tools to estimate battery life, calculate costs, check compatibility, and plan installations'
+                desc: '24 specialized tools to estimate battery life, calculate costs, check compatibility, and plan installations'
               },
               {
                 icon: <Shield className="w-8 h-8" />,
@@ -79,10 +79,10 @@ export default function AboutPage() {
         <div className="card-elevated mb-16" style={{ padding: 'var(--space-2xl)', background: 'var(--color-accent-subtle)' }}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { value: '49+', label: 'Articles' },
-              { value: '15', label: 'Calculators' },
-              { value: '6', label: 'Categories' },
-              { value: '4', label: 'Protocols' },
+              { value: '70+', label: 'Articles' },
+              { value: '24', label: 'Calculators' },
+              { value: '7', label: 'Categories' },
+              { value: '6+', label: 'Protocols' },
             ].map((stat) => (
               <div key={stat.label} className="stat-block">
                 <div className="stat-block__value">{stat.value}</div>
@@ -123,7 +123,7 @@ export default function AboutPage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                 {[
                   { name: 'Next.js 14', desc: 'React Framework' },
-                  { name: 'Cloudflare', desc: 'Global CDN' },
+                  { name: 'Vercel', desc: 'Edge Deployment' },
                   { name: 'TypeScript', desc: 'Type Safety' },
                   { name: 'Tailwind', desc: 'CSS Framework' },
                 ].map((tech) => (

@@ -10,7 +10,7 @@ import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 // SEO Metadata
 export const metadata: Metadata = {
-  title: 'Smart Lock Battery Life Calculator | Accurate mAh-Based Estimates (2025)',
+  title: 'Smart Lock Battery Life Calculator | Accurate mAh-Based Estimates (2026)',
   description: 'Calculate exact smart lock battery life for Wi-Fi, Zigbee, Z-Wave & Thread protocols. Real power consumption data, temperature compensation, 4-battery AA configuration.',
   keywords: 'smart lock battery life, battery calculator, zigbee battery life, wifi lock battery, z-wave battery life, smart lock power consumption',
   openGraph: {
@@ -432,7 +432,7 @@ export default function BatteryLifePage() {
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)', display: 'inline-flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
                   <BookOpen className="w-6 h-6" style={{ color: 'var(--color-accent)' }} /> Technical Data Sources & Standards
                 </h3>
-                <span className="badge badge-success" style={{ fontSize: '0.75rem' }}>Verified Nov 2025</span>
+                <span className="badge badge-success" style={{ fontSize: '0.75rem' }}>Verified Feb 2026</span>
               </div>
               <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-lg)' }}>
                 All power consumption values derived from chip-level datasheets and protocol specifications. Battery capacity ratings from manufacturer technical datasheets.
@@ -443,11 +443,11 @@ export default function BatteryLifePage() {
                     <Plug className="w-5 h-5" style={{ color: 'var(--color-accent)' }} /> Protocol Power Consumption
                   </h4>
                   <div className="space-y-2" style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>
-                    <p><strong>Z-Wave:</strong> Silicon Labs EFR32ZG23 datasheet (2025) - 8-15mA active, 0.5µA sleep</p>
-                    <p><strong>Zigbee:</strong> Silicon Labs EFR32MG24 datasheet (2025) - 15-30mA active, 1.4µA sleep</p>
+                    <p><strong>Z-Wave:</strong> Silicon Labs EFR32ZG23 datasheet (2026) - 8-15mA active, 0.5µA sleep</p>
+                    <p><strong>Zigbee:</strong> Silicon Labs EFR32MG24 datasheet (2026) - 15-30mA active, 1.4µA sleep</p>
                     <p><strong>Thread:</strong> Nordic nRF52840 Product Spec - 15-25mA active, 0.6µA sleep</p>
                     <p><strong>Bluetooth:</strong> Bluetooth SIG Low Energy Spec v5.4/6.0 - 10-20mA active</p>
-                    <p><strong>Wi-Fi:</strong> Espressif ESP32 datasheet (2025) - 40-80mA active, 10µA deep sleep</p>
+                    <p><strong>Wi-Fi:</strong> Espressif ESP32 datasheet (2026) - 40-80mA active, 10µA deep sleep</p>
                   </div>
                 </div>
                 <div className="card">
@@ -468,7 +468,7 @@ export default function BatteryLifePage() {
                 </p>
               </div>
               <div style={{ marginTop: 'var(--space-md)', textAlign: 'center' }}>
-                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Calculator last updated: November 24, 2025 | Next review: May 2026</p>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Calculator last updated: February 15, 2026 | Next review: August 2026</p>
               </div>
             </div>
           </div>

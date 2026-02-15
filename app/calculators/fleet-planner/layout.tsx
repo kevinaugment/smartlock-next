@@ -26,7 +26,7 @@ export default function FleetPlannerLayout({ children }: { children: React.React
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
                 description: 'Analyze protocol fragmentation across your property portfolio. Calculate unification costs, maintenance savings, and payback period for fleet standardization.',
                 softwareVersion: '1.0',
-                datePublished: '2025-11-24',
+                datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },
             }} />
             <JsonLd data={{

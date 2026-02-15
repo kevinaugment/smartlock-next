@@ -72,13 +72,13 @@ export const mockArticles = [
     reading_time: 23,
     word_count: 4500,
     status: 'published',
-    published_at: '2024-01-15T10:00:00Z',
-    created_at: '2024-01-15T10:00:00Z',
-    updated_at: '2024-01-15T10:00:00Z',
+    published_at: '2026-01-15T10:00:00Z',
+    created_at: '2026-01-15T10:00:00Z',
+    updated_at: '2026-01-15T10:00:00Z',
   },
   {
     id: 2,
-    title: 'Smart Lock Battery Life: Complete 2024 Optimization Guide',
+    title: 'Smart Lock Battery Life: Complete 2026 Optimization Guide',
     slug: 'smart-lock-battery-life-guide',
     description: 'Maximize your smart lock battery life with proven optimization techniques. Learn about battery types, consumption patterns, and best practices.',
     content: `# Smart Lock Battery Life Guide
@@ -126,13 +126,13 @@ export const mockArticles = [
     reading_time: 20,
     word_count: 4000,
     status: 'published',
-    published_at: '2024-01-20T10:00:00Z',
-    created_at: '2024-01-20T10:00:00Z',
-    updated_at: '2024-01-20T10:00:00Z',
+    published_at: '2026-01-20T10:00:00Z',
+    created_at: '2026-01-20T10:00:00Z',
+    updated_at: '2026-01-20T10:00:00Z',
   },
   {
     id: 3,
-    title: 'Z-Wave vs Zigbee: Complete Protocol Comparison 2024',
+    title: 'Z-Wave vs Zigbee: Complete Protocol Comparison 2026',
     slug: 'zigbee-vs-zwave-comparison',
     description: 'In-depth comparison of Z-Wave and Zigbee protocols for smart locks. Learn about range, security, compatibility, and performance.',
     content: `# Z-Wave vs Zigbee Comparison
@@ -179,9 +179,9 @@ export const mockArticles = [
     reading_time: 15,
     word_count: 3000,
     status: 'published',
-    published_at: '2024-01-25T10:00:00Z',
-    created_at: '2024-01-25T10:00:00Z',
-    updated_at: '2024-01-25T10:00:00Z',
+    published_at: '2026-01-25T10:00:00Z',
+    created_at: '2026-01-25T10:00:00Z',
+    updated_at: '2026-01-25T10:00:00Z',
   },
 ]
 
@@ -191,7 +191,7 @@ export const mockUsers = [
     email: 'admin@smartlock.com',
     name: 'Smart Lock Engineering Team',
     role: 'admin',
-    created_at: '2024-01-01T00:00:00Z',
+    created_at: '2026-01-01T00:00:00Z',
   },
 ]
 

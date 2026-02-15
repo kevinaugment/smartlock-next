@@ -2,13 +2,13 @@
 
 import { useState } from 'react'
 
-// 2025 STR Industry Benchmarks (AirDNA, AllTheRooms, Mashvisor data)
+// 2026 STR Industry Benchmarks (AirDNA, AllTheRooms, Mashvisor data)
 const STR_BENCHMARKS = {
   avgLockoutCost: 125, // Emergency locksmith + guest compensation
   avgRekeyingCost: 175, // Lock replacement + labor
   avgGuestCompensation: 50, // Per lockout inconvenience
   checkInHandoffTime: 25, // Minutes for in-person key handoff
-  propertyManagerRate: 30, // $/hour (industry avg 2025)
+  propertyManagerRate: 30, // $/hour (industry avg 2026)
 }
 
 interface ROIResult {
@@ -36,11 +36,21 @@ export default function STRCalculator() {
   const [laborRate, setLaborRate] = useState(30)
   const [guestComp, setGuestComp] = useState(true)
 
+  // New professional fields
+  const [pmsIntegration, setPmsIntegration] = useState(0)
+  const [seasonalOccupancy, setSeasonalOccupancy] = useState('year-round')
+  const [propertyType, setPropertyType] = useState('apartment')
+  const [cleaningTurnover, setCleaningTurnover] = useState(1)
+  const [insuranceDiscount, setInsuranceDiscount] = useState(0)
+
   const calculate = (): ROIResult => {
+    // Seasonal occupancy factor
+    const seasonFactor: Record<string, number> = { 'year-round': 1.0, seasonal: 0.6, 'peak-only': 0.35 }
+    const seasonMul = seasonFactor[seasonalOccupancy] || 1.0
+
     // Time savings (key handoff elimination)
-    // Only ~35% of bookings require manual intervention (rest use self-check-in)
-    const yearlyHandoffs = properties * bookings * 12
-    const manualHandoffs = yearlyHandoffs * 0.35 // 35% need human intervention
+    const yearlyHandoffs = Math.round(properties * bookings * 12 * seasonMul)
+    const manualHandoffs = yearlyHandoffs * 0.35
     const minutesSaved = manualHandoffs * handoffTime
     const hoursSaved = minutesSaved / 60
     const labor = hoursSaved * laborRate
@@ -52,17 +62,27 @@ export default function STRCalculator() {
     // Lost key/rekeying savings
     const rekeying = properties * lostKeys * STR_BENCHMARKS.avgRekeyingCost
 
-    // Guest experience premium (reviews improvement)
-    const guestExp = guestComp ? properties * bookings * 12 * 2 : 0 // $2/booking smoother check-in
+    // Guest experience premium
+    const guestExp = guestComp ? yearlyHandoffs * 2 : 0
+
+    // Cleaning turnover access savings (time for cleaner key pickup)
+    const cleanerSavings = properties * cleaningTurnover * 365 * seasonMul * 10 * (laborRate / 60)
+
+    // Insurance discount savings
+    const insuranceSavings = properties * insuranceDiscount
+
+    // Property type lock cost adjustment
+    const lockPriceAdjust: Record<string, number> = { apartment: 1.0, house: 1.15, villa: 1.3, condo: 1.0 }
+    const adjustedLockPrice = lockPrice * (lockPriceAdjust[propertyType] || 1.0)
 
     // Total costs (Year 1)
-    const hardware = properties * lockPrice
-    const installation = properties * 150 // Average professional installation
-    const pmsAnnual = properties * 25 * 12 // Optional PMS integration fee (~$25/month, many are free)
-    const yearOneCost = hardware + installation + (pmsAnnual * 0) // PMS often free, set to 0 for conservative estimate
+    const hardware = properties * adjustedLockPrice
+    const installation = properties * 150
+    const pmsCost = pmsIntegration * 12 * properties
+    const yearOneCost = hardware + installation + pmsCost
 
     // Totals
-    const total = labor + lockoutSavings + rekeying + guestExp
+    const total = labor + lockoutSavings + rekeying + guestExp + Math.round(cleanerSavings) + insuranceSavings
     const net = total - yearOneCost
     const roi = yearOneCost > 0 ? (net / yearOneCost) * 100 : 0
     const payback = total > 0 ? yearOneCost / (total / 12) : 0
@@ -147,7 +167,7 @@ export default function STRCalculator() {
                   Lockouts per Property per Year: {lockouts}
                 </label>
                 <input type="range" min="0" max="12" value={lockouts} onChange={(e) => setLockouts(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
-                <p className="text-xs text-gray-500 mt-1">Industry avg: 0.5-1 lockouts/year (AirDNA 2025 data)</p>
+                <p className="text-xs text-gray-500 mt-1">Industry avg: 0.5-1 lockouts/year (AirDNA 2026 data)</p>
               </div>
 
               {/* Lost Keys */}
@@ -177,7 +197,7 @@ export default function STRCalculator() {
                   Property Manager/Your Hourly Rate: ${laborRate}/hr
                 </label>
                 <input type="range" min="15" max="75" step="5" value={laborRate} onChange={(e) => setLaborRate(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
-                <p className="text-xs text-gray-500 mt-1">Industry avg: $25-35/hr (2025 data)</p>
+                <p className="text-xs text-gray-500 mt-1">Industry avg: $25-35/hr (2026 data)</p>
               </div>
 
               {/* Guest Compensation */}
@@ -186,6 +206,51 @@ export default function STRCalculator() {
                   <input type="checkbox" checked={guestComp} onChange={(e) => setGuestComp(e.target.checked)} className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
                   <span className="ml-2 text-sm text-gray-700">Include guest experience premium ($2/booking smooth check-in)</span>
                 </label>
+              </div>
+
+              {/* New Professional Fields */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Property Type</label>
+                <select value={propertyType} onChange={(e) => setPropertyType(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                  <option value="apartment">Apartment/Flat (×1.0 lock cost)</option>
+                  <option value="condo">Condo (×1.0 lock cost)</option>
+                  <option value="house">House (×1.15 lock cost)</option>
+                  <option value="villa">Villa/Luxury (×1.3 lock cost)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Seasonal Occupancy</label>
+                <select value={seasonalOccupancy} onChange={(e) => setSeasonalOccupancy(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                  <option value="year-round">Year-Round (100% active months)</option>
+                  <option value="seasonal">Seasonal (60% active months)</option>
+                  <option value="peak-only">Peak Season Only (35% active months)</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">Affects booking volume and savings calculations</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  PMS Integration Cost: ${pmsIntegration}/month per property
+                </label>
+                <input type="range" min="0" max="50" step="5" value={pmsIntegration} onChange={(e) => setPmsIntegration(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <p className="text-xs text-gray-500 mt-1">Guesty, Hostaway, etc. (many offer free tiers)</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Cleaning Turnovers per Day: {cleaningTurnover}
+                </label>
+                <input type="range" min="0" max="4" value={cleaningTurnover} onChange={(e) => setCleaningTurnover(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <p className="text-xs text-gray-500 mt-1">Each turnover saves ~10 min on key coordination</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Annual Insurance Discount: ${insuranceDiscount}/property
+                </label>
+                <input type="range" min="0" max="200" step="25" value={insuranceDiscount} onChange={(e) => setInsuranceDiscount(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                <p className="text-xs text-gray-500 mt-1">Some insurers discount 5-15% for smart locks</p>
               </div>
             </div>
           </div>

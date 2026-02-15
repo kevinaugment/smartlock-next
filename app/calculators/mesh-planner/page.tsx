@@ -375,7 +375,7 @@ export default function MeshPlannerPage() {
             <div className="info-box">
               <div className="flex items-center justify-between mb-6">
                 <h3 style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--color-text-primary)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><BookOpen className="w-6 h-6" style={{ color: "var(--color-accent)" }} /> Technical Standards & Sources</h3>
-                <span className="badge badge-success">Verified Nov 2025</span>
+                <span className="badge badge-success">Verified Feb 2026</span>
               </div>
               <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-lg)" }}>All mesh calculations based on official IEEE/ITU standards, authoritative specifications, and verified market data</p>
 
@@ -407,7 +407,7 @@ export default function MeshPlannerPage() {
                       <ul className="ml-4 mt-1 space-y-0.5">
                         <li>- Link budget: 99 dB (+1 dBm TX, -98 dBm RX)</li>
                         <li>- 908MHz better penetration than 2.4GHz (30% longer range)</li>
-                        <li>- Source: Silicon Labs Z-Wave 700 Series datasheet (2025)</li>
+                        <li>- Source: Silicon Labs Z-Wave 700 Series datasheet (2026)</li>
                       </ul>
                     </li>
                     <li>• <strong>Thread:</strong> 10-25m indoor (Thread 1.3 Specification Section 4.2)
@@ -421,12 +421,12 @@ export default function MeshPlannerPage() {
                 </div>
 
                 <div className="card">
-                  <h4 style={{ fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><DollarSign className="w-4 h-4" style={{ color: "var(--color-accent)" }} /> Mesh Repeater Costs (Nov 2025)</h4>
+                  <h4 style={{ fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><DollarSign className="w-4 h-4" style={{ color: "var(--color-accent)" }} /> Mesh Repeater Costs (Feb 2026)</h4>
                   <ul className="space-y-1" style={{ color: "var(--color-text-secondary)" }}>
                     <li>• <strong>Zigbee:</strong> $20-30 (Aeotec Range Extender $30, generic $15-25, Amazon/AliExpress)</li>
                     <li>• <strong>Z-Wave:</strong> $25-40 (Aeotec $40, Zooz ZEN76 $30, Amazon/Best Buy)</li>
                     <li>• <strong>Thread:</strong> $30-50 (HomePod mini $99, Nanoleaf bulbs $20, average repeater)</li>
-                    <li>• <strong>Source:</strong> Amazon, Best Buy, Home Depot retail prices (Nov 2025)</li>
+                    <li>• <strong>Source:</strong> Amazon, Best Buy, Home Depot retail prices (Feb 2026)</li>
                   </ul>
                 </div>
 
@@ -439,7 +439,7 @@ export default function MeshPlannerPage() {
                     <li>• <strong>Z-Wave Guide:</strong> "2× path redundancy for critical nodes"</li>
                     <li>• <strong>Self-healing:</strong> ≥2 paths to each lock prevents single point of failure</li>
                     <li>• <strong>Reliability data:</strong> Professional mesh 99.5% vs ad-hoc 85-90% uptime</li>
-                    <li>• <strong>Source:</strong> NIST, CSA best practices, Zigbee Alliance 2023 Study, Z-Wave Alliance Case Studies 2022-2025</li>
+                    <li>• <strong>Source:</strong> NIST, CSA best practices, Zigbee Alliance 2023 Study, Z-Wave Alliance Case Studies 2022-2026</li>
                   </ul>
                 </div>
 
@@ -459,7 +459,7 @@ export default function MeshPlannerPage() {
                 </p>
               </div>
               <div className="mt-4 text-center">
-                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Calculator last updated: November 24, 2025 | Next review: May 2026</p>
+                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Calculator last updated: February 15, 2026 | Next review: August 2026</p>
               </div>
             </div>
           </div>

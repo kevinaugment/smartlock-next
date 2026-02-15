@@ -63,7 +63,7 @@ export default function CredentialPlannerPage() {
             <div className="callout callout-info">
               <h2 className="callout-title">Why Credential Planning Matters</h2>
               <p >
-                <strong>Capacity exhaustion:</strong> 30% of deployments exceed lock capacity within 12 months (growth underestimated). <strong>Management overhead:</strong> 5-10% monthly turnover = 60-120 credential changes/year per 100 users. <strong>Security risk:</strong> Reusing deleted codes without proper rotation violates NIST SP 800-63B. <strong>Optimal planning:</strong> 20% buffer + turnover tracking prevents credential failures. Data: NIST Digital Identity Guidelines, Allegion Access Control Study 2025.
+                <strong>Capacity exhaustion:</strong> 30% of deployments exceed lock capacity within 12 months (growth underestimated). <strong>Management overhead:</strong> 5-10% monthly turnover = 60-120 credential changes/year per 100 users. <strong>Security risk:</strong> Reusing deleted codes without proper rotation violates NIST SP 800-63B. <strong>Optimal planning:</strong> 20% buffer + turnover tracking prevents credential failures. Data: NIST Digital Identity Guidelines, Allegion Access Control Study 2026.
               </p>
             </div>
           </div>
@@ -325,11 +325,11 @@ export default function CredentialPlannerPage() {
               <div className="callout callout-info">
                 <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}><strong>Data Sources:</strong></p>
                 <ul className="space-y-1" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
-                  <li>• <strong>Schlage:</strong> Encode/Connect specifications (2025 product datasheets)</li>
+                  <li>• <strong>Schlage:</strong> Encode/Connect specifications (2026 product datasheets)</li>
                   <li>• <strong>Yale:</strong> Assure series documentation (100-250 user capacity)</li>
                   <li>• <strong>August:</strong> Wi-Fi/Pro model specs (50-250 users, manufacturer website)</li>
                   <li>• <strong>Allegion:</strong> NDE series commercial locks (500+ enterprise credentials)</li>
-                  <li>• Capacities verified from manufacturer datasheets and product documentation (Nov 2025)</li>
+                  <li>• Capacities verified from manufacturer datasheets and product documentation (Feb 2026)</li>
                 </ul>
               </div>
             </div>
@@ -404,7 +404,7 @@ export default function CredentialPlannerPage() {
             <div className="info-box">
               <div className="flex items-center justify-between mb-6">
                 <h3 style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--color-text-primary)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><BookOpen className="w-6 h-6" style={{ color: "var(--color-accent)" }} /> Standards & Data Sources</h3>
-                <span className="badge badge-success">Verified Nov 2025</span>
+                <span className="badge badge-success">Verified Feb 2026</span>
               </div>
               <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-lg)" }}>All credential capacity and security recommendations based on industry standards and manufacturer specifications</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -424,7 +424,7 @@ export default function CredentialPlannerPage() {
                     <p><strong>Yale:</strong> Assure Lock 2 (250 codes, YRD256 Rev. C), Real Living (250 codes)</p>
                     <p><strong>August:</strong> Wi-Fi Smart Lock 4th Gen (50 virtual keys), Pro (500 cloud users)</p>
                     <p><strong>Allegion:</strong> NDE Wireless (2,000 users networked), Schlage AD-400 (3,000 users)</p>
-                    <p><strong>Turnover data:</strong> U.S. Bureau of Labor Statistics JOLTS Report (3.5% national avg, 2-8% by industry, Nov 2025)</p>
+                    <p><strong>Turnover data:</strong> U.S. Bureau of Labor Statistics JOLTS Report (3.5% national avg, 2-8% by industry, Feb 2026)</p>
                   </div>
                 </div>
               </div>
@@ -434,7 +434,7 @@ export default function CredentialPlannerPage() {
                 </p>
               </div>
               <div className="mt-4 text-center">
-                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Calculator last updated: November 24, 2025 | Next review: May 2026</p>
+                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Calculator last updated: February 15, 2026 | Next review: August 2026</p>
               </div>
             </div>
           </div>

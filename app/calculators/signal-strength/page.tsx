@@ -9,7 +9,7 @@ import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Signal Strength Calculator | RF Analysis Tool (2025)',
+  title: 'Smart Lock Signal Strength Calculator | RF Analysis Tool (2026)',
   description: 'Calculate RF signal strength for smart locks using real physics (FSPL, dBm, path loss). Analyze Z-Wave 908MHz vs Zigbee 2.4GHz penetration through walls.',
   keywords: 'signal strength calculator, RF signal analysis, Z-Wave range, Zigbee signal strength, smart lock connectivity, dBm calculator, path loss',
   openGraph: {
@@ -157,7 +157,7 @@ export default function SignalStrengthPage() {
             <div className="content-card">
               <div className="flex justify-between items-center" style={{ marginBottom: 'var(--space-lg)' }}>
                 <h2 className="section-title" style={{ marginBottom: 0 }}>Material Attenuation Database</h2>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Updated: November 2025</span>
+                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Updated: February 2026</span>
               </div>
               <div className="overflow-x-auto">
                 <table className="data-table">
@@ -249,7 +249,7 @@ export default function SignalStrengthPage() {
             <div className="content-card">
               <div className="flex justify-between items-center" style={{ marginBottom: 'var(--space-lg)' }}>
                 <h2 className="section-title" style={{ marginBottom: 0 }}>Protocol RF Specifications</h2>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Updated: November 2025</span>
+                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Updated: February 2026</span>
               </div>
               <div className="overflow-x-auto">
                 <table className="data-table">
@@ -309,12 +309,12 @@ export default function SignalStrengthPage() {
               </div>
               <div className="callout callout-info" style={{ marginTop: 'var(--space-lg)' }}>
                 <p style={{ fontSize: '0.875rem', marginBottom: 'var(--space-sm)' }}>
-                  <strong>Data Sources (2025-2025 Standards):</strong>
+                  <strong>Data Sources (2026 Standards):</strong>
                 </p>
                 <ul style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }} className="space-y-1">
-                  <li>• <strong>Z-Wave:</strong> Silicon Labs Z-Wave 700/800 Series Specifications (2025) - *US: 908MHz, EU: 868MHz, AU: 921MHz, JP: 922MHz</li>
+                  <li>• <strong>Z-Wave:</strong> Silicon Labs Z-Wave 700/800 Series Specifications (2026) - *US: 908MHz, EU: 868MHz, AU: 921MHz, JP: 922MHz</li>
                   <li>• <strong>Zigbee/Thread:</strong> CSA (Connectivity Standards Alliance) Zigbee Specification, Thread Group Thread 1.3, IEEE 802.15.4-2020</li>
-                  <li>• <strong>Bluetooth:</strong> Bluetooth SIG Core Specification v5.4 (2023), v6.0 (2025)</li>
+                  <li>• <strong>Bluetooth:</strong> Bluetooth SIG Core Specification v5.4 (2023), v6.0 (2026)</li>
                   <li>• <strong>Wi-Fi:</strong> IEEE 802.11-2020 (Wi-Fi 6), regulatory limits per FCC Part 15/ETSI EN 300 328</li>
                 </ul>
                 <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginTop: 'var(--space-sm)' }}>
@@ -441,11 +441,11 @@ export default function SignalStrengthPage() {
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)', display: 'inline-flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
                   <BookOpen className="w-6 h-6" style={{ color: 'var(--color-accent)' }} /> Authoritative Data Sources & Standards
                 </h3>
-                <span className="badge badge-success" style={{ fontSize: '0.75rem' }}>Verified November 2025</span>
+                <span className="badge badge-success" style={{ fontSize: '0.75rem' }}>Verified Feb 2026</span>
               </div>
 
               <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-lg)', lineHeight: 1.6 }}>
-                All RF calculations, protocol specifications, and material attenuation values are derived from internationally recognized standards organizations and industry alliances. Data is current as of November 2025.
+                All RF calculations, protocol specifications, and material attenuation values are derived from internationally recognized standards organizations and industry alliances. Data is current as of February 2026.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -466,12 +466,12 @@ export default function SignalStrengthPage() {
                   <div className="space-y-2" style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>
                     <p><strong>IEEE 802.15.4-2020:</strong> Zigbee/Thread PHY layer specifications</p>
                     <p><strong>IEEE 802.11-2020:</strong> Wi-Fi 6 (802.11ax) RF performance</p>
-                    <p><strong>Bluetooth Core Spec v5.4/6.0:</strong> 2023-2025 releases</p>
+                    <p><strong>Bluetooth Core Spec v5.4/6.0:</strong> 2023-2026 releases</p>
                   </div>
                 </div>
                 <div className="card">
                   <h4 style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-sm)', display: 'inline-flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
-                    <Building2 className="w-5 h-5" style={{ color: 'var(--color-accent)' }} /> Industry Alliances (2025-2025)
+                    <Building2 className="w-5 h-5" style={{ color: 'var(--color-accent)' }} /> Industry Alliances (2026)
                   </h4>
                   <div className="space-y-2" style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>
                     <p><strong>Silicon Labs:</strong> Z-Wave 700/800 Series specifications and regional frequency allocations</p>
@@ -499,7 +499,7 @@ export default function SignalStrengthPage() {
 
               <div style={{ marginTop: 'var(--space-md)', textAlign: 'center' }}>
                 <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
-                  Calculator last updated: November 24, 2025 | Next review: May 2026
+                  Calculator last updated: February 15, 2026 | Next review: August 2026
                 </p>
               </div>
             </div>

@@ -1,11 +1,12 @@
 import { MetadataRoute } from 'next'
 import { getAllArticles } from '@/lib/articles/registry'
+import { BrandModel, ProductModel, TopNPageModel } from '@/lib/db/brand-models'
 
 const BASE_URL = 'https://www.slockhub.com'
 // Evaluated once at build time — every deploy refreshes sitemap dates
 const BUILD_DATE = new Date().toISOString()
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const articles = getAllArticles()
 
     // Static pages
@@ -61,8 +62,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         {
             url: `${BASE_URL}/brands`,
             lastModified: BUILD_DATE,
-            changeFrequency: 'monthly',
-            priority: 0.6,
+            changeFrequency: 'weekly',
+            priority: 0.7,
         },
         {
             url: `${BASE_URL}/resources`,
@@ -107,6 +108,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         'str-roi', 'installation-cost', 'compatibility', 'mesh-planner',
         'rf-coverage', 'fleet-planner', 'credential-planner', 'installation-time',
         'subscription-compare', 'offline-resilience', 'emergency-backup',
+        'access-capacity', 'security-compliance', 'lock-compare', 'warranty-lifecycle',
+        'network-bandwidth', 'poe-power', 'fire-compliance', 'guest-code', 'ble-range',
     ]
     const calculatorPages: MetadataRoute.Sitemap = calculatorSlugs.map((slug) => ({
         url: `${BASE_URL}/calculators/${slug}`,
@@ -115,10 +118,46 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.9,
     }))
 
+    // Dynamic brand/product/best pages (from database)
+    let brandPages: MetadataRoute.Sitemap = []
+    let productPages: MetadataRoute.Sitemap = []
+    let bestPages: MetadataRoute.Sitemap = []
+
+    try {
+        const brands = await BrandModel.getAll()
+        brandPages = brands.map((b) => ({
+            url: `${BASE_URL}/brands/${b.slug}`,
+            lastModified: b.updated_at || BUILD_DATE,
+            changeFrequency: 'weekly' as const,
+            priority: 0.8,
+        }))
+
+        const products = await ProductModel.getAll(200, 0)
+        productPages = products.map((p) => ({
+            url: `${BASE_URL}/brands/${p.brand_slug}/${p.slug}`,
+            lastModified: p.updated_at || BUILD_DATE,
+            changeFrequency: 'monthly' as const,
+            priority: 0.7,
+        }))
+
+        const topNPages = await TopNPageModel.getAllSlugs()
+        bestPages = topNPages.map((p) => ({
+            url: `${BASE_URL}/best/${p.slug}`,
+            lastModified: BUILD_DATE,
+            changeFrequency: 'weekly' as const,
+            priority: 0.8,
+        }))
+    } catch {
+        // Database not available — skip dynamic pages gracefully
+    }
+
     return [
         ...staticPages,
         ...categoryPages,
         ...articlePages,
         ...calculatorPages,
+        ...brandPages,
+        ...productPages,
+        ...bestPages,
     ]
 }

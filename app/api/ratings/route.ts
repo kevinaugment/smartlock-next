@@ -1,72 +1,74 @@
-export const runtime = 'edge'
+import { NextRequest, NextResponse } from 'next/server'
+import { getProductRating, getUserRating, submitRating } from '@/lib/services/rating-service'
 
-import { submitRating, getRating } from '@/lib/services/rating-service'
+function success(data: any) {
+    return NextResponse.json({ success: true, data })
+}
 
-export async function POST(request: Request) {
+function error(message: string, status = 400) {
+    return NextResponse.json({ success: false, error: message }, { status })
+}
+
+/**
+ * GET /api/ratings?product_id=X&fingerprint=Y
+ * 返回产品聚合评分 + 用户自己的评分
+ */
+export async function GET(request: NextRequest) {
     try {
-        const body = await request.json()
-        const { tool_slug, is_helpful } = body
+        const { searchParams } = new URL(request.url)
+        const productId = Number(searchParams.get('product_id'))
+        const fingerprint = searchParams.get('fingerprint') || ''
 
-        if (!tool_slug || typeof is_helpful !== 'boolean') {
-            return new Response(
-                JSON.stringify({ success: false, error: 'Missing required fields: tool_slug, is_helpful' }),
-                { status: 400, headers: { 'Content-Type': 'application/json' } }
-            )
+        if (!productId || isNaN(productId)) {
+            return error('Missing or invalid product_id')
         }
 
-        const ip = request.headers.get('cf-connecting-ip')
-            || request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-            || '127.0.0.1'
+        const aggregate = await getProductRating(productId)
+        const userRating = fingerprint
+            ? await getUserRating(productId, fingerprint)
+            : null
 
-        const result = await submitRating(tool_slug, is_helpful, ip)
-
-        if (!result.success) {
-            return new Response(
-                JSON.stringify(result),
-                { status: 400, headers: { 'Content-Type': 'application/json' } }
-            )
-        }
-
-        return new Response(
-            JSON.stringify(result),
-            { status: 200, headers: { 'Content-Type': 'application/json' } }
-        )
-    } catch (error) {
-        return new Response(
-            JSON.stringify({ success: false, error: 'Internal server error' }),
-            { status: 500, headers: { 'Content-Type': 'application/json' } }
-        )
+        return success({
+            average: aggregate.average,
+            count: aggregate.count,
+            userRating: userRating?.rating || null,
+        })
+    } catch (err: any) {
+        console.error('[API] GET /api/ratings error:', err)
+        return error('Internal server error', 500)
     }
 }
 
-export async function GET(request: Request) {
+/**
+ * POST /api/ratings
+ * Body: { product_id, rating, fingerprint }
+ */
+export async function POST(request: NextRequest) {
     try {
-        const { searchParams } = new URL(request.url)
-        const slug = searchParams.get('slug')
+        const body = await request.json()
+        const { product_id, rating, fingerprint } = body
 
-        if (!slug) {
-            return new Response(
-                JSON.stringify({ success: false, error: 'Missing slug parameter' }),
-                { status: 400, headers: { 'Content-Type': 'application/json' } }
-            )
+        if (!product_id || !rating || !fingerprint) {
+            return error('Missing required fields: product_id, rating, fingerprint')
         }
 
-        const result = await getRating(slug)
+        if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+            return error('Rating must be an integer between 1 and 5')
+        }
 
-        return new Response(
-            JSON.stringify(result),
-            {
-                status: 200,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
-                },
-            }
-        )
-    } catch (error) {
-        return new Response(
-            JSON.stringify({ success: false, error: 'Internal server error' }),
-            { status: 500, headers: { 'Content-Type': 'application/json' } }
-        )
+        if (typeof fingerprint !== 'string' || fingerprint.length < 10) {
+            return error('Invalid fingerprint')
+        }
+
+        const aggregate = await submitRating(product_id, rating, fingerprint)
+
+        return success({
+            average: aggregate.average,
+            count: aggregate.count,
+            userRating: rating,
+        })
+    } catch (err: any) {
+        console.error('[API] POST /api/ratings error:', err)
+        return error('Internal server error', 500)
     }
 }

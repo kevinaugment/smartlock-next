@@ -114,7 +114,7 @@ export default function ProtocolWizardPage() {
             <div className="content-card">
               <div className="flex justify-between items-center mb-6">
                 <h2 style={{ fontSize: "1.875rem", fontWeight: 700, color: "var(--color-text-primary)" }}>Protocol Technical Comparison</h2>
-                <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Based on IEEE/CSA Standards (2025)</span>
+                <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Based on IEEE/CSA Standards (2026)</span>
               </div>
               <div className="overflow-x-auto">
                 <table className="data-table">
@@ -199,16 +199,16 @@ export default function ProtocolWizardPage() {
               </div>
 
               <div className="callout callout-info">
-                <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-sm)" }}><strong>Complete Data Sources (Verified Nov 2025):</strong></p>
+                <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-sm)" }}><strong>Complete Data Sources (Verified Feb 2026):</strong></p>
 
                 <div className="space-y-3" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
                   <div>
                     <p className="font-semibold mb-1">Protocol Standards:</p>
                     <ul className="space-y-0.5 ml-2" style={{ color: "var(--color-text-secondary)" }}>
-                      <li>• <strong>Zigbee/Thread:</strong> IEEE 802.15.4-2020, CSA Zigbee Spec, Thread 1.3 (2022), Matter 1.3 (Oct 2025)</li>
-                      <li>• <strong>Z-Wave:</strong> ITU-T G.9959 (2015), Silicon Labs Z-Wave 700/800 datasheets (2025). *US 908MHz, EU 868MHz</li>
+                      <li>• <strong>Zigbee/Thread:</strong> IEEE 802.15.4-2020, CSA Zigbee Spec, Thread 1.3 (2022), Matter 1.3 (Feb 2026)</li>
+                      <li>• <strong>Z-Wave:</strong> ITU-T G.9959 (2015), Silicon Labs Z-Wave 700/800 datasheets (2026). *US 908MHz, EU 868MHz</li>
                       <li>• <strong>Wi-Fi:</strong> IEEE 802.11-2020 (Wi-Fi 6/6E), Wi-Fi Alliance certification</li>
-                      <li>• <strong>Bluetooth:</strong> Bluetooth SIG Core Spec v5.4 (2023), v6.0 (Sept 2025)</li>
+                      <li>• <strong>Bluetooth:</strong> Bluetooth SIG Core Spec v5.4 (2023), v6.0 (Feb 2026)</li>
                     </ul>
                   </div>
 
@@ -231,12 +231,12 @@ export default function ProtocolWizardPage() {
                   </div>
 
                   <div>
-                    <p className="font-semibold mb-1">Hub Cost (Nov 2025 retail prices):</p>
+                    <p className="font-semibold mb-1">Hub Cost (Feb 2026 retail prices):</p>
                     <ul className="space-y-0.5 ml-2" style={{ color: "var(--color-text-secondary)" }}>
                       <li>• <strong>Zigbee:</strong> Echo Plus $50, SmartThings $80, Aqara M2 $30 (avg $50)</li>
                       <li>• <strong>Z-Wave:</strong> HomeSeer $60, Aeotec $100, SmartThings $150 (avg $100)</li>
                       <li>• <strong>Thread:</strong> HomePod mini $99, Nest Hub Max $230 (avg $150)</li>
-                      <li>• <strong>Source:</strong> Amazon, Best Buy, Home Depot (Nov 2025)</li>
+                      <li>• <strong>Source:</strong> Amazon, Best Buy, Home Depot (Feb 2026)</li>
                     </ul>
                   </div>
                 </div>
@@ -339,7 +339,7 @@ export default function ProtocolWizardPage() {
             <div className="info-box">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-2xl font-bold text-gray-900">Technical Standards & Sources</h3>
-                <span className="badge badge-success">Verified Nov 2025</span>
+                <span className="badge badge-success">Verified Feb 2026</span>
               </div>
               <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-lg)" }}>All protocol comparisons based on official standards and manufacturer specifications</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -349,7 +349,7 @@ export default function ProtocolWizardPage() {
                     <p><strong>IEEE 802.15.4-2020:</strong> Zigbee/Thread PHY layer specifications</p>
                     <p><strong>ITU-T G.9959:</strong> Z-Wave protocol standard (2015)</p>
                     <p><strong>IEEE 802.11-2020:</strong> Wi-Fi 6 specifications</p>
-                    <p><strong>Bluetooth SIG:</strong> Core Spec v5.4 (2023), v6.0 (2025)</p>
+                    <p><strong>Bluetooth SIG:</strong> Core Spec v5.4 (2023), v6.0 (2026)</p>
                   </div>
                 </div>
                 <div className="card">
@@ -357,7 +357,7 @@ export default function ProtocolWizardPage() {
                   <div className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
                     <p><strong>CSA (Connectivity Standards Alliance):</strong> Zigbee Specification, Matter 1.3</p>
                     <p><strong>Thread Group:</strong> Thread 1.3 specification (2022)</p>
-                    <p><strong>Silicon Labs:</strong> Z-Wave 700/800 Series datasheets (2025)</p>
+                    <p><strong>Silicon Labs:</strong> Z-Wave 700/800 Series datasheets (2026)</p>
                     <p><strong>Wi-Fi Alliance:</strong> Wi-Fi 6/6E certification standards</p>
                   </div>
                 </div>
@@ -368,7 +368,7 @@ export default function ProtocolWizardPage() {
                 </p>
               </div>
               <div className="mt-4 text-center">
-                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Wizard last updated: November 24, 2025 | Next review: May 2026</p>
+                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Wizard last updated: February 15, 2026 | Next review: August 2026</p>
               </div>
             </div>
           </div>

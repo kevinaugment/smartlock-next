@@ -1,29 +1,51 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Cloudflare Pages 配置
   reactStrictMode: true,
-  
-  // 图片优化配置
+  poweredByHeader: false,
+
+  // Image optimization (Vercel built-in)
   images: {
-    unoptimized: true,
+    formats: ['image/avif', 'image/webp'],
   },
-  
-  // 排除smartlockold目录
+
+  // Page extensions
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
-  
-  // 排除不需要编译的文件
+
+  // Security & caching headers (migrated from Cloudflare _headers)
+  async headers() {
+    return [
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+        ],
+      },
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+          { key: 'X-XSS-Protection', value: '1; mode=block' },
+        ],
+      },
+    ]
+  },
+
+  // Exclude smartlockold directory
   webpack: (config, { isServer }) => {
     config.externals = config.externals || []
     config.externals.push({
       'gray-matter': 'gray-matter',
     })
-    
-    // 排除smartlockold目录
+
     config.watchOptions = {
       ...config.watchOptions,
       ignored: ['**/smartlockold/**', '**/node_modules/**'],
     }
-    
+
     return config
   },
 }

@@ -14,11 +14,32 @@ export default function InstallationTime() {
   const [technicianCount, setTechnicianCount] = useState(2)
   const [laborRate, setLaborRate] = useState(75)
 
+  // New professional fields
+  const [experienceLevel, setExperienceLevel] = useState('experienced')
+  const [preppedDoors, setPreppedDoors] = useState(false)
+  const [buildingType, setBuildingType] = useState('residential')
+  const [travelTime, setTravelTime] = useState(0)
+  const [inspectionRequired, setInspectionRequired] = useState(false)
+
   const calculate = () => {
     const baseTimePerDoor = { standard: 45, thick: 60, metal: 75, glass: 90 }[doorType] || 45
     const wireTimePerDoor = wireRequired ? 30 : 0
-    const totalMinutesPerDoor = baseTimePerDoor + wireTimePerDoor
-    const totalMinutes = doorCount * totalMinutesPerDoor
+
+    // Experience level multiplier
+    const experienceMultiplier = { junior: 1.3, experienced: 1.0, certified: 0.85 }[experienceLevel] || 1.0
+
+    // Prepped doors save 20 min (bore holes already drilled)
+    const prepSavings = preppedDoors ? -20 : 0
+
+    // Building type access overhead per door
+    const buildingOverhead = { residential: 0, commercial: 15, highrise: 25 }[buildingType] || 0
+
+    // Post-install inspection time
+    const inspectionTime = inspectionRequired ? 20 : 0
+
+    const adjustedTimePerDoor = Math.max(10, Math.round((baseTimePerDoor + wireTimePerDoor + prepSavings + buildingOverhead + inspectionTime) * experienceMultiplier))
+    const travelTotal = doorCount > 1 ? (doorCount - 1) * travelTime : 0
+    const totalMinutes = doorCount * adjustedTimePerDoor + travelTotal
     const totalHours = totalMinutes / 60
     const hoursPerTech = totalHours / technicianCount
     const crewDays = Math.ceil(hoursPerTech / 8)
@@ -32,7 +53,8 @@ export default function InstallationTime() {
       crewDays,
       laborCost: Math.round(laborCost),
       costPerDoor: Math.round(costPerDoor),
-      minutesPerDoor: totalMinutesPerDoor
+      minutesPerDoor: adjustedTimePerDoor,
+      travelTotal
     }
   }
 
@@ -80,6 +102,44 @@ export default function InstallationTime() {
                 <label className="block mb-2 font-medium">Labor Rate: ${laborRate}/hour</label>
                 <input type="range" min="50" max="150" step="5" value={laborRate} onChange={(e) => setLaborRate(Number(e.target.value))} className="w-full" />
               </div>
+              <div>
+                <label className="block mb-2 font-medium">Technician Experience Level</label>
+                <select value={experienceLevel} onChange={(e) => setExperienceLevel(e.target.value)} className="w-full p-3 border rounded-lg">
+                  <option value="junior">Junior / First Install (×1.3 time)</option>
+                  <option value="experienced">Experienced (standard time)</option>
+                  <option value="certified">Certified / Specialist (×0.85 time)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Building Type</label>
+                <select value={buildingType} onChange={(e) => setBuildingType(e.target.value)} className="w-full p-3 border rounded-lg">
+                  <option value="residential">Residential (no overhead)</option>
+                  <option value="commercial">Commercial (+15 min/door access)</option>
+                  <option value="highrise">High-Rise (+25 min/door access)</option>
+                </select>
+                <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>Elevator wait, security check-in, freight access</p>
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Travel Time Between Doors: {travelTime} min</label>
+                <input type="range" min="0" max="30" value={travelTime} onChange={(e) => setTravelTime(Number(e.target.value))} className="w-full" />
+                <div className="flex justify-between text-xs" style={{ color: 'var(--color-text-muted)' }}>
+                  <span>0 min (same area)</span>
+                  <span>30 min (multi-site)</span>
+                </div>
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Additional Factors</label>
+                <div className="space-y-2">
+                  <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: '1px solid var(--color-border)' }}>
+                    <input type="checkbox" checked={preppedDoors} onChange={(e) => setPreppedDoors(e.target.checked)} className="w-4 h-4" />
+                    <span>Doors Pre-Drilled (−20 min/door)</span>
+                  </label>
+                  <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: '1px solid var(--color-border)' }}>
+                    <input type="checkbox" checked={inspectionRequired} onChange={(e) => setInspectionRequired(e.target.checked)} className="w-4 h-4" />
+                    <span>Post-Install Inspection (+20 min/door)</span>
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -109,6 +169,12 @@ export default function InstallationTime() {
                   <span className="font-semibold">${result.costPerDoor}</span>
                 </div>
               </div>
+              {result.travelTotal > 0 && (
+                <div className="flex justify-between pb-3 border-b border-white/20">
+                  <span>Travel Time</span>
+                  <span className="font-semibold">{result.travelTotal} min</span>
+                </div>
+              )}
               <div className="pt-4 border-t-2 border-white/40">
                 <div className="text-sm opacity-90">Based on 8-hour work days</div>
               </div>
@@ -137,7 +203,7 @@ export default function InstallationTime() {
 
       <ToolRating toolSlug="installation-time" />
 
-          <RelatedResources calculatorSlug="installation-time-estimator" />
+      <RelatedResources calculatorSlug="installation-time-estimator" />
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation
@@ -151,6 +217,6 @@ export default function InstallationTime() {
           ← Back to All Calculators
         </Link>
       </div>
-    </div>
+    </div >
   )
 }

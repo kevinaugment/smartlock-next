@@ -1,81 +1,86 @@
-/**
- * 评分业务逻辑 Service
- */
-import { ToolRatingModel } from '@/lib/db/models'
+import { query, queryOne, execute } from '@/lib/db'
 
-// 有效的工具 slug 列表
-const VALID_TOOL_SLUGS = [
-    'lock-tco', 'battery-life', 'signal-strength', 'installation-cost',
-    'protocol-wizard', 'str-roi', 'mesh-planner', 'compatibility',
-    'credential-planner', 'fleet-planner', 'subscription-compare',
-    'installation-time', 'rf-coverage', 'offline-resilience', 'emergency-backup',
-]
+export interface RatingAggregate {
+    average: number
+    count: number
+}
 
-export interface RatingResult {
-    success: boolean
-    error?: string
-    data?: { total: number; helpful: number; ratingValue: number }
+export interface UserRating {
+    rating: number
+    created_at: string
 }
 
 /**
- * 将 IP 地址哈希化（隐私保护）
+ * 获取产品的聚合评分
  */
-async function hashIP(ip: string): Promise<string> {
-    const encoder = new TextEncoder()
-    const data = encoder.encode(ip + '_smartlockhub_salt')
-    const hash = await crypto.subtle.digest('SHA-256', data)
-    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('')
-}
+export async function getProductRating(productId: number): Promise<RatingAggregate> {
+    const result = await queryOne<{ avg_rating: number; count: number }>(
+        `SELECT 
+            COALESCE(AVG(CAST(rating AS REAL)), 0) as avg_rating,
+            COUNT(*) as count
+         FROM product_ratings 
+         WHERE product_id = ?`,
+        [productId]
+    )
 
-/**
- * 计算 ratingValue（1-5 映射）
- * 👍 = 5, 👎 = 1, 通过 helpful/total 加权计算
- */
-function calculateRatingValue(total: number, helpful: number): number {
-    if (total === 0) return 0
-    const ratio = helpful / total
-    return Math.round((ratio * 4 + 1) * 10) / 10  // 映射到 1-5, 保留 1 位小数
-}
-
-export async function submitRating(
-    toolSlug: string,
-    isHelpful: boolean,
-    ip: string
-): Promise<RatingResult> {
-    if (!VALID_TOOL_SLUGS.includes(toolSlug)) {
-        return { success: false, error: 'Invalid tool slug' }
-    }
-
-    const ipHash = await hashIP(ip)
-
-    try {
-        await ToolRatingModel.submit(toolSlug, isHelpful, ipHash)
-        const aggregate = await ToolRatingModel.getAggregate(toolSlug)
-        return {
-            success: true,
-            data: {
-                total: aggregate.total,
-                helpful: aggregate.helpful,
-                ratingValue: calculateRatingValue(aggregate.total, aggregate.helpful),
-            },
-        }
-    } catch (error) {
-        return { success: false, error: 'Failed to submit rating' }
+    return {
+        average: result ? Math.round(result.avg_rating * 10) / 10 : 0,
+        count: result?.count || 0,
     }
 }
 
-export async function getRating(toolSlug: string): Promise<RatingResult> {
-    try {
-        const aggregate = await ToolRatingModel.getAggregate(toolSlug)
-        return {
-            success: true,
-            data: {
-                total: aggregate.total,
-                helpful: aggregate.helpful,
-                ratingValue: calculateRatingValue(aggregate.total, aggregate.helpful),
-            },
-        }
-    } catch (error) {
-        return { success: false, error: 'Failed to get rating' }
+/**
+ * 获取用户对某产品的评分
+ */
+export async function getUserRating(productId: number, fingerprint: string): Promise<UserRating | null> {
+    return queryOne<UserRating>(
+        `SELECT rating, created_at FROM product_ratings WHERE product_id = ? AND fingerprint = ?`,
+        [productId, fingerprint]
+    )
+}
+
+/**
+ * 提交或更新评分 (upsert)
+ */
+export async function submitRating(productId: number, rating: number, fingerprint: string): Promise<RatingAggregate> {
+    if (rating < 1 || rating > 5 || !Number.isInteger(rating)) {
+        throw new Error('Rating must be an integer between 1 and 5')
+    }
+
+    if (!fingerprint || fingerprint.length < 10) {
+        throw new Error('Invalid fingerprint')
+    }
+
+    // Upsert: INSERT OR REPLACE
+    await execute(
+        `INSERT INTO product_ratings (product_id, rating, fingerprint, updated_at)
+         VALUES (?, ?, ?, datetime('now'))
+         ON CONFLICT(product_id, fingerprint) 
+         DO UPDATE SET rating = excluded.rating, updated_at = datetime('now')`,
+        [productId, rating, fingerprint]
+    )
+
+    // 返回更新后的聚合评分
+    return getProductRating(productId)
+}
+
+/**
+ * 获取品牌下所有产品的平均评分
+ */
+export async function getBrandAverageRating(brandSlug: string): Promise<RatingAggregate> {
+    const result = await queryOne<{ avg_rating: number; count: number }>(
+        `SELECT 
+            COALESCE(AVG(CAST(pr.rating AS REAL)), 0) as avg_rating,
+            COUNT(*) as count
+         FROM product_ratings pr
+         JOIN products p ON p.id = pr.product_id
+         JOIN brands b ON b.id = p.brand_id
+         WHERE b.slug = ?`,
+        [brandSlug]
+    )
+
+    return {
+        average: result ? Math.round(result.avg_rating * 10) / 10 : 0,
+        count: result?.count || 0,
     }
 }

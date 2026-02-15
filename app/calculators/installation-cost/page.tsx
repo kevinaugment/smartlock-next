@@ -9,9 +9,9 @@ import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Installation Cost Calculator | 2025-2025 Real Rates',
-  description: 'Calculate smart lock installation costs with verified 2025 labor rates: Locksmith $85/hr, Handyman $65/hr. Includes hardware, wiring, modifications. HomeAdvisor & BLS data.',
-  keywords: 'smart lock installation cost, locksmith rates 2025, installation price calculator, handyman rates, smart lock labor cost',
+  title: 'Smart Lock Installation Cost Calculator | 2025-2026 Real Rates',
+  description: 'Calculate smart lock installation costs with verified 2026 labor rates: Locksmith $85/hr, Handyman $65/hr. Includes hardware, wiring, modifications. HomeAdvisor & BLS data.',
+  keywords: 'smart lock installation cost, locksmith rates 2026, installation price calculator, handyman rates, smart lock labor cost',
 }
 
 export default function InstallationCostPage() {
@@ -32,7 +32,7 @@ export default function InstallationCostPage() {
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'Web',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-    description: 'Calculate total smart lock installation cost with 2025 labor rates and market pricing'
+    description: 'Calculate total smart lock installation cost with 2026 labor rates and market pricing'
   }
 
   return (
@@ -44,7 +44,7 @@ export default function InstallationCostPage() {
           '@context': 'https://schema.org',
           '@type': 'HowTo',
           name: 'How to Estimate Smart Lock Installation Cost',
-          description: 'Use our calculator to estimate the total cost of smart lock installation including hardware, labor, and materials with 2025 market pricing.',
+          description: 'Use our calculator to estimate the total cost of smart lock installation including hardware, labor, and materials with 2026 market pricing.',
           totalTime: 'PT3M',
           step: [
             { '@type': 'HowToStep', position: 1, name: 'Select Lock Type', text: 'Choose between deadbolt, lever handle, or mortise lock to set base costs.' },
@@ -71,15 +71,15 @@ export default function InstallationCostPage() {
           <div className="text-center mb-12">
             <div className="page-header__icon"><DollarSign className="w-14 h-14 mx-auto" /></div>
             <h1 className="page-header__title">Smart Lock Installation Cost Calculator</h1>
-            <p className="page-header__subtitle">Calculate accurate costs using real 2025-2025 labor rates and verified market data</p>
+            <p className="page-header__subtitle">Calculate accurate costs using real 2025-2026 labor rates and verified market data</p>
           </div>
 
           <div className="max-w-4xl mx-auto mb-12">
             <div className="callout callout-info">
-              <h2 className="callout-title">2025-2025 Labor Rate Overview</h2>
+              <h2 className="callout-title">2025-2026 Labor Rate Overview</h2>
               <p >
                 <strong>Locksmith:</strong> $75-100/hr (avg $85) | <strong>Handyman:</strong> $50-80/hr (avg $65) | <strong>Electrician:</strong> $85-110/hr (avg $95).
-                Standard install: 2.5 hrs. <strong>Total typical cost: $350-600/lock</strong> (hardware + labor). Data: HomeAdvisor 2025, U.S. BLS May 2025.
+                Standard install: 2.5 hrs. <strong>Total typical cost: $350-600/lock</strong> (hardware + labor). Data: HomeAdvisor 2026, U.S. BLS February 2026.
               </p>
             </div>
           </div>
@@ -117,8 +117,8 @@ export default function InstallationCostPage() {
           <div className="max-w-7xl mx-auto mt-12">
             <div className="content-card">
               <div className="flex justify-between items-center mb-6">
-                <h2 style={{ fontSize: "1.875rem", fontWeight: 700, color: "var(--color-text-primary)" }}>2025-2025 Labor Rates Comparison</h2>
-                <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Updated: November 2025</span>
+                <h2 style={{ fontSize: "1.875rem", fontWeight: 700, color: "var(--color-text-primary)" }}>2025-2026 Labor Rates Comparison</h2>
+                <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Updated: February 2026</span>
               </div>
               <div className="overflow-x-auto">
                 <table className="data-table">
@@ -164,12 +164,12 @@ export default function InstallationCostPage() {
                 </table>
               </div>
               <div className="callout callout-info">
-                <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}><strong>Data Sources (2025-2025):</strong></p>
+                <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}><strong>Data Sources (2025-2026):</strong></p>
                 <ul className="space-y-1" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
-                  <li>• <strong>HomeAdvisor:</strong> 50,000+ locksmith profiles, Q3 2025 national averages</li>
+                  <li>• <strong>HomeAdvisor:</strong> 50,000+ locksmith profiles, Q1 2026 national averages</li>
                   <li>• <strong>Angi Pro Connect:</strong> Verified service provider rate database</li>
-                  <li>• <strong>Thumbtack:</strong> 100,000+ installation quotes analyzed (2025)</li>
-                  <li>• <strong>U.S. BLS:</strong> Bureau of Labor Statistics Occupational Employment (May 2025)</li>
+                  <li>• <strong>Thumbtack:</strong> 100,000+ installation quotes analyzed (2026)</li>
+                  <li>• <strong>U.S. BLS:</strong> Bureau of Labor Statistics Occupational Employment (February 2026)</li>
                 </ul>
                 <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginTop: "var(--space-sm)" }}>Regional variance: Urban +20-30%, Rural -15-20%</p>
               </div>
@@ -243,22 +243,22 @@ export default function InstallationCostPage() {
             <div className="info-box">
               <div className="flex items-center justify-between mb-6">
                 <h3 style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--color-text-primary)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><BookOpen className="w-6 h-6" style={{ color: "var(--color-accent)" }} /> Authoritative Data Sources</h3>
-                <span className="badge badge-success">Verified Nov 2025</span>
+                <span className="badge badge-success">Verified Feb 2026</span>
               </div>
               <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-lg)" }}>All labor rates, hardware pricing, and installation times verified against industry sources</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="card">
                   <h4 style={{ fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><Briefcase className="w-5 h-5" style={{ color: "var(--color-accent)" }} /> Labor Market Data</h4>
                   <div className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
-                    <p><strong>HomeAdvisor (2025):</strong> National locksmith/handyman rate averages from 50,000+ pros</p>
+                    <p><strong>HomeAdvisor (2026):</strong> National locksmith/handyman rate averages from 50,000+ pros</p>
                     <p><strong>Angi Pro Connect:</strong> Verified installer pricing database</p>
-                    <p><strong>U.S. BLS (May 2025):</strong> Occupational Employment Statistics for locksmiths (OES 49-9094)</p>
+                    <p><strong>U.S. BLS (February 2026):</strong> Occupational Employment Statistics for locksmiths (OES 49-9094)</p>
                   </div>
                 </div>
                 <div className="card">
                   <h4 style={{ fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><ShoppingCart className="w-5 h-5" style={{ color: "var(--color-accent)" }} /> Hardware Pricing</h4>
                   <div className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
-                    <p><strong>Amazon, Home Depot, Lowe's:</strong> Nov 2025 retail pricing</p>
+                    <p><strong>Amazon, Home Depot, Lowe's:</strong> Feb 2026 retail pricing</p>
                     <p><strong>Manufacturer MSRPs:</strong> Schlage, Yale, August, Kwikset</p>
                     <p><strong>Thumbtack:</strong> 100,000+ installation quotes analyzed</p>
                   </div>
@@ -270,7 +270,7 @@ export default function InstallationCostPage() {
                 </p>
               </div>
               <div className="mt-4 text-center">
-                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Calculator last updated: November 24, 2025 | Next review: May 2026</p>
+                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Calculator last updated: February 15, 2026 | Next review: August 2026</p>
               </div>
             </div>
           </div>

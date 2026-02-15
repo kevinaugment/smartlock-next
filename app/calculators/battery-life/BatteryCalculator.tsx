@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 interface ProtocolData {
   protocol: string
+  label: string
   baseLifeDays: number
   idlePowerMw: number
   activePowerMw: number
@@ -11,200 +12,265 @@ interface ProtocolData {
 }
 
 const protocolData: ProtocolData[] = [
-  {
-    protocol: 'bluetooth',
-    baseLifeDays: 365,
-    idlePowerMw: 0.05,
-    activePowerMw: 15,
-    typicalCapacityMah: 2800
-  },
-  {
-    protocol: 'zigbee',
-    baseLifeDays: 365,
-    idlePowerMw: 0.02,
-    activePowerMw: 12,
-    typicalCapacityMah: 2800
-  },
-  {
-    protocol: 'zwave',
-    baseLifeDays: 365,
-    idlePowerMw: 0.03,
-    activePowerMw: 13,
-    typicalCapacityMah: 2800
-  },
-  {
-    protocol: 'wifi',
-    baseLifeDays: 90,
-    idlePowerMw: 100,
-    activePowerMw: 300,
-    typicalCapacityMah: 2800
-  },
-  {
-    protocol: 'thread',
-    baseLifeDays: 320,
-    idlePowerMw: 0.03,
-    activePowerMw: 14,
-    typicalCapacityMah: 2800
-  }
+  { protocol: 'zigbee', label: 'Zigbee', baseLifeDays: 365, idlePowerMw: 0.02, activePowerMw: 12, typicalCapacityMah: 2800 },
+  { protocol: 'zwave', label: 'Z-Wave', baseLifeDays: 365, idlePowerMw: 0.03, activePowerMw: 13, typicalCapacityMah: 2800 },
+  { protocol: 'thread', label: 'Thread', baseLifeDays: 320, idlePowerMw: 0.03, activePowerMw: 14, typicalCapacityMah: 2800 },
+  { protocol: 'ble', label: 'Bluetooth', baseLifeDays: 350, idlePowerMw: 0.05, activePowerMw: 15, typicalCapacityMah: 2800 },
+  { protocol: 'wifi', label: 'Wi-Fi', baseLifeDays: 90, idlePowerMw: 100, activePowerMw: 300, typicalCapacityMah: 2800 },
+  { protocol: 'nfc', label: 'NFC', baseLifeDays: 500, idlePowerMw: 0.01, activePowerMw: 8, typicalCapacityMah: 2800 },
 ]
+
+interface BatteryConfig {
+  key: string
+  label: string
+  cellCount: number
+  capacityMah: number
+  voltage: number
+}
+
+const batteryConfigs: BatteryConfig[] = [
+  { key: '4xAA', label: '4× AA', cellCount: 4, capacityMah: 2800, voltage: 1.5 },
+  { key: '8xAA', label: '8× AA', cellCount: 8, capacityMah: 2800, voltage: 1.5 },
+  { key: '4xC', label: '4× C Cell', cellCount: 4, capacityMah: 8000, voltage: 1.5 },
+  { key: 'CR123A-x2', label: '2× CR123A (3V)', cellCount: 2, capacityMah: 1500, voltage: 3.0 },
+  { key: 'lithium-pack', label: 'Li-Ion Pack (3.7V)', cellCount: 1, capacityMah: 5000, voltage: 3.7 },
+  { key: 'usb-c-rechargeable', label: 'USB-C Rechargeable', cellCount: 1, capacityMah: 8000, voltage: 3.7 },
+]
+
+const batteryChemistries: Record<string, { label: string; capacityMultiplier: number; coldMultiplier: number }> = {
+  'alkaline': { label: 'Alkaline (Standard)', capacityMultiplier: 1.0, coldMultiplier: 0.70 },
+  'lithium': { label: 'Lithium (Premium)', capacityMultiplier: 1.07, coldMultiplier: 0.90 },
+  'nimh': { label: 'NiMH Rechargeable', capacityMultiplier: 0.71, coldMultiplier: 0.75 },
+  'cr123a': { label: 'CR123A Lithium', capacityMultiplier: 1.0, coldMultiplier: 0.88 },
+  'li-ion': { label: 'Li-Ion (Built-in)', capacityMultiplier: 1.0, coldMultiplier: 0.85 },
+}
+
+const brandPresets: Record<string, { label: string; featureMultiplier: number; efficiency: string }> = {
+  'generic': { label: 'Generic / Custom', featureMultiplier: 1.0, efficiency: 'Standard' },
+  'yale': { label: 'Yale', featureMultiplier: 1.05, efficiency: 'Average' },
+  'schlage': { label: 'Schlage', featureMultiplier: 1.02, efficiency: 'Good' },
+  'august': { label: 'August', featureMultiplier: 1.08, efficiency: 'Average (Wi-Fi heavy)' },
+  'kwikset': { label: 'Kwikset', featureMultiplier: 1.03, efficiency: 'Good' },
+  'level': { label: 'Level', featureMultiplier: 0.92, efficiency: 'Excellent (compact)' },
+  'aqara': { label: 'Aqara', featureMultiplier: 0.95, efficiency: 'Excellent' },
+  'ultraloq': { label: 'Ultraloq', featureMultiplier: 1.10, efficiency: 'Average (multi-auth)' },
+  'betech': { label: 'Be-Tech', featureMultiplier: 0.94, efficiency: 'Excellent (commercial)' },
+}
 
 export default function BatteryCalculator() {
   const [protocol, setProtocol] = useState('zigbee')
   const [dailyUsage, setDailyUsage] = useState(10)
-  const [batteryType, setBatteryType] = useState('alkaline')
+  const [batteryConfig, setBatteryConfig] = useState('4xAA')
+  const [batteryChemistry, setBatteryChemistry] = useState('alkaline')
+  const [temperature, setTemperature] = useState('normal')
+  const [brand, setBrand] = useState('generic')
+  const [environment, setEnvironment] = useState('indoor')
+  const [nightMode, setNightMode] = useState(false)
+
+  // Feature toggles
   const [hasKeypad, setHasKeypad] = useState(true)
   const [hasAutoLock, setHasAutoLock] = useState(true)
-  const [temperature, setTemperature] = useState('normal')
+  const [hasFingerprint, setHasFingerprint] = useState(false)
+  const [hasCamera, setHasCamera] = useState(false)
+  const [hasDoorbell, setHasDoorbell] = useState(false)
+  const [hasBleAdvertising, setHasBleAdvertising] = useState(false)
+  const [hasWifiKeepAlive, setHasWifiKeepAlive] = useState(false)
 
   const calculateBatteryLife = () => {
     const protocolInfo = protocolData.find(p => p.protocol === protocol) || protocolData[0]
+    const config = batteryConfigs.find(c => c.key === batteryConfig) || batteryConfigs[0]
+    const chemistry = batteryChemistries[batteryChemistry] || batteryChemistries['alkaline']
+    const brandData = brandPresets[brand] || brandPresets['generic']
 
-    // Battery capacity by type (mAh)
-    const batteryCapacity: Record<string, number> = {
-      'alkaline': 2800,
-      'lithium': 3000,
-      'rechargeable': 2000
-    }
+    // Total capacity: cells × per-cell capacity × chemistry multiplier
+    const totalCapacityMah = config.cellCount * config.capacityMah * chemistry.capacityMultiplier
 
-    const capacityMah = batteryCapacity[batteryType]
-
-    // Calculate daily power consumption
+    // Daily power consumption
     const activeMinutesPerDay = dailyUsage * 0.5 // 30 seconds per operation
     const idleMinutesPerDay = 1440 - activeMinutesPerDay
 
     const dailyActiveMwh = (protocolInfo.activePowerMw * activeMinutesPerDay) / 60
     const dailyIdleMwh = (protocolInfo.idlePowerMw * idleMinutesPerDay) / 60
-    const dailyTotalMwh = dailyActiveMwh + dailyIdleMwh
+    let dailyTotalMwh = dailyActiveMwh + dailyIdleMwh
 
-    // Additional features power draw
+    // Feature multipliers
     let featureMultiplier = 1.0
-    if (hasKeypad) featureMultiplier *= 1.08 // Keypad backlight
-    if (hasAutoLock) featureMultiplier *= 1.05 // Motor engagement
+    if (hasKeypad) featureMultiplier *= 1.08
+    if (hasAutoLock) featureMultiplier *= 1.05
+    if (hasFingerprint) featureMultiplier *= 1.15
+    if (hasCamera) featureMultiplier *= 1.45
+    if (hasDoorbell) featureMultiplier *= 1.12
+    if (hasBleAdvertising) featureMultiplier *= 1.10
+    if (hasWifiKeepAlive) featureMultiplier *= 1.30
 
-    const adjustedDailyMwh = dailyTotalMwh * featureMultiplier
+    // Brand efficiency factor
+    featureMultiplier *= brandData.featureMultiplier
+
+    // Night mode saves ~8% overall (reduces polling 8hrs/day)
+    if (nightMode) featureMultiplier *= 0.92
+
+    dailyTotalMwh *= featureMultiplier
 
     // Temperature compensation
     let tempFactor = 1.0
-    if (temperature === 'cold') tempFactor = 0.7 // -10°C to 0°C
-    if (temperature === 'hot') tempFactor = 0.9 // 35°C to 45°C
+    if (temperature === 'cold') tempFactor = chemistry.coldMultiplier
+    if (temperature === 'freezing') tempFactor = chemistry.coldMultiplier * 0.7
+    if (temperature === 'hot') tempFactor = 0.9
 
-    // Battery voltage: AA = 1.5V, total energy = capacity * voltage
-    const totalEnergyMwh = (capacityMah * 1.5) * tempFactor
+    // Environment impact
+    let envFactor = 1.0
+    if (environment === 'outdoor-covered') envFactor = 0.95
+    if (environment === 'outdoor-exposed') envFactor = 0.85
 
-    // Calculate days
-    const estimatedDays = Math.floor(totalEnergyMwh / adjustedDailyMwh)
+    // Total energy available
+    const totalEnergyMwh = (totalCapacityMah * config.voltage) * tempFactor * envFactor
+
+    const estimatedDays = Math.floor(totalEnergyMwh / dailyTotalMwh)
+
+    // Annual battery cost estimate
+    const replacementsPerYear = estimatedDays > 0 ? 365 / estimatedDays : 0
+    const cellCost = batteryChemistry === 'lithium' ? 2.0 : batteryChemistry === 'nimh' ? 1.5 : batteryChemistry === 'cr123a' ? 3.5 : batteryChemistry === 'li-ion' ? 0 : 0.5
+    const annualBatteryCost = replacementsPerYear * config.cellCount * cellCost
 
     return {
       days: estimatedDays,
       months: Math.floor(estimatedDays / 30),
-      dailyPowerMwh: adjustedDailyMwh.toFixed(2),
-      totalEnergyMwh: totalEnergyMwh.toFixed(0)
+      dailyPowerMwh: dailyTotalMwh.toFixed(2),
+      totalEnergyMwh: totalEnergyMwh.toFixed(0),
+      annualCost: annualBatteryCost.toFixed(2),
+      replacementsPerYear: replacementsPerYear.toFixed(1),
     }
   }
 
   const result = calculateBatteryLife()
 
+  const labelStyle = { display: 'block' as const, fontSize: '0.875rem', fontWeight: 500 as const, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }
+  const hintStyle = { fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
       {/* Input Section */}
       <div className="lg:col-span-2 space-y-6">
-        <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Battery Configuration</h2>
+        <div className="content-card">
+          <h2 className="section-title">Battery Configuration</h2>
 
           <div className="space-y-6">
+            {/* Brand Preset */}
+            <div>
+              <label style={labelStyle}>Lock Brand Preset</label>
+              <select value={brand} onChange={(e) => setBrand(e.target.value)} className="form-input">
+                {Object.entries(brandPresets).map(([key, data]) => (
+                  <option key={key} value={key}>{data.label} — {data.efficiency}</option>
+                ))}
+              </select>
+              <p style={hintStyle}>Applies brand-specific power efficiency factor</p>
+            </div>
+
             {/* Protocol */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Communication Protocol
-              </label>
-              <select
-                value={protocol}
-                onChange={(e) => setProtocol(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="zigbee">Zigbee (Most Efficient)</option>
-                <option value="zwave">Z-Wave (Very Efficient)</option>
-                <option value="thread">Thread/Matter (Efficient)</option>
-                <option value="bluetooth">Bluetooth (Good)</option>
-                <option value="wifi">Wi-Fi (Least Efficient)</option>
+              <label style={labelStyle}>Communication Protocol</label>
+              <select value={protocol} onChange={(e) => setProtocol(e.target.value)} className="form-input">
+                {protocolData.map(p => (
+                  <option key={p.protocol} value={p.protocol}>{p.label} (Idle: {p.idlePowerMw}mW, Active: {p.activePowerMw}mW)</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Battery Configuration */}
+            <div>
+              <label style={labelStyle}>Battery Configuration</label>
+              <select value={batteryConfig} onChange={(e) => setBatteryConfig(e.target.value)} className="form-input">
+                {batteryConfigs.map(c => (
+                  <option key={c.key} value={c.key}>{c.label} — {c.capacityMah}mAh × {c.cellCount} @ {c.voltage}V</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Battery Chemistry */}
+            <div>
+              <label style={labelStyle}>Battery Chemistry</label>
+              <select value={batteryChemistry} onChange={(e) => setBatteryChemistry(e.target.value)} className="form-input">
+                {Object.entries(batteryChemistries).map(([key, data]) => (
+                  <option key={key} value={key}>{data.label}</option>
+                ))}
               </select>
             </div>
 
             {/* Daily Usage */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Daily Operations: {dailyUsage} times
-              </label>
+              <label style={labelStyle}>Daily Operations: {dailyUsage} times</label>
               <input
-                type="range"
-                min="1"
-                max="50"
-                value={dailyUsage}
+                type="range" min="1" max="100" value={dailyUsage}
                 onChange={(e) => setDailyUsage(Number(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }}
               />
-              <div className="flex justify-between text-xs text-gray-500 mt-1">
+              <div className="flex justify-between" style={hintStyle}>
                 <span>1/day</span>
-                <span>50/day</span>
+                <span>100/day</span>
               </div>
-            </div>
-
-            {/* Battery Type */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Battery Type (4× AA)
-              </label>
-              <select
-                value={batteryType}
-                onChange={(e) => setBatteryType(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="alkaline">Alkaline (2800mAh) - Standard</option>
-                <option value="lithium">Lithium (3000mAh) - Premium</option>
-                <option value="rechargeable">NiMH Rechargeable (2000mAh)</option>
-              </select>
             </div>
 
             {/* Temperature */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Operating Temperature
-              </label>
-              <select
-                value={temperature}
-                onChange={(e) => setTemperature(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="normal">Normal (15°C - 30°C)</option>
-                <option value="cold">Cold (-10°C - 0°C)</option>
-                <option value="hot">Hot (35°C - 45°C)</option>
+              <label style={labelStyle}>Operating Temperature</label>
+              <select value={temperature} onChange={(e) => setTemperature(e.target.value)} className="form-input">
+                <option value="freezing">Extreme Cold (below -10°C / 14°F)</option>
+                <option value="cold">Cold (-10°C to 5°C / 14°F to 41°F)</option>
+                <option value="normal">Normal (5°C to 35°C / 41°F to 95°F)</option>
+                <option value="hot">Hot (above 35°C / 95°F)</option>
               </select>
             </div>
 
-            {/* Features */}
+            {/* Installation Environment */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
-                Active Features
-              </label>
-              <div className="space-y-2">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={hasKeypad}
-                    onChange={(e) => setHasKeypad(e.target.checked)}
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                  <span className="ml-2 text-gray-700">Keypad with Backlight (+8% drain)</span>
+              <label style={labelStyle}>Installation Environment</label>
+              <select value={environment} onChange={(e) => setEnvironment(e.target.value)} className="form-input">
+                <option value="indoor">Indoor (climate controlled)</option>
+                <option value="outdoor-covered">Outdoor Covered (porch, awning)</option>
+                <option value="outdoor-exposed">Outdoor Exposed (direct weather)</option>
+              </select>
+              <p style={hintStyle}>Outdoor exposure increases self-discharge and humidity impact</p>
+            </div>
+
+            {/* Night Mode */}
+            <div>
+              <label style={labelStyle}>Power Save Mode</label>
+              <div className="grid grid-cols-2 gap-4">
+                <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'var(--space-md)', border: !nightMode ? '2px solid var(--color-accent)' : '2px solid var(--color-border)', borderRadius: 'var(--radius-md)', cursor: 'pointer', background: !nightMode ? 'var(--color-surface-alt)' : 'transparent' }}>
+                  <input type="radio" checked={!nightMode} onChange={() => setNightMode(false)} className="sr-only" />
+                  <span className="font-medium">Always On</span>
                 </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={hasAutoLock}
-                    onChange={(e) => setHasAutoLock(e.target.checked)}
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                  <span className="ml-2 text-gray-700">Auto-Lock Enabled (+5% drain)</span>
+                <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'var(--space-md)', border: nightMode ? '2px solid var(--color-accent)' : '2px solid var(--color-border)', borderRadius: 'var(--radius-md)', cursor: 'pointer', background: nightMode ? 'var(--color-surface-alt)' : 'transparent' }}>
+                  <input type="radio" checked={nightMode} onChange={() => setNightMode(true)} className="sr-only" />
+                  <span className="font-medium">Night Mode (−8%)</span>
                 </label>
+              </div>
+              <p style={hintStyle}>Reduces polling frequency during 11pm–7am</p>
+            </div>
+
+            {/* Active Features */}
+            <div>
+              <label style={labelStyle}>Active Features</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {[
+                  { checked: hasKeypad, setter: setHasKeypad, label: 'Keypad with Backlight', impact: '+8%' },
+                  { checked: hasAutoLock, setter: setHasAutoLock, label: 'Auto-Lock Enabled', impact: '+5%' },
+                  { checked: hasFingerprint, setter: setHasFingerprint, label: 'Fingerprint Reader', impact: '+15%' },
+                  { checked: hasCamera, setter: setHasCamera, label: 'Camera / Video Log', impact: '+45%' },
+                  { checked: hasDoorbell, setter: setHasDoorbell, label: 'Doorbell Integration', impact: '+12%' },
+                  { checked: hasBleAdvertising, setter: setHasBleAdvertising, label: 'BLE Always-On Advertising', impact: '+10%' },
+                  { checked: hasWifiKeepAlive, setter: setHasWifiKeepAlive, label: 'Wi-Fi Keep-Alive', impact: '+30%' },
+                ].map(({ checked, setter, label, impact }) => (
+                  <label key={label} className="flex items-center gap-2" style={{ fontSize: '0.875rem', padding: 'var(--space-xs) var(--space-sm)', borderRadius: 'var(--radius-sm)', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox" checked={checked}
+                      onChange={(e) => setter(e.target.checked)}
+                      style={{ width: '1rem', height: '1rem', accentColor: 'var(--color-accent)' }}
+                    />
+                    <span>{label}</span>
+                    <span style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)' }}>({impact})</span>
+                  </label>
+                ))}
               </div>
             </div>
           </div>
@@ -225,23 +291,23 @@ export default function BatteryCalculator() {
           <div className="space-y-3 text-sm bg-white/10 rounded-lg p-4 mb-6">
             <div className="flex justify-between">
               <span className="opacity-90">Protocol:</span>
-              <span className="font-semibold capitalize">{protocol}</span>
+              <span className="font-semibold">{protocolData.find(p => p.protocol === protocol)?.label || protocol}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="opacity-90">Battery:</span>
+              <span className="font-semibold">{batteryConfigs.find(c => c.key === batteryConfig)?.label || batteryConfig}</span>
             </div>
             <div className="flex justify-between">
               <span className="opacity-90">Daily Usage:</span>
               <span className="font-semibold">{dailyUsage}×</span>
             </div>
             <div className="flex justify-between">
-              <span className="opacity-90">Battery Type:</span>
-              <span className="font-semibold capitalize">{batteryType}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="opacity-90">Temperature:</span>
-              <span className="font-semibold capitalize">{temperature}</span>
+              <span className="opacity-90">Brand:</span>
+              <span className="font-semibold">{brandPresets[brand]?.label || 'Generic'}</span>
             </div>
           </div>
 
-          <div className="space-y-2 text-xs bg-white/10 rounded-lg p-4">
+          <div className="space-y-2 text-xs bg-white/10 rounded-lg p-4 mb-6">
             <div className="flex justify-between">
               <span className="opacity-90">Daily Power:</span>
               <span className="font-semibold">{result.dailyPowerMwh} mWh</span>
@@ -252,16 +318,29 @@ export default function BatteryCalculator() {
             </div>
           </div>
 
+          <div className="space-y-2 text-xs bg-white/10 rounded-lg p-4">
+            <div className="flex justify-between">
+              <span className="opacity-90">Replacements/Year:</span>
+              <span className="font-semibold">{result.replacementsPerYear}×</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="opacity-90">Annual Battery Cost:</span>
+              <span className="font-semibold">${result.annualCost}</span>
+            </div>
+          </div>
+
           <div className="mt-6 p-4 bg-white/10 rounded-lg">
             <p className="text-xs opacity-90">
               <strong>Tip:</strong> {
                 protocol === 'wifi'
-                  ? 'Wi-Fi locks drain batteries 4× faster. Consider Zigbee for longer life.'
-                  : temperature === 'cold'
-                    ? 'Cold temperatures reduce capacity by 30%. Use lithium batteries.'
-                    : dailyUsage > 30
-                      ? 'Heavy usage detected. Consider rechargeable batteries.'
-                      : 'Optimal configuration! Expect consistent performance.'
+                  ? 'Wi-Fi locks drain batteries 4× faster. Consider Zigbee or BLE for longer life.'
+                  : hasCamera
+                    ? 'Camera feature uses 45% more power. Consider hardwired power if available.'
+                    : temperature === 'cold' || temperature === 'freezing'
+                      ? 'Cold temps reduce capacity significantly. Use lithium batteries.'
+                      : dailyUsage > 50
+                        ? 'Very heavy usage. Consider USB-C rechargeable or hardwired locks.'
+                        : 'Optimal configuration! Expect consistent performance.'
               }
             </p>
           </div>

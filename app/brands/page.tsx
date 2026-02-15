@@ -1,83 +1,13 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import {
-  Lock, Home, Shield, DoorOpen, Key, Sparkles, AlertTriangle, Check, X
-} from 'lucide-react'
+import { AlertTriangle, Check, X, ExternalLink } from 'lucide-react'
+import { getBrands } from '@/lib/services/brand-service'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Brands - SLockHub.com',
-  description: 'Overview of major smart lock brands and manufacturers with protocol support and best use cases.',
+  description: 'Overview of major smart lock brands and manufacturers with protocol support, product lines, and best use cases.',
   alternates: { canonical: '/brands' },
 }
-
-const brands = [
-  {
-    name: 'Yale',
-    logo: <Lock className="w-9 h-9" />,
-    protocols: ['Zigbee', 'Z-Wave', 'Wi-Fi', 'Thread'],
-    priceRange: '$150-$300',
-    rating: 4.5,
-    pros: ['Trusted brand', 'Wide protocol support', 'Good battery life', 'HomeKit support'],
-    cons: ['Premium pricing', 'Some models cloud-dependent'],
-    bestFor: 'Homeowners wanting reliability',
-    ecosystems: ['Apple HomeKit', 'Google Home', 'Alexa', 'SmartThings'],
-  },
-  {
-    name: 'August',
-    logo: <Home className="w-9 h-9" />,
-    protocols: ['Wi-Fi', 'Zigbee'],
-    priceRange: '$200-$280',
-    rating: 4.3,
-    pros: ['Retrofit design', 'Easy installation', 'Auto-unlock', 'App-based'],
-    cons: ['Cloud required', 'Shorter battery life', 'Limited to Wi-Fi'],
-    bestFor: 'Renters and tech enthusiasts',
-    ecosystems: ['Apple HomeKit', 'Google Home', 'Alexa'],
-  },
-  {
-    name: 'Schlage',
-    logo: <Shield className="w-9 h-9" />,
-    protocols: ['Zigbee', 'Z-Wave', 'Wi-Fi'],
-    priceRange: '$180-$350',
-    rating: 4.6,
-    pros: ['Commercial grade', 'Excellent build quality', 'Long battery life', 'ANSI Grade 1'],
-    cons: ['Higher cost', 'Less modern app'],
-    bestFor: 'Security-focused users',
-    ecosystems: ['Apple HomeKit', 'Alexa', 'SmartThings', 'Ring'],
-  },
-  {
-    name: 'Kwikset',
-    logo: <DoorOpen className="w-9 h-9" />,
-    protocols: ['Zigbee', 'Z-Wave'],
-    priceRange: '$120-$250',
-    rating: 4.2,
-    pros: ['Budget-friendly', 'SmartKey technology', 'Easy rekey', 'Good value'],
-    cons: ['Plastic construction', 'Basic features'],
-    bestFor: 'Budget-conscious buyers',
-    ecosystems: ['Alexa', 'Google Home', 'SmartThings'],
-  },
-  {
-    name: 'Aqara',
-    logo: <Key className="w-9 h-9" />,
-    protocols: ['Zigbee', 'Thread'],
-    priceRange: '$180-$250',
-    rating: 4.4,
-    pros: ['Matter support', 'Affordable hub', 'Compact design', 'Good app'],
-    cons: ['Limited availability', 'Newer brand'],
-    bestFor: 'Smart home enthusiasts',
-    ecosystems: ['Apple HomeKit', 'Google Home', 'Alexa'],
-  },
-  {
-    name: 'Level',
-    logo: <Sparkles className="w-9 h-9" />,
-    protocols: ['Thread', 'Wi-Fi'],
-    priceRange: '$230-$330',
-    rating: 4.4,
-    pros: ['Invisible design', 'Matter compatible', 'Premium feel', 'Modern app'],
-    cons: ['Expensive', 'Limited models', 'Newer company'],
-    bestFor: 'Design-conscious users',
-    ecosystems: ['Apple HomeKit', 'Google Home', 'Alexa'],
-  },
-]
 
 const features = [
   { name: 'Auto-lock', description: 'Automatically locks after closing' },
@@ -90,7 +20,26 @@ const features = [
   { name: 'Voice Control', description: 'Alexa/Google Assistant support' },
 ]
 
-export default function Brands() {
+function getProtocols(brand: { supports_wifi: boolean; supports_zigbee: boolean; supports_zwave: boolean; supports_thread: boolean; supports_matter: boolean; supports_bluetooth: boolean }) {
+  const protocols: string[] = []
+  if (brand.supports_wifi) protocols.push('Wi-Fi')
+  if (brand.supports_zigbee) protocols.push('Zigbee')
+  if (brand.supports_zwave) protocols.push('Z-Wave')
+  if (brand.supports_thread) protocols.push('Thread')
+  if (brand.supports_matter) protocols.push('Matter')
+  if (brand.supports_bluetooth) protocols.push('Bluetooth')
+  return protocols
+}
+
+export default async function Brands() {
+  let brands: Awaited<ReturnType<typeof getBrands>> = []
+
+  try {
+    brands = await getBrands()
+  } catch {
+    // 数据库不可用时使用空数组，页面仍然可以渲染
+  }
+
   return (
     <div className="page-bg">
       <div className="container-main section">
@@ -115,76 +64,58 @@ export default function Brands() {
 
         {/* Brand Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {brands.map(brand => (
-            <div key={brand.name} className="card card-hover" style={{ padding: 0, overflow: 'hidden' }}>
-              <div style={{ background: 'var(--color-bg-dark)', padding: 'var(--space-xl)', color: 'var(--color-text-inverse)' }}>
-                <div className="flex items-center gap-3 mb-3">
-                  <span style={{ color: 'var(--color-text-inverse)' }}>{brand.logo}</span>
-                  <div>
-                    <h3 style={{ fontSize: '1.5rem', fontWeight: 700 }}>{brand.name}</h3>
-                    <div style={{ fontSize: '0.875rem', opacity: 0.9 }}>{brand.priceRange}</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} style={{ fontSize: '1.125rem', color: i < Math.floor(brand.rating) ? '#facc15' : 'var(--color-text-muted)' }}>
-                      ★
-                    </span>
-                  ))}
-                  <span style={{ marginLeft: 'var(--space-sm)', fontSize: '0.875rem' }}>{brand.rating}/5</span>
-                </div>
-              </div>
-
-              <div style={{ padding: 'var(--space-xl)' }}>
-                <div style={{ marginBottom: 'var(--space-md)' }}>
-                  <h4 className="form-label">Protocols:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {brand.protocols.map(p => (
-                      <span key={p} className="badge badge-accent">{p}</span>
-                    ))}
+          {brands.map(brand => {
+            const protocols = getProtocols(brand)
+            return (
+              <Link
+                key={brand.slug}
+                href={`/brands/${brand.slug}`}
+                className="card card-hover"
+                style={{ padding: 0, overflow: 'hidden', textDecoration: 'none', color: 'inherit' }}
+              >
+                <div style={{ background: 'var(--color-bg-dark)', padding: 'var(--space-xl)', color: 'var(--color-text-inverse)' }}>
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <h3 style={{ fontSize: '1.5rem', fontWeight: 700 }}>{brand.name}</h3>
+                      <div style={{ fontSize: '0.875rem', opacity: 0.9 }}>
+                        {brand.country} · Est. {brand.founded_year}
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-xs)' }}>
+                      <span className="badge badge-accent">{brand.product_count} products</span>
+                    </div>
                   </div>
                 </div>
 
-                <div style={{ marginBottom: 'var(--space-md)' }}>
-                  <h4 className="form-label">Pros:</h4>
-                  <ul className="space-y-1">
-                    {brand.pros.map((pro, i) => (
-                      <li key={i} className="check-item">
-                        <Check className="check-item__icon check-item__icon--success" />
-                        <span>{pro}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <div style={{ padding: 'var(--space-xl)' }}>
+                  <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)', lineHeight: 1.6 }}>
+                    {brand.description}
+                  </p>
 
-                <div style={{ marginBottom: 'var(--space-md)' }}>
-                  <h4 className="form-label">Cons:</h4>
-                  <ul className="space-y-1">
-                    {brand.cons.map((con, i) => (
-                      <li key={i} className="check-item">
-                        <X className="check-item__icon check-item__icon--danger" />
-                        <span>{con}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                  <div style={{ marginBottom: 'var(--space-md)' }}>
+                    <h4 className="form-label">Protocols:</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {protocols.map(p => (
+                        <span key={p} className="badge badge-accent">{p}</span>
+                      ))}
+                    </div>
+                  </div>
 
-                <div style={{ paddingTop: 'var(--space-md)', borderTop: '1px solid var(--color-border)' }}>
-                  <div style={{ fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>Best For:</div>
-                  <div style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>{brand.bestFor}</div>
-                </div>
-
-                <div style={{ marginTop: 'var(--space-md)', paddingTop: 'var(--space-md)', borderTop: '1px solid var(--color-border)' }}>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-sm)' }}>Works with:</div>
-                  <div className="flex flex-wrap gap-1">
-                    {brand.ecosystems.map(eco => (
-                      <span key={eco} className="badge badge-default">{eco}</span>
-                    ))}
+                  <div style={{ paddingTop: 'var(--space-md)', borderTop: '1px solid var(--color-border)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <span className="badge badge-default" style={{ textTransform: 'capitalize' }}>{brand.price_tier}</span>
+                        <span className="badge badge-default" style={{ marginLeft: 'var(--space-xs)', textTransform: 'capitalize' }}>{brand.target_market}</span>
+                      </div>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--color-accent)', fontWeight: 600 }}>
+                        View Products →
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              </Link>
+            )
+          })}
         </div>
 
         {/* Common Features */}

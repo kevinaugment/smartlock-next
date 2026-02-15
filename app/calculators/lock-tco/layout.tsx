@@ -26,7 +26,7 @@ export default function LockTCOLayout({ children }: { children: React.ReactNode 
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
                 description: 'Calculate total cost of ownership for smart lock deployments. Compare hardware, battery, subscription, and installation costs across protocols over time.',
                 softwareVersion: '1.0',
-                datePublished: '2025-11-24',
+                datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },
             }} />
             <JsonLd data={{

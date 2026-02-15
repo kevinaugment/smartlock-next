@@ -1,14 +1,46 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import {
-  ClipboardList, Shield, CheckCircle, Wrench, AlertTriangle
+  ClipboardList, Shield, CheckCircle, Wrench, AlertTriangle,
+  BookOpen, Table2, Ruler, GitFork
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Resources - SLockHub.com',
-  description: 'Curated resources, tools, and references for smart lock technology.',
+  title: 'Smart Lock Resources — Professional Guides, Tables & Diagrams | SLockHub',
+  description: 'Professional smart lock resources: glossary of 45+ terms, protocol comparison tables, SVG installation diagrams, and interactive buying guide flowcharts.',
   alternates: { canonical: '/resources' },
 }
+
+const professionalResources = [
+  {
+    title: 'Glossary',
+    description: '45+ industry terms with professional SVG diagrams. Searchable by category.',
+    href: '/resources/glossary',
+    icon: <BookOpen className="w-8 h-8" />,
+    badge: '45+ terms',
+  },
+  {
+    title: 'Reference Tables',
+    description: 'Protocol, grade, battery, and encryption comparison tables.',
+    href: '/resources/reference-tables',
+    icon: <Table2 className="w-8 h-8" />,
+    badge: '5 tables',
+  },
+  {
+    title: 'Installation Diagrams',
+    description: 'SVG diagrams for door anatomy, lock components, wiring, and measurements.',
+    href: '/resources/installation-guides',
+    icon: <Ruler className="w-8 h-8" />,
+    badge: '5 diagrams',
+  },
+  {
+    title: 'Buying Guide',
+    description: 'Interactive decision flowcharts for protocol and lock type selection.',
+    href: '/resources/buying-guide',
+    icon: <GitFork className="w-8 h-8" />,
+    badge: 'Interactive',
+  },
+]
 
 const sections = [
   {
@@ -85,8 +117,28 @@ export default function Resources() {
           <div className="page-header">
             <h1 className="page-header__title">Resources</h1>
             <p className="page-header__subtitle">
-              Curated collection of standards, tools, and references for smart lock professionals
+              Professional guides, reference tables, SVG diagrams, and decision tools for smart lock experts
             </p>
+          </div>
+
+          {/* Professional Resources */}
+          <div className="mb-24">
+            <h2 className="section-title">Professional Resources</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              {professionalResources.map(item => (
+                <Link key={item.title} href={item.href} className="icon-card">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="icon-card__icon">{item.icon}</span>
+                    <span className="badge badge-accent">{item.badge}</span>
+                  </div>
+                  <h3 className="icon-card__title text-xl">{item.title}</h3>
+                  <p className="icon-card__desc">{item.description}</p>
+                  <div className="text-sm font-semibold mt-3" style={{ color: 'var(--color-accent)' }}>
+                    Explore →
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
 
           {/* External Resources */}

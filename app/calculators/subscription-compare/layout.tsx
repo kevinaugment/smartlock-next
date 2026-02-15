@@ -26,7 +26,7 @@ export default function SubscriptionCompareLayout({ children }: { children: Reac
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
                 description: 'Compare long-term costs of cloud subscription vs local smart lock solutions. Calculate break-even point, annual costs, and total cost of ownership over time.',
                 softwareVersion: '1.0',
-                datePublished: '2025-11-24',
+                datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },
             }} />
             <JsonLd data={{

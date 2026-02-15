@@ -3,7 +3,8 @@ import type { Metadata } from 'next'
 import {
   DollarSign, Battery, Signal, DoorOpen, Wand2, Home,
   Link as LinkIcon, Radio, Building2, Key, Clock, Scale,
-  AlertTriangle, Zap, ClipboardList, Wrench, Calculator
+  AlertTriangle, Zap, ClipboardList, Wrench, Calculator,
+  Users, ShieldCheck, GitCompare, Timer, Wifi, Flame, KeyRound, Bluetooth
 } from 'lucide-react'
 import type { ReactNode } from 'react'
 
@@ -134,13 +135,87 @@ const calculators: { name: string; slug: string; icon: ReactNode; description: s
     features: ['Backup method assessment', 'Risk analysis', 'Security evaluation', 'Emergency scenario planning'],
     complexity: 'Simple',
   },
+  {
+    name: 'Access Control Capacity',
+    slug: 'access-capacity',
+    icon: <Users className="w-8 h-8" />,
+    description: 'Verify your locks can handle all users, credentials, and permission groups at scale',
+    features: ['User capacity analysis', 'Credential storage check', 'Platform comparison', 'Upgrade recommendations'],
+    complexity: 'Moderate',
+  },
+  {
+    name: 'Security Compliance Checker',
+    slug: 'security-compliance',
+    icon: <ShieldCheck className="w-8 h-8" />,
+    description: 'Evaluate ANSI/BHMA, UL 437, and EN 12209 standard compliance for your installation',
+    features: ['Grade assessment', 'Mandatory feature check', 'Compliance gaps', 'Standards reference'],
+    complexity: 'Moderate',
+  },
+  {
+    name: 'Smart Lock Comparison',
+    slug: 'lock-compare',
+    icon: <GitCompare className="w-8 h-8" />,
+    description: 'Side-by-side comparison of 2-4 smart lock models across specs, features, and price',
+    features: ['Multi-model compare', 'Feature matrix', 'Protocol analysis', 'Best value highlight'],
+    complexity: 'Simple',
+  },
+  {
+    name: 'Warranty & Lifecycle',
+    slug: 'warranty-lifecycle',
+    icon: <Timer className="w-8 h-8" />,
+    description: 'Predict product lifespan, warranty coverage gaps, and long-term replacement costs',
+    features: ['Lifespan prediction', 'Failure rate analysis', 'Replacement cost', 'Brand comparison'],
+    complexity: 'Moderate',
+  },
+  {
+    name: 'Network Bandwidth',
+    slug: 'network-bandwidth',
+    icon: <Wifi className="w-8 h-8" />,
+    description: 'Estimate bandwidth requirements for cloud-connected smart lock deployments',
+    features: ['Protocol bandwidth', 'Feature impact', 'Monthly data usage', 'Internet plan sizing'],
+    complexity: 'Moderate',
+  },
+  {
+    name: 'PoE Power Budget',
+    slug: 'poe-power',
+    icon: <Zap className="w-8 h-8" />,
+    description: 'Plan Power over Ethernet budgets for hardwired commercial smart lock installations',
+    features: ['Per-port power check', 'Switch budget analysis', 'Cable loss calculation', 'Expansion capacity'],
+    complexity: 'Moderate',
+  },
+  {
+    name: 'Fire Code Compliance',
+    slug: 'fire-compliance',
+    icon: <Flame className="w-8 h-8" />,
+    description: 'Verify IBC, NFPA, and ADA fire safety compliance for smart lock installations',
+    features: ['Code violation check', 'ADA compliance', 'Egress verification', 'FACP integration'],
+    complexity: 'Moderate',
+  },
+  {
+    name: 'Guest Code Planner',
+    slug: 'guest-code',
+    icon: <KeyRound className="w-8 h-8" />,
+    description: 'Plan guest code capacity, rotation schedules, and collision risk for smart locks',
+    features: ['Code capacity check', 'Collision probability', 'Rotation planning', 'Brand limits'],
+    complexity: 'Simple',
+  },
+  {
+    name: 'BLE Range Calculator',
+    slug: 'ble-range',
+    icon: <Bluetooth className="w-8 h-8" />,
+    description: 'Estimate Bluetooth signal coverage for proximity-based smart lock unlocking',
+    features: ['RSSI estimation', 'Path loss calculation', 'Obstacle attenuation', 'Reliability score'],
+    complexity: 'Moderate',
+  },
 ]
 
 const categories: { name: string; icon: ReactNode; calculators: string[] }[] = [
-  { name: 'Power & Energy', icon: <Zap className="w-7 h-7" />, calculators: ['battery-life'] },
-  { name: 'Connectivity', icon: <Radio className="w-7 h-7" />, calculators: ['signal-strength'] },
-  { name: 'Planning & Budget', icon: <ClipboardList className="w-7 h-7" />, calculators: ['installation-cost'] },
-  { name: 'Hardware', icon: <Wrench className="w-7 h-7" />, calculators: ['compatibility'] },
+  { name: 'Power & Energy', icon: <Zap className="w-7 h-7" />, calculators: ['battery-life', 'poe-power'] },
+  { name: 'Connectivity', icon: <Radio className="w-7 h-7" />, calculators: ['signal-strength', 'ble-range', 'rf-coverage', 'mesh-planner', 'network-bandwidth'] },
+  { name: 'Planning & Budget', icon: <ClipboardList className="w-7 h-7" />, calculators: ['lock-tco', 'installation-cost', 'installation-time', 'subscription-compare', 'str-roi', 'fleet-planner', 'warranty-lifecycle'] },
+  { name: 'Hardware', icon: <Wrench className="w-7 h-7" />, calculators: ['compatibility', 'lock-compare', 'fire-compliance'] },
+  { name: 'Security & Compliance', icon: <ShieldCheck className="w-7 h-7" />, calculators: ['security-compliance', 'offline-resilience', 'emergency-backup', 'credential-planner', 'access-capacity', 'guest-code'] },
+  { name: 'Comparison & Selection', icon: <Wand2 className="w-7 h-7" />, calculators: ['protocol-wizard', 'lock-compare'] },
 ]
 
 export default function CalculatorsPage() {
@@ -182,7 +257,7 @@ export default function CalculatorsPage() {
           {/* Categories */}
           <div className="mb-16">
             <h2 className="section-title">Browse by Category</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {categories.map((category) => (
                 <div key={category.name} className="card card-hover">
                   <div className="mb-2 text-color-accent">{category.icon}</div>

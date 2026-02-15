@@ -26,7 +26,7 @@ export default function RFCoverageLayout({ children }: { children: React.ReactNo
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
                 description: 'Plan mesh network topology and signal coverage for smart lock deployments. Calculate required hubs, effective range, and signal quality based on building specs and protocol.',
                 softwareVersion: '1.0',
-                datePublished: '2025-11-24',
+                datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },
             }} />
             <JsonLd data={{

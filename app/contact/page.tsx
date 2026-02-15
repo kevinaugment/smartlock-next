@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { Mail, MessageCircle, BookOpen, Check } from 'lucide-react'
+import ContactForm from '@/components/ContactForm'
 
 export const metadata: Metadata = {
   title: 'Contact - SLockHub.com',
@@ -59,6 +60,10 @@ export default function Contact() {
                 For urgent technical issues, please include &quot;URGENT&quot; in your subject line.
               </p>
             </div>
+          </div>
+
+          <div style={{ marginBottom: 'var(--space-xl)' }}>
+            <ContactForm />
           </div>
 
           <div className="info-box">

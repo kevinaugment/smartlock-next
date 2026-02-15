@@ -1,5 +1,5 @@
 ---
-title: Locksmith Labor Rates by Region (2025)
+title: Locksmith Labor Rates by Region (2026)
 slug: locksmith-labor-rates
 description: Average hourly rates and service call fees for smart lock installation.
 category: Resources

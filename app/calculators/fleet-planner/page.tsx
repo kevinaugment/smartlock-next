@@ -13,6 +13,13 @@ export default function FleetPlanner() {
   const [currentProtocols, setCurrentProtocols] = useState<string[]>(['zigbee', 'wifi'])
   const [budget, setBudget] = useState('medium')
 
+  // New professional fields
+  const [propertyType, setPropertyType] = useState('residential')
+  const [avgLockAge, setAvgLockAge] = useState(3)
+  const [managedByPM, setManagedByPM] = useState(false)
+  const [region, setRegion] = useState('us')
+  const [rolloutStrategy, setRolloutStrategy] = useState('phased')
+
   const toggleProtocol = (p: string) => {
     setCurrentProtocols(prev => prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p])
   }
@@ -21,11 +28,31 @@ export default function FleetPlanner() {
     const totalLocks = properties * avgLocksPerProperty
     const protocolCount = currentProtocols.length
     const fragmentationScore = Math.min(100, protocolCount * 25)
-    const unificationCost = totalLocks * 200
+
+    // Property type cost multiplier
+    const typeCostMultiplier = { residential: 1.0, commercial: 1.35, mixed: 1.15 }[propertyType] || 1.0
+
+    // Region multiplier
+    const regionMultiplier: Record<string, number> = { us: 1.0, eu: 1.15, uk: 1.10, asia: 0.65, 'middle-east': 0.80, canada: 1.05, australia: 1.20 }
+    const regMul = regionMultiplier[region] || 1.0
+
+    const unificationCost = Math.round(totalLocks * 200 * typeCostMultiplier * regMul)
     const maintenanceSavings = protocolCount > 1 ? totalLocks * 50 : 0
     const trainingSavings = protocolCount > 1 ? properties * 100 : 0
-    const annualSavings = maintenanceSavings + trainingSavings
-    const paybackYears = annualSavings > 0 ? unificationCost / annualSavings : 0
+
+    // PM management adds training overhead but also increases savings potential
+    const pmOverhead = managedByPM ? properties * 75 : 0
+    const pmSavingsBoost = managedByPM ? properties * 40 : 0
+
+    const annualSavings = maintenanceSavings + trainingSavings + pmSavingsBoost
+    const totalCost = unificationCost + pmOverhead
+    const paybackYears = annualSavings > 0 ? totalCost / annualSavings : 0
+
+    // Lock age urgency (older = more urgent)
+    const urgencyLabel = avgLockAge >= 7 ? 'Critical — immediate replacement recommended' : avgLockAge >= 4 ? 'Moderate — plan replacement within 12 months' : 'Low — locks still within typical lifespan'
+
+    // Rollout timeline
+    const rolloutMonths = { 'all-at-once': Math.ceil(totalLocks / 20), phased: Math.ceil(totalLocks / 10) * 3, 'as-needed': Math.ceil(avgLockAge * 6) }[rolloutStrategy] || 12
 
     return {
       totalLocks,
@@ -36,7 +63,10 @@ export default function FleetPlanner() {
       trainingSavings,
       annualSavings,
       paybackYears: Math.round(paybackYears * 10) / 10,
-      recommendation: protocolCount > 2 ? 'Highly recommend unification' : protocolCount > 1 ? 'Consider unification' : 'Already unified'
+      recommendation: protocolCount > 2 ? 'Highly recommend unification' : protocolCount > 1 ? 'Consider unification' : 'Already unified',
+      urgencyLabel,
+      rolloutMonths,
+      pmOverhead
     }
   }
 
@@ -76,6 +106,48 @@ export default function FleetPlanner() {
                   ))}
                 </div>
               </div>
+              <div>
+                <label className="block mb-2 font-medium">Property Type</label>
+                <select value={propertyType} onChange={(e) => setPropertyType(e.target.value)} className="w-full p-3 border rounded-lg">
+                  <option value="residential">Residential (standard cost)</option>
+                  <option value="commercial">Commercial (×1.35 cost)</option>
+                  <option value="mixed">Mixed Portfolio (×1.15 cost)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Average Lock Age: {avgLockAge} years</label>
+                <input type="range" min="0" max="10" value={avgLockAge} onChange={(e) => setAvgLockAge(Number(e.target.value))} className="w-full" />
+                <div className="flex justify-between text-xs" style={{ color: 'var(--color-text-muted)' }}>
+                  <span>New</span>
+                  <span>10 years</span>
+                </div>
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Market Region</label>
+                <select value={region} onChange={(e) => setRegion(e.target.value)} className="w-full p-3 border rounded-lg">
+                  <option value="us">United States (×1.0)</option>
+                  <option value="eu">European Union (×1.15)</option>
+                  <option value="uk">United Kingdom (×1.10)</option>
+                  <option value="canada">Canada (×1.05)</option>
+                  <option value="australia">Australia / NZ (×1.20)</option>
+                  <option value="asia">Asia Pacific (×0.65)</option>
+                  <option value="middle-east">Middle East / Africa (×0.80)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Rollout Strategy</label>
+                <select value={rolloutStrategy} onChange={(e) => setRolloutStrategy(e.target.value)} className="w-full p-3 border rounded-lg">
+                  <option value="all-at-once">All at Once (fastest, highest upfront cost)</option>
+                  <option value="phased">Phased Quarterly (balanced approach)</option>
+                  <option value="as-needed">As-Needed Replacement (lowest upfront cost)</option>
+                </select>
+              </div>
+              <div>
+                <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: '1px solid var(--color-border)' }}>
+                  <input type="checkbox" checked={managedByPM} onChange={(e) => setManagedByPM(e.target.checked)} className="w-4 h-4" />
+                  <span>Managed by External Property Manager (+$75/property training)</span>
+                </label>
+              </div>
             </div>
           </div>
 
@@ -107,6 +179,15 @@ export default function FleetPlanner() {
                   <span>Annual Savings</span>
                   <span className="font-semibold">${result.annualSavings}</span>
                 </div>
+              </div>
+              {result.urgencyLabel && (
+                <div className="p-3 bg-white/10 rounded-lg text-xs mb-4">
+                  <p><strong>Lock Age Urgency:</strong> {result.urgencyLabel}</p>
+                </div>
+              )}
+              <div className="p-3 bg-white/10 rounded-lg text-xs mb-4">
+                <p><strong>Est. Rollout Timeline:</strong> {result.rolloutMonths} months</p>
+                {result.pmOverhead > 0 && <p className="mt-1"><strong>PM Training Cost:</strong> ${result.pmOverhead}</p>}
               </div>
               <div className="pt-4 border-t-2 border-white/40">
                 <div className="flex justify-between">
@@ -142,7 +223,7 @@ export default function FleetPlanner() {
 
       <ToolRating toolSlug="fleet-planner" />
 
-          <RelatedResources calculatorSlug="multi-property-fleet-planner" />
+      <RelatedResources calculatorSlug="multi-property-fleet-planner" />
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

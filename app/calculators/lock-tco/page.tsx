@@ -9,7 +9,7 @@ import { RelatedResources } from '@/components/calculators/RelatedResources'
 interface TCOInputs {
   lockPrice: number
   doorCount: number
-  protocol: 'wifi' | 'zigbee' | 'zwave' | 'thread'
+  protocol: 'wifi' | 'zigbee' | 'zwave' | 'thread' | 'ble' | 'nfc'
   years: number
   installType: 'diy' | 'pro'
   installCostPerDoor: number
@@ -17,6 +17,12 @@ interface TCOInputs {
   subscriptionPerDoorPerMonth: number
   batteryPricePerSet: number
   hubCostOverride: number | null
+  region: 'us' | 'eu' | 'uk' | 'asia' | 'middle-east'
+  scale: 'residential' | 'small-commercial' | 'enterprise'
+  lockGrade: 'grade-3' | 'grade-2' | 'grade-1' | 'bhma-commercial'
+  warrantyYears: number
+  cloudPlatformFee: number
+  maintenanceContract: 'none' | 'basic' | 'premium'
 }
 
 interface TCOResult {
@@ -25,6 +31,9 @@ interface TCOResult {
   hub: number
   install: number
   subscriptions: number
+  cloudPlatform: number
+  maintenance: number
+  warranty: number
   total: number
   annualCost: number
   perDoorCost: number
@@ -32,15 +41,44 @@ interface TCOResult {
   hardwareShare: number
   batteriesShare: number
   subscriptionsShare: number
+  cloudShare: number
+  maintenanceShare: number
   mechanicalTotal: number
   deltaVsMechanical: number
 }
 
 function getDefaultHubCost(protocol: string): number {
-  if (protocol === 'wifi') return 0
-  if (protocol === 'zigbee') return 80
-  if (protocol === 'zwave') return 120
-  return 150 // thread
+  const costs: Record<string, number> = {
+    wifi: 0, zigbee: 80, zwave: 120, thread: 150, ble: 0, nfc: 0
+  }
+  return costs[protocol] ?? 0
+}
+
+function getBatteryLifeMonths(protocol: string): number {
+  const life: Record<string, number> = {
+    wifi: 3, zigbee: 12, zwave: 12, thread: 10, ble: 14, nfc: 18
+  }
+  return life[protocol] ?? 12
+}
+
+function getRegionMultiplier(region: string): number {
+  const multipliers: Record<string, number> = {
+    us: 1.0, eu: 1.15, uk: 1.20, asia: 0.70, 'middle-east': 1.10
+  }
+  return multipliers[region] ?? 1.0
+}
+
+function getMaintenanceCost(contract: string, doorCount: number): number {
+  if (contract === 'basic') return doorCount * 5 // $5/door/year
+  if (contract === 'premium') return doorCount * 15 // $15/door/year
+  return 0
+}
+
+function getWarrantyReplacementCost(warrantyYears: number, totalYears: number, lockPrice: number, doorCount: number): number {
+  if (totalYears <= warrantyYears) return 0
+  const yearsOutOfWarranty = totalYears - warrantyYears
+  const failureRatePerYear = 0.03 // 3% annual failure rate
+  return yearsOutOfWarranty * failureRatePerYear * lockPrice * doorCount
 }
 
 function adjustForUsage(dailyUsage: number): number {
@@ -61,27 +99,39 @@ export default function TCOCalculator() {
     subscriptionPerDoorPerMonth: 0,
     batteryPricePerSet: 8,
     hubCostOverride: null,
+    region: 'us',
+    scale: 'residential',
+    lockGrade: 'grade-3',
+    warrantyYears: 2,
+    cloudPlatformFee: 0,
+    maintenanceContract: 'none',
   })
 
   const calculateTCO = (): TCOResult => {
-    const { lockPrice, doorCount, protocol, years, installType, installCostPerDoor, dailyUsage, subscriptionPerDoorPerMonth, batteryPricePerSet, hubCostOverride } = inputs
+    const { lockPrice, doorCount, protocol, years, installType, installCostPerDoor, dailyUsage, subscriptionPerDoorPerMonth, batteryPricePerSet, hubCostOverride, region, warrantyYears, cloudPlatformFee, maintenanceContract } = inputs
 
-    const hub = hubCostOverride ?? getDefaultHubCost(protocol)
-    const baseBatteryLifeMonths = protocol === 'wifi' ? 3 : protocol === 'thread' ? 10 : 12
+    const regionMul = getRegionMultiplier(region)
+    const hub = (hubCostOverride ?? getDefaultHubCost(protocol)) * regionMul
+    const baseBatteryLifeMonths = getBatteryLifeMonths(protocol)
     const usageFactor = adjustForUsage(dailyUsage)
     const batteryLifeMonths = baseBatteryLifeMonths * usageFactor
     const monthsTotal = years * 12
     const replacementsPerLock = batteryLifeMonths > 0 ? monthsTotal / batteryLifeMonths : 0
     const batteries = replacementsPerLock * batteryPricePerSet * doorCount
 
-    const hardware = lockPrice * doorCount
-    const install = installType === 'pro' ? installCostPerDoor * doorCount : 0
+    const hardware = lockPrice * doorCount * regionMul
+    const install = installType === 'pro' ? installCostPerDoor * doorCount * regionMul : 0
     const subscriptions = subscriptionPerDoorPerMonth * 12 * years * doorCount
+    const cloudPlatform = cloudPlatformFee * 12 * years
+    const maintenance = getMaintenanceCost(maintenanceContract, doorCount) * years
+    const warranty = getWarrantyReplacementCost(warrantyYears, years, lockPrice, doorCount)
 
-    const total = hardware + hub + install + batteries + subscriptions
+    const total = hardware + hub + install + batteries + subscriptions + cloudPlatform + maintenance + warranty
     const hardwareShare = total > 0 ? (hardware / total) * 100 : 0
     const batteriesShare = total > 0 ? (batteries / total) * 100 : 0
     const subscriptionsShare = total > 0 ? (subscriptions / total) * 100 : 0
+    const cloudShare = total > 0 ? (cloudPlatform / total) * 100 : 0
+    const maintenanceShare = total > 0 ? ((maintenance + warranty) / total) * 100 : 0
 
     const annualCost = total / years
     const perDoorCost = total / doorCount
@@ -91,7 +141,7 @@ export default function TCOCalculator() {
     const mechanicalTotal = mechanicalLockPrice * doorCount
     const deltaVsMechanical = total - mechanicalTotal
 
-    return { hardware, batteries, hub, install, subscriptions, total, annualCost, perDoorCost, perDoorPerDay, hardwareShare, batteriesShare, subscriptionsShare, mechanicalTotal, deltaVsMechanical }
+    return { hardware, batteries, hub, install, subscriptions, cloudPlatform, maintenance, warranty, total, annualCost, perDoorCost, perDoorPerDay, hardwareShare, batteriesShare, subscriptionsShare, cloudShare, maintenanceShare, mechanicalTotal, deltaVsMechanical }
   }
 
   const result = calculateTCO()
@@ -122,6 +172,45 @@ export default function TCOCalculator() {
               <h2 className="section-title">Project Parameters</h2>
 
               <div className="space-y-6">
+                {/* Market Region */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
+                    Market Region
+                  </label>
+                  <select
+                    value={inputs.region}
+                    onChange={(e) => setInputs({ ...inputs, region: e.target.value as TCOInputs['region'] })}
+                    className="form-input"
+                  >
+                    <option value="us">United States / Canada</option>
+                    <option value="eu">European Union</option>
+                    <option value="uk">United Kingdom</option>
+                    <option value="asia">Asia Pacific</option>
+                    <option value="middle-east">Middle East / Africa</option>
+                  </select>
+                  <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>Adjusts hardware and labor costs by regional pricing</p>
+                </div>
+
+                {/* Deployment Scale */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
+                    Deployment Scale
+                  </label>
+                  <select
+                    value={inputs.scale}
+                    onChange={(e) => {
+                      const scale = e.target.value as TCOInputs['scale']
+                      const maxDoors = scale === 'enterprise' ? 500 : scale === 'small-commercial' ? 100 : 20
+                      setInputs({ ...inputs, scale, doorCount: Math.min(inputs.doorCount, maxDoors) })
+                    }}
+                    className="form-input"
+                  >
+                    <option value="residential">Residential (1–20 doors)</option>
+                    <option value="small-commercial">Small Commercial (1–100 doors)</option>
+                    <option value="enterprise">Enterprise (1–500 doors)</option>
+                  </select>
+                </div>
+
                 {/* Lock Price */}
                 <div>
                   <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
@@ -130,15 +219,15 @@ export default function TCOCalculator() {
                   <input
                     type="range"
                     min="50"
-                    max="600"
-                    step="50"
+                    max="800"
+                    step="25"
                     value={inputs.lockPrice}
                     onChange={(e) => setInputs({ ...inputs, lockPrice: Number(e.target.value) })}
                     className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: "var(--color-border)" }}
                   />
                   <div className="flex justify-between" style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>
                     <span>$50</span>
-                    <span>$600</span>
+                    <span>$800</span>
                   </div>
                 </div>
 
@@ -150,31 +239,50 @@ export default function TCOCalculator() {
                   <input
                     type="range"
                     min="1"
-                    max="50"
+                    max={inputs.scale === 'enterprise' ? 500 : inputs.scale === 'small-commercial' ? 100 : 20}
                     value={inputs.doorCount}
                     onChange={(e) => setInputs({ ...inputs, doorCount: Number(e.target.value) })}
                     className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: "var(--color-border)" }}
                   />
                   <div className="flex justify-between" style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>
                     <span>1 door</span>
-                    <span>50 doors</span>
+                    <span>{inputs.scale === 'enterprise' ? '500' : inputs.scale === 'small-commercial' ? '100' : '20'} doors</span>
                   </div>
                 </div>
 
                 {/* Protocol */}
                 <div>
                   <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
-                    Protocol
+                    Communication Protocol
                   </label>
                   <select
                     value={inputs.protocol}
-                    onChange={(e) => setInputs({ ...inputs, protocol: e.target.value as any })}
+                    onChange={(e) => setInputs({ ...inputs, protocol: e.target.value as TCOInputs['protocol'] })}
                     className="form-input"
                   >
                     <option value="wifi">Wi-Fi (No hub, high battery cost)</option>
                     <option value="zigbee">Zigbee (Low cost hub, efficient)</option>
                     <option value="zwave">Z-Wave (Mid cost hub, efficient)</option>
-                    <option value="thread">Thread (Higher hub, very efficient)</option>
+                    <option value="thread">Thread / Matter (Border router, very efficient)</option>
+                    <option value="ble">Bluetooth LE (No hub, best battery life)</option>
+                    <option value="nfc">NFC (Card/phone tap, ultra-low power)</option>
+                  </select>
+                </div>
+
+                {/* Lock Grade */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
+                    Lock Security Grade
+                  </label>
+                  <select
+                    value={inputs.lockGrade}
+                    onChange={(e) => setInputs({ ...inputs, lockGrade: e.target.value as TCOInputs['lockGrade'] })}
+                    className="form-input"
+                  >
+                    <option value="grade-3">ANSI Grade 3 — Residential</option>
+                    <option value="grade-2">ANSI Grade 2 — Light Commercial</option>
+                    <option value="grade-1">ANSI Grade 1 — Heavy Commercial</option>
+                    <option value="bhma-commercial">BHMA A156 — Premium Commercial</option>
                   </select>
                 </div>
 
@@ -197,28 +305,48 @@ export default function TCOCalculator() {
                   </div>
                 </div>
 
+                {/* Warranty */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
+                    Warranty Coverage: {inputs.warrantyYears} years
+                  </label>
+                  <input
+                    type="range"
+                    min="1"
+                    max="5"
+                    value={inputs.warrantyYears}
+                    onChange={(e) => setInputs({ ...inputs, warrantyYears: Number(e.target.value) })}
+                    className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: "var(--color-border)" }}
+                  />
+                  <div className="flex justify-between" style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>
+                    <span>1 year</span>
+                    <span>5 years</span>
+                  </div>
+                  <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>Out-of-warranty replacement cost estimated at 3% failure rate/year</p>
+                </div>
+
                 {/* Installation */}
                 <div>
                   <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
                     Installation Type
                   </label>
                   <div className="grid grid-cols-2 gap-4">
-                    <label className={`flex items-center justify-center p-4 border-2 rounded-lg cursor-pointer ${inputs.installType === 'diy' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}>
+                    <label style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "var(--space-md)", border: inputs.installType === 'diy' ? '2px solid var(--color-accent)' : '2px solid var(--color-border)', borderRadius: "var(--radius-md)", cursor: "pointer", background: inputs.installType === 'diy' ? 'var(--color-surface-alt)' : 'transparent' }}>
                       <input
                         type="radio"
                         value="diy"
                         checked={inputs.installType === 'diy'}
-                        onChange={(e) => setInputs({ ...inputs, installType: 'diy' })}
+                        onChange={() => setInputs({ ...inputs, installType: 'diy' })}
                         className="sr-only"
                       />
                       <span className="font-medium">DIY ($0)</span>
                     </label>
-                    <label className={`flex items-center justify-center p-4 border-2 rounded-lg cursor-pointer ${inputs.installType === 'pro' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}>
+                    <label style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "var(--space-md)", border: inputs.installType === 'pro' ? '2px solid var(--color-accent)' : '2px solid var(--color-border)', borderRadius: "var(--radius-md)", cursor: "pointer", background: inputs.installType === 'pro' ? 'var(--color-surface-alt)' : 'transparent' }}>
                       <input
                         type="radio"
                         value="pro"
                         checked={inputs.installType === 'pro'}
-                        onChange={(e) => setInputs({ ...inputs, installType: 'pro' })}
+                        onChange={() => setInputs({ ...inputs, installType: 'pro' })}
                         className="sr-only"
                       />
                       <span className="font-medium">Professional</span>
@@ -234,12 +362,16 @@ export default function TCOCalculator() {
                     <input
                       type="range"
                       min="50"
-                      max="200"
+                      max="300"
                       step="10"
                       value={inputs.installCostPerDoor}
                       onChange={(e) => setInputs({ ...inputs, installCostPerDoor: Number(e.target.value) })}
                       className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: "var(--color-border)" }}
                     />
+                    <div className="flex justify-between" style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>
+                      <span>$50</span>
+                      <span>$300</span>
+                    </div>
                   </div>
                 )}
 
@@ -251,12 +383,16 @@ export default function TCOCalculator() {
                   <input
                     type="range"
                     min="1"
-                    max="50"
+                    max="100"
                     value={inputs.dailyUsage}
                     onChange={(e) => setInputs({ ...inputs, dailyUsage: Number(e.target.value) })}
                     className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: "var(--color-border)" }}
                   />
-                  <p className="text-xs text-gray-500 mt-1">Affects battery replacement frequency</p>
+                  <div className="flex justify-between" style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>
+                    <span>1</span>
+                    <span>100</span>
+                  </div>
+                  <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>Affects battery replacement frequency</p>
                 </div>
 
                 {/* Subscription */}
@@ -267,12 +403,54 @@ export default function TCOCalculator() {
                   <input
                     type="range"
                     min="0"
-                    max="10"
-                    step="0.5"
+                    max="50"
+                    step="1"
                     value={inputs.subscriptionPerDoorPerMonth}
                     onChange={(e) => setInputs({ ...inputs, subscriptionPerDoorPerMonth: Number(e.target.value) })}
                     className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: "var(--color-border)" }}
                   />
+                  <div className="flex justify-between" style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>
+                    <span>$0</span>
+                    <span>$50</span>
+                  </div>
+                  <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>Per-device cloud/app subscription (e.g., Yale Access, August Premium)</p>
+                </div>
+
+                {/* Cloud Platform Fee */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
+                    Cloud Platform Fee (monthly): ${inputs.cloudPlatformFee}
+                  </label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="200"
+                    step="5"
+                    value={inputs.cloudPlatformFee}
+                    onChange={(e) => setInputs({ ...inputs, cloudPlatformFee: Number(e.target.value) })}
+                    className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: "var(--color-border)" }}
+                  />
+                  <div className="flex justify-between" style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>
+                    <span>$0</span>
+                    <span>$200</span>
+                  </div>
+                  <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "2px" }}>Platform-level fee (e.g., SALTO KS, Brivo, Kisi management platform)</p>
+                </div>
+
+                {/* Maintenance Contract */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: "var(--space-xs)" }}>
+                    Maintenance Contract
+                  </label>
+                  <select
+                    value={inputs.maintenanceContract}
+                    onChange={(e) => setInputs({ ...inputs, maintenanceContract: e.target.value as TCOInputs['maintenanceContract'] })}
+                    className="form-input"
+                  >
+                    <option value="none">None — Self-maintained</option>
+                    <option value="basic">Basic — $5/door/year (annual inspection)</option>
+                    <option value="premium">Premium — $15/door/year (quarterly + priority support)</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -313,6 +491,24 @@ export default function TCOCalculator() {
                   <div className="flex justify-between items-center pb-3 border-b border-white/20">
                     <span className="text-sm opacity-90">Subscriptions</span>
                     <span className="font-semibold">${result.subscriptions.toFixed(0)}</span>
+                  </div>
+                )}
+                {result.cloudPlatform > 0 && (
+                  <div className="flex justify-between items-center pb-3 border-b border-white/20">
+                    <span className="text-sm opacity-90">Cloud Platform</span>
+                    <span className="font-semibold">${result.cloudPlatform.toFixed(0)}</span>
+                  </div>
+                )}
+                {result.maintenance > 0 && (
+                  <div className="flex justify-between items-center pb-3 border-b border-white/20">
+                    <span className="text-sm opacity-90">Maintenance</span>
+                    <span className="font-semibold">${result.maintenance.toFixed(0)}</span>
+                  </div>
+                )}
+                {result.warranty > 0 && (
+                  <div className="flex justify-between items-center pb-3 border-b border-white/20">
+                    <span className="text-sm opacity-90">Out-of-Warranty Repairs</span>
+                    <span className="font-semibold">${result.warranty.toFixed(0)}</span>
                   </div>
                 )}
               </div>
@@ -429,6 +625,8 @@ export default function TCOCalculator() {
                   <li><strong>Zigbee:</strong> $80 (SmartThings, Aqara Hub)</li>
                   <li><strong>Z-Wave:</strong> $120 (Z-Wave controller)</li>
                   <li><strong>Thread:</strong> $150 (Border Router / HomePod mini)</li>
+                  <li><strong>BLE:</strong> $0 (phone-to-lock direct)</li>
+                  <li><strong>NFC:</strong> $0 (card/phone tap)</li>
                 </ul>
               </div>
               <div>
@@ -438,8 +636,10 @@ export default function TCOCalculator() {
                   <li><strong>Zigbee:</strong> 12 months (low-power mesh)</li>
                   <li><strong>Z-Wave:</strong> 12 months (low-power mesh)</li>
                   <li><strong>Thread:</strong> 10 months (low-power IP)</li>
+                  <li><strong>BLE:</strong> 14 months (low-energy advertising)</li>
+                  <li><strong>NFC:</strong> 18 months (passive wake-on-tap)</li>
                 </ul>
-                <p className="text-xs text-gray-500 mt-2">Based on average 10 operations/day</p>
+                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "var(--space-xs)" }}>Based on average 10 operations/day</p>
               </div>
             </div>
           </div>
@@ -459,10 +659,10 @@ export default function TCOCalculator() {
           </div>
         </div>
 
-        
-          <RelatedResources calculatorSlug="lock-tco-calculator" />
 
-{/* Related Resources */}
+        <RelatedResources calculatorSlug="lock-tco-calculator" />
+
+        {/* Related Resources */}
         <div className="max-w-7xl mx-auto mt-8">
           <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-md)" }}>Related Resources</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

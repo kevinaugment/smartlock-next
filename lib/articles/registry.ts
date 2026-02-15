@@ -1,7 +1,7 @@
 /**
  * 文章注册表 - 所有文章的元数据索引
  * 从旧站点迁移的硬编码文章
- * 自动生成于: 2025-11-24T07:45:11.617Z
+ * 自动生成于: 2026-02-15T14:30:00.000Z
  * 总文章数: 49
  */
 
@@ -25,6 +25,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     featured: true,
     relatedArticles: ["maintenance-troubleshooting-guide", "credential-management-best-practices"],
     relatedTools: ["diagnostic-tool", "error-code-lookup"],
+    updatedAt: '2026-02-15',
   },
   'disaster-recovery-business-continuity': {
     slug: 'disaster-recovery-business-continuity',
@@ -41,6 +42,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     featured: true,
     relatedArticles: ["maintenance-troubleshooting-guide", "project-implementation-deployment-guide", "offline-capability-design"],
     relatedTools: ["bia-calculator", "rto-rpo-planner", "failover-tester"],
+    updatedAt: '2026-02-15',
   },
   'door-compatibility-guide': {
     slug: 'door-compatibility-guide',
@@ -57,10 +59,11 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     featured: true,
     relatedArticles: ["smart-lock-protocols-overview", "complete-troubleshooting-guide", "smart-lock-pairing-complete-guide", "smart-lock-battery-life-guide", "long-term-rental-strategy"],
     relatedTools: ["door-lock-compatibility-checker", "protocol-selection-wizard"],
+    updatedAt: '2026-02-15',
   },
   'smart-lock-pairing-complete-guide': {
     slug: 'smart-lock-pairing-complete-guide',
-    title: "Smart Lock Pairing: Complete 2024 Troubleshooting Guide",
+    title: "Smart Lock Pairing: Complete 2026 Troubleshooting Guide",
     description: "Comprehensive guide to pairing smart locks with hubs and apps. Step-by-step pairing procedures, troubleshooting hub discovery failures, signal optimization, and protocol-specific solutions.",
     category: 'guides',
     pubDate: '2024-11-22',
@@ -71,6 +74,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: true,
     isSupport: false,
     featured: true,
+    updatedAt: '2026-02-15',
   },
   'add-fingerprint-to-lock': {
     slug: 'add-fingerprint-to-lock',
@@ -86,6 +90,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["fingerprint-not-recognized", "how-to-add-user-code"],
+    updatedAt: '2026-02-15',
   },
   'change-master-code': {
     slug: 'change-master-code',
@@ -101,6 +106,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["forgot-master-code-reset", "secure-smart-lock-best-practices", "how-to-add-user-code"],
+    updatedAt: '2026-02-15',
   },
   'create-temporary-guest-code': {
     slug: 'create-temporary-guest-code',
@@ -116,6 +122,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["how-to-add-user-code", "smart-locks-airbnb-guide"],
+    updatedAt: '2026-02-15',
   },
   'delete-smart-lock-user': {
     slug: 'delete-smart-lock-user',
@@ -131,6 +138,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["how-to-add-user-code", "create-temporary-guest-code"],
+    updatedAt: '2026-02-15',
   },
   'fingerprint-not-recognized': {
     slug: 'fingerprint-not-recognized',
@@ -146,6 +154,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-lock-code-not-working", "clean-maintain-smart-lock"],
+    updatedAt: '2026-02-15',
   },
   'forgot-master-code-reset': {
     slug: 'forgot-master-code-reset',
@@ -161,6 +170,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["emergency-battery-died-locked-out", "smart-lock-code-not-working"],
+    updatedAt: '2026-02-15',
   },
   'how-to-add-user-code': {
     slug: 'how-to-add-user-code',
@@ -176,6 +186,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-locks-airbnb-guide", "smart-lock-code-not-working"],
+    updatedAt: '2026-02-15',
   },
   'improve-auto-lock-reliability': {
     slug: 'improve-auto-lock-reliability',
@@ -191,6 +202,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["set-up-lock-automations", "smart-lock-shows-wrong-status"],
+    updatedAt: '2026-02-15',
   },
   'lock-auto-relocks-immediately': {
     slug: 'lock-auto-relocks-immediately',
@@ -206,6 +218,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["improve-auto-lock-reliability", "set-up-lock-automations"],
+    updatedAt: '2026-02-15',
   },
   'lock-motor-noise-troubleshooting': {
     slug: 'lock-motor-noise-troubleshooting',
@@ -221,6 +234,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-lock-making-noise", "smart-lock-wont-lock-unlock-completely"],
+    updatedAt: '2026-02-15',
   },
   'lock-unresponsive-after-firmware-update': {
     slug: 'lock-unresponsive-after-firmware-update',
@@ -236,6 +250,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["update-smart-lock-firmware", "forgot-master-code-reset"],
+    updatedAt: '2026-02-15',
   },
   'share-access-securely': {
     slug: 'share-access-securely',
@@ -251,6 +266,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["create-temporary-guest-code", "secure-smart-lock-best-practices", "delete-smart-lock-user"],
+    updatedAt: '2026-02-15',
   },
   'smart-lock-code-not-working': {
     slug: 'smart-lock-code-not-working',
@@ -266,6 +282,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["complete-troubleshooting-guide", "smart-locks-airbnb-complete-guide"],
+    updatedAt: '2026-02-15',
   },
   'smart-lock-shows-wrong-status': {
     slug: 'smart-lock-shows-wrong-status',
@@ -281,6 +298,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-lock-keeps-going-offline", "improve-connection-stability"],
+    updatedAt: '2026-02-15',
   },
   'smart-lock-wont-lock-unlock-completely': {
     slug: 'smart-lock-wont-lock-unlock-completely',
@@ -296,12 +314,13 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-lock-jammed-wont-turn", "smart-lock-making-noise"],
+    updatedAt: '2026-02-15',
   },
 
   // ==================== USE CASES ====================
   'enterprise-commercial-deployment': {
     slug: 'enterprise-commercial-deployment',
-    title: "Enterprise Smart Lock Deployment: Complete 2024 Guide",
+    title: "Enterprise Smart Lock Deployment: Complete 2026 Guide",
     description: "Comprehensive guide for deploying smart locks in commercial buildings, schools, healthcare facilities, and government offices. Multi-unit planning, access management, integration, and ROI analysis.",
     category: 'use-cases',
     pubDate: '2024-11-22',
@@ -312,6 +331,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: true,
     isSupport: false,
     featured: true,
+    updatedAt: '2026-02-15',
   },
   'long-term-rental-property-strategy': {
     slug: 'long-term-rental-property-strategy',
@@ -328,10 +348,11 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     featured: true,
     relatedArticles: ["multi-unit-buildings", "credential-management-best-practices", "office-access-control"],
     relatedTools: ["rental-roi-calculator", "turnover-time-estimator"],
+    updatedAt: '2026-02-15',
   },
   'long-term-rental-strategy': {
     slug: 'long-term-rental-strategy',
-    title: "Smart Locks for Long-Term Rentals: Complete 2024 Guide",
+    title: "Smart Locks for Long-Term Rentals: Complete 2026 Guide",
     description: "Comprehensive strategy for landlords managing long-term rental properties with smart locks. Tenant management, access control, maintenance automation, and multi-property scaling tactics.",
     category: 'use-cases',
     pubDate: '2024-11-22',
@@ -342,10 +363,11 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: true,
     isSupport: false,
     featured: true,
+    updatedAt: '2026-02-15',
   },
   'smart-locks-airbnb-complete-guide': {
     slug: 'smart-locks-airbnb-complete-guide',
-    title: "Smart Locks for Airbnb: Complete 2024 Investment Guide",
+    title: "Smart Locks for Airbnb: Complete 2026 Investment Guide",
     description: "Comprehensive guide to smart locks for short-term rentals. ROI analysis, lock selection criteria, guest access automation, PMS integration, and operational strategies for Airbnb hosts.",
     category: 'use-cases',
     pubDate: '2024-11-22',
@@ -356,12 +378,13 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: true,
     isSupport: false,
     featured: true,
+    updatedAt: '2026-02-15',
   },
 
   // ==================== PROTOCOLS ====================
   'smart-lock-protocols-overview': {
     slug: 'smart-lock-protocols-overview',
-    title: "Smart Lock Protocols: Complete 2024 Technical Overview",
+    title: "Smart Lock Protocols: Complete 2026 Technical Overview",
     description: "Comprehensive guide to WiFi, Zigbee, Z-Wave, Thread, and Matter protocols for smart locks. Technical architecture, battery life comparison, security analysis, and protocol selection framework.",
     category: 'protocols',
     pubDate: '2024-11-22',
@@ -372,10 +395,11 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: true,
     isSupport: false,
     featured: true,
+    updatedAt: '2026-02-15',
   },
   'zigbee-vs-zwave-comparison': {
     slug: 'zigbee-vs-zwave-comparison',
-    title: "Zigbee vs Z-Wave Smart Locks: Complete 2024 Comparison",
+    title: "Zigbee vs Z-Wave Smart Locks: Complete 2026 Comparison",
     description: "Detailed technical comparison of Zigbee and Z-Wave protocols for smart locks. Frequency analysis, mesh networking, battery life, compatibility, and real-world performance data to choose the best protocol.",
     category: 'protocols',
     pubDate: '2024-11-22',
@@ -386,6 +410,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: true,
     isSupport: false,
     featured: true,
+    updatedAt: '2026-02-15',
   },
   'command-timeout-errors': {
     slug: 'command-timeout-errors',
@@ -401,6 +426,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-lock-response-slow", "smart-lock-no-response", "improve-connection-stability"],
+    updatedAt: '2026-02-15',
   },
   'connect-lock-to-homekit': {
     slug: 'connect-lock-to-homekit',
@@ -416,6 +442,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-home-platform-integration", "pair-smart-lock-with-hub"],
+    updatedAt: '2026-02-15',
   },
   'improve-connection-stability': {
     slug: 'improve-connection-stability',
@@ -431,6 +458,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-lock-keeps-going-offline", "rf-mesh-network-planning", "maximize-smart-lock-battery-life"],
+    updatedAt: '2026-02-15',
   },
   'smart-lock-disconnects-after-power-outage': {
     slug: 'smart-lock-disconnects-after-power-outage',
@@ -446,6 +474,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-lock-keeps-going-offline", "improve-connection-stability"],
+    updatedAt: '2026-02-15',
   },
   'smart-lock-keeps-going-offline': {
     slug: 'smart-lock-keeps-going-offline',
@@ -461,6 +490,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["improve-connection-stability", "complete-troubleshooting-guide"],
+    updatedAt: '2026-02-15',
   },
 
   // ==================== SECURITY ====================
@@ -479,10 +509,11 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     featured: true,
     relatedArticles: ["threat-modeling-security-architecture", "credential-management-best-practices", "maintenance-troubleshooting-guide"],
     relatedTools: ["privacy-impact-assessment", "data-retention-calculator", "dsar-automation-tool"],
+    updatedAt: '2026-02-15',
   },
   'smart-lock-security-complete-analysis': {
     slug: 'smart-lock-security-complete-analysis',
-    title: "Smart Lock Security: Complete 2024 Analysis & Best Practices",
+    title: "Smart Lock Security: Complete 2026 Analysis & Best Practices",
     description: "Comprehensive security analysis of smart locks. Threat modeling, attack vectors, protocol security comparison, encryption standards, and practical defense strategies with real-world vulnerability case studies.",
     category: 'security',
     pubDate: '2024-11-22',
@@ -493,6 +524,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: true,
     isSupport: false,
     featured: true,
+    updatedAt: '2026-02-15',
   },
   'audit-trail-forensic-analysis': {
     slug: 'audit-trail-forensic-analysis',
@@ -509,6 +541,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     featured: true,
     relatedArticles: ["threat-modeling-security-architecture", "data-privacy-compliance-guide", "credential-management-best-practices"],
     relatedTools: ["log-analyzer", "anomaly-detector", "forensic-timeline-builder"],
+    updatedAt: '2026-02-15',
   },
   'multiple-failed-code-attempts': {
     slug: 'multiple-failed-code-attempts',
@@ -524,6 +557,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["secure-smart-lock-best-practices", "smart-lock-code-not-working"],
+    updatedAt: '2026-02-15',
   },
   'secure-smart-lock-best-practices': {
     slug: 'secure-smart-lock-best-practices',
@@ -539,12 +573,13 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-lock-security-analysis", "zwave-s2-security-architecture"],
+    updatedAt: '2026-02-15',
   },
 
   // ==================== INSTALLATION ====================
   'smart-lock-battery-life-guide': {
     slug: 'smart-lock-battery-life-guide',
-    title: "Smart Lock Battery Life: Complete 2024 Optimization Guide",
+    title: "Smart Lock Battery Life: Complete 2026 Optimization Guide",
     description: "Comprehensive guide to maximizing smart lock battery life. Protocol comparison, RF optimization, battery chemistry, diagnostic tools, and proven strategies to extend battery life from 3 months to 18 months.",
     category: 'installation',
     pubDate: '2024-11-22',
@@ -555,6 +590,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: true,
     isSupport: false,
     featured: true,
+    updatedAt: '2026-02-15',
   },
   'calibrate-smart-lock': {
     slug: 'calibrate-smart-lock',
@@ -570,6 +606,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-lock-shows-wrong-status", "smart-lock-wont-lock-unlock-completely"],
+    updatedAt: '2026-02-15',
   },
   'clean-maintain-smart-lock': {
     slug: 'clean-maintain-smart-lock',
@@ -585,6 +622,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-lock-battery-life-guide", "maximize-smart-lock-battery-life"],
+    updatedAt: '2026-02-15',
   },
   'door-sensor-not-working': {
     slug: 'door-sensor-not-working',
@@ -600,6 +638,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-lock-shows-wrong-status", "install-smart-lock-step-by-step"],
+    updatedAt: '2026-02-15',
   },
   'emergency-battery-died-locked-out': {
     slug: 'emergency-battery-died-locked-out',
@@ -615,6 +654,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-lock-battery-emergency", "smart-lock-battery-life-guide"],
+    updatedAt: '2026-02-15',
   },
   'how-to-change-smart-lock-battery': {
     slug: 'how-to-change-smart-lock-battery',
@@ -630,6 +670,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-lock-battery-life-guide", "smart-lock-battery-dies-too-fast"],
+    updatedAt: '2026-02-15',
   },
   'install-smart-lock-step-by-step': {
     slug: 'install-smart-lock-step-by-step',
@@ -646,6 +687,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     featured: false,
     relatedArticles: ["door-compatibility-guide", "smart-lock-wont-pair"],
     relatedTools: ["door-lock-compatibility-checker"],
+    updatedAt: '2026-02-15',
   },
   'smart-lock-setup-checklist': {
     slug: 'smart-lock-setup-checklist',
@@ -661,6 +703,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["install-smart-lock-step-by-step", "test-smart-lock-after-install", "pair-smart-lock-with-hub"],
+    updatedAt: '2026-02-15',
   },
   'test-smart-lock-after-install': {
     slug: 'test-smart-lock-after-install',
@@ -676,6 +719,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["install-smart-lock-step-by-step", "smart-lock-jammed-wont-turn"],
+    updatedAt: '2026-02-15',
   },
   'update-smart-lock-firmware': {
     slug: 'update-smart-lock-firmware',
@@ -691,6 +735,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["complete-troubleshooting-guide", "improve-connection-stability"],
+    updatedAt: '2026-02-15',
   },
 
   // ==================== INTEGRATION ====================
@@ -709,6 +754,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     featured: true,
     relatedArticles: ["office-access-control", "multi-unit-buildings", "smart-lock-protocols-overview"],
     relatedTools: ["integration-roi-calculator", "api-compatibility-checker"],
+    updatedAt: '2026-02-15',
   },
   'doorbell-smart-lock-integration': {
     slug: 'doorbell-smart-lock-integration',
@@ -724,6 +770,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-home-platform-integration", "set-up-lock-automations"],
+    updatedAt: '2026-02-15',
   },
   'local-vs-cloud-architecture': {
     slug: 'local-vs-cloud-architecture',
@@ -740,6 +787,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     featured: true,
     relatedArticles: ["smart-lock-protocols-overview", "smart-lock-security-complete-analysis", "zigbee-vs-zwave-comparison"],
     relatedTools: ["offline-resilience-scorecard", "protocol-selection-wizard"],
+    updatedAt: '2026-02-15',
   },
   'set-up-lock-automations': {
     slug: 'set-up-lock-automations',
@@ -755,6 +803,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isSupport: true,
     featured: false,
     relatedArticles: ["smart-home-platform-integration", "auto-unlock-not-working"],
+    updatedAt: '2026-02-15',
   },
   // ==================== RESOURCES ====================
   'cloud-vs-local-cost': {
@@ -770,10 +819,11 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'smart-lock-saas-value': {
     slug: 'smart-lock-saas-value',
-    title: "SaaS Value Metrics: Is the 'Smart Lock Tax' Worth It? (2025 Analysis)",
+    title: "SaaS Value Metrics: Is the 'Smart Lock Tax' Worth It? (2026 Analysis)",
     description: "Why pay $6/month for a lock you own? We break down the 'Access as a Service' model, calculating the exact ROI of PMS integrations, liability protection, and operational efficiency.",
     category: 'resources',
     pubDate: '2024-05-20',
@@ -784,6 +834,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'rssi-dbm-explained': {
     slug: 'rssi-dbm-explained',
@@ -798,6 +849,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'rf-interference-materials': {
     slug: 'rf-interference-materials',
@@ -812,20 +864,22 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'locksmith-labor-rates': {
     slug: 'locksmith-labor-rates',
-    title: "Locksmith Labor Rates 2025: Commercial vs Residential Cost Breakdown",
-    description: "Don't get sticker shock. We analyze 2025 national averages for Trip Charges, Fresh Installs, and Commercial Retrofits. See why a 'Simple Swap' can range from $125 to $500.",
+    title: "Locksmith Labor Rates 2026: Commercial vs Residential Cost Breakdown",
+    description: "Don't get sticker shock. We analyze 2026 national averages for Trip Charges, Fresh Installs, and Commercial Retrofits. See why a 'Simple Swap' can range from $125 to $500.",
     category: 'resources',
     pubDate: '2024-05-20',
     wordCount: 1000,
     readingTime: 5,
-    keywords: ["locksmith rates 2025", "commercial locksmith cost", "residential smart lock install", "fresh install vs retrofit", "access control installation cost", "trip charge"],
+    keywords: ["locksmith rates 2026", "commercial locksmith cost", "residential smart lock install", "fresh install vs retrofit", "access control installation cost", "trip charge"],
     tags: ["data-table", "standard"],
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'hidden-installation-costs': {
     slug: 'hidden-installation-costs',
@@ -840,6 +894,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'protocol-power-draw-table': {
     slug: 'protocol-power-draw-table',
@@ -854,6 +909,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'what-is-quiescent-current': {
     slug: 'what-is-quiescent-current',
@@ -868,6 +924,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'ansi-bhma-grading-table': {
     slug: 'ansi-bhma-grading-table',
@@ -882,6 +939,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'fire-rating-guide': {
     slug: 'fire-rating-guide',
@@ -896,6 +954,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'anti-pick-bump-glossary': {
     slug: 'anti-pick-bump-glossary',
@@ -910,10 +969,11 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'smart-home-protocol-specs-table': {
     slug: 'smart-home-protocol-specs-table',
-    title: "Smart Home Protocol Specs: The Ultimate Technical Cheat Sheet (2025)",
+    title: "Smart Home Protocol Specs: The Ultimate Technical Cheat Sheet (2026)",
     description: "Direct technical comparison of Z-Wave 800, Zigbee 3.0, Thread, and Wi-Fi 6. We compare frequency, bandwidth, max nodes, security encryption, and mesh capabilities.",
     category: 'resources',
     pubDate: '2024-05-20',
@@ -924,6 +984,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'mesh-topology-guide': {
     slug: 'mesh-topology-guide',
@@ -938,6 +999,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'fire-rating-ul-codes': {
     slug: 'fire-rating-ul-codes',
@@ -952,6 +1014,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'ada-compliance-checklist': {
     slug: 'ada-compliance-checklist',
@@ -966,6 +1029,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'standard-door-dimensions-table': {
     slug: 'standard-door-dimensions-table',
@@ -980,6 +1044,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'lock-anatomy-glossary': {
     slug: 'lock-anatomy-glossary',
@@ -994,6 +1059,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'ada-compliance-guide': {
     slug: 'ada-compliance-guide',
@@ -1008,6 +1074,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'wire-gauge-calculator-steps': {
     slug: 'wire-gauge-calculator-steps',
@@ -1022,6 +1089,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'door-alignment-guide': {
     slug: 'door-alignment-guide',
@@ -1036,6 +1104,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'encryption-standards-guide': {
     slug: 'encryption-standards-guide',
@@ -1050,6 +1119,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'privacy-policy-template': {
     slug: 'privacy-policy-template',
@@ -1064,6 +1134,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
   'troubleshooting-z-wave-range': {
     slug: 'troubleshooting-z-wave-range',
@@ -1078,6 +1149,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     isPillar: false,
     isSupport: true,
     featured: false,
+    updatedAt: '2026-02-15',
   },
 };
 

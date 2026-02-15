@@ -26,7 +26,7 @@ export default function InstallationTimeLayout({ children }: { children: React.R
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
                 description: 'Estimate smart lock installation time and labor costs. Factor in door type, wiring requirements, technician count, and labor rates for accurate project planning.',
                 softwareVersion: '1.0',
-                datePublished: '2025-11-24',
+                datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },
             }} />
             <JsonLd data={{

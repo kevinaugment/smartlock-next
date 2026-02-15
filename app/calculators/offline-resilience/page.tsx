@@ -15,6 +15,13 @@ export default function OfflineResilience() {
   const [hasBackupCodes, setHasBackupCodes] = useState(true)
   const [cloudRequired, setCloudRequired] = useState(false)
 
+  // New professional fields
+  const [internetReliability, setInternetReliability] = useState('cable')
+  const [powerGridReliability, setPowerGridReliability] = useState('stable')
+  const [cacheCredentials, setCacheCredentials] = useState(false)
+  const [offlineAccessDuration, setOfflineAccessDuration] = useState(24)
+  const [hasFailoverISP, setHasFailoverISP] = useState(false)
+
   const calculate = () => {
     let score = 0
     const issues: string[] = []
@@ -64,10 +71,48 @@ export default function OfflineResilience() {
       recommendations.push('Consider protocol with local control')
     }
 
+    // Internet reliability impact
+    const reliabilityPenalty: Record<string, number> = { fiber: 0, cable: -3, dsl: -8, cellular: -5, unreliable: -15 }
+    score += reliabilityPenalty[internetReliability] || 0
+    if (internetReliability === 'unreliable') {
+      issues.push('Unreliable internet — offline capability is critical')
+      recommendations.push('Prioritize locks with full offline operation')
+    }
+
+    // Power grid reliability
+    if (powerGridReliability === 'frequent') {
+      score -= 10
+      issues.push('Frequent power outages increase lockout risk')
+      if (!hasBackupPower) recommendations.push('UPS is essential with frequent outages')
+    } else if (powerGridReliability === 'occasional') {
+      score -= 5
+      if (!hasBackupPower) recommendations.push('Consider UPS for hub during outages')
+    }
+
+    // Credential caching
+    if (cacheCredentials) {
+      score += 15
+    } else {
+      recommendations.push('Enable local credential caching for offline access')
+    }
+
+    // Failover ISP
+    if (hasFailoverISP) {
+      score += 10
+    }
+
+    // Offline duration factor
+    if (offlineAccessDuration >= 72) {
+      score += 5
+    } else if (offlineAccessDuration < 8) {
+      score -= 5
+      issues.push('Lock offline duration too short for extended outages')
+    }
+
     const grade = score >= 80 ? 'A' : score >= 60 ? 'B' : score >= 40 ? 'C' : 'D'
     const status = score >= 80 ? 'Excellent' : score >= 60 ? 'Good' : score >= 40 ? 'Fair' : 'Poor'
 
-    return { score, grade, status, issues, recommendations }
+    return { score: Math.max(0, Math.min(100, score)), grade, status, issues, recommendations }
   }
 
   const result = calculate()
@@ -116,6 +161,47 @@ export default function OfflineResilience() {
                 <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "1px solid var(--color-border)" }}>
                   <input type="checkbox" checked={cloudRequired} onChange={(e) => setCloudRequired(e.target.checked)} className="w-4 h-4" />
                   <span>Cloud Connection Required</span>
+                </label>
+              </div>
+
+              <div className="pt-4">
+                <label className="block mb-2 font-medium">Internet Reliability</label>
+                <select value={internetReliability} onChange={(e) => setInternetReliability(e.target.value)} className="w-full p-3 border rounded-lg">
+                  <option value="fiber">Fiber (99.9% uptime)</option>
+                  <option value="cable">Cable (99% uptime)</option>
+                  <option value="dsl">DSL (98% uptime)</option>
+                  <option value="cellular">Cellular/LTE (97% uptime)</option>
+                  <option value="unreliable">Unreliable / Rural (&lt; 95%)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block mb-2 font-medium">Power Grid Reliability</label>
+                <select value={powerGridReliability} onChange={(e) => setPowerGridReliability(e.target.value)} className="w-full p-3 border rounded-lg">
+                  <option value="stable">Stable (&lt; 2 outages/year)</option>
+                  <option value="occasional">Occasional Outages (2-6/year)</option>
+                  <option value="frequent">Frequent Outages (&gt; 6/year)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block mb-2 font-medium">Offline Access Duration: {offlineAccessDuration}h</label>
+                <input type="range" min="1" max="168" value={offlineAccessDuration} onChange={(e) => setOfflineAccessDuration(Number(e.target.value))} className="w-full" />
+                <div className="flex justify-between text-xs" style={{ color: 'var(--color-text-muted)' }}>
+                  <span>1 hour</span>
+                  <span>168h (7 days)</span>
+                </div>
+                <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>How long lock can operate without cloud connection</p>
+              </div>
+
+              <div className="space-y-3">
+                <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: '1px solid var(--color-border)' }}>
+                  <input type="checkbox" checked={cacheCredentials} onChange={(e) => setCacheCredentials(e.target.checked)} className="w-4 h-4" />
+                  <span>Lock Caches Credentials Locally (+15 score)</span>
+                </label>
+                <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: '1px solid var(--color-border)' }}>
+                  <input type="checkbox" checked={hasFailoverISP} onChange={(e) => setHasFailoverISP(e.target.checked)} className="w-4 h-4" />
+                  <span>Failover ISP / LTE Backup (+10 score)</span>
                 </label>
               </div>
             </div>
@@ -212,7 +298,7 @@ export default function OfflineResilience() {
 
       <ToolRating toolSlug="offline-resilience" />
 
-          <RelatedResources calculatorSlug="offline-resilience-scorecard" />
+      <RelatedResources calculatorSlug="offline-resilience-scorecard" />
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

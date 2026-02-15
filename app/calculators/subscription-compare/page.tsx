@@ -13,25 +13,58 @@ export default function SubscriptionCompare() {
   const [localSystemCost, setLocalSystemCost] = useState(5000)
   const [years, setYears] = useState(5)
 
+  // New professional fields
+  const [annualPriceIncrease, setAnnualPriceIncrease] = useState(3)
+  const [localMaintenanceCost, setLocalMaintenanceCost] = useState(0)
+  const [cloudFeaturesValue, setCloudFeaturesValue] = useState(0)
+  const [scalingDiscount, setScalingDiscount] = useState('none')
+  const [includesSupport, setIncludesSupport] = useState(false)
+
   const calculate = () => {
-    const subscriptionMonthly = doors * monthlyFeePerDoor
+    // Scaling discount
+    const discountRate: Record<string, number> = { none: 0, '5': 0.05, '10': 0.10, '15': 0.15 }
+    const discount = discountRate[scalingDiscount] || 0
+    const adjustedMonthlyFee = monthlyFeePerDoor * (1 - discount)
+
+    // Compound annual increase on subscription
+    let subscriptionTotal = 0
+    for (let yr = 0; yr < years; yr++) {
+      const yearlyFee = doors * adjustedMonthlyFee * 12 * Math.pow(1 + annualPriceIncrease / 100, yr)
+      subscriptionTotal += yearlyFee
+    }
+
+    // Support value offset for subscription
+    const supportValue = includesSupport ? years * 500 : 0
+
+    // Cloud features value offset
+    const featuresValue = cloudFeaturesValue * 12 * years
+
+    const subscriptionMonthly = doors * adjustedMonthlyFee
     const subscriptionYearly = subscriptionMonthly * 12
-    const subscriptionTotal = subscriptionYearly * years
-    const localTotal = localSystemCost
-    const difference = subscriptionTotal - localTotal
-    const breakEvenMonths = localSystemCost / subscriptionMonthly
+
+    // Local total includes maintenance
+    const localTotal = localSystemCost + (localMaintenanceCost * years)
+
+    // Net comparison: subscription cost minus value offsets
+    const netSubscriptionCost = subscriptionTotal
+    const netLocalCost = localTotal + featuresValue + supportValue  // local user misses these features
+
+    const difference = netSubscriptionCost - netLocalCost
+    const breakEvenMonths = netLocalCost / subscriptionMonthly
     const breakEvenYears = breakEvenMonths / 12
     const recommendation = difference > 0 ? 'Local system is cheaper' : 'Subscription is cheaper'
 
     return {
-      subscriptionMonthly,
+      subscriptionMonthly: Math.round(subscriptionMonthly),
       subscriptionYearly: Math.round(subscriptionYearly),
       subscriptionTotal: Math.round(subscriptionTotal),
-      localTotal,
+      localTotal: Math.round(netLocalCost),
       difference: Math.round(Math.abs(difference)),
       breakEvenYears: Math.round(breakEvenYears * 10) / 10,
       recommendation,
-      winner: difference > 0 ? 'local' : 'subscription'
+      winner: difference > 0 ? 'local' : 'subscription',
+      maintenanceTotalAdded: localMaintenanceCost * years,
+      priceIncreaseImpact: Math.round(subscriptionTotal - (subscriptionYearly * years))
     }
   }
 
@@ -67,6 +100,36 @@ export default function SubscriptionCompare() {
               <div>
                 <label className="block mb-2 font-medium">Timeframe: {years} years</label>
                 <input type="range" min="1" max="10" value={years} onChange={(e) => setYears(Number(e.target.value))} className="w-full" />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Annual Price Increase: {annualPriceIncrease}%</label>
+                <input type="range" min="0" max="15" value={annualPriceIncrease} onChange={(e) => setAnnualPriceIncrease(Number(e.target.value))} className="w-full" />
+                <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>Subscription prices typically increase 3-5% annually</p>
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Local Maintenance Cost: ${localMaintenanceCost}/year</label>
+                <input type="range" min="0" max="500" step="25" value={localMaintenanceCost} onChange={(e) => setLocalMaintenanceCost(Number(e.target.value))} className="w-full" />
+                <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>Ongoing maintenance for self-hosted system</p>
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Cloud Features Value: ${cloudFeaturesValue}/month</label>
+                <input type="range" min="0" max="50" step="5" value={cloudFeaturesValue} onChange={(e) => setCloudFeaturesValue(Number(e.target.value))} className="w-full" />
+                <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>Estimated value of remote access, audit logs, alerts</p>
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Volume Discount</label>
+                <select value={scalingDiscount} onChange={(e) => setScalingDiscount(e.target.value)} className="w-full p-3 border rounded-lg">
+                  <option value="none">No Discount</option>
+                  <option value="5">5% Volume Discount</option>
+                  <option value="10">10% Volume Discount</option>
+                  <option value="15">15% Enterprise Discount</option>
+                </select>
+              </div>
+              <div>
+                <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: '1px solid var(--color-border)' }}>
+                  <input type="checkbox" checked={includesSupport} onChange={(e) => setIncludesSupport(e.target.checked)} className="w-4 h-4" />
+                  <span>Subscription Includes Tech Support (est. $500/yr value)</span>
+                </label>
               </div>
             </div>
           </div>
@@ -164,7 +227,7 @@ export default function SubscriptionCompare() {
 
       <ToolRating toolSlug="subscription-compare" />
 
-          <RelatedResources calculatorSlug="subscription-vs-purchase-calculator" />
+      <RelatedResources calculatorSlug="subscription-vs-purchase-calculator" />
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

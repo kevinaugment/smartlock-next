@@ -12,7 +12,7 @@ export default function Privacy() {
       <div className="container-main section">
         <div className="max-w-4xl mx-auto">
           <h1 className="page-header__title" style={{ marginBottom: 'var(--space-xl)' }}>Privacy Policy</h1>
-          <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-3xl)' }}>Last updated: November 2025</p>
+          <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-3xl)' }}>Last updated: February 2026</p>
 
           <div className="prose max-w-none">
             <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
@@ -61,15 +61,24 @@ export default function Privacy() {
               <ul className="space-y-2" style={{ color: 'var(--color-text-secondary)' }}>
                 <li>• Session cookies for page navigation</li>
                 <li>• Preference cookies for user settings</li>
-                <li>• Analytics cookies (anonymized)</li>
+                <li>• Analytics cookies (Google Analytics — anonymized)</li>
+                <li>• Advertising cookies (Google AdSense — used to serve personalized or non-personalized ads based on your preferences)</li>
               </ul>
+
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--color-text-primary)', margin: 'var(--space-lg) 0 var(--space-sm)' }}>Advertising</h3>
+              <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
+                We use Google AdSense to display advertisements on our website. Google may use cookies
+                and web beacons to serve ads based on your prior visits to our site or other websites.
+                You can opt out of personalized advertising by visiting{' '}
+                <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Google Ads Settings</a>.
+              </p>
             </div>
 
             <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
               <h2 className="section-title">Data Security</h2>
               <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
                 We implement appropriate technical and organizational measures to protect your
-                information. Our website is hosted on Cloudflare&apos;s secure infrastructure with
+                information. Our website is hosted on Vercel&apos;s secure infrastructure with
                 HTTPS encryption for all data transmission.
               </p>
             </div>
@@ -80,8 +89,9 @@ export default function Privacy() {
                 We may use the following third-party services:
               </p>
               <ul className="space-y-2" style={{ color: 'var(--color-text-secondary)' }}>
-                <li>• Cloudflare (hosting and CDN)</li>
-                <li>• Analytics providers (anonymized data only)</li>
+                <li>• Vercel (hosting and edge deployment)</li>
+                <li>• Google Analytics (anonymized usage analytics)</li>
+                <li>• Google AdSense (advertising)</li>
               </ul>
             </div>
 

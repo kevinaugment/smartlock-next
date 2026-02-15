@@ -12,7 +12,7 @@ export default function Terms() {
       <div className="container-main section">
         <div className="max-w-4xl mx-auto">
           <h1 className="page-header__title" style={{ marginBottom: 'var(--space-xl)' }}>Terms of Service</h1>
-          <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-3xl)' }}>Last updated: November 2025</p>
+          <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-3xl)' }}>Last updated: February 2026</p>
 
           <div className="prose max-w-none">
             <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>

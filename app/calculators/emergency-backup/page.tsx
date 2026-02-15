@@ -17,6 +17,13 @@ export default function EmergencyBackup() {
   const [pinDocumented, setPinDocumented] = useState(true)
   const [multiplePeople, setMultiplePeople] = useState(true)
 
+  // New professional fields
+  const [lockCount, setLockCount] = useState(1)
+  const [hasBatteryBackup, setHasBatteryBackup] = useState(false)
+  const [hasUPS, setHasUPS] = useState(false)
+  const [responseTimePlan, setResponseTimePlan] = useState('within-hour')
+  const [hasEmergencyContact, setHasEmergencyContact] = useState(false)
+
   const calculate = () => {
     let score = 0
     const strengths: string[] = []
@@ -79,10 +86,46 @@ export default function EmergencyBackup() {
       recommendations.push('Share access with trusted person')
     }
 
+    // New field scoring
+    if (hasBatteryBackup) {
+      score += 15
+      strengths.push('Battery backup for power failures')
+    } else {
+      weaknesses.push('No battery backup for power outages')
+      recommendations.push('Add 9V battery terminal or backup power solution')
+    }
+
+    if (hasUPS) {
+      score += 10
+      strengths.push('UPS protects access control panel')
+    }
+
+    if (hasEmergencyContact) {
+      score += 10
+      strengths.push('24/7 emergency locksmith on file')
+    } else {
+      recommendations.push('Keep a 24/7 locksmith contact for emergencies')
+    }
+
+    // Response time SLA scoring
+    const responseScore = { immediate: 15, 'within-hour': 10, 'next-day': 3 }[responseTimePlan] || 10
+    score += responseScore
+    if (responseTimePlan === 'immediate') {
+      strengths.push('Immediate emergency response plan')
+    } else if (responseTimePlan === 'next-day') {
+      weaknesses.push('Next-day response plan is too slow for emergencies')
+      recommendations.push('Establish a response plan with < 1 hour target')
+    }
+
+    // Scale risk warning by lock count
+    if (lockCount > 10 && score < 60) {
+      recommendations.push(`With ${lockCount} locks at risk, prioritize backup improvements immediately`)
+    }
+
     const grade = score >= 80 ? 'A' : score >= 60 ? 'B' : score >= 40 ? 'C' : 'D'
     const status = score >= 80 ? 'Excellent' : score >= 60 ? 'Good' : score >= 40 ? 'Fair' : 'Poor'
 
-    return { score, grade, status, strengths, weaknesses, recommendations }
+    return { score: Math.min(100, score), grade, status, strengths, weaknesses, recommendations, lockCount }
   }
 
   const result = calculate()
@@ -147,6 +190,39 @@ export default function EmergencyBackup() {
                 <input type="checkbox" checked={multiplePeople} onChange={(e) => setMultiplePeople(e.target.checked)} className="w-5 h-5" />
                 <span className="font-medium">Multiple People Have Access</span>
               </label>
+
+              <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "2px solid var(--color-border)" }}>
+                <input type="checkbox" checked={hasBatteryBackup} onChange={(e) => setHasBatteryBackup(e.target.checked)} className="w-5 h-5" />
+                <span className="font-medium">Battery Backup / 9V Terminal</span>
+              </label>
+
+              <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "2px solid var(--color-border)" }}>
+                <input type="checkbox" checked={hasUPS} onChange={(e) => setHasUPS(e.target.checked)} className="w-5 h-5" />
+                <span className="font-medium">UPS for Access Panel</span>
+              </label>
+
+              <label className="flex items-center gap-2 p-3 rounded cursor-pointer" style={{ border: "2px solid var(--color-border)" }}>
+                <input type="checkbox" checked={hasEmergencyContact} onChange={(e) => setHasEmergencyContact(e.target.checked)} className="w-5 h-5" />
+                <span className="font-medium">24/7 Emergency Locksmith on File</span>
+              </label>
+
+              <div className="pt-4">
+                <label className="block mb-2 font-medium">Number of Locks to Protect: {lockCount}</label>
+                <input type="range" min="1" max="50" value={lockCount} onChange={(e) => setLockCount(Number(e.target.value))} className="w-full" />
+                <div className="flex justify-between text-xs" style={{ color: 'var(--color-text-muted)' }}>
+                  <span>1 lock</span>
+                  <span>50 locks</span>
+                </div>
+              </div>
+
+              <div>
+                <label className="block mb-2 font-medium">Emergency Response Time Plan</label>
+                <select value={responseTimePlan} onChange={(e) => setResponseTimePlan(e.target.value)} className="w-full p-3 border rounded-lg">
+                  <option value="immediate">Immediate (on-site staff / self)</option>
+                  <option value="within-hour">Within 1 Hour (on-call locksmith)</option>
+                  <option value="next-day">Next Business Day</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -260,7 +336,7 @@ export default function EmergencyBackup() {
 
       <ToolRating toolSlug="emergency-backup" />
 
-          <RelatedResources calculatorSlug="emergency-backup-evaluator" />
+      <RelatedResources calculatorSlug="emergency-backup-evaluator" />
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

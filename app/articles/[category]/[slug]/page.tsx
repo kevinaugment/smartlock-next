@@ -10,6 +10,7 @@ import { ArticleHeader } from '@/components/articles/ArticleHeader';
 import { ArticleContent } from '@/components/articles/ArticleContent';
 import { BeTechRecommendation } from '@/components/articles/BeTechRecommendation';
 import { ReadingProgress } from '@/components/articles/ReadingProgress';
+import { Calculator } from 'lucide-react';
 
 // 静态生成所有文章页面
 export async function generateStaticParams() {
@@ -96,10 +97,60 @@ export default async function ArticlePage({
     content = 'Error loading article content.';
   }
 
-  // 获取相关文章
-  const relatedArticles = getArticlesByCategory(article.category)
-    .filter((a) => a.slug !== article.slug)
+  // 获取相关文章 — 优先使用注册表的跨分类推荐，回退到同分类
+  let relatedArticles = (article.relatedArticles || [])
+    .map(slug => getArticleBySlug(slug))
+    .filter((a): a is NonNullable<typeof a> => !!a)
     .slice(0, 3);
+
+  if (relatedArticles.length < 3) {
+    const sameCat = getArticlesByCategory(article.category)
+      .filter(a => a.slug !== article.slug && !relatedArticles.find(r => r.slug === a.slug))
+      .slice(0, 3 - relatedArticles.length);
+    relatedArticles = [...relatedArticles, ...sameCat];
+  }
+
+  // 相关计算器工具
+  const CALC_SLUG_MAP: Record<string, string> = {
+    'diagnostic-tool': 'compatibility',
+    'error-code-lookup': 'compatibility',
+    'door-lock-compatibility-checker': 'compatibility',
+    'protocol-selection-wizard': 'protocol-wizard',
+    'bia-calculator': 'lock-tco',
+    'rto-rpo-planner': 'emergency-backup',
+    'failover-tester': 'offline-resilience',
+  };
+  const relatedTools = (article.relatedTools || [])
+    .map(tool => CALC_SLUG_MAP[tool] || tool)
+    .filter((slug, i, arr) => arr.indexOf(slug) === i)
+    .slice(0, 2);
+
+  const CALC_TITLES: Record<string, string> = {
+    'lock-tco': 'TCO Calculator',
+    'battery-life': 'Battery Life Calculator',
+    'protocol-wizard': 'Protocol Selection Wizard',
+    'signal-strength': 'Signal Strength Calculator',
+    'str-roi': 'STR ROI Calculator',
+    'installation-cost': 'Installation Cost Calculator',
+    'compatibility': 'Compatibility Checker',
+    'mesh-planner': 'Mesh Network Planner',
+    'rf-coverage': 'RF Coverage Planner',
+    'fleet-planner': 'Fleet Planner',
+    'credential-planner': 'Credential Planner',
+    'installation-time': 'Installation Time Estimator',
+    'subscription-compare': 'Subscription Comparison',
+    'offline-resilience': 'Offline Resilience Planner',
+    'emergency-backup': 'Emergency Backup Planner',
+    'access-capacity': 'Access Capacity Calculator',
+    'security-compliance': 'Security Compliance Checker',
+    'lock-compare': 'Lock Comparison Tool',
+    'warranty-lifecycle': 'Warranty Lifecycle Planner',
+    'network-bandwidth': 'Network Bandwidth Calculator',
+    'poe-power': 'PoE Power Budget Calculator',
+    'fire-compliance': 'Fire Code Compliance Checker',
+    'guest-code': 'Guest Code Planner',
+    'ble-range': 'BLE Range Calculator',
+  };
 
   const categoryInfo = CATEGORIES[article.category];
 
@@ -190,6 +241,26 @@ export default async function ArticlePage({
                   <div style={{ marginTop: 'var(--space-md)', color: 'var(--color-accent)', fontSize: '0.875rem', fontWeight: 500 }}>
                     Read more →
                   </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 相关计算器工具 */}
+        {relatedTools.length > 0 && (
+          <section style={{ marginTop: 'var(--space-2xl)' }}>
+            <h2 className="section-title" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+              <Calculator className="w-5 h-5" style={{ color: 'var(--color-accent)' }} />
+              Related Tools
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {relatedTools.map((slug) => (
+                <Link key={slug} href={`/calculators/${slug}`} className="link-card">
+                  <h3 className="link-card__title">{CALC_TITLES[slug] || slug}</h3>
+                  <span style={{ color: 'var(--color-accent)', fontSize: '0.875rem', fontWeight: 500, marginTop: 'var(--space-sm)' }}>
+                    Open tool →
+                  </span>
                 </Link>
               ))}
             </div>

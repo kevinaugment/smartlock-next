@@ -10,7 +10,7 @@ interface ProtocolData {
   wavelength: number // meters
 }
 
-// Z-Wave frequencies by region (Silicon Labs Z-Wave 700/800, 2025)
+// Z-Wave frequencies by region (Silicon Labs Z-Wave 700/800, 2026)
 const zwaveFrequencies: Record<string, { freq: number; wavelength: number }> = {
   us: { freq: 908, wavelength: 0.33 },
   eu: { freq: 868, wavelength: 0.345 },
@@ -66,6 +66,32 @@ const materialAttenuation: Record<string, number> = {
   glass: 2
 }
 
+// Floor material attenuation in dB per floor
+const floorAttenuation: Record<string, number> = {
+  wood: 8,
+  concrete: 15,
+  steel: 22,
+  mixed: 12,
+}
+
+// Antenna type gain adjustment (dBi relative to internal PCB)
+const antennaGain: Record<string, number> = {
+  'internal-pcb': 0,
+  'external-whip': 3,
+  'patch': 5,
+  'directional': 8,
+}
+
+// Building type presets (additional loss modifier)
+const buildingTypeModifier: Record<string, number> = {
+  residential: 0,
+  office: 3,
+  warehouse: -2, // More open space
+  hotel: 6,      // Fire doors, concrete floors
+  hospital: 8,   // RF shielding
+  school: 4,
+}
+
 export default function SignalCalculator() {
   const [protocol, setProtocol] = useState('zwave')
   const [zwaveRegion, setZwaveRegion] = useState('us')
@@ -74,6 +100,11 @@ export default function SignalCalculator() {
   const [wallType, setWallType] = useState('drywall')
   const [interference, setInterference] = useState('low')
   const [environment, setEnvironment] = useState('indoor')
+  const [floorCount, setFloorCount] = useState(0)
+  const [floorMaterial, setFloorMaterial] = useState('concrete')
+  const [antennaType, setAntennaType] = useState('internal-pcb')
+  const [repeaterCount, setRepeaterCount] = useState(0)
+  const [buildingType, setBuildingType] = useState('residential')
 
   const calculateSignal = () => {
     let protocolInfo = protocolData.find(p => p.protocol === protocol) || protocolData[0]
@@ -92,6 +123,9 @@ export default function SignalCalculator() {
     // Wall attenuation
     const wallLoss = wallCount * materialAttenuation[wallType]
 
+    // Floor attenuation
+    const floorLoss = floorCount * (floorAttenuation[floorMaterial] || 12)
+
     // Interference margin (dB)
     const interferenceMargin = {
       low: 0,
@@ -100,35 +134,46 @@ export default function SignalCalculator() {
     }[interference] || 0
 
     // Environment factor
-    const envFactor = environment === 'outdoor' ? 0 : 3 // Indoor adds multipath
+    const envFactor = environment === 'outdoor' ? 0 : 3
+
+    // Building type additional loss
+    const buildingLoss = buildingTypeModifier[buildingType] || 0
+
+    // Antenna gain (improves signal)
+    const antennaBoost = antennaGain[antennaType] || 0
 
     // Total path loss
-    const totalPathLoss = fspl + wallLoss + interferenceMargin + envFactor
+    const totalPathLoss = fspl + wallLoss + floorLoss + interferenceMargin + envFactor + buildingLoss
 
-    // Received Signal Strength (dBm)
-    const rssi = protocolInfo.txPower - totalPathLoss
+    // Received Signal Strength (dBm) — antenna gain added to TX side
+    const rssi = (protocolInfo.txPower + antennaBoost) - totalPathLoss
+
+    // Repeater improvement: each repeater effectively halves the path, adding ~10dB
+    const repeaterBoost = repeaterCount * 10
+    const effectiveRssi = rssi + repeaterBoost
 
     // Link margin (dBm) - how much above sensitivity
-    const linkMargin = rssi - protocolInfo.rxSensitivity
+    const linkMargin = effectiveRssi - protocolInfo.rxSensitivity
 
     // Convert to percentage (0-100)
-    // Excellent: >20dB margin, Poor: <5dB margin
     let signalPercent = 0
     if (linkMargin >= 20) signalPercent = 100
     else if (linkMargin >= 15) signalPercent = 90
     else if (linkMargin >= 10) signalPercent = 75
     else if (linkMargin >= 5) signalPercent = 55
     else if (linkMargin >= 0) signalPercent = 30
-    else signalPercent = Math.max(0, 30 + linkMargin * 3) // Negative margin
+    else signalPercent = Math.max(0, 30 + linkMargin * 3)
 
     return {
       signalPercent: Math.round(signalPercent),
-      rssi: Math.round(rssi),
+      rssi: Math.round(effectiveRssi),
       linkMargin: Math.round(linkMargin * 10) / 10,
       pathLoss: Math.round(totalPathLoss * 10) / 10,
       fspl: Math.round(fspl * 10) / 10,
       wallLoss,
-      maxRange: Math.round(Math.pow(10, (protocolInfo.txPower - protocolInfo.rxSensitivity - 27.55 - wallLoss) / 20) / (frequencyMHz / 1000))
+      floorLoss,
+      repeaterBoost,
+      maxRange: Math.round(Math.pow(10, (protocolInfo.txPower + antennaBoost - protocolInfo.rxSensitivity - 27.55 - wallLoss - floorLoss) / 20) / (frequencyMHz / 1000))
     }
   }
 
@@ -147,9 +192,9 @@ export default function SignalCalculator() {
   const getRecommendation = () => {
     if (result.linkMargin >= 15) return 'Excellent signal. No action needed.'
     if (result.linkMargin >= 10) return 'Good signal. Should work reliably.'
-    if (result.linkMargin >= 5) return 'Fair signal. Consider adding a repeater for reliability.'
-    if (result.linkMargin >= 0) return 'Weak signal. Add a mesh repeater immediately.'
-    return 'No connection possible. Reduce distance or add multiple repeaters.'
+    if (result.linkMargin >= 5) return repeaterCount === 0 ? 'Fair signal. Consider adding a repeater for reliability.' : 'Fair signal with repeaters. Consider upgrading antenna or reducing distance.'
+    if (result.linkMargin >= 0) return repeaterCount === 0 ? 'Weak signal. Add a mesh repeater immediately.' : 'Still weak with repeaters. Reduce distance or use sub-GHz protocol (Z-Wave).'
+    return 'No connection possible. Reduce distance, add repeaters, or switch to Z-Wave (sub-GHz).'
   }
 
   return (
@@ -160,94 +205,105 @@ export default function SignalCalculator() {
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Signal Analysis Parameters</h2>
 
           <div className="space-y-6">
+
+            {/* Building Type */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
+                Building Type
+              </label>
+              <select value={buildingType} onChange={(e) => setBuildingType(e.target.value)} className="form-input">
+                <option value="residential">Residential Home</option>
+                <option value="office">Office Building (+3dB loss)</option>
+                <option value="warehouse">Warehouse / Open Plan (-2dB, open space)</option>
+                <option value="hotel">Hotel (+6dB, fire doors)</option>
+                <option value="hospital">Hospital (+8dB, RF shielding)</option>
+                <option value="school">School (+4dB)</option>
+              </select>
+              <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>Building type applies additional attenuation based on typical construction</p>
+            </div>
+
             {/* Protocol */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
                 Wireless Protocol
               </label>
-              <select
-                value={protocol}
-                onChange={(e) => setProtocol(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="zwave">Z-Wave (908 MHz, Sub-GHz)</option>
+              <select value={protocol} onChange={(e) => setProtocol(e.target.value)} className="form-input">
+                <option value="zwave">Z-Wave (908 MHz, Sub-GHz — best penetration)</option>
                 <option value="zigbee">Zigbee (2.4 GHz, +8dBm)</option>
                 <option value="thread">Thread/Matter (2.4 GHz)</option>
                 <option value="wifi">Wi-Fi (2.4 GHz, +20dBm)</option>
-                <option value="bluetooth">Bluetooth (2.4 GHz, +4dBm)</option>
+                <option value="bluetooth">Bluetooth LE (2.4 GHz, +4dBm)</option>
               </select>
             </div>
 
             {/* Z-Wave Region (conditional) */}
             {protocol === 'zwave' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
                   Z-Wave Region (Frequency)
                 </label>
-                <select
-                  value={zwaveRegion}
-                  onChange={(e) => setZwaveRegion(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
+                <select value={zwaveRegion} onChange={(e) => setZwaveRegion(e.target.value)} className="form-input">
                   <option value="us">US/Canada (908 MHz)</option>
                   <option value="eu">Europe (868 MHz)</option>
                   <option value="au">Australia/NZ (921 MHz)</option>
                   <option value="jp">Japan (922 MHz)</option>
                 </select>
-                <p className="text-xs text-gray-500 mt-1">
-                  Regional frequency affects path loss calculation
-                </p>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>Regional frequency affects path loss calculation</p>
               </div>
             )}
 
+            {/* Antenna Type */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
+                Antenna Type
+              </label>
+              <select value={antennaType} onChange={(e) => setAntennaType(e.target.value)} className="form-input">
+                <option value="internal-pcb">Internal PCB (0 dBi — standard lock antenna)</option>
+                <option value="external-whip">External Whip (+3 dBi — hub/repeater)</option>
+                <option value="patch">Patch Antenna (+5 dBi — commercial hub)</option>
+                <option value="directional">Directional (+8 dBi — long-range point-to-point)</option>
+              </select>
+              <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>Hub/gateway antenna type affects effective TX power</p>
+            </div>
+
             {/* Distance */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
                 Distance to Hub: {distance} meters
               </label>
               <input
-                type="range"
-                min="1"
-                max="50"
-                value={distance}
+                type="range" min="1" max="100" value={distance}
                 onChange={(e) => setDistance(Number(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }}
               />
-              <div className="flex justify-between text-xs text-gray-500 mt-1">
+              <div className="flex justify-between" style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>
                 <span>1m</span>
-                <span>50m</span>
+                <span>100m</span>
               </div>
             </div>
 
             {/* Wall Count */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
                 Number of Walls/Obstacles: {wallCount}
               </label>
               <input
-                type="range"
-                min="0"
-                max="8"
-                value={wallCount}
+                type="range" min="0" max="10" value={wallCount}
                 onChange={(e) => setWallCount(Number(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }}
               />
-              <div className="flex justify-between text-xs text-gray-500 mt-1">
+              <div className="flex justify-between" style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>
                 <span>0 walls</span>
-                <span>8 walls</span>
+                <span>10 walls</span>
               </div>
             </div>
 
             {/* Wall Material */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
                 Wall/Obstacle Material
               </label>
-              <select
-                value={wallType}
-                onChange={(e) => setWallType(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
+              <select value={wallType} onChange={(e) => setWallType(e.target.value)} className="form-input">
                 <option value="glass">Glass/Window (2dB loss)</option>
                 <option value="drywall">Drywall/Plasterboard (3dB loss)</option>
                 <option value="wood">Wood Door/Wall (5dB loss)</option>
@@ -257,37 +313,77 @@ export default function SignalCalculator() {
               </select>
             </div>
 
+            {/* Floor Count */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
+                Floors Between Lock and Hub: {floorCount}
+              </label>
+              <input
+                type="range" min="0" max="10" value={floorCount}
+                onChange={(e) => setFloorCount(Number(e.target.value))}
+                className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }}
+              />
+              <div className="flex justify-between" style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>
+                <span>Same floor</span>
+                <span>10 floors</span>
+              </div>
+            </div>
+
+            {/* Floor Material (conditional) */}
+            {floorCount > 0 && (
+              <div>
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
+                  Floor Construction Material
+                </label>
+                <select value={floorMaterial} onChange={(e) => setFloorMaterial(e.target.value)} className="form-input">
+                  <option value="wood">Wood Frame (8dB/floor)</option>
+                  <option value="mixed">Mixed/Composite (12dB/floor)</option>
+                  <option value="concrete">Concrete Slab (15dB/floor)</option>
+                  <option value="steel">Steel Deck (22dB/floor)</option>
+                </select>
+              </div>
+            )}
+
+            {/* Repeater Count */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
+                Mesh Repeaters / Range Extenders: {repeaterCount}
+              </label>
+              <input
+                type="range" min="0" max="5" value={repeaterCount}
+                onChange={(e) => setRepeaterCount(Number(e.target.value))}
+                className="w-full h-2 rounded-lg appearance-none cursor-pointer" style={{ background: 'var(--color-border)' }}
+              />
+              <div className="flex justify-between" style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>
+                <span>0 repeaters</span>
+                <span>5 repeaters</span>
+              </div>
+              <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>Each repeater adds ~10dB effective gain (Zigbee/Z-Wave mesh nodes)</p>
+            </div>
+
             {/* Environment */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
                 Environment
               </label>
-              <select
-                value={environment}
-                onChange={(e) => setEnvironment(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="indoor">Indoor (Multipath reflections)</option>
+              <select value={environment} onChange={(e) => setEnvironment(e.target.value)} className="form-input">
+                <option value="indoor">Indoor (Multipath reflections, +3dB loss)</option>
                 <option value="outdoor">Outdoor (Line of sight)</option>
               </select>
             </div>
 
             {/* Interference */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }}>
                 2.4 GHz Interference Level
               </label>
-              <select
-                value={interference}
-                onChange={(e) => setInterference(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="low">Low (0dB) - Few Wi-Fi networks</option>
-                <option value="medium">Medium (5dB) - Typical home</option>
-                <option value="high">High (10dB) - Congested environment</option>
+              <select value={interference} onChange={(e) => setInterference(e.target.value)} className="form-input">
+                <option value="low">Low (0dB) — Few Wi-Fi networks nearby</option>
+                <option value="medium">Medium (5dB) — Typical residential / office</option>
+                <option value="high">High (10dB) — Dense apartment / convention center</option>
               </select>
-              <p className="text-xs text-gray-500 mt-1">
-                Only affects 2.4 GHz protocols (Zigbee, Wi-Fi, Bluetooth, Thread)
+              <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>
+                {protocol === 'zwave' ? 'Minimal impact on Z-Wave (sub-GHz avoids 2.4 GHz congestion)' : 'Affects 2.4 GHz protocols (Zigbee, Wi-Fi, BLE, Thread)'}
               </p>
             </div>
           </div>
@@ -336,6 +432,18 @@ export default function SignalCalculator() {
               <span className="opacity-90">Wall Loss:</span>
               <span className="font-semibold">{result.wallLoss} dB</span>
             </div>
+            {result.floorLoss > 0 && (
+              <div className="flex justify-between">
+                <span className="opacity-90">Floor Loss:</span>
+                <span className="font-semibold">{result.floorLoss} dB</span>
+              </div>
+            )}
+            {result.repeaterBoost > 0 && (
+              <div className="flex justify-between">
+                <span className="opacity-90">Repeater Boost:</span>
+                <span className="font-semibold">+{result.repeaterBoost} dB</span>
+              </div>
+            )}
             <div className="flex justify-between">
               <span className="opacity-90">Est. Max Range:</span>
               <span className="font-semibold">{result.maxRange}m</span>

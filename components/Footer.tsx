@@ -57,6 +57,9 @@ export default function Footer() {
               <li><Link href="/compare">Protocol Comparison</Link></li>
               <li><Link href="/brands">Brands</Link></li>
               <li><Link href="/resources">Resources</Link></li>
+              <li><Link href="/resources/glossary">Glossary</Link></li>
+              <li><Link href="/resources/reference-tables">Reference Tables</Link></li>
+              <li><Link href="/resources/buying-guide">Buying Guide</Link></li>
               <li><Link href="/contact">Contact</Link></li>
               <li><Link href="/privacy">Privacy Policy</Link></li>
               <li><Link href="/terms">Terms of Service</Link></li>

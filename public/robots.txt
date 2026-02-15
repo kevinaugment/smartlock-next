@@ -6,12 +6,11 @@ Allow: /articles/
 Allow: /calculators/
 Allow: /about
 Allow: /contact
+Allow: /faq
 
 Disallow: /admin/
-Disallow: /api/auth/
+Disallow: /api/
+Disallow: /status
 
 # Sitemap
 Sitemap: https://www.slockhub.com/sitemap.xml
-
-# Crawl delay
-Crawl-delay: 1

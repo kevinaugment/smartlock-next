@@ -141,6 +141,24 @@ async function main() {
         'Brand Expansion #3 Data (7 brands + existing brand products)'
     )
 
+    // Step 3.8: Seed expansion #4 brands + products
+    totalFailures += await runSQLFile(
+        join(baseDir, 'seeds', 'brands-expansion-4-seed.sql'),
+        'Brand Expansion #4 Data (6 brands + existing brand products)'
+    )
+
+    // Step 3.9: Seed expansion #5 (existing brand products)
+    totalFailures += await runSQLFile(
+        join(baseDir, 'seeds', 'brands-expansion-5-seed.sql'),
+        'Brand Expansion #5 Data (fill out thin brands with more products)'
+    )
+
+    // Step 3.10: Seed expansion #6 (complete product lineups from website scans)
+    totalFailures += await runSQLFile(
+        join(baseDir, 'seeds', 'brands-expansion-6-seed.sql'),
+        'Brand Expansion #6 Data (complete product lineups from official websites)'
+    )
+
     // Step 4: Seed top_n_pages
     totalFailures += await runSQLFile(
         join(baseDir, 'seeds', 'top-n-pages-seed.sql'),

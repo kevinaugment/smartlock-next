@@ -1,14 +1,114 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
-import { Lock } from 'lucide-react'
+import { useState, useCallback, useEffect, useRef } from 'react'
+import {
+  Lock, ChevronDown,
+  Radio, Shield, Wrench, BookOpen, Building2, Plug,
+  Zap, Battery, Signal, DollarSign, Clock, Home,
+  ShieldCheck, Bluetooth, Wifi, Flame, Key, Scale,
+  Wand2
+} from 'lucide-react'
+
+/* ------------------------------------------------------------------ */
+/*  DATA                                                              */
+/* ------------------------------------------------------------------ */
+
+const knowledgeBaseItems = [
+  { name: 'Protocols', href: '/articles/protocols', icon: Radio, desc: 'Z-Wave, Zigbee, BLE, Wi-Fi comparisons' },
+  { name: 'Security', href: '/articles/security', icon: Shield, desc: 'Encryption, audits & best practices' },
+  { name: 'Installation', href: '/articles/installation', icon: Wrench, desc: 'Step-by-step setup guides' },
+  { name: 'Guides', href: '/articles/guides', icon: BookOpen, desc: 'How-to walkthroughs & tips' },
+  { name: 'Use Cases', href: '/articles/use-cases', icon: Building2, desc: 'Commercial, rental & residential' },
+  { name: 'Integration', href: '/articles/integration', icon: Plug, desc: 'Smart-home ecosystem setup' },
+]
+
+const calculatorGroups = [
+  {
+    title: 'Power & Energy',
+    items: [
+      { name: 'Battery Life', href: '/calculators/battery-life', icon: Battery },
+      { name: 'PoE Power Budget', href: '/calculators/poe-power', icon: Zap },
+      { name: 'Energy Cost', href: '/calculators/energy-cost', icon: Zap },
+    ],
+  },
+  {
+    title: 'Connectivity',
+    items: [
+      { name: 'Signal Strength', href: '/calculators/signal-strength', icon: Signal },
+      { name: 'BLE Range', href: '/calculators/ble-range', icon: Bluetooth },
+      { name: 'RF Coverage', href: '/calculators/rf-coverage', icon: Wifi },
+    ],
+  },
+  {
+    title: 'Planning & Budget',
+    items: [
+      { name: 'TCO Calculator', href: '/calculators/lock-tco', icon: DollarSign },
+      { name: 'Installation Cost', href: '/calculators/installation-cost', icon: DollarSign },
+      { name: 'Installation Time', href: '/calculators/installation-time', icon: Clock },
+      { name: 'STR ROI', href: '/calculators/str-roi', icon: Home },
+    ],
+  },
+  {
+    title: 'Hardware',
+    items: [
+      { name: 'Door Compatibility', href: '/calculators/compatibility', icon: Wrench },
+      { name: 'Fire Compliance', href: '/calculators/fire-compliance', icon: Flame },
+    ],
+  },
+  {
+    title: 'Security & Compliance',
+    items: [
+      { name: 'Security Compliance', href: '/calculators/security-compliance', icon: ShieldCheck },
+      { name: 'Credential Planner', href: '/calculators/credential-planner', icon: Key },
+      { name: 'Subscription vs Purchase', href: '/calculators/subscription-compare', icon: Scale },
+    ],
+  },
+  {
+    title: 'Comparison',
+    items: [
+      { name: 'Protocol Wizard', href: '/calculators/protocol-wizard', icon: Wand2 },
+      { name: 'Lock Compare', href: '/calculators/lock-compare', icon: Scale },
+    ],
+  },
+]
+
+const resourceItems = [
+  { name: 'Glossary', href: '/resources/glossary', desc: 'Smart lock terminology A–Z' },
+  { name: 'Reference Tables', href: '/resources/reference-tables', desc: 'Specs, standards & data sheets' },
+  { name: 'Buying Guide', href: '/resources/buying-guide', desc: 'How to choose the right lock' },
+  { name: 'Installation Guides', href: '/resources/installation-guides', desc: 'Diagrams & wiring references' },
+]
+
+/* ------------------------------------------------------------------ */
+/*  COMPONENT                                                         */
+/* ------------------------------------------------------------------ */
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileAccordion, setMobileAccordion] = useState<string | null>(null)
+  const headerRef = useRef<HTMLElement>(null)
+
+  // Close mobile menu on Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [])
+
+  const toggleAccordion = useCallback((key: string) => {
+    setMobileAccordion(prev => (prev === key ? null : key))
+  }, [])
+
+  const closeMobile = useCallback(() => {
+    setMobileMenuOpen(false)
+    setMobileAccordion(null)
+  }, [])
 
   return (
-    <header className="bg-white border-b sticky top-0 z-50" style={{ borderColor: 'var(--color-border)' }}>
+    <header ref={headerRef} className="bg-white border-b sticky top-0 z-50" style={{ borderColor: 'var(--color-border)' }}>
       <div className="container-main">
         <div className="flex items-center justify-between" style={{ height: 'var(--header-height)' }}>
           {/* Logo */}
@@ -26,13 +126,87 @@ export default function Header() {
             Trusted by 500+ Property Managers
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
-            <Link href="/articles" className="nav-link">Knowledge Base</Link>
-            <Link href="/calculators" className="nav-link">Calculators</Link>
+          {/* ============ Desktop Mega Navigation ============ */}
+          <nav className="hidden md:flex mega-nav" aria-label="Main navigation">
+
+            {/* ----- Knowledge Base ----- */}
+            <div className="mega-nav__item">
+              <button className="mega-nav__trigger" aria-expanded="false" aria-haspopup="true">
+                Knowledge Base
+                <ChevronDown className="mega-nav__chevron" />
+              </button>
+              <div className="mega-menu">
+                <div className="mega-menu__grid mega-menu__grid--3">
+                  {knowledgeBaseItems.map(item => (
+                    <Link key={item.href} href={item.href} className="mega-menu__link">
+                      <item.icon className="mega-menu__link-icon" />
+                      <div>
+                        <div>{item.name}</div>
+                        <div className="mega-menu__link-desc">{item.desc}</div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+                <div className="mega-menu__cta">
+                  <Link href="/articles" className="mega-menu__cta-link">Browse All Articles →</Link>
+                </div>
+              </div>
+            </div>
+
+            {/* ----- Calculators ----- */}
+            <div className="mega-nav__item">
+              <button className="mega-nav__trigger" aria-expanded="false" aria-haspopup="true">
+                Calculators
+                <ChevronDown className="mega-nav__chevron" />
+              </button>
+              <div className="mega-menu">
+                <div className="mega-menu__grid mega-menu__grid--3">
+                  {calculatorGroups.map(group => (
+                    <div key={group.title} className="mega-menu__group">
+                      <div className="mega-menu__group-title">{group.title}</div>
+                      {group.items.map(item => (
+                        <Link key={item.href} href={item.href} className="mega-menu__link">
+                          <item.icon className="mega-menu__link-icon" />
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+                <div className="mega-menu__cta">
+                  <Link href="/calculators" className="mega-menu__cta-link">View All 32 Calculators →</Link>
+                </div>
+              </div>
+            </div>
+
+            {/* ----- Compare (direct link) ----- */}
             <Link href="/compare" className="nav-link">Compare</Link>
-            <Link href="/resources" className="nav-link">Resources</Link>
-            <Link href="/about" className="nav-link">About</Link>
+
+            {/* ----- Resources ----- */}
+            <div className="mega-nav__item">
+              <button className="mega-nav__trigger" aria-expanded="false" aria-haspopup="true">
+                Resources
+                <ChevronDown className="mega-nav__chevron" />
+              </button>
+              <div className="mega-menu mega-menu--sm">
+                <div className="mega-menu__grid mega-menu__grid--1">
+                  {resourceItems.map(item => (
+                    <Link key={item.href} href={item.href} className="mega-menu__link">
+                      <div>
+                        <div>{item.name}</div>
+                        <div className="mega-menu__link-desc">{item.desc}</div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+                <div className="mega-menu__cta">
+                  <Link href="/resources" className="mega-menu__cta-link">Browse All Resources →</Link>
+                </div>
+              </div>
+            </div>
+
+            {/* ----- Brands (direct link) ----- */}
+            <Link href="/brands" className="nav-link">Brands</Link>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -40,6 +214,7 @@ export default function Header() {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden p-2"
             style={{ color: 'var(--color-text-secondary)' }}
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {mobileMenuOpen ? (
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,15 +228,97 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* ============ Mobile Navigation ============ */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4" style={{ borderTop: '1px solid var(--color-border)' }}>
-            <nav className="flex flex-col gap-1">
-              <Link href="/articles" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Knowledge Base</Link>
-              <Link href="/calculators" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Calculators</Link>
-              <Link href="/compare" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Compare Protocols</Link>
-              <Link href="/resources" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Resources</Link>
-              <Link href="/about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>About</Link>
+          <div className="md:hidden py-2" style={{ borderTop: '1px solid var(--color-border)' }}>
+            <nav className="flex flex-col" aria-label="Mobile navigation">
+
+              {/* Knowledge Base accordion */}
+              <div className="mobile-nav__section">
+                <button
+                  className="mobile-nav__trigger"
+                  aria-expanded={mobileAccordion === 'kb'}
+                  onClick={() => toggleAccordion('kb')}
+                >
+                  Knowledge Base
+                  <ChevronDown className="mobile-nav__chevron" />
+                </button>
+                {mobileAccordion === 'kb' && (
+                  <div className="mobile-nav__panel">
+                    {knowledgeBaseItems.map(item => (
+                      <Link key={item.href} href={item.href} className="mobile-nav__link" onClick={closeMobile}>
+                        {item.name}
+                      </Link>
+                    ))}
+                    <Link href="/articles" className="mobile-nav__view-all" onClick={closeMobile}>
+                      Browse All Articles →
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Calculators accordion */}
+              <div className="mobile-nav__section">
+                <button
+                  className="mobile-nav__trigger"
+                  aria-expanded={mobileAccordion === 'calc'}
+                  onClick={() => toggleAccordion('calc')}
+                >
+                  Calculators
+                  <ChevronDown className="mobile-nav__chevron" />
+                </button>
+                {mobileAccordion === 'calc' && (
+                  <div className="mobile-nav__panel">
+                    {calculatorGroups.map(group => (
+                      <div key={group.title}>
+                        <div className="mobile-nav__group-title">{group.title}</div>
+                        {group.items.map(item => (
+                          <Link key={item.href} href={item.href} className="mobile-nav__link" onClick={closeMobile}>
+                            {item.name}
+                          </Link>
+                        ))}
+                      </div>
+                    ))}
+                    <Link href="/calculators" className="mobile-nav__view-all" onClick={closeMobile}>
+                      View All 32 Calculators →
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Compare direct link */}
+              <Link href="/compare" className="mobile-nav__trigger" style={{ fontWeight: 600 }} onClick={closeMobile}>
+                Compare
+              </Link>
+
+              {/* Resources accordion */}
+              <div className="mobile-nav__section">
+                <button
+                  className="mobile-nav__trigger"
+                  aria-expanded={mobileAccordion === 'res'}
+                  onClick={() => toggleAccordion('res')}
+                >
+                  Resources
+                  <ChevronDown className="mobile-nav__chevron" />
+                </button>
+                {mobileAccordion === 'res' && (
+                  <div className="mobile-nav__panel">
+                    {resourceItems.map(item => (
+                      <Link key={item.href} href={item.href} className="mobile-nav__link" onClick={closeMobile}>
+                        {item.name}
+                      </Link>
+                    ))}
+                    <Link href="/resources" className="mobile-nav__view-all" onClick={closeMobile}>
+                      Browse All Resources →
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Brands direct link */}
+              <Link href="/brands" className="mobile-nav__trigger" style={{ fontWeight: 600 }} onClick={closeMobile}>
+                Brands
+              </Link>
             </nav>
           </div>
         )}

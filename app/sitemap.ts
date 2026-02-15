@@ -3,8 +3,24 @@ import { getAllArticles } from '@/lib/articles/registry'
 import { BrandModel, ProductModel, TopNPageModel } from '@/lib/db/brand-models'
 
 const BASE_URL = 'https://www.slockhub.com'
+
+/**
+ * Normalize any date string to W3C Datetime YYYY-MM-DD format for sitemaps.
+ * Handles: ISO strings, space-separated DB timestamps, plain YYYY-MM-DD.
+ */
+function toSitemapDate(dateStr: string | undefined | null): string {
+    if (!dateStr) return BUILD_DATE
+    // Already YYYY-MM-DD
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr
+    // DB format "2026-02-15 18:40:00" → replace space with T for parsing
+    const normalized = dateStr.includes(' ') ? dateStr.replace(' ', 'T') + 'Z' : dateStr
+    const d = new Date(normalized)
+    if (isNaN(d.getTime())) return BUILD_DATE
+    return d.toISOString().slice(0, 10) // YYYY-MM-DD
+}
+
 // Evaluated once at build time — every deploy refreshes sitemap dates
-const BUILD_DATE = new Date().toISOString()
+const BUILD_DATE = new Date().toISOString().slice(0, 10) // YYYY-MM-DD
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const articles = getAllArticles()
@@ -121,7 +137,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Individual article pages (dynamically from registry)
     const articlePages: MetadataRoute.Sitemap = articles.map((article) => ({
         url: `${BASE_URL}/articles/${article.category}/${article.slug}`,
-        lastModified: article.updatedAt || article.pubDate,
+        lastModified: toSitemapDate(article.updatedAt || article.pubDate),
         changeFrequency: 'monthly' as const,
         priority: article.isPillar ? 0.9 : 0.8,
     }))
@@ -152,7 +168,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const brands = await BrandModel.getAll()
         brandPages = brands.map((b) => ({
             url: `${BASE_URL}/brands/${b.slug}`,
-            lastModified: b.updated_at || BUILD_DATE,
+            lastModified: toSitemapDate(b.updated_at),
             changeFrequency: 'weekly' as const,
             priority: 0.8,
         }))
@@ -172,7 +188,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const products = await ProductModel.getAll(200, 0)
         productPages = products.map((p) => ({
             url: `${BASE_URL}/brands/${p.brand_slug}/${p.slug}`,
-            lastModified: p.updated_at || BUILD_DATE,
+            lastModified: toSitemapDate(p.updated_at),
             changeFrequency: 'monthly' as const,
             priority: 0.7,
         }))

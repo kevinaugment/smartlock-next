@@ -150,6 +150,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         'subscription-compare', 'offline-resilience', 'emergency-backup',
         'access-capacity', 'security-compliance', 'lock-compare', 'warranty-lifecycle',
         'network-bandwidth', 'poe-power', 'fire-compliance', 'guest-code', 'ble-range',
+        'cyber-risk', 'door-fit', 'energy-cost', 'hotel-roi',
+        'noise-level', 'pin-strength', 'privacy-compliance', 'retrofit-advisor',
     ]
     const calculatorPages: MetadataRoute.Sitemap = calculatorSlugs.map((slug) => ({
         url: `${BASE_URL}/calculators/${slug}`,

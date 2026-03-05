@@ -32,10 +32,6 @@ yarn-error.log*
 # Vercel
 .vercel
 
-# Wrangler
-.wrangler
-wrangler.toml.backup
-
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
@@ -45,8 +41,3 @@ next-env.d.ts
 .idea
 *.swp
 *.swo
-
-# Database
-*.db
-*.sqlite
-/database/migrate-articles.sql

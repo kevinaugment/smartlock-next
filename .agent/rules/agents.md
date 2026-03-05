@@ -1,49 +1,43 @@
 # Agent Orchestration
 
-## Available Agents
+## Task Decomposition
 
-Located in `~/.claude/agents/`:
+For complex feature requests:
+1. Break into independent sub-tasks
+2. Identify dependencies between tasks
+3. Execute independent tasks in parallel when possible
+4. Verify each task before proceeding
 
-| Agent | Purpose | When to Use |
-|-------|---------|-------------|
-| planner | Implementation planning | Complex features, refactoring |
-| architect | System design | Architectural decisions |
-| tdd-guide | Test-driven development | New features, bug fixes |
-| code-reviewer | Code review | After writing code |
-| security-reviewer | Security analysis | Before commits |
-| build-error-resolver | Fix build errors | When build fails |
-| e2e-runner | E2E testing | Critical user flows |
-| refactor-cleaner | Dead code cleanup | Code maintenance |
-| doc-updater | Documentation | Updating docs |
+## Parallel Analysis
 
-## Immediate Agent Usage
-
-No user prompt needed:
-1. Complex feature requests - Use **planner** agent
-2. Code just written/modified - Use **code-reviewer** agent
-3. Bug fix or new feature - Use **tdd-guide** agent
-4. Architectural decision - Use **architect** agent
-
-## Parallel Task Execution
-
-ALWAYS use parallel Task execution for independent operations:
+ALWAYS use parallel execution for independent operations:
 
 ```markdown
 # GOOD: Parallel execution
-Launch 3 agents in parallel:
-1. Agent 1: Security analysis of auth.ts
-2. Agent 2: Performance review of cache system
-3. Agent 3: Type checking of utils.ts
+Analyze simultaneously:
+1. Security review of auth module
+2. Performance review of database queries
+3. Type checking of utility functions
 
 # BAD: Sequential when unnecessary
-First agent 1, then agent 2, then agent 3
+First security, then performance, then types
 ```
 
-## Multi-Perspective Analysis
+## Multi-Perspective Review
 
-For complex problems, use split role sub-agents:
-- Factual reviewer
-- Senior engineer
-- Security expert
-- Consistency reviewer
-- Redundancy checker
+For complex problems, analyze from multiple angles:
+- **Factual accuracy** — Are all claims verifiable?
+- **Engineering quality** — Is the code clean and maintainable?
+- **Security** — Are there vulnerabilities?
+- **Consistency** — Does it match existing patterns?
+- **Redundancy** — Is there unnecessary duplication?
+
+## Skill Loading
+
+Before starting work, load relevant skills:
+- Feature design → `brainstorming/SKILL.md`
+- Calculator pages → `calculator-detail-page/SKILL.md`
+- SEO content → `seo-content/SKILL.md` + `seo-schema/SKILL.md`
+- Bug investigation → `systematic-debugging/SKILL.md`
+- UI/frontend → `frontend-design/SKILL.md`
+- Code quality → `coding-standards/SKILL.md`

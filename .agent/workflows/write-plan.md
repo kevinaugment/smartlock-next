@@ -1,6 +1,9 @@
 ---
-description: 根据需求说明书创建详细的逐步实施计划
+description: Create a detailed step-by-step implementation plan from a spec or requirements
 ---
-1. 加载并运行 `.agent/skills/writing-plans/SKILL.md` 指令。
-2. 将任务拆分为 2-5 分钟即可完成的极小原子任务。
-3. 确保每个任务包含明确的验证步骤。
+1. Load and run `.agent/skills/writing-plans/SKILL.md` instructions.
+2. Break the task into atomic steps completable in 2-5 minutes each.
+3. Each step must include a clear verification criterion.
+4. If the plan involves bug fixes → also load `.agent/skills/systematic-debugging/SKILL.md`.
+5. If the plan involves calculator pages → also load `.agent/skills/calculator-detail-page/SKILL.md`.
+6. If the plan involves SEO content → also load `.agent/skills/seo-content/SKILL.md`.

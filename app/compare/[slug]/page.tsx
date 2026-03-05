@@ -62,9 +62,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const data = await getComparisonData(slug)
     if (!data) return { title: 'Smart Lock Comparison — SLockHub.com' }
 
-    const { brand1, brand2 } = data
-    const title = `${brand1.name} vs ${brand2.name}: Smart Lock Comparison 2026 — SLockHub.com`
-    const description = `Detailed comparison of ${brand1.name} and ${brand2.name} smart locks. Compare protocols, battery life, security features, pricing, and more.`
+    const { brand1, brand2, products1, products2 } = data
+    const price1 = getPriceRange(products1)
+    const price2 = getPriceRange(products2)
+    const title = `${brand1.name} vs ${brand2.name} (2026): Which Smart Lock Is Better? — SLockHub.com`
+    const description = `Side-by-side comparison of ${brand1.name} and ${brand2.name} smart locks. Compare prices (${price1} vs ${price2}), protocols, battery life, security features, and our expert verdict.`
 
     return {
         title,

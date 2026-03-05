@@ -1,46 +1,40 @@
-# Hooks System
+# Code Quality Hooks
 
-## Hook Types
+## Pre-Commit Checks
 
-- **PreToolUse**: Before tool execution (validation, parameter modification)
-- **PostToolUse**: After tool execution (auto-format, checks)
-- **Stop**: When session ends (final verification)
+Before ANY commit, verify:
+1. **Build passes:** `npm run build` completes without errors
+2. **Lint passes:** `npm run lint` returns clean
+3. **No debug code:** No `console.log` statements left in production code
+4. **No hardcoded values:** All secrets via `process.env`, all config via constants
 
-## Current Hooks (in ~/.claude/settings.json)
+## Post-Edit Verification
 
-### PreToolUse
-- **tmux reminder**: Suggests tmux for long-running commands (npm, pnpm, yarn, cargo, etc.)
-- **git push review**: Opens Zed for review before push
-- **doc blocker**: Blocks creation of unnecessary .md/.txt files
+After editing TypeScript files:
+- Check for type errors in the modified file
+- Verify imports are correct and used
+- Ensure no unused variables or functions
 
-### PostToolUse
-- **PR creation**: Logs PR URL and GitHub Actions status
-- **Prettier**: Auto-formats JS/TS files after edit
-- **TypeScript check**: Runs tsc after editing .ts/.tsx files
-- **console.log warning**: Warns about console.log in edited files
+## File Creation Guards
 
-### Stop
-- **console.log audit**: Checks all modified files for console.log before session ends
+Avoid creating unnecessary files:
+- No `.md` process documents in the project root (use `.agent/` directory)
+- No scratch files outside `/tmp/`
+- No duplicate utility files — check existing `lib/` first
 
-## Auto-Accept Permissions
+## Quality Checklist (Before Marking Work Complete)
 
-Use with caution:
-- Enable for trusted, well-defined plans
-- Disable for exploratory work
-- Never use dangerously-skip-permissions flag
-- Configure `allowedTools` in `~/.claude.json` instead
+- [ ] Code compiles without errors
+- [ ] No `console.log` statements in production code
+- [ ] All user inputs validated
+- [ ] Error handling is comprehensive
+- [ ] File is under 800 lines
+- [ ] Functions are under 50 lines
+- [ ] No deep nesting (>4 levels)
+- [ ] Uses immutable patterns (spread, not mutation)
 
-## TodoWrite Best Practices
+## Auto-Format Standards
 
-Use TodoWrite tool to:
-- Track progress on multi-step tasks
-- Verify understanding of instructions
-- Enable real-time steering
-- Show granular implementation steps
-
-Todo list reveals:
-- Out of order steps
-- Missing items
-- Extra unnecessary items
-- Wrong granularity
-- Misinterpreted requirements
+- Prettier for JS/TS/CSS formatting
+- ESLint for code quality rules
+- TypeScript strict mode enabled

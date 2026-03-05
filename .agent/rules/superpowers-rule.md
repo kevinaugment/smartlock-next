@@ -2,20 +2,28 @@
 trigger: always_on
 ---
 
-# Superpowers Development Rules
+# SLockHub Development Rules
 
-## 核心准则 (Prime Directives)
-- **技能优先**：在处理任何任务前，优先加载并阅读 `.agent/skills/using-superpowers/SKILL.md`。
-- **强制 TDD**：所有功能开发必须遵循 `.agent/skills/test-driven-development/SKILL.md` 的红-绿-重构循环。
-- **结构化设计**：在编写代码前，必须通过 `/brainstorm` 明确设计规范。
-- **小步快跑**：所有实施计划必须通过 `/write-plan` 拆分为极小的原子任务。
+## Prime Directives
+- **Skill-First**: Before any task, load the relevant skill from `.agent/skills/`.
+- **Structured Design**: Before writing code, use `/brainstorm` to clarify design requirements.
+- **Atomic Planning**: All implementation plans must be broken into small atomic tasks via `/write-plan`.
+- **Verify Before Commit**: Always run `npm run build` and `npm run lint` before committing.
 
-## 常用命令 (Workflows)
-- `/brainstorm`: 启动需求头脑风暴。
-- `/write-plan`: 创建实施计划。
-- `/execute-plan`: 执行并审查计划。
-- `/git-commit`: 规范化提交更改。
+## Available Workflows
+- `/brainstorm`: Start a requirements brainstorm session.
+- `/write-plan`: Create a detailed step-by-step implementation plan.
+- `/execute-plan`: Execute and review a plan with checkpoints.
+- `/git-commit`: Standardized commit process.
+- `/seo-content-create`: Create new SEO-optimized content.
+- `/deploy`: Build, verify, and deploy workflow.
+- `/style-unify`: Audit and unify site-wide styles, eliminate AI aesthetics.
+- `/gsc-audit`: Audit GSC data and output iterative SEO optimization suggestions.
 
-## 技术规范
-- 语言：Typescript / Node.js
-- 提交：Conventional Commits (中文)
+## Technical Standards
+- Language: TypeScript / Node.js
+- Framework: Next.js 14 (App Router)
+- Database: Turso / LibSQL
+- Deployment: Vercel
+- Commits: Conventional Commits (English)
+- Coding standards: `.agent/skills/coding-standards/SKILL.md`

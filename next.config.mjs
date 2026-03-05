@@ -15,6 +15,17 @@ const nextConfig = {
   // Page extensions
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
 
+  // SEO: 301 redirects for consolidated/removed pages
+  async redirects() {
+    return [
+      {
+        source: '/articles/use-cases/long-term-rental-property-strategy',
+        destination: '/articles/use-cases/long-term-rental-strategy',
+        permanent: true,
+      },
+    ]
+  },
+
   // Security & caching headers (migrated from Cloudflare _headers)
   async headers() {
     return [
@@ -38,17 +49,11 @@ const nextConfig = {
     ]
   },
 
-  // Exclude smartlockold directory
   webpack: (config, { isServer }) => {
     config.externals = config.externals || []
     config.externals.push({
       'gray-matter': 'gray-matter',
     })
-
-    config.watchOptions = {
-      ...config.watchOptions,
-      ignored: ['**/smartlockold/**', '**/node_modules/**'],
-    }
 
     return config
   },

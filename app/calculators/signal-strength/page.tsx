@@ -9,12 +9,12 @@ import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Signal Strength Calculator | RF Analysis Tool (2026)',
-  description: 'Calculate RF signal strength for smart locks using real physics (FSPL, dBm, path loss). Analyze Z-Wave 908MHz vs Zigbee 2.4GHz penetration through walls.',
-  keywords: 'signal strength calculator, RF signal analysis, Z-Wave range, Zigbee signal strength, smart lock connectivity, dBm calculator, path loss',
+  title: 'Smart Lock Signal Strength Calculator — Check Your BLE, WiFi & Z-Wave Range | SLockHub',
+  description: 'Free interactive calculator to estimate smart lock wireless range. Enter wall materials, distance, and protocol (Z-Wave 908MHz, Zigbee 2.4GHz, BLE, WiFi) to check if your signal will reach reliably.',
+  keywords: 'signal strength calculator, RF signal analysis, Z-Wave range, Zigbee signal strength, smart lock connectivity, dBm calculator, path loss, RSSI calculator',
   openGraph: {
-    title: 'Signal Strength Calculator - RF Physics-Based Analysis',
-    description: 'Professional RF signal calculator using Free Space Path Loss and material attenuation',
+    title: 'Smart Lock Signal Strength Calculator — Check Your Wireless Range',
+    description: 'Physics-based RF signal calculator using Free Space Path Loss and material attenuation. Test Z-Wave, Zigbee, WiFi, BLE, and Thread signal strength.',
     type: 'website',
   },
 }
@@ -409,10 +409,10 @@ export default function SignalStrengthPage() {
             </div>
           </div>
 
-          
+
           <RelatedResources calculatorSlug="signal-strength-analyzer" />
 
-{/* Related Resources */}
+          {/* Related Resources */}
           <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
             <h2 className="section-title">Related Resources</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

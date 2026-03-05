@@ -1,5 +1,10 @@
 ---
-description: 批量执行计划并进行审查检查点
+description: Execute a plan with review checkpoints between tasks
 ---
-1. 加载并运行 `.agent/skills/executing-plans/SKILL.md` 指令。
-2. 按照计划顺序执行任务，并在关键节点请求用户确认。
+1. Load the implementation plan document.
+2. Execute tasks sequentially in the order defined by the plan.
+3. After each task, verify the success criterion is met before proceeding.
+4. At critical checkpoints (every 3-5 tasks), request user confirmation.
+5. If a task fails verification, load `.agent/skills/systematic-debugging/SKILL.md` to investigate.
+6. All code must follow `.agent/skills/coding-standards/SKILL.md`.
+7. Commit completed work at each checkpoint using Conventional Commits format.

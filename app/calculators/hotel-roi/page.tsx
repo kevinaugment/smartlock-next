@@ -276,7 +276,7 @@ export default function HotelROI() {
 
                     {/* Results Panel */}
                     <div className="lg:col-span-1">
-                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' }}>
+                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4 result-panel--grade-b">
                             <h2 className="text-xl font-bold mb-6">ROI Summary</h2>
                             <div className="text-center mb-6">
                                 <div className="text-5xl font-bold mb-1">{result.paybackMonths}</div>
@@ -357,7 +357,7 @@ export default function HotelROI() {
                                     <td>{result.annualSavings > 0 ? Math.round((result.breakdown.maintenanceSavings / (result.annualSavings + result.breakdown.softwareCost)) * 100) : 0}%</td>
                                     <td className="text-sm">Lower maintenance cost vs. traditional lock hardware</td>
                                 </tr>
-                                <tr style={{ background: 'var(--color-danger-subtle, #fef2f2)' }}>
+                                <tr style={{ background: 'var(--color-danger-subtle)' }}>
                                     <td className="font-medium">Software Subscription</td>
                                     <td className="font-bold" style={{ color: 'var(--color-danger)' }}>-${result.breakdown.softwareCost.toLocaleString()}</td>
                                     <td>—</td>

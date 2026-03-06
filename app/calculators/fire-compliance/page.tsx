@@ -221,10 +221,7 @@ export default function FireComplianceChecker() {
                     </div>
 
                     <div>
-                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{
-                            background: result.compliant ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' :
-                                'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
-                        }}>
+                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.compliant ? 'result-panel--grade-a' : 'result-panel--grade-f'}`}>
                             <h2 className="text-xl font-bold mb-6">Compliance Status</h2>
                             <div className="text-center mb-8">
                                 <div className="text-5xl font-bold mb-2">{result.compliant ? 'PASS' : 'FAIL'}</div>

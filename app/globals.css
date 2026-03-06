@@ -73,6 +73,44 @@
   --color-danger-subtle: #fef2f2;
   /* Red 50 */
 
+  /* Semantic Dark Variants (for gradients) */
+  --color-success-dark: #047857;
+  --color-accent-dark: #4338ca;
+  --color-warning-dark: #a16207;
+  --color-danger-dark: #b91c1c;
+  --color-orange: #ea580c;
+  --color-orange-dark: #c2410c;
+
+  /* Star Rating Colors */
+  --color-star-hover: #fbbf24;
+  /* amber-400 */
+  --color-star-user: #f59e0b;
+  /* amber-500 */
+  --color-star-aggregate: #facc15;
+  /* yellow-400 */
+
+  /* Semantic Border Colors */
+  --color-success-border: #bbf7d0;
+  --color-warning-border: #fde68a;
+  --color-danger-border: #fecaca;
+
+  /* Semantic Text Colors */
+  --color-warning-text: #92400e;
+  --color-success-text: #166534;
+  --color-danger-text: #991b1b;
+
+  /* Featured (Purple) */
+  --color-featured-bg: #faf5ff;
+  --color-featured-text: #7e22ce;
+  --color-featured-border: #e9d5ff;
+
+  /* Protocol Colors */
+  --color-protocol-zwave: #2563eb;
+  --color-protocol-zigbee: #059669;
+  --color-protocol-wifi: #7c3aed;
+  --color-protocol-thread: #ea580c;
+  --color-protocol-ble: #8b5cf6;
+
   /* Typography */
   --font-display: 'Instrument Sans', 'DM Sans', system-ui, -apple-system, sans-serif;
   --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
@@ -386,25 +424,25 @@ body {
 .badge-success {
   background: var(--color-success-subtle);
   color: var(--color-success);
-  border-color: #bbf7d0;
+  border-color: var(--color-success-border);
 }
 
 .badge-warning {
   background: var(--color-warning-subtle);
   color: var(--color-warning);
-  border-color: #fde68a;
+  border-color: var(--color-warning-border);
 }
 
 .badge-danger {
   background: var(--color-danger-subtle);
   color: var(--color-danger);
-  border-color: #fecaca;
+  border-color: var(--color-danger-border);
 }
 
 .badge-featured {
-  background: #faf5ff;
-  color: #7e22ce;
-  border-color: #e9d5ff;
+  background: var(--color-featured-bg);
+  color: var(--color-featured-text);
+  border-color: var(--color-featured-border);
 }
 
 /* --- Top-Level Callout/Alert Definition --- */
@@ -441,8 +479,8 @@ body {
 .callout-warning,
 .warning-box {
   background: var(--color-warning-subtle);
-  border-color: #fde68a;
-  color: #92400e;
+  border-color: var(--color-warning-border);
+  color: var(--color-warning-text);
 }
 
 .callout-warning .callout-title {
@@ -452,15 +490,15 @@ body {
 }
 
 .callout-warning p {
-  color: #92400e;
+  color: var(--color-warning-text);
 }
 
 /* Success */
 .callout-success,
 .success-box {
   background: var(--color-success-subtle);
-  border-color: #bbf7d0;
-  color: #166534;
+  border-color: var(--color-success-border);
+  color: var(--color-success-text);
 }
 
 .callout-success .callout-title {
@@ -470,14 +508,14 @@ body {
 }
 
 .callout-success p {
-  color: #166534;
+  color: var(--color-success-text);
 }
 
 /* Danger */
 .callout-danger {
   background: var(--color-danger-subtle);
-  border-color: #fecaca;
-  color: #991b1b;
+  border-color: var(--color-danger-border);
+  color: var(--color-danger-text);
 }
 
 .callout-danger .callout-title {
@@ -487,7 +525,7 @@ body {
 }
 
 .callout-danger p {
-  color: #991b1b;
+  color: var(--color-danger-text);
 }
 
 
@@ -626,6 +664,165 @@ body {
 
 .feature-item__icon--danger {
   color: var(--color-danger);
+}
+
+.feature-item__icon--accent {
+  color: var(--color-accent);
+}
+
+.feature-item__icon--lg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.feature-item__title {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.feature-item__desc {
+  color: var(--color-text-secondary);
+}
+
+.check-item__icon--accent {
+  color: var(--color-accent);
+}
+
+/* --- Contact Info Box --- */
+.info-box__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-md);
+}
+
+/* --- Divider with spacing --- */
+.divider-section {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-lg);
+}
+
+/* --- Hero Mesh Gradient Background --- */
+.hero__mesh-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.hero__mesh-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+}
+
+.hero__mesh-orb--cyan {
+  top: 10%;
+  left: 15%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.35) 0%, transparent 70%);
+  animation: meshFloat1 12s ease-in-out infinite;
+}
+
+.hero__mesh-orb--indigo {
+  top: 30%;
+  right: 10%;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+  animation: meshFloat2 15s ease-in-out infinite;
+}
+
+.hero__mesh-orb--violet {
+  bottom: 5%;
+  left: 40%;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+  animation: meshFloat3 10s ease-in-out infinite;
+}
+
+/* --- TCO Preview Panel --- */
+.tco-preview__label {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-md);
+  font-family: var(--font-mono);
+}
+
+.tco-preview__value {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.tco-preview__amount {
+  font-family: var(--font-mono);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tco-preview__period {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.tco-preview__bars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.tco-preview__bar-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  font-size: 0.8125rem;
+}
+
+.tco-preview__bar-label {
+  width: 5rem;
+  color: var(--color-text-muted);
+}
+
+.tco-preview__bar-track {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.tco-preview__bar-fill {
+  height: 100%;
+  background: var(--gradient-brand);
+  border-radius: 99px;
+}
+
+.tco-preview__bar-value {
+  font-family: var(--font-mono);
+  color: var(--color-text-inverse);
+  font-weight: 600;
+  width: 3rem;
+  text-align: right;
+}
+
+.tco-preview__cta {
+  width: 100%;
+  margin-top: var(--space-lg);
+  text-align: center;
+  justify-content: center;
+  font-size: 0.8125rem;
 }
 
 /* --- CTA Section --- */
@@ -1232,23 +1429,23 @@ body {
 
 /* --- Comparison / Protocol Color Accents --- */
 .text-protocol-zwave {
-  color: #2563eb;
+  color: var(--color-protocol-zwave);
 }
 
 .text-protocol-zigbee {
-  color: #059669;
+  color: var(--color-protocol-zigbee);
 }
 
 .text-protocol-wifi {
-  color: #7c3aed;
+  color: var(--color-protocol-wifi);
 }
 
 .text-protocol-thread {
-  color: #ea580c;
+  color: var(--color-protocol-thread);
 }
 
 .text-protocol-ble {
-  color: #8b5cf6;
+  color: var(--color-protocol-ble);
 }
 
 /* --- Article Content (Prose) --- */
@@ -1584,23 +1781,44 @@ body {
 }
 
 .result-panel--green {
-  background: linear-gradient(135deg, #059669, #047857);
+  background: linear-gradient(135deg, var(--color-protocol-zigbee), var(--color-success-dark));
 }
 
 .result-panel--blue {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  background: linear-gradient(135deg, var(--color-protocol-zwave), #1d4ed8);
 }
 
 .result-panel--yellow {
-  background: linear-gradient(135deg, #d97706, #b45309);
+  background: linear-gradient(135deg, #d97706, var(--color-warning));
 }
 
 .result-panel--red {
-  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  background: linear-gradient(135deg, #dc2626, var(--color-danger));
 }
 
 .result-panel--cyan {
   background: linear-gradient(135deg, var(--color-accent), var(--color-accent-hover));
+}
+
+/* --- Result Panel Grade Classes (for calculator result panels) --- */
+.result-panel--grade-a {
+  background: linear-gradient(to bottom right, var(--color-success), var(--color-success-dark));
+}
+
+.result-panel--grade-b {
+  background: linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark));
+}
+
+.result-panel--grade-c {
+  background: linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark));
+}
+
+.result-panel--grade-d {
+  background: linear-gradient(to bottom right, var(--color-orange), var(--color-orange-dark));
+}
+
+.result-panel--grade-f {
+  background: linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark));
 }
 
 /* --- Score Display --- */

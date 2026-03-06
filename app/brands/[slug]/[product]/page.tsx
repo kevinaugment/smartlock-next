@@ -283,7 +283,7 @@ function SpecItem({ label, value }: { label: string; value: string }) {
 function FeatureItem({ label, enabled }: { label: string; enabled: boolean }) {
     return (
         <div className="flex items-center gap-2" style={{ padding: 'var(--space-xs) var(--space-sm)', fontSize: '0.875rem' }}>
-            <span style={{ color: enabled ? 'var(--color-success, #22c55e)' : 'var(--color-text-muted)', fontSize: '1rem' }}>
+            <span style={{ color: enabled ? 'var(--color-success)' : 'var(--color-text-muted)', fontSize: '1rem' }}>
                 {enabled ? '✓' : '✗'}
             </span>
             <span style={{ color: enabled ? 'var(--color-text-primary)' : 'var(--color-text-muted)' }}>{label}</span>

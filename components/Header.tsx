@@ -87,12 +87,16 @@ const resourceItems = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mobileAccordion, setMobileAccordion] = useState<string | null>(null)
+  const [activeDesktopMenu, setActiveDesktopMenu] = useState<string | null>(null)
   const headerRef = useRef<HTMLElement>(null)
 
-  // Close mobile menu on Escape
+  // Close menus on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setMobileMenuOpen(false)
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false)
+        setActiveDesktopMenu(null)
+      }
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
@@ -107,6 +111,18 @@ export default function Header() {
     setMobileAccordion(null)
   }, [])
 
+  const desktopMenuHandlers = useCallback((key: string) => ({
+    onMouseEnter: () => setActiveDesktopMenu(key),
+    onMouseLeave: () => setActiveDesktopMenu(null),
+    onFocus: () => setActiveDesktopMenu(key),
+    onBlur: (e: React.FocusEvent) => {
+      // Only close if focus moves outside this menu item
+      if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+        setActiveDesktopMenu(null)
+      }
+    },
+  }), [])
+
   return (
     <header ref={headerRef} className="bg-white border-b sticky top-0 z-50" style={{ borderColor: 'var(--color-border)' }}>
       <div className="container-main">
@@ -120,18 +136,13 @@ export default function Header() {
             </span>
           </Link>
 
-          {/* Trust Signal */}
-          <div className="trust-signal">
-            <span className="trust-signal__dot" />
-            Trusted by 500+ Property Managers
-          </div>
 
           {/* ============ Desktop Mega Navigation ============ */}
           <nav className="hidden md:flex mega-nav" aria-label="Main navigation">
 
             {/* ----- Knowledge Base ----- */}
-            <div className="mega-nav__item">
-              <button className="mega-nav__trigger" aria-expanded="false" aria-haspopup="true">
+            <div className="mega-nav__item" {...desktopMenuHandlers('kb')}>
+              <button className="mega-nav__trigger" aria-expanded={activeDesktopMenu === 'kb'} aria-haspopup="true">
                 Knowledge Base
                 <ChevronDown className="mega-nav__chevron" />
               </button>
@@ -154,8 +165,8 @@ export default function Header() {
             </div>
 
             {/* ----- Calculators ----- */}
-            <div className="mega-nav__item">
-              <button className="mega-nav__trigger" aria-expanded="false" aria-haspopup="true">
+            <div className="mega-nav__item" {...desktopMenuHandlers('calc')}>
+              <button className="mega-nav__trigger" aria-expanded={activeDesktopMenu === 'calc'} aria-haspopup="true">
                 Calculators
                 <ChevronDown className="mega-nav__chevron" />
               </button>
@@ -183,8 +194,8 @@ export default function Header() {
             <Link href="/compare" className="nav-link">Compare</Link>
 
             {/* ----- Resources ----- */}
-            <div className="mega-nav__item">
-              <button className="mega-nav__trigger" aria-expanded="false" aria-haspopup="true">
+            <div className="mega-nav__item" {...desktopMenuHandlers('res')}>
+              <button className="mega-nav__trigger" aria-expanded={activeDesktopMenu === 'res'} aria-haspopup="true">
                 Resources
                 <ChevronDown className="mega-nav__chevron" />
               </button>

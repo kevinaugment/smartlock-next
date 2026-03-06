@@ -207,12 +207,7 @@ export default function GuestCodeCapacityPlanner() {
                     </div>
 
                     <div>
-                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{
-                            background: result.grade === 'A' ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' :
-                                result.grade === 'B' ? 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' :
-                                    result.grade === 'C' ? 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))' :
-                                        'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
-                        }}>
+                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 result-panel--grade-${result.grade.toLowerCase()}`}>
                             <h2 className="text-xl font-bold mb-6">Code Capacity</h2>
                             <div className="text-center mb-8">
                                 <div className="text-5xl font-bold mb-2">{result.codeUtilization}%</div>

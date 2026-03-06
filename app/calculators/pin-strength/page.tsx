@@ -195,12 +195,12 @@ export default function PinStrengthChecker() {
         [pin, keypadType, lockoutThreshold, lockoutDuration]
     )
 
-    const gradeColors: Record<string, string> = {
-        A: 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))',
-        B: 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))',
-        C: 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))',
-        D: 'linear-gradient(to bottom right, #ea580c, #c2410c)',
-        F: 'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))',
+    const gradeClasses: Record<string, string> = {
+        A: 'result-panel--grade-a',
+        B: 'result-panel--grade-b',
+        C: 'result-panel--grade-c',
+        D: 'result-panel--grade-d',
+        F: 'result-panel--grade-f',
     }
 
     return (
@@ -356,7 +356,7 @@ export default function PinStrengthChecker() {
 
                     {/* Results Panel */}
                     <div className="lg:col-span-1">
-                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: gradeColors[result.grade] }}>
+                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${gradeClasses[result.grade]}`}>
                             <h2 className="text-xl font-bold mb-6">Security Assessment</h2>
                             <div className="text-center mb-8">
                                 <div className="text-7xl font-bold mb-2">{pin ? result.grade : '—'}</div>

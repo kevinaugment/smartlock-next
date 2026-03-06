@@ -10,7 +10,7 @@ import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechR
 interface CyberRiskResult {
     score: number
     grade: string
-    gradeColor: string
+    gradeClass: string
     categoryScores: {
         authentication: number
         encryption: number
@@ -101,12 +101,12 @@ export default function CyberRiskScorecard() {
 
         const totalScore = authScore + encScore + fwScore + netScore + physScore
         const grade = totalScore >= 85 ? 'A' : totalScore >= 70 ? 'B' : totalScore >= 55 ? 'C' : totalScore >= 40 ? 'D' : 'F'
-        const gradeColor = totalScore >= 85 ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' : totalScore >= 70 ? 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' : totalScore >= 55 ? 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))' : totalScore >= 40 ? 'linear-gradient(to bottom right, #ea580c, #c2410c)' : 'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
+        const gradeClass = totalScore >= 85 ? 'result-panel--grade-a' : totalScore >= 70 ? 'result-panel--grade-b' : totalScore >= 55 ? 'result-panel--grade-c' : totalScore >= 40 ? 'result-panel--grade-d' : 'result-panel--grade-f'
 
         if (risks.length === 0) mitigations.push('Your security posture looks strong — maintain regular firmware updates and credential rotation')
 
         return {
-            score: totalScore, grade, gradeColor,
+            score: totalScore, grade, gradeClass,
             categoryScores: { authentication: authScore, encryption: encScore, firmware: fwScore, network: netScore, physical: physScore },
             risks, mitigations,
         }
@@ -298,7 +298,7 @@ export default function CyberRiskScorecard() {
 
                     {/* Results */}
                     <div className="lg:col-span-1">
-                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: result.gradeColor }}>
+                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.gradeClass}`}>
                             <h2 className="text-xl font-bold mb-4">Cyber Risk Score</h2>
                             <div className="text-center mb-6">
                                 <div className="text-7xl font-bold mb-1">{result.grade}</div>

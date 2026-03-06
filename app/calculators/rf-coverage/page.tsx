@@ -153,11 +153,10 @@ export default function RFCoverage() {
           </div>
 
           <div>
-            <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{
-              background: result.signalQuality === 'Excellent' ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' :
-                result.signalQuality === 'Good' ? 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' :
-                  'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))'
-            }}>
+            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.signalQuality === 'Excellent' ? 'result-panel--grade-a' :
+                result.signalQuality === 'Good' ? 'result-panel--grade-b' :
+                  'result-panel--grade-c'
+              }`}>
               <h2 className="text-xl font-bold mb-6">Coverage Analysis</h2>
               <div className="text-center mb-8">
                 <div className="text-6xl font-bold mb-2">{result.hubsNeeded}</div>

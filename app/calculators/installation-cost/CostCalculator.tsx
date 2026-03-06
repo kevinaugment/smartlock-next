@@ -300,7 +300,7 @@ export default function CostCalculator() {
 
       {/* Results Section */}
       <div className="lg:col-span-1">
-        <div className="rounded-lg shadow-lg p-8 text-white sticky top-4" style={{ background: 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' }}>
+        <div className="rounded-lg shadow-lg p-8 text-white sticky top-4 result-panel--grade-a">
           <h2 className="text-xl font-bold mb-6">Total Cost Estimate</h2>
 
           <div className="text-center mb-8">

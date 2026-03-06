@@ -62,16 +62,7 @@ export default function Privacy() {
                 <li>• Session cookies for page navigation</li>
                 <li>• Preference cookies for user settings</li>
                 <li>• Analytics cookies (Google Analytics — anonymized)</li>
-                <li>• Advertising cookies (Google AdSense — used to serve personalized or non-personalized ads based on your preferences)</li>
               </ul>
-
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--color-text-primary)', margin: 'var(--space-lg) 0 var(--space-sm)' }}>Advertising</h3>
-              <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
-                We use Google AdSense to display advertisements on our website. Google may use cookies
-                and web beacons to serve ads based on your prior visits to our site or other websites.
-                You can opt out of personalized advertising by visiting{' '}
-                <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Google Ads Settings</a>.
-              </p>
             </div>
 
             <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
@@ -91,7 +82,6 @@ export default function Privacy() {
               <ul className="space-y-2" style={{ color: 'var(--color-text-secondary)' }}>
                 <li>• Vercel (hosting and edge deployment)</li>
                 <li>• Google Analytics (anonymized usage analytics)</li>
-                <li>• Google AdSense (advertising)</li>
               </ul>
             </div>
 

@@ -10,7 +10,7 @@ import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechR
 interface ComplianceResult {
     score: number
     grade: string
-    gradeColor: string
+    gradeClass: string
     dpiaRequired: boolean
     applicableLaws: string[]
     risks: { level: 'high' | 'medium' | 'low'; text: string }[]
@@ -157,9 +157,9 @@ export default function PrivacyComplianceEvaluator() {
         // Normalize
         score = Math.max(0, Math.min(100, score))
         const grade = score >= 85 ? 'A' : score >= 70 ? 'B' : score >= 55 ? 'C' : score >= 40 ? 'D' : 'F'
-        const gradeColor = score >= 85 ? 'var(--color-success)' : score >= 70 ? 'var(--color-accent)' : score >= 55 ? 'var(--color-warning)' : score >= 40 ? '#ea580c' : 'var(--color-danger)'
+        const gradeClass = score >= 85 ? 'result-panel--grade-a' : score >= 70 ? 'result-panel--grade-b' : score >= 55 ? 'result-panel--grade-c' : score >= 40 ? 'result-panel--grade-d' : 'result-panel--grade-f'
 
-        return { score, grade, gradeColor, dpiaRequired, applicableLaws, risks, recommendations }
+        return { score, grade, gradeClass, dpiaRequired, applicableLaws, risks, recommendations }
     }, [collectsBiometric, biometricType, cloudStorage, dataRetention, auditTrailAccess, userConsent, operatingRegion, propertyType, sharesWithThirdParty, encryptsAtRest, encryptsInTransit, hasPrivacyPolicy])
 
     return (
@@ -334,7 +334,7 @@ export default function PrivacyComplianceEvaluator() {
 
                     {/* Results */}
                     <div className="lg:col-span-1">
-                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: `linear-gradient(135deg, ${result.gradeColor}, ${result.gradeColor})` }}>
+                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.gradeClass}`}>
                             <h2 className="text-xl font-bold mb-4">Compliance Score</h2>
                             <div className="text-center mb-6">
                                 <div className="text-7xl font-bold mb-1">{result.grade}</div>
@@ -364,7 +364,7 @@ export default function PrivacyComplianceEvaluator() {
                         <h2 className="text-2xl font-bold mb-6">Identified Risks</h2>
                         <div className="space-y-3">
                             {result.risks.map((risk, i) => (
-                                <div key={i} className="flex items-start gap-3 p-4 rounded-lg shadow" style={{ background: risk.level === 'high' ? 'var(--color-danger-subtle, #fef2f2)' : risk.level === 'medium' ? 'var(--color-warning-subtle, #fffbeb)' : 'var(--color-success-subtle, #f0fdf4)' }}>
+                                <div key={i} className="flex items-start gap-3 p-4 rounded-lg shadow" style={{ background: risk.level === 'high' ? 'var(--color-danger-subtle)' : risk.level === 'medium' ? 'var(--color-warning-subtle)' : 'var(--color-success-subtle)' }}>
                                     {risk.level === 'high' ? <X className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--color-danger)' }} /> :
                                         risk.level === 'medium' ? <AlertTriangle className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--color-warning)' }} /> :
                                             <Info className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--color-success)' }} />}

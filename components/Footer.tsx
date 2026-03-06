@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Lock, ShieldCheck, Award, FileCheck } from 'lucide-react'
+import { Lock } from 'lucide-react'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -71,21 +71,6 @@ export default function Footer() {
         {/* Gradient Divider */}
         <hr className="footer-gradient-divider mt-8" />
 
-        {/* Compliance Badges */}
-        <div className="compliance-badges mt-6 mb-6">
-          <span className="compliance-badge">
-            <ShieldCheck className="compliance-badge__icon" />
-            ANSI/BHMA Compliant
-          </span>
-          <span className="compliance-badge">
-            <Award className="compliance-badge__icon" />
-            UL 437 Standards
-          </span>
-          <span className="compliance-badge">
-            <FileCheck className="compliance-badge__icon" />
-            ADA Accessible
-          </span>
-        </div>
 
         {/* Bottom Bar */}
         <div className="pt-4">

@@ -220,7 +220,7 @@ export default function CompatibilityPage() {
                 </div>
                 <div className="rounded-lg p-6" style={{ border: "2px solid var(--color-border)" }}>
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'var(--color-surface-alt, #f3f4f6)' }}><Ruler className="w-6 h-6" style={{ color: "var(--color-text-secondary)" }} /></div>
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'var(--color-surface-alt)' }}><Ruler className="w-6 h-6" style={{ color: "var(--color-text-secondary)" }} /></div>
                     <h3 style={{ fontWeight: 600, color: "var(--color-text-primary)" }}>Measurements</h3>
                   </div>
                   <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-sm)" }}><strong>How to Measure</strong></p>

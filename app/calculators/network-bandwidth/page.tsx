@@ -221,7 +221,7 @@ export default function NetworkBandwidthCalculator() {
                     </div>
 
                     <div>
-                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' }}>
+                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4 result-panel--grade-b">
                             <h2 className="text-xl font-bold mb-6">Bandwidth Estimate</h2>
                             <div className="text-center mb-8">
                                 <div className="text-5xl font-bold mb-2">{result.totalMbps < 1 ? `${result.totalKbps} Kbps` : `${result.totalMbps} Mbps`}</div>

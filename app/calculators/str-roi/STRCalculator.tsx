@@ -105,11 +105,11 @@ export default function STRCalculator() {
 
   const result = calculate()
 
-  const getROIColor = (roi: number) => {
-    if (roi >= 200) return 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))'
-    if (roi >= 100) return 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))'
-    if (roi >= 50) return 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))'
-    return 'linear-gradient(to bottom right, #ea580c, #c2410c)'
+  const getROIClass = (roi: number) => {
+    if (roi >= 200) return 'result-panel--grade-a'
+    if (roi >= 100) return 'result-panel--grade-b'
+    if (roi >= 50) return 'result-panel--grade-c'
+    return 'result-panel--grade-d'
   }
 
   const getROILabel = (roi: number) => {
@@ -258,7 +258,7 @@ export default function STRCalculator() {
 
         {/* Results Section */}
         <div className="lg:col-span-1">
-          <div className="rounded-lg shadow-xl p-8 text-white sticky top-4" style={{ background: getROIColor(result.roi) }}>
+          <div className={`rounded-lg shadow-xl p-8 text-white sticky top-4 ${getROIClass(result.roi)}`}>
             <h2 className="text-xl font-bold mb-6">Annual ROI Summary</h2>
 
             <div className="text-center mb-8">

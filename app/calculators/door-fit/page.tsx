@@ -249,7 +249,7 @@ export default function DoorFitChecker() {
 
                     {/* Results Panel */}
                     <div className="lg:col-span-1">
-                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' }}>
+                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4 result-panel--grade-b">
                             <h2 className="text-xl font-bold mb-4">Compatibility Results</h2>
                             <div className="text-center mb-6">
                                 <div className="text-6xl font-bold mb-2">{results.compatible.length}</div>

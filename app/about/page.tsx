@@ -33,7 +33,7 @@ export default function AboutPage() {
             <h2 className="section-title section-title--center">Our Mission</h2>
             <p className="text-center" style={{ color: 'var(--color-text-secondary)', fontSize: '1.125rem', lineHeight: '1.75' }}>
               We aim to empower property managers, security professionals, and homeowners with the knowledge and tools
-              they need to make confidence decisions about smart lock systems. Through comprehensive guides,
+              they need to make confident decisions about smart lock systems. Through comprehensive guides,
               interactive calculators, and transparent protocol comparisons, we are dedicated to simplifying the complex
               world of smart lock technology.
             </p>
@@ -53,7 +53,7 @@ export default function AboutPage() {
               {
                 icon: <Calculator className="w-8 h-8" />,
                 title: 'Interactive Calculators',
-                desc: '24 specialized tools to estimate battery life, calculate costs, check compatibility, and plan installations'
+                desc: '32 specialized tools to estimate battery life, calculate costs, check compatibility, and plan installations'
               },
               {
                 icon: <Shield className="w-8 h-8" />,
@@ -80,7 +80,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { value: '70+', label: 'Articles' },
-              { value: '24', label: 'Calculators' },
+              { value: '32', label: 'Calculators' },
               { value: '7', label: 'Categories' },
               { value: '6+', label: 'Protocols' },
             ].map((stat) => (

@@ -144,7 +144,7 @@ export default function InstallationTime() {
           </div>
 
           <div>
-            <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))' }}>
+            <div className="p-8 rounded-lg shadow-lg text-white sticky top-4 result-panel--grade-c">
               <h2 className="text-xl font-bold mb-6">Time & Cost Estimate</h2>
               <div className="text-center mb-8">
                 <div className="text-6xl font-bold mb-2">{result.crewDays}</div>

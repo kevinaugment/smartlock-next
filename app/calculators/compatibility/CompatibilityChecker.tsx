@@ -226,11 +226,11 @@ export default function CompatibilityChecker() {
 
   const result = checkCompatibility()
 
-  const getScoreColor = (score: number) => {
-    if (score >= 85) return 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))'
-    if (score >= 70) return 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))'
-    if (score >= 50) return 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))'
-    return 'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
+  const getScoreClass = (score: number) => {
+    if (score >= 85) return 'result-panel--grade-a'
+    if (score >= 70) return 'result-panel--grade-b'
+    if (score >= 50) return 'result-panel--grade-c'
+    return 'result-panel--grade-f'
   }
 
   const getScoreLabel = (score: number) => {
@@ -442,7 +442,7 @@ export default function CompatibilityChecker() {
 
       {/* Results */}
       <div className="lg:col-span-1">
-        <div className="rounded-lg shadow-lg p-8 text-white sticky top-4" style={{ background: getScoreColor(result.score) }}>
+        <div className={`rounded-lg shadow-lg p-8 text-white sticky top-4 ${getScoreClass(result.score)}`}>
           <h2 className="text-xl font-bold mb-6">Compatibility Score</h2>
           <div className="text-center mb-8">
             <div className="text-6xl font-bold mb-2">{result.score}%</div>

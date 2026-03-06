@@ -17,7 +17,7 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
           </span>
         )}
         {article.featured && (
-          <span className="badge" style={{ background: 'var(--color-warning-subtle, #fef3c7)', color: 'var(--color-warning-text, #92400e)' }}>
+          <span className="badge" style={{ background: 'var(--color-warning-subtle)', color: 'var(--color-warning-text)' }}>
             <Sparkles className="w-3 h-3" /> Featured
           </span>
         )}

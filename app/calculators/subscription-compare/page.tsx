@@ -135,9 +135,7 @@ export default function SubscriptionCompare() {
           </div>
 
           <div>
-            <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{
-              background: result.winner === 'local' ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' : 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))'
-            }}>
+            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.winner === 'local' ? 'result-panel--grade-a' : 'result-panel--grade-b'}`}>
               <h2 className="text-xl font-bold mb-6">Cost Comparison</h2>
               <div className="text-center mb-8">
                 <div className="text-6xl font-bold mb-2">${result.difference}</div>

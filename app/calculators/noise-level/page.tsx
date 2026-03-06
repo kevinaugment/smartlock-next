@@ -86,20 +86,20 @@ export default function NoiseLevelEstimator() {
         // Rating
         const ambient = env.ambientDb
         let suitability: string
-        let suitabilityColor: string
+        let suitabilityClass: string
 
         if (estimatedDb <= ambient - 5) {
             suitability = 'Excellent'
-            suitabilityColor = 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))'
+            suitabilityClass = 'result-panel--grade-a'
         } else if (estimatedDb <= ambient + 5) {
             suitability = 'Acceptable'
-            suitabilityColor = 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))'
+            suitabilityClass = 'result-panel--grade-b'
         } else if (estimatedDb <= ambient + 15) {
             suitability = 'Noticeable'
-            suitabilityColor = 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))'
+            suitabilityClass = 'result-panel--grade-c'
         } else {
             suitability = 'Too Loud'
-            suitabilityColor = 'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
+            suitabilityClass = 'result-panel--grade-f'
         }
 
         // Find closest comparison
@@ -118,7 +118,7 @@ export default function NoiseLevelEstimator() {
             estimatedDb,
             estimatedDbBehindDoor,
             suitability,
-            suitabilityColor,
+            suitabilityClass,
             ambientDb: ambient,
             closestComparison: closest,
             tips,
@@ -260,7 +260,7 @@ export default function NoiseLevelEstimator() {
 
                     {/* Results */}
                     <div className="lg:col-span-1">
-                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: result.suitabilityColor }}>
+                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.suitabilityClass}`}>
                             <h2 className="text-xl font-bold mb-4">Noise Assessment</h2>
                             <div className="text-center mb-6">
                                 <div className="text-6xl font-bold mb-1">{result.estimatedDb}</div>

@@ -48,7 +48,7 @@ interface CapacityResult {
   utilization: number
   available: number
   status: string
-  statusColor: string
+  statusClass: string
   recommendation: string
   credentialBreakdown: {
     employees: number
@@ -102,16 +102,16 @@ export default function CredentialPlanner() {
 
     // Status determination
     let status = 'Safe'
-    let statusColor = 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))'
+    let statusClass = 'result-panel--grade-a'
     if (utilization >= 90) {
       status = 'Critical'
-      statusColor = 'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
+      statusClass = 'result-panel--grade-f'
     } else if (utilization >= CAPACITY_THRESHOLDS.warning) {
       status = 'High'
-      statusColor = 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))'
+      statusClass = 'result-panel--grade-c'
     } else if (utilization >= CAPACITY_THRESHOLDS.safe) {
       status = 'Warning'
-      statusColor = 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))'
+      statusClass = 'result-panel--grade-c'
     }
 
     // Recommendation
@@ -139,7 +139,7 @@ export default function CredentialPlanner() {
       utilization,
       available,
       status,
-      statusColor,
+      statusClass,
       recommendation,
       credentialBreakdown: {
         employees,
@@ -270,7 +270,7 @@ export default function CredentialPlanner() {
 
         {/* Results Section */}
         <div className="lg:col-span-1">
-          <div className="rounded-lg shadow-xl p-8 text-white sticky top-4" style={{ background: result.statusColor }}>
+          <div className={`rounded-lg shadow-xl p-8 text-white sticky top-4 ${result.statusClass}`}>
             <h2 className="text-xl font-bold mb-6">Capacity Analysis</h2>
 
             <div className="text-center mb-8">

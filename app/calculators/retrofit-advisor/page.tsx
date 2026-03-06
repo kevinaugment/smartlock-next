@@ -315,7 +315,7 @@ export default function RetrofitAdvisor() {
 
                     {/* Results Panel */}
                     <div className="lg:col-span-1">
-                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{ background: result.recommended === 'retrofit' ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' : 'linear-gradient(to bottom right, var(--color-accent), var(--color-accent-dark, #4338ca))' }}>
+                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.recommended === 'retrofit' ? 'result-panel--grade-a' : 'result-panel--grade-b'}`}>
 
                             <h2 className="text-xl font-bold mb-4">Recommendation</h2>
                             <div className="text-center mb-6">

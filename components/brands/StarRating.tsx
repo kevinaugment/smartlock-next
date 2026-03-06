@@ -86,7 +86,7 @@ export default function StarRating({ productId, size = 'md', showCount = true }:
                         key={i}
                         style={{
                             fontSize: starSize,
-                            color: 'var(--color-border, #e2e8f0)',
+                            color: 'var(--color-border)',
                             opacity: 0.5,
                         }}
                     >
@@ -113,13 +113,13 @@ export default function StarRating({ productId, size = 'md', showCount = true }:
                     const isHovered = hoverStar > 0 && star <= hoverStar
                     const isUserRated = userRating !== null && star <= userRating && hoverStar === 0
 
-                    let color = 'var(--color-border, #e2e8f0)'
+                    let color = 'var(--color-border)'
                     if (isHovered) {
-                        color = '#fbbf24' // amber-400 hover preview
+                        color = 'var(--color-star-hover)' // amber-400 hover preview
                     } else if (isUserRated) {
-                        color = '#f59e0b' // amber-500 your rating
+                        color = 'var(--color-star-user)' // amber-500 your rating
                     } else if (isActive && count > 0) {
-                        color = '#facc15' // yellow-400 aggregate
+                        color = 'var(--color-star-aggregate)' // yellow-400 aggregate
                     }
 
                     return (
@@ -168,7 +168,7 @@ export default function StarRating({ productId, size = 'md', showCount = true }:
             {userRating !== null && hoverStar === 0 && (
                 <span style={{
                     fontSize: size === 'sm' ? '0.65rem' : '0.75rem',
-                    color: 'var(--color-accent, #3b82f6)',
+                    color: 'var(--color-accent)',
                     fontWeight: 500,
                 }}>
                     Your rating: {userRating}★

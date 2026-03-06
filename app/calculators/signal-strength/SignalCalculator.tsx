@@ -392,11 +392,10 @@ export default function SignalCalculator() {
 
       {/* Results Section */}
       <div className="lg:col-span-1">
-        <div className="rounded-lg shadow-lg p-8 text-white sticky top-4" style={{
-          background: result.signalPercent >= 60 ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' :
-            result.signalPercent >= 40 ? 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))' :
-              'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
-        }}>
+        <div className={`rounded-lg shadow-lg p-8 text-white sticky top-4 ${result.signalPercent >= 60 ? 'result-panel--grade-a' :
+            result.signalPercent >= 40 ? 'result-panel--grade-c' :
+              'result-panel--grade-f'
+          }`}>
           <h2 className="text-xl font-bold mb-6">Signal Analysis Result</h2>
 
           <div className="text-center mb-6">

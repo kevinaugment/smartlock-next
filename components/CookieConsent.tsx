@@ -15,11 +15,13 @@ export default function CookieConsent() {
 
     const accept = () => {
         localStorage.setItem('cookie-consent', 'accepted')
+        window.dispatchEvent(new Event('cookie-consent-update'))
         setVisible(false)
     }
 
     const decline = () => {
         localStorage.setItem('cookie-consent', 'declined')
+        window.dispatchEvent(new Event('cookie-consent-update'))
         setVisible(false)
     }
 
@@ -50,7 +52,7 @@ export default function CookieConsent() {
                 }}
             >
                 <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem', margin: 0, flex: 1, minWidth: '280px' }}>
-                    We use cookies for analytics and advertising (Google Analytics &amp; AdSense).
+                    We use cookies for analytics (Google Analytics).
                     By continuing, you agree to our{' '}
                     <a href="/privacy" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>
                         Privacy Policy

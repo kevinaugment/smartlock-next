@@ -152,11 +152,10 @@ export default function FleetPlanner() {
           </div>
 
           <div>
-            <div className="p-8 rounded-lg shadow-lg text-white sticky top-4" style={{
-              background: result.fragmentationScore < 30 ? 'linear-gradient(to bottom right, var(--color-success), var(--color-success-dark, #15803d))' :
-                result.fragmentationScore < 60 ? 'linear-gradient(to bottom right, var(--color-warning), var(--color-warning-dark, #a16207))' :
-                  'linear-gradient(to bottom right, var(--color-danger), var(--color-danger-dark, #b91c1c))'
-            }}>
+            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.fragmentationScore < 30 ? 'result-panel--grade-a' :
+                result.fragmentationScore < 60 ? 'result-panel--grade-c' :
+                  'result-panel--grade-f'
+              }`}>
               <h2 className="text-xl font-bold mb-6">Fragmentation Analysis</h2>
               <div className="text-center mb-8">
                 <div className="text-6xl font-bold mb-2">{result.fragmentationScore}</div>

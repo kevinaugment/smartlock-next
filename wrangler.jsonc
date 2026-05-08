@@ -27,11 +27,5 @@
   },
   "build": {
     "command": "npm run cf:build"
-  },
-  "kv_namespaces": [
-    {
-      "binding": "SLOCKHUB_KV",
-      "id": "REPLACE_WITH_SLOCKHUB_KV_NAMESPACE_ID"
-    }
-  ]
+  }
 }

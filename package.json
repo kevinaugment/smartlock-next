@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run cf:bindings && next build",
     "start": "next start",
     "lint": "next lint",
     "cf:bindings": "node scripts/configure-cloudflare-bindings.mjs",

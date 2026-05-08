@@ -27,10 +27,11 @@ npm run preview
 
 Cloudflare dashboard build settings should use one of these safe pairs:
 
-- Build command: `npm run build`; deploy command: `npm run deploy`.
+- Build command: `npm run build`; deploy command: `npx wrangler deploy`.
 - Build command: `npm run cf:bindings && npm run build`; deploy command: `npx wrangler deploy`.
+- Build command: `npm run build`; deploy command: `npm run deploy`.
 
-Do not use `npm run build` plus direct `npx wrangler deploy` unless `wrangler.jsonc` already contains the real KV namespace id.
+The `build` script already runs `npm run cf:bindings`, so the dashboard's direct `npx wrangler deploy` path sees the generated D1/KV config. Set `CF_BINDINGS_REQUIRE_KV=1` when deploys must fail rather than continue without KV.
 
 For local workerd smoke without the full OpenNext cache prefill, use Wrangler directly after `npm run cf:build`:
 

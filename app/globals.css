@@ -2665,8 +2665,8 @@ body.mobile-nav-open {
 
 .discovery-search__input:focus {
   outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.12);
+  border-color: var(--color-border-strong);
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.06);
 }
 
 .discovery-search__input::placeholder {
@@ -2712,8 +2712,8 @@ body.mobile-nav-open {
 }
 
 .discovery-finder-btn:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  border-color: var(--color-text-primary);
+  color: var(--color-text-primary);
 }
 
 .discovery-finder-btn--active {
@@ -2821,8 +2821,8 @@ body.mobile-nav-open {
 }
 
 .wizard-option:hover {
-  border-color: var(--color-accent);
-  background: rgba(34, 211, 238, 0.04);
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-alt);
 }
 
 .wizard-option__icon {
@@ -2832,8 +2832,8 @@ body.mobile-nav-open {
   width: 2.25rem;
   height: 2.25rem;
   border-radius: var(--radius-md);
-  background: rgba(34, 211, 238, 0.08);
-  color: var(--color-accent);
+  background: var(--color-surface-alt);
+  color: var(--color-text-primary);
   flex-shrink: 0;
 }
 
@@ -2903,9 +2903,9 @@ body.mobile-nav-open {
 }
 
 .wizard-result-card:hover {
-  border-color: var(--color-accent);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border-color: var(--color-border-strong);
+  transform: none;
+  box-shadow: none;
 }
 
 .wizard-result-card__icon {
@@ -2973,7 +2973,7 @@ body.mobile-nav-open {
   gap: 0.375rem;
   padding: 0.5rem 1rem;
   border: 1px solid var(--color-border);
-  border-radius: 99px;
+  border-radius: var(--radius-sm);
   background: var(--color-bg);
   font-size: 0.8125rem;
   font-weight: 500;
@@ -2984,25 +2984,25 @@ body.mobile-nav-open {
 }
 
 .category-pill:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
 }
 
 .category-pill--active {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: white;
+  background: var(--color-text-primary);
+  border-color: var(--color-text-primary);
+  color: var(--color-bg);
 }
 
 .category-pill--active:hover {
-  color: white;
+  color: var(--color-bg);
   opacity: 0.9;
 }
 
 .category-pill__count {
   font-size: 0.6875rem;
   padding: 0.0625rem 0.375rem;
-  border-radius: 99px;
+  border-radius: var(--radius-sm);
   background: rgba(0, 0, 0, 0.06);
 }
 
@@ -3030,29 +3030,28 @@ body.mobile-nav-open {
 .calculator-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
-  gap: var(--space-lg);
+  gap: var(--space-md);
 }
 
 /* --- Calculator Card --- */
 .calc-card {
-  display: block;
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   background: var(--color-bg);
   overflow: hidden;
-  transition: all 0.25s;
+  padding: var(--space-lg);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
   text-decoration: none;
   color: inherit;
 }
 
 .calc-card:hover {
-  border-color: var(--color-accent);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  transform: translateY(-2px);
-}
-
-.calc-card__inner {
-  padding: var(--space-xl);
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-alt);
+  box-shadow: none;
+  transform: none;
 }
 
 .calc-card__header {
@@ -3068,10 +3067,12 @@ body.mobile-nav-open {
   justify-content: center;
   width: 2.75rem;
   height: 2.75rem;
-  border-radius: var(--radius-lg);
-  background: rgba(34, 211, 238, 0.08);
-  color: var(--color-accent);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
   flex-shrink: 0;
+  margin-top: 0.125rem;
 }
 
 .calc-card__icon svg {
@@ -3082,38 +3083,43 @@ body.mobile-nav-open {
 .calc-card__meta {
   flex: 1;
   min-width: 0;
+  display: grid;
+  gap: 0.375rem;
 }
 
 .calc-card__name {
   font-size: 1rem;
   font-weight: 700;
   color: var(--color-text-primary);
-  margin-bottom: 0.25rem;
+  margin: 0;
+  line-height: 1.35;
   transition: color 0.2s;
 }
 
 .calc-card:hover .calc-card__name {
-  color: var(--color-accent);
+  color: var(--color-text-primary);
 }
 
 .calc-card__badge {
   display: inline-block;
   font-size: 0.6875rem;
   font-weight: 600;
-  padding: 0.125rem 0.5rem;
-  border-radius: 99px;
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--radius-sm);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 .calc-card__badge--simple {
-  background: rgba(34, 197, 94, 0.1);
-  color: #16a34a;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  color: var(--color-success);
 }
 
 .calc-card__badge--moderate {
-  background: rgba(245, 158, 11, 0.1);
-  color: #d97706;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  color: var(--color-warning);
 }
 
 .calc-card__arrow {
@@ -3125,8 +3131,8 @@ body.mobile-nav-open {
 }
 
 .calc-card:hover .calc-card__arrow {
-  transform: translateX(3px);
-  color: var(--color-accent);
+  transform: none;
+  color: var(--color-text-primary);
 }
 
 .calc-card__desc {
@@ -3145,8 +3151,9 @@ body.mobile-nav-open {
 .calc-card__feature-tag {
   font-size: 0.6875rem;
   padding: 0.25rem 0.625rem;
-  border-radius: 99px;
+  border-radius: var(--radius-sm);
   background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
   color: var(--color-text-muted);
   font-weight: 500;
 }
@@ -3325,31 +3332,6 @@ body.mobile-nav-open {
   .trust-signal {
     display: flex;
   }
-}
-
-/* --- Card Hover Gradient Stripe --- */
-.card-hover-stripe {
-  position: relative;
-  overflow: hidden;
-}
-
-.card-hover-stripe::before {
-  content: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--color-border);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-}
-
-.card-hover-stripe:hover::before {
-  transform: scaleX(1);
 }
 
 /* --- Footer Gradient Divider --- */
@@ -3668,8 +3650,7 @@ main .container-main {
 
 .gradient-stripe--top::before,
 .mega-menu::before,
-.wizard-panel__stripe,
-.card-hover-stripe::before {
+.wizard-panel__stripe {
   display: none !important;
 }
 
@@ -3706,8 +3687,7 @@ main .container-main {
 .link-card:hover,
 .icon-card:hover,
 .calc-card:hover,
-.wizard-result-card:hover,
-.card-hover-stripe:hover::before {
+.wizard-result-card:hover {
   transform: none !important;
   box-shadow: none !important;
 }
@@ -3954,8 +3934,7 @@ main .container-main {
   color: var(--color-text-primary);
 }
 
-.header-action,
-.footer__meta {
+.header-action {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   letter-spacing: 0.04em;
@@ -3966,20 +3945,33 @@ main .container-main {
 .header-action {
   align-items: center;
   min-height: 2.25rem;
-  padding: 0.45rem 0 0.4rem;
-  border: 0;
-  border-bottom: 1px solid var(--color-border-strong);
-  border-radius: 0;
+  padding: 0.45rem 0.875rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
   color: var(--color-text-secondary);
+  background: var(--color-surface);
   text-decoration: none;
   white-space: nowrap;
-  transition: border-color var(--transition-fast), color var(--transition-fast);
+  transition: border-color var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
+}
+
+.header-action--button {
+  justify-content: center;
+  color: var(--color-text-primary);
+  background: var(--color-text-primary);
+  border-color: var(--color-text-primary);
+  color: var(--color-bg);
 }
 
 .header-action:hover {
-  background: transparent;
+  background: var(--color-surface-alt);
   border-color: var(--color-text-primary);
-  color: var(--color-accent-hover);
+  color: var(--color-text-primary);
+}
+
+.header-action--button:hover {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
 }
 
 .mega-nav__overlay {
@@ -3995,10 +3987,10 @@ main .container-main {
 
 .footer__top {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-xl);
   align-items: start;
-  padding-bottom: var(--space-xl);
+  padding-bottom: var(--space-lg);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -4021,26 +4013,12 @@ main .container-main {
   stroke-width: 2;
 }
 
-.footer__meta {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 1rem;
-  padding-top: 0.125rem;
-}
-
-.footer__meta span {
-  padding: 0;
-  border: 0;
-  background: transparent;
-}
-
 .footer__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-xl);
-  padding-top: var(--space-xl);
-  padding-bottom: var(--space-xl);
+  gap: var(--space-lg);
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-lg);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -4049,7 +4027,7 @@ main .container-main {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
-  padding-top: var(--space-lg);
+  padding-top: var(--space-md);
   border-top: 0;
 }
 
@@ -4099,6 +4077,18 @@ main .container-main {
 .calculator-shell {
   max-width: var(--container-max);
   align-items: start;
+}
+
+.tool-section {
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--color-border);
+}
+
+.planning-path {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  padding: var(--space-lg);
 }
 
 .tool-workflow {
@@ -4400,13 +4390,8 @@ main .container-main {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .footer__top,
   .footer__grid {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .footer__meta {
-    justify-content: flex-start;
   }
 }
 
@@ -4419,10 +4404,6 @@ main .container-main {
 
   .data-bar-row__value {
     text-align: left;
-  }
-
-  .footer__meta {
-    display: none;
   }
 
   .footer__top,

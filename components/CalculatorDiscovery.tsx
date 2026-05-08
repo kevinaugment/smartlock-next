@@ -30,6 +30,9 @@ interface CalculatorDiscoveryProps {
     categories: Category[]
 }
 
+const POPULAR_FILTER = 'Popular'
+const NEW_FILTER = 'New'
+
 /* ─── Smart Finder Wizard Data ─── */
 const WIZARD_STEPS = [
     {
@@ -116,9 +119,9 @@ export default function CalculatorDiscovery({ calculators, categories }: Calcula
         let result = calculators
 
         // Special category filters
-        if (activeCategory === '⭐ Popular') {
+        if (activeCategory === POPULAR_FILTER) {
             result = result.filter(calc => popularSlugs.includes(calc.slug))
-        } else if (activeCategory === '🆕 New') {
+        } else if (activeCategory === NEW_FILTER) {
             result = result.filter(calc => newSlugs.includes(calc.slug))
         } else if (activeCategory) {
             const cat = categories.find(c => c.name === activeCategory)
@@ -337,16 +340,16 @@ export default function CalculatorDiscovery({ calculators, categories }: Calcula
                     </button>
                 ))}
                 <button
-                    onClick={() => setActiveCategory(activeCategory === '⭐ Popular' ? null : '⭐ Popular')}
-                    className={`category-pill ${activeCategory === '⭐ Popular' ? 'category-pill--active' : ''}`}
+                    onClick={() => setActiveCategory(activeCategory === POPULAR_FILTER ? null : POPULAR_FILTER)}
+                    className={`category-pill ${activeCategory === POPULAR_FILTER ? 'category-pill--active' : ''}`}
                 >
                     <Star className="w-4 h-4" />
                     <span>Popular</span>
                     <span className="category-pill__count">{popularSlugs.length}</span>
                 </button>
                 <button
-                    onClick={() => setActiveCategory(activeCategory === '🆕 New' ? null : '🆕 New')}
-                    className={`category-pill ${activeCategory === '🆕 New' ? 'category-pill--active' : ''}`}
+                    onClick={() => setActiveCategory(activeCategory === NEW_FILTER ? null : NEW_FILTER)}
+                    className={`category-pill ${activeCategory === NEW_FILTER ? 'category-pill--active' : ''}`}
                 >
                     <Flame className="w-4 h-4" />
                     <span>New</span>
@@ -370,30 +373,25 @@ export default function CalculatorDiscovery({ calculators, categories }: Calcula
                         <Link
                             key={calculator.slug}
                             href={`/calculators/${calculator.slug}`}
-                            className="calc-card card-hover-stripe"
+                            className="calc-card"
                         >
-                            <div className="calc-card__inner">
-                                {/* Header */}
-                                <div className="calc-card__header">
-                                    <div className="calc-card__icon">{calculator.icon}</div>
-                                    <div className="calc-card__meta">
-                                        <h3 className="calc-card__name">{calculator.name}</h3>
-                                        <span className={`calc-card__badge ${calculator.complexity === 'Simple' ? 'calc-card__badge--simple' : 'calc-card__badge--moderate'}`}>
-                                            {calculator.complexity}
-                                        </span>
-                                    </div>
-                                    <ChevronRight className="calc-card__arrow" />
+                            <div className="calc-card__header">
+                                <div className="calc-card__icon">{calculator.icon}</div>
+                                <div className="calc-card__meta">
+                                    <h3 className="calc-card__name">{calculator.name}</h3>
+                                    <span className={`calc-card__badge ${calculator.complexity === 'Simple' ? 'calc-card__badge--simple' : 'calc-card__badge--moderate'}`}>
+                                        {calculator.complexity}
+                                    </span>
                                 </div>
+                                <ChevronRight className="calc-card__arrow" />
+                            </div>
 
-                                {/* Description */}
-                                <p className="calc-card__desc">{calculator.description}</p>
+                            <p className="calc-card__desc">{calculator.description}</p>
 
-                                {/* Features */}
-                                <div className="calc-card__features">
-                                    {calculator.features.map((feature, idx) => (
-                                        <span key={idx} className="calc-card__feature-tag">{feature}</span>
-                                    ))}
-                                </div>
+                            <div className="calc-card__features">
+                                {calculator.features.map((feature, idx) => (
+                                    <span key={idx} className="calc-card__feature-tag">{feature}</span>
+                                ))}
                             </div>
                         </Link>
                     ))}

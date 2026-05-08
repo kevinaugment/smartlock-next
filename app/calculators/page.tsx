@@ -384,7 +384,7 @@ export default function CalculatorsPage() {
             </p>
           </div>
 
-          <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+          <section className="tool-section" style={{ marginBottom: 'var(--space-3xl)' }}>
             <h2 className="section-title">Start With the Highest-Value Checks</h2>
             <p style={{ color: 'var(--color-text-secondary)', maxWidth: '52rem', marginBottom: 'var(--space-xl)', lineHeight: 1.7 }}>
               Use these calculators before comparing models. They answer the questions that most often change the final smart lock choice: door fit, installation cost, signal reliability, battery maintenance, and protocol lock-in.
@@ -400,11 +400,11 @@ export default function CalculatorsPage() {
             </div>
           </section>
 
-          <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+          <section className="tool-section" style={{ marginBottom: 'var(--space-3xl)' }}>
             <h2 className="section-title">Choose a Planning Path</h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {decisionPaths.map((path) => (
-                <div key={path.title} className="card">
+                <div key={path.title} className="planning-path">
                   <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>{path.title}</h3>
                   <ol className="space-y-3">
                     {path.steps.map((step, index) => (

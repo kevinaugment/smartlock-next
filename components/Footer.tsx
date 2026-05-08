@@ -17,12 +17,6 @@ export default function Footer() {
               Smart lock calculators, protocol references, and product data for practical access-control decisions.
             </p>
           </div>
-
-          <div className="footer__meta">
-            <span>Tool index</span>
-            <span>Protocol data</span>
-            <span>Brand reference</span>
-          </div>
         </div>
 
         <div className="footer__grid">
@@ -71,7 +65,6 @@ export default function Footer() {
               <li><Link href="/about">About</Link></li>
               <li><Link href="/faq">FAQ</Link></li>
               <li><Link href="/contact">Contact</Link></li>
-              <li><Link href="/status">System Status</Link></li>
               <li><Link href="/sitemap">Sitemap</Link></li>
               <li><Link href="/privacy">Privacy Policy</Link></li>
               <li><Link href="/terms">Terms of Service</Link></li>
@@ -85,7 +78,6 @@ export default function Footer() {
           </p>
           <div className="flex gap-6 text-sm">
             <Link href="/sitemap">Sitemap</Link>
-            <Link href="/status">Status</Link>
           </div>
         </div>
       </div>

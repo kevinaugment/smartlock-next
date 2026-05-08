@@ -223,7 +223,7 @@ export default function Header() {
             <Link href="/brands" className="nav-link">Brands</Link>
           </nav>
 
-          <Link href="/calculators" className="hidden md:inline-flex header-action">
+          <Link href="/calculators" className="hidden md:inline-flex header-action header-action--button">
             Tools index
           </Link>
 

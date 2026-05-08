@@ -6,7 +6,7 @@ export default function Footer() {
 
   return (
     <footer className="footer mt-auto">
-      <div className="container-main" style={{ padding: 'var(--space-3xl) var(--space-lg)' }}>
+      <div className="container-main footer__inner">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About */}
           <div>

@@ -130,7 +130,7 @@ export default function Header() {
   }), [])
 
   return (
-    <header ref={headerRef} className="bg-white border-b sticky top-0 z-50" style={{ borderColor: 'var(--color-border)' }}>
+    <header ref={headerRef} className="site-header sticky top-0 z-50">
       <div className="container-main">
         <div className="flex items-center justify-between" style={{ height: 'var(--header-height)' }}>
           {/* Logo */}

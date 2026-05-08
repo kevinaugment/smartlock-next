@@ -1,28 +1,29 @@
 import type { Metadata } from 'next'
-import { DM_Sans, JetBrains_Mono, Instrument_Sans } from 'next/font/google'
+import { Space_Grotesk, Space_Mono } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import CookieConsent from '@/components/CookieConsent'
 import AnalyticsScripts from '@/components/AnalyticsScripts'
 
-const dmSans = DM_Sans({
+const bodyFont = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-body',
   display: 'swap',
 })
 
-const instrumentSans = Instrument_Sans({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-display',
   display: 'swap',
   weight: ['400', '500', '600', '700'],
 })
 
-const jetbrainsMono = JetBrains_Mono({
+const spaceMono = Space_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
   display: 'swap',
+  weight: ['400', '700'],
 })
 
 export const metadata: Metadata = {
@@ -71,7 +72,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${instrumentSans.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${bodyFont.variable} ${spaceMono.variable}`}>
       <body className="flex flex-col min-h-screen">
         <a href="#main-content" className="skip-link">
           Skip to main content

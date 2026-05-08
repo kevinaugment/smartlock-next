@@ -4,7 +4,7 @@ Date: 2026-05-08
 
 ## Scope
 
-Use this runbook for B3 D1 preview validation.
+Use this runbook for D1 validation on Cloudflare Workers.
 
 This batch introduces the D1 runtime binding path behind the existing `lib/db.ts` facade. It does not cut production traffic to Workers and does not remove Turso fallback.
 
@@ -36,38 +36,46 @@ Status as of 2026-05-08:
 - Dry-run bundle size: `8896.39 KiB` total upload, `1447.40 KiB` gzip upload.
 - Local D1 import is complete using `.baseline-artifacts/2026-05-08-b3/d1-import-ordered.sql`.
 - Local Worker D1 smoke passes 9/9 targets; see `docs/baselines/2026-05-08-b3/d1-worker-smoke.md`.
-- Remote preview D1 creation/import is not complete because the current non-interactive shell does not have `CLOUDFLARE_API_TOKEN`.
+- Remote D1 binding is configured for the existing `slockhub` database id `1d2ea8dd-d7eb-440b-8b91-a9070bd7bb34`.
+- KV binding is resolved by `npm run cf:bindings` from the existing `slockhub` namespace, or from `CF_KV_NAMESPACE_ID` when Wrangler cannot list namespaces.
 
-## Create Preview D1
+## Configure Bindings
 
-Create the preview database manually or through Wrangler:
+The committed Worker config binds:
+
+- `env.DB` -> D1 database `slockhub`
+- `env.SLOCKHUB_KV` -> KV namespace `slockhub`
+
+Before deploy, run:
 
 ```bash
-npx wrangler d1 create smartlock-next-preview
+npm run cf:bindings
 ```
 
-Then replace `REPLACE_WITH_PREVIEW_D1_DATABASE_ID` in `wrangler.jsonc` with the returned database id.
+If the shell cannot authenticate with Cloudflare, provide the KV namespace id explicitly:
 
-Do not commit production database ids or secrets before the environment ownership is agreed.
+```bash
+CF_KV_NAMESPACE_ID=<slockhub-kv-namespace-id> npm run cf:bindings
+```
 
 ## Apply Schema
 
 Preview/local first:
 
 ```bash
-npx wrangler d1 execute smartlock-next-preview --local --file database/schema.sql
-npx wrangler d1 execute smartlock-next-preview --local --file database/migrations/brands-system.sql
-npx wrangler d1 execute smartlock-next-preview --local --file database/migrations/brand-model-system.sql
-npx wrangler d1 execute smartlock-next-preview --local --file database/migrations/product-ratings.sql
-npx wrangler d1 execute smartlock-next-preview --local --file database/migrations/tool-ratings.sql
-npx wrangler d1 execute smartlock-next-preview --local --file database/migrations/calculator-content-system.sql
-npx wrangler d1 execute smartlock-next-preview --local --file database/migrations/report-leads.sql
+npx wrangler d1 execute slockhub --local --file database/schema.sql
+npx wrangler d1 execute slockhub --local --file database/migrations/brands-system.sql
+npx wrangler d1 execute slockhub --local --file database/migrations/brand-model-system.sql
+npx wrangler d1 execute slockhub --local --file database/migrations/product-ratings.sql
+npx wrangler d1 execute slockhub --local --file database/migrations/tool-ratings.sql
+npx wrangler d1 execute slockhub --local --file database/migrations/calculator-content-system.sql
+npx wrangler d1 execute slockhub --local --file database/migrations/report-leads.sql
 ```
 
 Remote preview after local validation:
 
 ```bash
-npx wrangler d1 execute smartlock-next-preview --remote --file database/schema.sql
+npx wrangler d1 execute slockhub --remote --file database/schema.sql
 ```
 
 Apply remote migrations only after local import/count checks pass.
@@ -94,13 +102,13 @@ Before importing remote preview data, confirm:
 The raw B0 Turso export failed direct local D1 import with `FOREIGN KEY constraint failed` because insert order did not preserve parent/dependent table relationships. Use the B3 generated import file for D1 preview import:
 
 ```bash
-./node_modules/.bin/wrangler d1 execute smartlock-next-preview --local --file .baseline-artifacts/2026-05-08-b3/d1-import-ordered.sql
+./node_modules/.bin/wrangler d1 execute slockhub --local --file .baseline-artifacts/2026-05-08-b3/d1-import-ordered.sql
 ```
 
-For remote preview after the database id is known:
+For remote import:
 
 ```bash
-./node_modules/.bin/wrangler d1 execute smartlock-next-preview --remote --file .baseline-artifacts/2026-05-08-b3/d1-import-ordered.sql
+./node_modules/.bin/wrangler d1 execute slockhub --remote --file .baseline-artifacts/2026-05-08-b3/d1-import-ordered.sql
 ```
 
 B3 import shape:

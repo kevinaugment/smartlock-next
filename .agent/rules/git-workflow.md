@@ -30,7 +30,7 @@ Types: feat, fix, refactor, docs, test, chore, perf, ci
 
 4. **Commit & Push**
    - Detailed commit messages using Conventional Commits
-   - Push to GitHub → Vercel auto-deploys
+   - Push to GitHub → Cloudflare Workers deploys
 
 ## Pull Request Workflow
 

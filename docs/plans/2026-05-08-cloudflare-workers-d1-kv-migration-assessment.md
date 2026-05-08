@@ -405,13 +405,13 @@ B1 status:
   - `open-next.config.ts`;
   - `wrangler.jsonc`;
   - `docs/runbooks/cloudflare-workers-preview.md`.
-- `wrangler.jsonc` includes Worker entry, assets binding, R2 incremental cache binding, `nodejs_compat`, `global_fetch_strictly_public`, observability, and `NEXT_RUNTIME=cloudflare`.
+- Superseded on 2026-05-08: `wrangler.jsonc` now includes Worker entry, assets binding, D1 `DB`, KV `SLOCKHUB_KV`, `nodejs_compat`, `global_fetch_strictly_public`, observability, and `NEXT_RUNTIME=cloudflare`.
 - `npm run build` passes with `1543/1543` static pages.
 - `npm run cf:build` creates `.open-next/worker.js` and `.open-next/assets`.
 - `npx wrangler deploy --dry-run --outdir bundled` passes.
   - Total upload: `8917.09 KiB`.
   - Gzip upload: `1454.32 KiB`.
-  - Bindings: `NEXT_INC_CACHE_R2_BUCKET`, `ASSETS`, `NEXT_RUNTIME`.
+  - Superseded binding target: `DB`, `SLOCKHUB_KV`, `ASSETS`, `NEXT_RUNTIME`.
 - Local `wrangler dev` starts at `http://localhost:3211`.
 - Workerd smoke passes 4/8 representative targets:
   - pass: `/`, `/protocols/matter`, `/calculators/protocol-wizard`, `/api/health`;
@@ -447,10 +447,10 @@ B2 status:
 B3 status:
 
 - B3 local D1 validation is complete.
-- Added a `DB` D1 binding placeholder to `wrangler.jsonc`:
+- Superseded on 2026-05-08: replaced the preview placeholder with the real `slockhub` D1 binding in `wrangler.jsonc`:
   - binding: `DB`;
-  - database name: `smartlock-next-preview`;
-  - database id: `REPLACE_WITH_PREVIEW_D1_DATABASE_ID`.
+  - database name: `slockhub`;
+  - database id: `1d2ea8dd-d7eb-440b-8b91-a9070bd7bb34`.
 - Added `docs/runbooks/cloudflare-d1-preview.md` with local/remote D1 creation, migration, import, smoke, and rollback steps.
 - Directly importing the raw B0 Turso export into local D1 failed with `FOREIGN KEY constraint failed` because insert order did not preserve parent/dependent table relationships.
 - Generated `.baseline-artifacts/2026-05-08-b3/d1-import-ordered.sql`, preserving the B0 data but ordering inserts by foreign-key dependency.
@@ -523,11 +523,9 @@ Required Cloudflare resources:
 
 - Worker service for preview and production.
 - D1 databases:
-  - `smartlock-next-preview`;
-  - `smartlock-next-production`.
+  - `slockhub` (`1d2ea8dd-d7eb-440b-8b91-a9070bd7bb34`).
 - KV namespaces:
-  - `SLOCKHUB_KV_PREVIEW`;
-  - `SLOCKHUB_KV_PRODUCTION`.
+  - `slockhub`, bound to Worker as `SLOCKHUB_KV`.
 - Workers secrets:
   - `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` during B1-B3 fallback;
   - `JWT_SECRET`;

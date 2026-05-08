@@ -3,22 +3,19 @@
   "name": "smartlock-next",
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-05-08",
-  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
-  "r2_buckets": [
-    {
-      "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "smartlock-next-cache"
-    }
-  ],
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "smartlock-next-preview",
-      "database_id": "REPLACE_WITH_PREVIEW_D1_DATABASE_ID"
+      "database_name": "slockhub",
+      "database_id": "1d2ea8dd-d7eb-440b-8b91-a9070bd7bb34"
     }
   ],
   "observability": {
@@ -30,5 +27,11 @@
   },
   "build": {
     "command": "npm run cf:build"
-  }
+  },
+  "kv_namespaces": [
+    {
+      "binding": "SLOCKHUB_KV",
+      "id": "REPLACE_WITH_SLOCKHUB_KV_NAMESPACE_ID"
+    }
+  ]
 }

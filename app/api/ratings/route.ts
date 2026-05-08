@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getProductRating, getUserRating, submitRating } from '@/lib/services/rating-service'
 
+export const dynamic = 'force-dynamic'
+
 function success(data: any) {
     return NextResponse.json({ success: true, data })
 }

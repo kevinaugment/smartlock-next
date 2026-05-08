@@ -10,18 +10,27 @@ It keeps Turso as the active database and does not migrate data to D1.
 
 ## Prerequisites
 
-- `.env.local` contains `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN`.
 - The project builds cleanly with `npm run build`.
 - Wrangler and OpenNext dependencies are installed.
+- Cloudflare deploy environment has `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
+- If Wrangler cannot list KV namespaces, set `CF_KV_NAMESPACE_ID` to the id of the `slockhub` KV namespace.
 
 ## Commands
 
 ```bash
+npm run cf:bindings
 npm run build
 npm run cf:build
 npx wrangler deploy --dry-run --outdir bundled
 npm run preview
 ```
+
+Cloudflare dashboard build settings should use one of these safe pairs:
+
+- Build command: `npm run build`; deploy command: `npm run deploy`.
+- Build command: `npm run cf:bindings && npm run build`; deploy command: `npx wrangler deploy`.
+
+Do not use `npm run build` plus direct `npx wrangler deploy` unless `wrangler.jsonc` already contains the real KV namespace id.
 
 For local workerd smoke without the full OpenNext cache prefill, use Wrangler directly after `npm run cf:build`:
 
@@ -34,7 +43,7 @@ CI=1 ./node_modules/.bin/wrangler dev --port 3211 --inspector-port 0 --show-inte
 
 Notes:
 
-- `opennextjs-cloudflare preview -- --port 3211` passes arguments through to Wrangler, but first populates the R2 incremental cache. With the current app it attempts 1849 local R2 cache objects and is slow enough that `wrangler dev` is the faster B1 smoke command.
+- `npm run cf:bindings` writes the D1 `slockhub` binding and resolves the KV `slockhub` namespace before Worker build/deploy.
 - Do not commit `.dev.vars` with Turso secrets. Load local secrets from `.env.local` only in the shell process used to start preview.
 
 ## What to verify
@@ -62,14 +71,14 @@ Notes:
 Status as of 2026-05-08:
 
 - OpenNext and Wrangler dependencies are installed.
-- `wrangler.jsonc` exists with Worker entry, assets directory, assets binding, R2 incremental cache binding, `nodejs_compat`, `global_fetch_strictly_public`, and observability enabled.
-- `open-next.config.ts` exists using the Cloudflare adapter default R2 incremental cache override.
+- `wrangler.jsonc` exists with Worker entry, assets directory, assets binding, D1 `DB`, KV `SLOCKHUB_KV`, `nodejs_compat`, `global_fetch_strictly_public`, and observability enabled.
+- `open-next.config.ts` uses the Cloudflare adapter defaults without an R2 incremental cache override.
 - `npm run build` passes with `1543/1543` static pages.
 - `npm run cf:build` creates `.open-next/worker.js` and `.open-next/assets`.
 - `npx wrangler deploy --dry-run --outdir bundled` passes. Latest dry-run bundle output:
   - total upload: `8917.09 KiB`;
   - gzip upload: `1454.32 KiB`;
-  - bindings: `NEXT_INC_CACHE_R2_BUCKET`, `ASSETS`, `NEXT_RUNTIME`.
+  - bindings: `DB`, `SLOCKHUB_KV`, `ASSETS`, `NEXT_RUNTIME`.
 - `wrangler dev` starts local workerd preview at `http://localhost:3211`.
 - Worker smoke currently passes 4/8 representative targets:
   - pass: `/`, `/protocols/matter`, `/calculators/protocol-wizard`, `/api/health`;

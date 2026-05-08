@@ -1,5 +1,7 @@
 import { getBrands } from '@/lib/services/brand-service'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
     try {
         const brands = await getBrands()

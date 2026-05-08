@@ -181,106 +181,103 @@ export default function ProtocolWizard() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-8">
-      {/* Questionnaire */}
-      <div className="card">
-        <h2 className="text-2xl font-bold text-color-primary mb-6">Your Requirements</h2>
+      <div className="calculator-shell">
+        <div className="calculator-inputs">
+          <div className="card">
+            <h2 className="text-2xl font-bold text-color-primary mb-6">Your Requirements</h2>
 
-        <div className="space-y-6">
-          {/* Doors */}
-          <div>
-            <label className="block text-sm font-medium text-color-secondary mb-2">Number of Smart Locks: {answers.doors}</label>
-            <input type="range" min="1" max="30" value={answers.doors} onChange={(e) => setAnswers({ ...answers, doors: Number(e.target.value) })} className="w-full accent-cyan-600" />
-            <div className="flex justify-between text-xs text-color-muted mt-1">
-              <span>1 door</span>
-              <span>30 doors</span>
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-color-secondary mb-2">Number of Smart Locks: {answers.doors}</label>
+                <input type="range" min="1" max="30" value={answers.doors} onChange={(e) => setAnswers({ ...answers, doors: Number(e.target.value) })} className="w-full accent-cyan-600" />
+                <div className="flex justify-between text-xs text-color-muted mt-1">
+                  <span>1 door</span>
+                  <span>30 doors</span>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-color-secondary mb-2">Environment</label>
+                <select value={answers.environment} onChange={(e) => setAnswers({ ...answers, environment: e.target.value as any })} className="form-input">
+                  <option value="residential">Residential (Home/Apartment)</option>
+                  <option value="commercial">Commercial (Office/Building)</option>
+                  <option value="outdoor">Outdoor/Exposed Location</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-color-secondary mb-2">Internet Reliability</label>
+                <select value={answers.internet} onChange={(e) => setAnswers({ ...answers, internet: e.target.value as any })} className="form-input">
+                  <option value="excellent">Excellent (Fiber, stable Wi-Fi)</option>
+                  <option value="good">Good (Occasional outages)</option>
+                  <option value="unreliable">Unreliable (Frequent issues)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-color-secondary mb-2">Top Priority</label>
+                <select value={answers.priority} onChange={(e) => setAnswers({ ...answers, priority: e.target.value as any })} className="form-input">
+                  <option value="battery">Battery Life (12+ months)</option>
+                  <option value="speed">Response Speed (&lt;200ms)</option>
+                  <option value="range">Range/Penetration (thick walls)</option>
+                  <option value="cost">Lowest Total Cost</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-color-secondary mb-2">Smart Home Ecosystem</label>
+                <select value={answers.ecosystem} onChange={(e) => setAnswers({ ...answers, ecosystem: e.target.value as any })} className="form-input">
+                  <option value="none">None (starting fresh)</option>
+                  <option value="homekit">Apple HomeKit</option>
+                  <option value="alexa">Amazon Alexa</option>
+                  <option value="google">Google Home</option>
+                  <option value="matter">Matter/Thread (future-proof)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-color-secondary mb-2">Technical Skill Level</label>
+                <select value={answers.technical} onChange={(e) => setAnswers({ ...answers, technical: e.target.value as any })} className="form-input">
+                  <option value="beginner">Beginner (plug-and-play)</option>
+                  <option value="intermediate">Intermediate (some setup OK)</option>
+                  <option value="expert">Expert (full control)</option>
+                </select>
+              </div>
             </div>
           </div>
+        </div>
 
-          {/* Environment */}
-          <div>
-            <label className="block text-sm font-medium text-color-secondary mb-2">Environment</label>
-            <select value={answers.environment} onChange={(e) => setAnswers({ ...answers, environment: e.target.value as any })} className="w-full px-4 py-3 border border-border rounded-lg bg-surface text-color-primary focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none">
-              <option value="residential">Residential (Home/Apartment)</option>
-              <option value="commercial">Commercial (Office/Building)</option>
-              <option value="outdoor">Outdoor/Exposed Location</option>
-            </select>
-          </div>
+        <div className="calculator-results">
+          <div className={`result-panel ${getScoreClass(topChoice.score)}`}>
+            <div className="text-center mb-6">
+              <div className="text-5xl mb-2 text-white/90">★</div>
+              <h2 className="text-3xl font-bold mb-2">Recommended: {topChoice.name}</h2>
+              <div className="text-xl opacity-90">{topChoice.match} ({topChoice.score}% compatibility)</div>
+            </div>
 
-          {/* Internet */}
-          <div>
-            <label className="block text-sm font-medium text-color-secondary mb-2">Internet Reliability</label>
-            <select value={answers.internet} onChange={(e) => setAnswers({ ...answers, internet: e.target.value as any })} className="w-full px-4 py-3 border border-border rounded-lg bg-surface text-color-primary focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none">
-              <option value="excellent">Excellent (Fiber, stable Wi-Fi)</option>
-              <option value="good">Good (Occasional outages)</option>
-              <option value="unreliable">Unreliable (Frequent issues)</option>
-            </select>
-          </div>
+            <div className="grid grid-cols-1 gap-4 mb-6">
+              <div className="bg-white/10 rounded-lg p-4">
+                <p className="text-sm font-semibold mb-2">✓ Advantages</p>
+                <ul className="text-sm space-y-1 opacity-90">
+                  {topChoice.pros.map((pro, i) => <li key={i}>• {pro}</li>)}
+                </ul>
+              </div>
+              <div className="bg-white/10 rounded-lg p-4">
+                <p className="text-sm font-semibold mb-2">Considerations</p>
+                <ul className="text-sm space-y-1 opacity-90">
+                  {topChoice.cons.map((con, i) => <li key={i}>• {con}</li>)}
+                </ul>
+              </div>
+            </div>
 
-          {/* Priority */}
-          <div>
-            <label className="block text-sm font-medium text-color-secondary mb-2">Top Priority</label>
-            <select value={answers.priority} onChange={(e) => setAnswers({ ...answers, priority: e.target.value as any })} className="w-full px-4 py-3 border border-border rounded-lg bg-surface text-color-primary focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none">
-              <option value="battery">Battery Life (12+ months)</option>
-              <option value="speed">Response Speed (&lt;200ms)</option>
-              <option value="range">Range/Penetration (thick walls)</option>
-              <option value="cost">Lowest Total Cost</option>
-            </select>
-          </div>
-
-          {/* Ecosystem */}
-          <div>
-            <label className="block text-sm font-medium text-color-secondary mb-2">Smart Home Ecosystem</label>
-            <select value={answers.ecosystem} onChange={(e) => setAnswers({ ...answers, ecosystem: e.target.value as any })} className="w-full px-4 py-3 border border-border rounded-lg bg-surface text-color-primary focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none">
-              <option value="none">None (starting fresh)</option>
-              <option value="homekit">Apple HomeKit</option>
-              <option value="alexa">Amazon Alexa</option>
-              <option value="google">Google Home</option>
-              <option value="matter">Matter/Thread (future-proof)</option>
-            </select>
-          </div>
-
-          {/* Technical */}
-          <div>
-            <label className="block text-sm font-medium text-color-secondary mb-2">Technical Skill Level</label>
-            <select value={answers.technical} onChange={(e) => setAnswers({ ...answers, technical: e.target.value as any })} className="w-full px-4 py-3 border border-border rounded-lg bg-surface text-color-primary focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none">
-              <option value="beginner">Beginner (plug-and-play)</option>
-              <option value="intermediate">Intermediate (some setup OK)</option>
-              <option value="expert">Expert (full control)</option>
-            </select>
+            <div className="bg-white/10 rounded-lg p-4">
+              <p className="text-sm"><strong>Compatible Locks:</strong> {topChoice.locks.join(', ')}</p>
+              <p className="text-sm mt-2"><strong>Setup Cost:</strong> {topChoice.hubCost > 0 ? `$${topChoice.hubCost} hub + lock price` : 'Lock price only (no hub)'}</p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Top Recommendation */}
-      <div className={`rounded-lg shadow-xl p-8 text-white ${getScoreClass(topChoice.score)}`}>
-        <div className="text-center mb-6">
-          <div className="text-5xl mb-2 text-white/90">★</div>
-          <h2 className="text-3xl font-bold mb-2">Recommended: {topChoice.name}</h2>
-          <div className="text-xl opacity-90">{topChoice.match} ({topChoice.score}% compatibility)</div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div className="bg-white/10 rounded-lg p-4">
-            <p className="text-sm font-semibold mb-2">✓ Advantages</p>
-            <ul className="text-sm space-y-1 opacity-90">
-              {topChoice.pros.map((pro, i) => <li key={i}>• {pro}</li>)}
-            </ul>
-          </div>
-          <div className="bg-white/10 rounded-lg p-4">
-            <p className="text-sm font-semibold mb-2">⚠ Considerations</p>
-            <ul className="text-sm space-y-1 opacity-90">
-              {topChoice.cons.map((con, i) => <li key={i}>• {con}</li>)}
-            </ul>
-          </div>
-        </div>
-
-        <div className="bg-white/10 rounded-lg p-4">
-          <p className="text-sm"><strong>Compatible Locks:</strong> {topChoice.locks.join(', ')}</p>
-          <p className="text-sm mt-2"><strong>Setup Cost:</strong> ${topChoice.hubCost > 0 ? `${topChoice.hubCost} hub + lock price` : 'Lock price only (no hub)'}</p>
-        </div>
-      </div>
-
-      {/* All Results */}
       <div className="card">
         <h2 className="text-2xl font-bold text-color-primary mb-6">All Protocol Comparisons</h2>
         <div className="space-y-4">

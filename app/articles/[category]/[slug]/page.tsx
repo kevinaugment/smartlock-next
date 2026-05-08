@@ -10,7 +10,106 @@ import { ArticleHeader } from '@/components/articles/ArticleHeader';
 import { ArticleContent } from '@/components/articles/ArticleContent';
 import { BeTechRecommendation } from '@/components/articles/BeTechRecommendation';
 import { ReadingProgress } from '@/components/articles/ReadingProgress';
+import { SeoPathways } from '@/components/seo/SeoPathways';
+import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture';
+import TableOfContents from '@/components/TableOfContents';
 import { Calculator } from 'lucide-react';
+import { extractHeadings } from '@/lib/markdown';
+
+const CALC_SLUG_MAP: Record<string, string> = {
+  'diagnostic-tool': 'compatibility',
+  'error-code-lookup': 'compatibility',
+  'door-lock-compatibility-checker': 'compatibility',
+  'protocol-selection-wizard': 'protocol-wizard',
+  'bia-calculator': 'lock-tco',
+  'rto-rpo-planner': 'emergency-backup',
+  'failover-tester': 'offline-resilience',
+  'rental-roi-calculator': 'str-roi',
+  'turnover-time-estimator': 'installation-time',
+  'integration-roi-calculator': 'hotel-roi',
+  'api-compatibility-checker': 'compatibility',
+  'offline-resilience-scorecard': 'offline-resilience',
+  'privacy-impact-assessment': 'privacy-compliance',
+  'data-retention-calculator': 'security-compliance',
+  'log-analyzer': 'security-compliance',
+  'anomaly-detector': 'cyber-risk',
+};
+
+const CALC_TITLES: Record<string, string> = {
+  'lock-tco': 'TCO Calculator',
+  'battery-life': 'Battery Life Calculator',
+  'protocol-wizard': 'Protocol Selection Wizard',
+  'signal-strength': 'Signal Strength Calculator',
+  'str-roi': 'STR ROI Calculator',
+  'installation-cost': 'Installation Cost Calculator',
+  'compatibility': 'Compatibility Checker',
+  'mesh-planner': 'Mesh Network Planner',
+  'rf-coverage': 'RF Coverage Planner',
+  'fleet-planner': 'Fleet Planner',
+  'credential-planner': 'Credential Planner',
+  'installation-time': 'Installation Time Estimator',
+  'subscription-compare': 'Subscription Comparison',
+  'offline-resilience': 'Offline Resilience Planner',
+  'emergency-backup': 'Emergency Backup Planner',
+  'access-capacity': 'Access Capacity Calculator',
+  'security-compliance': 'Security Compliance Checker',
+  'lock-compare': 'Lock Comparison Tool',
+  'warranty-lifecycle': 'Warranty Lifecycle Planner',
+  'network-bandwidth': 'Network Bandwidth Calculator',
+  'poe-power': 'PoE Power Budget Calculator',
+  'fire-compliance': 'Fire Code Compliance Checker',
+  'guest-code': 'Guest Code Planner',
+  'ble-range': 'BLE Range Calculator',
+  'cyber-risk': 'Cyber Risk Calculator',
+  'pin-strength': 'PIN Strength Analyzer',
+  'door-fit': 'Door Fit Checker',
+  'hotel-roi': 'Hotel ROI Calculator',
+  'energy-cost': 'Energy Cost Calculator',
+  'noise-level': 'Noise Level Calculator',
+  'retrofit-advisor': 'Retrofit Advisor',
+  'privacy-compliance': 'Privacy Compliance Checker',
+};
+
+function getRelatedTools(article: NonNullable<ReturnType<typeof getArticleBySlug>>): string[] {
+  return (article.relatedTools || [])
+    .map(tool => CALC_SLUG_MAP[tool] || tool)
+    .filter((slug, i, arr) => arr.indexOf(slug) === i)
+    .slice(0, 3);
+}
+
+function getDefaultTools(article: NonNullable<ReturnType<typeof getArticleBySlug>>): string[] {
+  if (article.slug.includes('homekit') || article.category === 'protocols') return ['protocol-wizard', 'signal-strength', 'battery-life'];
+  if (article.slug.includes('compatibility') || article.slug.includes('install')) return ['compatibility', 'installation-cost', 'door-fit'];
+  if (article.category === 'security') return ['security-compliance', 'cyber-risk', 'pin-strength'];
+  if (article.category === 'use-cases') return ['lock-tco', 'str-roi', 'credential-planner'];
+  return ['compatibility', 'protocol-wizard', 'battery-life'];
+}
+
+function getAnswerChecklist(article: NonNullable<ReturnType<typeof getArticleBySlug>>): string[] {
+  if (article.slug.includes('compatibility')) {
+    return ['Measure door thickness, bore, backset, and lock type before buying.', 'Use the compatibility calculator before drilling or ordering hardware.', 'If the door is mortise, multi-point, metal, or unusually thick, verify model-specific fit.'];
+  }
+  if (article.slug.includes('homekit')) {
+    return ['Confirm Apple Home, Matter, or Thread support before pairing.', 'Keep a HomePod, HomePod mini, or Apple TV online for remote control and automations.', 'If pairing fails, reset proximity, battery level, iOS version, and accessory code first.'];
+  }
+  if (article.category === 'protocols') {
+    return ['Choose the protocol before choosing the lock model.', 'Check hub, range, battery, and ecosystem requirements together.', 'Use product-level protocol fields to avoid buying a lock that needs a bridge you do not own.'];
+  }
+  if (article.category === 'security') {
+    return ['Start with local unlock reliability, credential hygiene, and auditability.', 'Prefer models with clear encryption, ANSI/UL evidence, and backup access.', 'Review guest-code and app-user permissions after every tenant, staff, or family change.'];
+  }
+  if (article.category === 'installation') {
+    return ['Confirm measurements and tools before removing existing hardware.', 'Plan time and cost around drilling, strike-plate work, and hub placement.', 'Test lock/unlock, auto-lock, app status, and backup access before finishing.'];
+  }
+  return ['Use the article to identify the decision, then validate with a calculator or product page.', 'Check the related tools before buying or changing hardware.', 'Follow internal links to compare protocols, products, and installation tradeoffs.'];
+}
+
+function getPathwayTopic(article: NonNullable<ReturnType<typeof getArticleBySlug>>) {
+  if (article.slug.includes('homekit')) return 'homekit';
+  if (article.slug.includes('compatibility') || article.slug.includes('install')) return 'compatibility';
+  if (article.category === 'protocols') return 'signal';
+  return 'installation';
+}
 
 // 静态生成所有文章页面
 export async function generateStaticParams() {
@@ -110,66 +209,14 @@ export default async function ArticlePage({
     relatedArticles = [...relatedArticles, ...sameCat];
   }
 
-  // 相关计算器工具
-  const CALC_SLUG_MAP: Record<string, string> = {
-    'diagnostic-tool': 'compatibility',
-    'error-code-lookup': 'compatibility',
-    'door-lock-compatibility-checker': 'compatibility',
-    'protocol-selection-wizard': 'protocol-wizard',
-    'bia-calculator': 'lock-tco',
-    'rto-rpo-planner': 'emergency-backup',
-    'failover-tester': 'offline-resilience',
-    'rental-roi-calculator': 'str-roi',
-    'turnover-time-estimator': 'installation-time',
-    'integration-roi-calculator': 'hotel-roi',
-    'api-compatibility-checker': 'compatibility',
-    'offline-resilience-scorecard': 'offline-resilience',
-    'privacy-impact-assessment': 'privacy-compliance',
-    'data-retention-calculator': 'security-compliance',
-    'log-analyzer': 'security-compliance',
-    'anomaly-detector': 'cyber-risk',
-  };
-  const relatedTools = (article.relatedTools || [])
-    .map(tool => CALC_SLUG_MAP[tool] || tool)
-    .filter((slug, i, arr) => arr.indexOf(slug) === i)
-    .slice(0, 2);
-
-  const CALC_TITLES: Record<string, string> = {
-    'lock-tco': 'TCO Calculator',
-    'battery-life': 'Battery Life Calculator',
-    'protocol-wizard': 'Protocol Selection Wizard',
-    'signal-strength': 'Signal Strength Calculator',
-    'str-roi': 'STR ROI Calculator',
-    'installation-cost': 'Installation Cost Calculator',
-    'compatibility': 'Compatibility Checker',
-    'mesh-planner': 'Mesh Network Planner',
-    'rf-coverage': 'RF Coverage Planner',
-    'fleet-planner': 'Fleet Planner',
-    'credential-planner': 'Credential Planner',
-    'installation-time': 'Installation Time Estimator',
-    'subscription-compare': 'Subscription Comparison',
-    'offline-resilience': 'Offline Resilience Planner',
-    'emergency-backup': 'Emergency Backup Planner',
-    'access-capacity': 'Access Capacity Calculator',
-    'security-compliance': 'Security Compliance Checker',
-    'lock-compare': 'Lock Comparison Tool',
-    'warranty-lifecycle': 'Warranty Lifecycle Planner',
-    'network-bandwidth': 'Network Bandwidth Calculator',
-    'poe-power': 'PoE Power Budget Calculator',
-    'fire-compliance': 'Fire Code Compliance Checker',
-    'guest-code': 'Guest Code Planner',
-    'ble-range': 'BLE Range Calculator',
-    'cyber-risk': 'Cyber Risk Calculator',
-    'pin-strength': 'PIN Strength Analyzer',
-    'door-fit': 'Door Fit Checker',
-    'hotel-roi': 'Hotel ROI Calculator',
-    'energy-cost': 'Energy Cost Calculator',
-    'noise-level': 'Noise Level Calculator',
-    'retrofit-advisor': 'Retrofit Advisor',
-    'privacy-compliance': 'Privacy Compliance Checker',
-  };
-
   const categoryInfo = CATEGORIES[article.category];
+  const relatedTools = getRelatedTools(article);
+  const aboveFoldTools = relatedTools.length > 0 ? relatedTools : getDefaultTools(article);
+  const pathwayTopic = getPathwayTopic(article);
+  const hasVisibleQuickAnswer = /^## Quick Answer/m.test(content);
+  const answerChecklist = getAnswerChecklist(article);
+  const showCompatibilityReport = article.slug === 'door-compatibility-guide';
+  const headings = extractHeadings(content);
 
   return (
     <div className="page-bg">
@@ -206,34 +253,11 @@ export default async function ArticlePage({
                 { '@type': 'ListItem', position: 3, name: article.title },
               ],
             },
-            ...(article.faqs && article.faqs.length > 0 ? [{
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: article.faqs.map(faq => ({
-                '@type': 'Question',
-                name: faq.question,
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: faq.answer,
-                },
-              })),
-            }] : []),
-            ...(article.howToSteps && article.howToSteps.length > 0 ? [{
-              '@context': 'https://schema.org',
-              '@type': 'HowTo',
-              name: article.title,
-              description: article.description,
-              step: article.howToSteps.map((step, i) => ({
-                '@type': 'HowToStep',
-                position: i + 1,
-                name: step.name,
-                text: step.text,
-              })),
-            }] : []),
           ]),
         }}
       />
-      <article className="container-main" style={{ padding: 'var(--space-xl) var(--space-md)', maxWidth: '56rem', margin: '0 auto' }}>
+      <article className="container-main" style={{ padding: 'var(--space-xl) var(--space-md)', maxWidth: '72rem', margin: '0 auto' }}>
+        <TableOfContents headings={headings} variant="mobile" />
         {/* 面包屑导航 */}
         <nav className="breadcrumb" style={{ marginBottom: 'var(--space-lg)' }}>
           <Link href="/articles" className="">
@@ -252,13 +276,68 @@ export default async function ArticlePage({
           <ArticleHeader article={article} />
         </div>
 
-        {/* 文章内容 */}
-        <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
-          <ArticleContent content={content} />
+        <section className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
+          <h2 className="section-title">{hasVisibleQuickAnswer ? 'Answer Summary' : 'Quick Answer'}</h2>
+          <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.75, marginBottom: 'var(--space-lg)' }}>
+            {article.description}
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {answerChecklist.map((item) => (
+              <div key={item} className="card" style={{ background: 'var(--color-bg-alt)' }}>
+                <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>{item}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
+          <h2 className="section-title">Reviewed Guidance</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <TrustStat label="Updated" value={article.updatedAt || article.pubDate} detail="Used for freshness-sensitive lock, protocol, and setup guidance." />
+            <TrustStat label="Coverage" value={`${article.wordCount.toLocaleString()} words`} detail={`${article.readingTime} min read with ${article.isPillar ? 'pillar' : 'support'} article depth.`} />
+            <TrustStat label="Source Basis" value="SLockHub dataset" detail="Links route to calculators, protocol guides, and product data where relevant." />
+          </div>
+        </section>
+
+        {aboveFoldTools.length > 0 && (
+          <RelatedToolsPanel tools={aboveFoldTools} />
+        )}
+
+        {showCompatibilityReport && (
+          <ReportLeadCapture
+            reportType="door-compatibility-audit"
+            title="Door Compatibility Audit PDF"
+            description="Turn the measurements and retrofit checks from this guide into a shareable PDF before ordering hardware or asking for install quotes."
+            sourcePath={`/articles/${article.category}/${article.slug}`}
+            context={{
+              article: article.slug,
+              category: article.category,
+              focus: 'door compatibility buying checklist',
+            }}
+            bullets={[
+              'Extends the highest-exposure compatibility article into a downloadable planning asset.',
+              'Useful for sharing door measurements with installers, landlords, or property stakeholders.',
+              'Bridges directly into the compatibility and installation-cost calculators.',
+            ]}
+          />
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_17rem] gap-8 items-start">
+          <div>
+            {/* 文章内容 */}
+            <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
+              <ArticleContent content={content} />
+            </div>
+          </div>
+          <div>
+            <TableOfContents headings={headings} variant="desktop" />
+          </div>
         </div>
 
         {/* Be-Tech 品牌推荐 */}
         <BeTechRecommendation />
+
+        <SeoPathways topic={pathwayTopic} title="Continue Your Smart Lock Research" />
 
         {/* 相关文章 */}
         {relatedArticles.length > 0 && (
@@ -288,26 +367,6 @@ export default async function ArticlePage({
           </section>
         )}
 
-        {/* 相关计算器工具 */}
-        {relatedTools.length > 0 && (
-          <section style={{ marginTop: 'var(--space-2xl)' }}>
-            <h2 className="section-title" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
-              <Calculator className="w-5 h-5" style={{ color: 'var(--color-accent)' }} />
-              Related Tools
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {relatedTools.map((slug) => (
-                <Link key={slug} href={`/calculators/${slug}`} className="link-card">
-                  <h3 className="link-card__title">{CALC_TITLES[slug] || slug}</h3>
-                  <span style={{ color: 'var(--color-accent)', fontSize: '0.875rem', fontWeight: 500, marginTop: 'var(--space-sm)' }}>
-                    Open tool →
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
         {/* 返回链接 */}
         <div style={{ marginTop: 'var(--space-3xl)', paddingTop: 'var(--space-xl)', borderTop: '1px solid var(--color-border)' }}>
           <Link href={`/articles/${article.category}`} className="back-link">
@@ -316,5 +375,37 @@ export default async function ArticlePage({
         </div>
       </article>
     </div>
+  );
+}
+
+function TrustStat({ label, value, detail }: { label: string; value: string; detail: string }) {
+  return (
+    <div className="card" style={{ background: 'var(--color-bg-alt)' }}>
+      <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xs)' }}>{label}</div>
+      <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>{value}</div>
+      <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>{detail}</div>
+    </div>
+  );
+}
+
+function RelatedToolsPanel({ tools }: { tools: string[] }) {
+  return (
+    <section className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
+      <h2 className="section-title" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+        <Calculator className="w-5 h-5" style={{ color: 'var(--color-accent)' }} />
+        Tools to Validate This Decision
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {tools.map((slug) => (
+          <Link key={slug} href={`/calculators/${slug}`} className="link-card">
+            <h3 className="link-card__title">{CALC_TITLES[slug] || slug}</h3>
+            <p className="link-card__desc">Use this before buying, drilling, pairing, or changing access settings.</p>
+            <span style={{ color: 'var(--color-accent)', fontSize: '0.875rem', fontWeight: 500, marginTop: 'var(--space-sm)' }}>
+              Open tool →
+            </span>
+          </Link>
+        ))}
+      </div>
+    </section>
   );
 }

@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Smart Lock TCO Calculator - SLockHub.com',
     description: 'Calculate total cost of ownership for smart lock deployments. Compare hardware, battery, subscription, and installation costs across protocols over time.',
-    alternates: { canonical: '/calculators/lock-tco' },
-    openGraph: {
-        title: 'Smart Lock TCO Calculator - SLockHub.com',
-        description: 'Calculate total cost of ownership for smart lock deployments. Compare hardware, battery, subscription, and installation costs across protocols over time.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/lock-tco',
+})
 
 export default function LockTCOLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -36,20 +31,6 @@ export default function LockTCOLayout({ children }: { children: React.ReactNode 
                     { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.slockhub.com' },
                     { '@type': 'ListItem', position: 2, name: 'Calculators', item: 'https://www.slockhub.com/calculators' },
                     { '@type': 'ListItem', position: 3, name: 'TCO Calculator', item: 'https://www.slockhub.com/calculators/lock-tco' },
-                ],
-            }} />
-            <JsonLd data={{
-                '@context': 'https://schema.org',
-                '@type': 'HowTo',
-                name: 'How to Calculate Smart Lock Total Cost of Ownership',
-                description: 'Use our TCO calculator to compare long-term costs of smart lock deployments including hardware, batteries, subscriptions, and maintenance.',
-                totalTime: 'PT5M',
-                step: [
-                    { '@type': 'HowToStep', position: 1, name: 'Select Lock Type', text: 'Choose between Wi-Fi, Z-Wave, Zigbee, or Bluetooth smart lock models.' },
-                    { '@type': 'HowToStep', position: 2, name: 'Set Deployment Size', text: 'Enter the number of doors and buildings in your deployment.' },
-                    { '@type': 'HowToStep', position: 3, name: 'Configure Costs', text: 'Adjust hardware price, battery replacement frequency, and subscription fees.' },
-                    { '@type': 'HowToStep', position: 4, name: 'Set Time Horizon', text: 'Choose a 3, 5, or 10-year projection period for TCO analysis.' },
-                    { '@type': 'HowToStep', position: 5, name: 'Compare Results', text: 'Review the cost breakdown chart showing hardware, recurring, and hidden costs over time.' },
                 ],
             }} />
             {children}

@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Privacy & Data Compliance Evaluator - SLockHub.com',
     description: 'Assess smart lock privacy compliance with GDPR, CCPA, and biometric data laws. Evaluate data collection practices, storage policies, and user consent mechanisms.',
-    alternates: { canonical: '/calculators/privacy-compliance' },
-    openGraph: {
-        title: 'Privacy & Data Compliance Evaluator - SLockHub.com',
-        description: 'Assess smart lock privacy compliance with GDPR, CCPA, and biometric data laws. Evaluate data collection practices, storage policies, and user consent mechanisms.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/privacy-compliance',
+})
 
 export default function PrivacyComplianceLayout({ children }: { children: React.ReactNode }) {
     return (

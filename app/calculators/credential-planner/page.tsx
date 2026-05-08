@@ -1,4 +1,6 @@
 import { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
+import Image from 'next/image'
 import Link from 'next/link'
 import CredentialPlanner from './CredentialPlanner'
 import {
@@ -9,11 +11,12 @@ import {
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 
-export const metadata: Metadata = {
-  title: 'Smart Lock Credential Capacity Planner | PIN/RFID/NFC Management Calculator',
-  description: 'Calculate credential capacity for smart lock deployments. Plan PIN codes, RFID cards, NFC, biometric slots. Based on NIST SP 800-63B authentication guidelines and manufacturer specs.',
-  keywords: 'credential capacity planner, smart lock user management, PIN code calculator, RFID capacity, access control planning, NIST authentication',
-}
+export const metadata: Metadata = buildSeoMetadata({
+    title: 'Smart Lock Credential Capacity Planner | PIN/RFID/NFC Management Calculator',
+    description: 'Calculate credential capacity for smart lock deployments. Plan PIN codes, RFID cards, NFC, biometric slots. Based on NIST SP 800-63B authentication guidelines and manufacturer specs.',
+    canonical: '/calculators/credential-planner',
+    keywords: 'credential capacity planner, smart lock user management, PIN code calculator, RFID capacity, access control planning, NIST authentication',
+})
 
 export default function CredentialPlannerPage() {
   const breadcrumbSchema = {
@@ -78,7 +81,7 @@ export default function CredentialPlannerPage() {
               <div className="flex items-center gap-6">
                 <div className="flex-shrink-0">
                   <div className="card" style={{ width: "5rem", height: "5rem", padding: "var(--space-sm)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <img src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" className="w-full h-full object-contain" />
+                    <Image src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" width={64} height={64} className="w-full h-full object-contain" />
                   </div>
                 </div>
                 <div className="flex-1">

@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Emergency Backup Evaluator - SLockHub.com',
     description: 'Evaluate your smart lock emergency backup plan. Score your backup readiness across physical keys, PIN codes, mobile app, remote access, and Bluetooth fallback.',
-    alternates: { canonical: '/calculators/emergency-backup' },
-    openGraph: {
-        title: 'Emergency Backup Evaluator - SLockHub.com',
-        description: 'Evaluate your smart lock emergency backup plan. Score your backup readiness across physical keys, PIN codes, mobile app, remote access, and Bluetooth fallback.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/emergency-backup',
+})
 
 export default function EmergencyBackupLayout({ children }: { children: React.ReactNode }) {
     return (

@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Subscription vs Purchase Comparison - SLockHub.com',
     description: 'Compare long-term costs of cloud subscription vs local smart lock solutions. Calculate break-even point, annual costs, and total cost of ownership over time.',
-    alternates: { canonical: '/calculators/subscription-compare' },
-    openGraph: {
-        title: 'Subscription vs Purchase Comparison - SLockHub.com',
-        description: 'Compare long-term costs of cloud subscription vs local smart lock solutions. Calculate break-even point, annual costs, and total cost of ownership over time.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/subscription-compare',
+})
 
 export default function SubscriptionCompareLayout({ children }: { children: React.ReactNode }) {
     return (

@@ -61,6 +61,32 @@ function getLibSQLClient(): Client {
   return libsqlClient
 }
 
+function isRetryableDatabaseError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false
+  const message = `${error.name} ${error.message} ${(error as { cause?: unknown }).cause instanceof Error ? (error as { cause: Error }).cause.message : ''}`
+  return /fetch failed|socket|UND_ERR_SOCKET|ECONNRESET|ETIMEDOUT|ENOTFOUND/i.test(message)
+}
+
+async function withDatabaseRetry<T>(operation: () => Promise<T>): Promise<T> {
+  let lastError: unknown
+
+  const maxAttempts = 6
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      return await operation()
+    } catch (error) {
+      lastError = error
+      if (!isRetryableDatabaseError(error) || attempt === maxAttempts - 1) {
+        throw error
+      }
+      await new Promise((resolve) => setTimeout(resolve, 500 * (attempt + 1)))
+    }
+  }
+
+  throw lastError
+}
+
 /**
  * 获取D1数据库实例 (Cloudflare Pages环境中)
  */
@@ -91,7 +117,7 @@ export async function query<T = any>(
 ): Promise<T[]> {
   if (USE_TURSO) {
     const client = getLibSQLClient()
-    const result = await client.execute({ sql, args: params })
+    const result = await withDatabaseRetry(() => client.execute({ sql, args: params }))
     return result.rows as unknown as T[]
   }
 
@@ -113,7 +139,7 @@ export async function queryOne<T = any>(
 ): Promise<T | null> {
   if (USE_TURSO) {
     const client = getLibSQLClient()
-    const result = await client.execute({ sql, args: params })
+    const result = await withDatabaseRetry(() => client.execute({ sql, args: params }))
     if (result.rows.length === 0) return null
     return result.rows[0] as unknown as T
   }
@@ -135,7 +161,7 @@ export async function execute(
 ): Promise<D1Result> {
   if (USE_TURSO) {
     const client = getLibSQLClient()
-    const result = await client.execute({ sql, args: params })
+    const result = await withDatabaseRetry(() => client.execute({ sql, args: params }))
 
     return {
       success: true,

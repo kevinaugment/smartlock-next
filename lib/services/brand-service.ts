@@ -100,7 +100,6 @@ export async function getProductBySlug(slug: string): Promise<ProductDetail | nu
     const product = await ProductModel.getBySlug(slug)
     if (!product) return null
 
-    const series = await ProductSeriesModel.getBySlug('')
     let seriesName = ''
 
     // 查找所属系列的名称

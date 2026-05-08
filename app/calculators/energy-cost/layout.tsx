@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Energy Cost Calculator - SLockHub.com',
     description: 'Calculate annual electricity and battery costs for smart lock deployments. Compare energy consumption across Wi-Fi, Zigbee, Z-Wave, and Thread protocols.',
-    alternates: { canonical: '/calculators/energy-cost' },
-    openGraph: {
-        title: 'Energy Cost Calculator - SLockHub.com',
-        description: 'Calculate annual electricity and battery costs for smart lock deployments. Compare energy consumption across Wi-Fi, Zigbee, Z-Wave, and Thread protocols.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/energy-cost',
+})
 
 export default function EnergyCostLayout({ children }: { children: React.ReactNode }) {
     return (

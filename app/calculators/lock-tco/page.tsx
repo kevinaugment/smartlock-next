@@ -1,10 +1,12 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { DollarSign, Lightbulb, AlertTriangle } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
 
 interface TCOInputs {
   lockPrice: number
@@ -165,9 +167,9 @@ export default function TCOCalculator() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div className="calculator-shell">
           {/* Input Section */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="calculator-inputs space-y-6">
             <div className="content-card">
               <h2 className="section-title">Project Parameters</h2>
 
@@ -457,7 +459,7 @@ export default function TCOCalculator() {
           </div>
 
           {/* Results Section — Glassmorphism Dashboard */}
-          <div className="lg:col-span-1">
+          <div className="calculator-results">
             <div className="result-panel-v2">
               <div className="result-panel-v2__header">
                 <h2 style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', fontFamily: 'var(--font-mono)', marginBottom: 'var(--space-md)' }}>
@@ -566,9 +568,11 @@ export default function TCOCalculator() {
             <div className="flex items-center gap-6">
               <div className="flex-shrink-0">
                 <div className="card" style={{ width: "5rem", height: "5rem", padding: "var(--space-sm)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <img
+                  <Image
                     src="/images/brands/be-tech-logo.png"
                     alt="Be-Tech Logo"
+                    width={64}
+                    height={64}
                     className="w-full h-full object-contain"
                   />
                 </div>
@@ -629,6 +633,27 @@ export default function TCOCalculator() {
         </div>
 
         <ToolRating toolSlug="lock-tco" />
+
+        <div className="max-w-7xl mx-auto">
+          <ReportLeadCapture
+            reportType="smart-lock-tco-report"
+            title="Smart Lock TCO Report PDF"
+            description="Download a shareable ownership-cost summary with deployment scale, protocol assumptions, battery burden, and subscription exposure."
+            sourcePath="/calculators/lock-tco"
+            context={{
+              calculator: 'lock-tco',
+              focus: 'multi-year ownership cost',
+              scale: inputs.scale,
+              protocol: inputs.protocol,
+              years: inputs.years,
+            }}
+            bullets={[
+              'Summarizes the cost drivers that matter after sticker price.',
+              'Useful for internal approval, installer discussions, or multi-door budgeting.',
+              'Includes protocol and deployment context so the PDF is not a generic export.',
+            ]}
+          />
+        </div>
 
         {/* Hidden Costs Warning */}
         <div className="max-w-7xl mx-auto mt-8">

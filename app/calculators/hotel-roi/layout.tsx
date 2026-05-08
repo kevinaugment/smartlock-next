@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Hotel & Hospitality ROI Calculator - SLockHub.com',
     description: 'Calculate return on investment for hotel smart lock installations. Analyze labor savings, key card elimination, guest experience improvements, and payback period.',
-    alternates: { canonical: '/calculators/hotel-roi' },
-    openGraph: {
-        title: 'Hotel & Hospitality ROI Calculator - SLockHub.com',
-        description: 'Calculate return on investment for hotel smart lock installations. Analyze labor savings, key card elimination, guest experience improvements, and payback period.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/hotel-roi',
+})
 
 export default function HotelROILayout({ children }: { children: React.ReactNode }) {
     return (

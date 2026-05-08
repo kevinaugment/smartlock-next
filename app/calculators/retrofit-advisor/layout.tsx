@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Retrofit vs Replace Advisor - SLockHub.com',
     description: 'Determine whether to retrofit your existing door hardware or replace it entirely for smart lock installation. Compare costs, compatibility, and long-term value.',
-    alternates: { canonical: '/calculators/retrofit-advisor' },
-    openGraph: {
-        title: 'Retrofit vs Replace Advisor - SLockHub.com',
-        description: 'Determine whether to retrofit your existing door hardware or replace it entirely for smart lock installation. Compare costs, compatibility, and long-term value.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/retrofit-advisor',
+})
 
 export default function RetrofitAdvisorLayout({ children }: { children: React.ReactNode }) {
     return (

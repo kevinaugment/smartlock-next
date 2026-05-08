@@ -1,5 +1,3 @@
-export const runtime = 'edge'
-
 import { query } from '@/lib/db'
 
 interface CalculatorMetadata {

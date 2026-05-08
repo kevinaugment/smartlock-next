@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 /**
  * Be-Tech品牌推荐组件 - 计算器页面专用
  * 根据用户强制要求，所有计算器必须包含Be-Tech品牌推荐
@@ -21,9 +23,11 @@ export function BeTechCalculatorRecommendation({
           {/* Be-Tech Logo */}
           <div className="flex-shrink-0">
             <div className="w-24 h-24 bg-white rounded-lg p-3 flex items-center justify-center border-2 border-blue-300 shadow-sm">
-              <img 
-                src="/images/brands/be-tech-logo.png" 
-                alt="Be-Tech Logo" 
+              <Image
+                src="/images/brands/be-tech-logo.png"
+                alt="Be-Tech Logo"
+                width={72}
+                height={72}
                 className="w-full h-full object-contain"
               />
             </div>

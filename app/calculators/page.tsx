@@ -11,9 +11,20 @@ import type { ReactNode } from 'react'
 import CalculatorDiscovery from '@/components/CalculatorDiscovery'
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Calculators - SLockHub.com',
-  description: 'Interactive smart lock calculators for TCO, battery life, signal strength, installation cost, and more.',
+  title: 'Smart Lock Calculators | Cost, Compatibility, Signal & Battery Tools',
+  description: 'Choose the right smart lock calculator for door compatibility, installation cost, signal strength, battery life, protocol selection, TCO, security, and fleet planning.',
   alternates: { canonical: '/calculators' },
+  openGraph: {
+    title: 'Smart Lock Calculators',
+    description: 'Interactive planning tools for smart lock cost, compatibility, signal, battery, protocol, and deployment decisions.',
+    type: 'website',
+    url: 'https://www.slockhub.com/calculators',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Smart Lock Calculators',
+    description: 'Plan smart lock purchases with calculators for cost, fit, signal, battery life, protocols, and TCO.',
+  },
 }
 
 const calculators: { name: string; slug: string; icon: ReactNode; description: string; features: string[]; complexity: string }[] = [
@@ -284,6 +295,60 @@ const categories: { name: string; icon: ReactNode; calculators: string[] }[] = [
   { name: 'Comparison & Selection', icon: <Wand2 className="w-7 h-7" />, calculators: ['protocol-wizard', 'lock-compare'] },
 ]
 
+const priorityCalculators = [
+  {
+    slug: 'installation-cost',
+    title: 'Estimate installation cost',
+    description: 'Start here when a non-standard door, locksmith quote, or multi-door project could change the buying decision.',
+    proof: 'High GSC opportunity: visible impressions but weak CTR before Batch 4 content expansion.',
+  },
+  {
+    slug: 'signal-strength',
+    title: 'Check signal reliability',
+    description: 'Use before buying Wi-Fi, Zigbee, Z-Wave, Thread, or BLE locks for thick walls, metal doors, or detached entries.',
+    proof: 'Page-1 visibility in GSC with calculator intent queries.',
+  },
+  {
+    slug: 'compatibility',
+    title: 'Verify door compatibility',
+    description: 'Measure thickness, backset, bore, material, and installation risk before shortlisting products.',
+    proof: 'Strong article-to-tool pathway from the door compatibility guide.',
+  },
+  {
+    slug: 'battery-life',
+    title: 'Forecast battery replacements',
+    description: 'Compare protocol draw, usage frequency, weather, and battery chemistry for 3-5 year ownership planning.',
+    proof: 'Commercial support page for battery-life best-of and product pages.',
+  },
+]
+
+const decisionPaths = [
+  {
+    title: 'I am buying one lock for a home',
+    steps: [
+      { href: '/calculators/compatibility', label: 'Check door fit' },
+      { href: '/calculators/protocol-wizard', label: 'Choose protocol' },
+      { href: '/best/matter-smart-locks', label: 'Compare products' },
+    ],
+  },
+  {
+    title: 'I am planning multiple doors',
+    steps: [
+      { href: '/calculators/lock-tco', label: 'Model total cost' },
+      { href: '/calculators/battery-life', label: 'Estimate maintenance' },
+      { href: '/calculators/fleet-planner', label: 'Plan fleet rules' },
+    ],
+  },
+  {
+    title: 'I have range or reliability concerns',
+    steps: [
+      { href: '/calculators/signal-strength', label: 'Check link margin' },
+      { href: '/calculators/mesh-planner', label: 'Place repeaters' },
+      { href: '/best/z-wave-smart-locks', label: 'Review range-first locks' },
+    ],
+  },
+]
+
 export default function CalculatorsPage() {
   const collectionSchema = {
     '@context': 'https://schema.org',
@@ -318,6 +383,41 @@ export default function CalculatorsPage() {
               {calculators.length} interactive tools for TCO analysis, signal planning, compliance checking, and more.
             </p>
           </div>
+
+          <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+            <h2 className="section-title">Start With the Highest-Value Checks</h2>
+            <p style={{ color: 'var(--color-text-secondary)', maxWidth: '52rem', marginBottom: 'var(--space-xl)', lineHeight: 1.7 }}>
+              Use these calculators before comparing models. They answer the questions that most often change the final smart lock choice: door fit, installation cost, signal reliability, battery maintenance, and protocol lock-in.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {priorityCalculators.map((item) => (
+                <Link key={item.slug} href={`/calculators/${item.slug}`} className="link-card">
+                  <h3 className="link-card__title">{item.title}</h3>
+                  <p className="link-card__desc">{item.description}</p>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: 'var(--space-sm)' }}>{item.proof}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+            <h2 className="section-title">Choose a Planning Path</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {decisionPaths.map((path) => (
+                <div key={path.title} className="card">
+                  <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>{path.title}</h3>
+                  <ol className="space-y-3">
+                    {path.steps.map((step, index) => (
+                      <li key={step.href} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+                        <span className="badge badge-accent">{index + 1}</span>
+                        <Link href={step.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }}>{step.label}</Link>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              ))}
+            </div>
+          </section>
 
           {/* Interactive Discovery (Client Component) */}
           <CalculatorDiscovery calculators={calculators} categories={categories} />

@@ -1,17 +1,39 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import ProtocolWizard from './ProtocolWizard'
 import { Wand2, BookOpen } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { SeoPathways } from '@/components/seo/SeoPathways'
+import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Protocol Wizard | Zigbee vs Z-Wave vs Wi-Fi Selector',
   description: 'Find the best smart lock protocol (Zigbee, Z-Wave, Thread, Wi-Fi, Bluetooth) for your needs. Science-based comparison using IEEE 802.15.4, CSA standards. Battery, range, cost analysis.',
   keywords: 'protocol selector, Zigbee vs Z-Wave, smart lock protocol, Thread Matter, Wi-Fi locks, protocol comparison tool',
+  alternates: { canonical: '/calculators/protocol-wizard' },
+  openGraph: {
+    title: 'Smart Lock Protocol Wizard',
+    description: 'Choose between Zigbee, Z-Wave, Thread, Wi-Fi, Bluetooth, and Matter based on range, battery life, hub cost, and ecosystem.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Smart Lock Protocol Wizard',
+    description: 'Find the best smart lock protocol for your range, battery, hub, and smart home requirements.',
+  },
 }
 
 export default function ProtocolWizardPage() {
+  const protocolComparisonRows = [
+    { protocol: 'Zigbee', standard: 'IEEE 802.15.4-2020', frequency: '2.4 GHz', range: '10-20m indoor', battery: '12+ months', hubCost: '$30-80' },
+    { protocol: 'Z-Wave', standard: 'ITU-T G.9959', frequency: '868-922 MHz*', range: '30-40m indoor', battery: '12 months', hubCost: '$60-150' },
+    { protocol: 'Thread', standard: 'IEEE 802.15.4, Thread 1.3', frequency: '2.4 GHz', range: '10-20m indoor', battery: '10-11 months', hubCost: '$100-150' },
+    { protocol: 'Wi-Fi', standard: 'IEEE 802.11-2020', frequency: '2.4/5 GHz', range: '20-30m indoor', battery: '3-4 months', hubCost: '$0' },
+    { protocol: 'Bluetooth', standard: 'Bluetooth 5.0-6.0', frequency: '2.4 GHz', range: '10-15m indoor', battery: '10-12 months', hubCost: '$0' },
+  ]
+
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -32,27 +54,24 @@ export default function ProtocolWizardPage() {
     description: 'Interactive protocol selection tool based on your smart home requirements, battery life needs, and ecosystem compatibility'
   }
 
+  const webPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Smart Lock Protocol Wizard',
+    url: 'https://www.slockhub.com/calculators/protocol-wizard',
+    description: 'Choose the best smart lock protocol based on range, battery life, hub cost, ecosystem fit, and local-control needs.',
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'SLockHub.com',
+      url: 'https://www.slockhub.com',
+    },
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'HowTo',
-          name: 'How to Choose the Right Smart Lock Protocol',
-          description: 'Use our wizard to find the best protocol (Zigbee, Z-Wave, Thread, Wi-Fi) for your smart lock setup.',
-          totalTime: 'PT3M',
-          step: [
-            { '@type': 'HowToStep', position: 1, name: 'Select Environment', text: 'Choose your deployment type: residential, commercial, or rental property.' },
-            { '@type': 'HowToStep', position: 2, name: 'Define Priorities', text: 'Rank your priorities: battery life, range, latency, or ecosystem compatibility.' },
-            { '@type': 'HowToStep', position: 3, name: 'Check Ecosystem', text: 'Select your existing smart home ecosystem (HomeKit, Alexa, Google, SmartThings).' },
-            { '@type': 'HowToStep', position: 4, name: 'Set Budget', text: 'Indicate your budget range to filter protocol options by hub and lock costs.' },
-            { '@type': 'HowToStep', position: 5, name: 'Get Recommendation', text: 'Review the wizard\'s protocol recommendation with detailed comparison scores.' },
-          ],
-        })
-      }} />
-
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       <div className="page-bg">
         <div className="container-main section">
           <div className="mb-8">
@@ -84,13 +103,52 @@ export default function ProtocolWizardPage() {
 
           <ToolRating toolSlug="protocol-wizard" />
 
+          <SeoPathways topic="homekit" title="Move From Protocol Choice to Product Choice" />
+
+          <div className="max-w-7xl mx-auto">
+            <CalculatorSeoBlock
+              title="How the protocol recommendation works"
+              answers={[
+                'Which protocol best fits your range, battery, hub, and ecosystem priorities.',
+                'When local-control mesh protocols beat Wi-Fi even if they require a hub.',
+                'Which protocol tradeoff is likely to matter most over 3-5 years: batteries, range, simplicity, or ecosystem lock-in.',
+              ]}
+              formula={{
+                label: 'Decision model',
+                equation: 'Recommendation score = weighted battery life + range + ecosystem fit + hub friction + scale economics + local control',
+                notes: 'The wizard is not choosing a brand. It chooses the transport layer that will make later product selection more reliable and less expensive.',
+              }}
+              assumptions={[
+                'Single-door buyers often tolerate Wi-Fi or Bluetooth tradeoffs more easily than multi-door fleets.',
+                'Hub cost matters less as the number of locks increases because batteries, retries, and maintenance dominate later.',
+                'Matter and Thread improve cross-platform flexibility but product support still varies by model and ecosystem.',
+              ]}
+              example={{
+                title: 'Apple household with three exterior doors',
+                inputs: 'HomeKit preference, wants remote access, moderate wall interference, does not want quarterly battery swaps',
+                result: 'Thread or Matter-over-Thread usually outranks Wi-Fi because it balances Apple compatibility with better battery behavior.',
+                decision: 'Use the result to shortlist compatible models instead of searching every protocol family manually.',
+              }}
+              sources={[
+                'IEEE, CSA, Thread Group, Bluetooth SIG, and Z-Wave standards.',
+                'Hub pricing, protocol power draw, and indoor range data used across SLockHub calculators.',
+                'Real-world protocol tradeoffs already modeled in battery, signal, and TCO tools.',
+              ]}
+              links={[
+                { href: '/protocols/matter', title: 'Review Matter Tradeoffs', description: 'Understand hub, ecosystem, and product support before shopping.' },
+                { href: '/best/homekit-smart-locks', title: 'Compare HomeKit Locks', description: 'See which products fit an Apple-first setup after the protocol decision.' },
+                { href: '/calculators/lock-tco', title: 'Quantify 5-Year Cost', description: 'Convert protocol choice into battery, hub, and maintenance cost.' },
+              ]}
+            />
+          </div>
+
           {/* Be-Tech Brand */}
           <div className="max-w-7xl mx-auto mt-12">
             <div className="content-card">
               <div className="flex items-center gap-6">
                 <div className="flex-shrink-0">
                   <div className="card" style={{ width: "5rem", height: "5rem", padding: "var(--space-sm)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <img src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" className="w-full h-full object-contain" />
+                    <Image src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" width={64} height={64} className="w-full h-full object-contain" />
                   </div>
                 </div>
                 <div className="flex-1">
@@ -116,7 +174,7 @@ export default function ProtocolWizardPage() {
                 <h2 style={{ fontSize: "1.875rem", fontWeight: 700, color: "var(--color-text-primary)" }}>Protocol Technical Comparison</h2>
                 <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Based on IEEE/CSA Standards (2026)</span>
               </div>
-              <div className="overflow-x-auto">
+              <div className="data-table-wrap comparison-table-desktop">
                 <table className="data-table">
                   <thead>
                     <tr >
@@ -129,48 +187,48 @@ export default function ProtocolWizardPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr >
-                      <td style={{ fontWeight: 600 }}>Zigbee</td>
-                      <td>IEEE 802.15.4-2020</td>
-                      <td>2.4 GHz</td>
-                      <td>10-20m indoor</td>
-                      <td style={{ color: "var(--color-success)" }}>12+ months</td>
-                      <td>$30-80</td>
-                    </tr>
-                    <tr >
-                      <td style={{ fontWeight: 600 }}>Z-Wave</td>
-                      <td>ITU-T G.9959</td>
-                      <td>868-922 MHz*</td>
-                      <td style={{ color: "var(--color-success)" }}>30-40m indoor</td>
-                      <td style={{ color: "var(--color-success)" }}>12 months</td>
-                      <td>$60-150</td>
-                    </tr>
-                    <tr >
-                      <td style={{ fontWeight: 600 }}>Thread</td>
-                      <td>IEEE 802.15.4, Thread 1.3</td>
-                      <td>2.4 GHz</td>
-                      <td>10-20m indoor</td>
-                      <td>10-11 months</td>
-                      <td>$100-150</td>
-                    </tr>
-                    <tr >
-                      <td style={{ fontWeight: 600 }}>Wi-Fi</td>
-                      <td>IEEE 802.11-2020</td>
-                      <td>2.4/5 GHz</td>
-                      <td>20-30m indoor</td>
-                      <td style={{ color: "var(--color-danger)" }}>3-4 months</td>
-                      <td style={{ color: "var(--color-success)" }}>$0</td>
-                    </tr>
-                    <tr >
-                      <td style={{ fontWeight: 600 }}>Bluetooth</td>
-                      <td>Bluetooth 5.0-6.0</td>
-                      <td>2.4 GHz</td>
-                      <td style={{ color: "var(--color-warning)" }}>10-15m indoor</td>
-                      <td>10-12 months</td>
-                      <td style={{ color: "var(--color-success)" }}>$0</td>
-                    </tr>
+                    {protocolComparisonRows.map((row) => (
+                      <tr key={row.protocol}>
+                        <td style={{ fontWeight: 600 }}>{row.protocol}</td>
+                        <td>{row.standard}</td>
+                        <td>{row.frequency}</td>
+                        <td>{row.range}</td>
+                        <td>{row.battery}</td>
+                        <td>{row.hubCost}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
+              </div>
+              <div className="comparison-card-grid">
+                {protocolComparisonRows.map((row) => (
+                  <div key={row.protocol} className="comparison-card">
+                    <div className="comparison-card__eyebrow">Protocol option</div>
+                    <div className="comparison-card__title">{row.protocol}</div>
+                    <div className="comparison-card__rows">
+                      <div className="comparison-card__row">
+                        <span className="comparison-card__label">Standard</span>
+                        <span className="comparison-card__value">{row.standard}</span>
+                      </div>
+                      <div className="comparison-card__row">
+                        <span className="comparison-card__label">Frequency</span>
+                        <span className="comparison-card__value">{row.frequency}</span>
+                      </div>
+                      <div className="comparison-card__row">
+                        <span className="comparison-card__label">Range</span>
+                        <span className="comparison-card__value">{row.range}</span>
+                      </div>
+                      <div className="comparison-card__row">
+                        <span className="comparison-card__label">Battery</span>
+                        <span className="comparison-card__value">{row.battery}</span>
+                      </div>
+                      <div className="comparison-card__row">
+                        <span className="comparison-card__label">Hub Cost</span>
+                        <span className="comparison-card__value">{row.hubCost}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
               {/* Battery Life Visualization */}
               <div className="mt-8">

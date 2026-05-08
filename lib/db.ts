@@ -11,15 +11,42 @@ export function getTursoClient() {
   return client
 }
 
+function isRetryableDatabaseError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false
+  const cause = (error as { cause?: unknown }).cause
+  const causeMessage = cause instanceof Error ? cause.message : ''
+  const message = `${error.name} ${error.message} ${causeMessage}`
+  return /fetch failed|socket|UND_ERR_SOCKET|ECONNRESET|ETIMEDOUT|ENOTFOUND/i.test(message)
+}
+
+async function withDatabaseRetry<T>(operation: () => Promise<T>): Promise<T> {
+  let lastError: unknown
+  const maxAttempts = 6
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      return await operation()
+    } catch (error) {
+      lastError = error
+      if (!isRetryableDatabaseError(error) || attempt === maxAttempts - 1) {
+        throw error
+      }
+      await new Promise((resolve) => setTimeout(resolve, 500 * (attempt + 1)))
+    }
+  }
+
+  throw lastError
+}
+
 // 便捷查询函数
 export async function query<T = any>(sql: string, params?: any[]): Promise<T[]> {
   const client = getTursoClient()
   
   try {
-    const result = await client.execute({
+    const result = await withDatabaseRetry(() => client.execute({
       sql,
       args: params || [],
-    })
+    }))
     
     return result.rows as T[]
   } finally {
@@ -38,10 +65,10 @@ export async function execute(sql: string, params?: any[]): Promise<number> {
   const client = getTursoClient()
   
   try {
-    const result = await client.execute({
+    const result = await withDatabaseRetry(() => client.execute({
       sql,
       args: params || [],
-    })
+    }))
     
     return result.rowsAffected
   } finally {
@@ -59,17 +86,19 @@ export async function batch(statements: Array<{ sql: string; params?: any[] }>) 
       args: params || [],
     }))
     
-    const results = await client.batch(batch, 'write')
+    const results = await withDatabaseRetry(() => client.batch(batch, 'write'))
     return results
   } finally {
     // LibSQL客户端会自动管理连接
   }
 }
 
-export default {
+const db = {
   query,
   queryOne,
   execute,
   batch,
   getTursoClient,
 }
+
+export default db

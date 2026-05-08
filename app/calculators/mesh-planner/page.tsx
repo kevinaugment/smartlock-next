@@ -1,4 +1,6 @@
 import { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
+import Image from 'next/image'
 import Link from 'next/link'
 import MeshPlanner from './MeshPlanner'
 import {
@@ -9,11 +11,12 @@ import {
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 
-export const metadata: Metadata = {
-  title: 'Mesh Network Planner | Zigbee/Z-Wave Repeater Calculator for Smart Locks',
-  description: 'Calculate required mesh repeaters for Zigbee, Z-Wave, Thread smart lock deployments. Based on IEEE 802.15.4, ITU-R P.2040-1 propagation models. Multi-floor building support.',
-  keywords: 'mesh network planner, Zigbee repeater calculator, Z-Wave mesh nodes, Thread network planning, smart lock mesh topology, IEEE 802.15.4 coverage',
-}
+export const metadata: Metadata = buildSeoMetadata({
+    title: 'Mesh Network Planner | Zigbee/Z-Wave Repeater Calculator for Smart Locks',
+    description: 'Calculate required mesh repeaters for Zigbee, Z-Wave, Thread smart lock deployments. Based on IEEE 802.15.4, ITU-R P.2040-1 propagation models. Multi-floor building support.',
+    canonical: '/calculators/mesh-planner',
+    keywords: 'mesh network planner, Zigbee repeater calculator, Z-Wave mesh nodes, Thread network planning, smart lock mesh topology, IEEE 802.15.4 coverage',
+})
 
 export default function MeshPlannerPage() {
   const breadcrumbSchema = {
@@ -78,7 +81,7 @@ export default function MeshPlannerPage() {
               <div className="flex items-center gap-6">
                 <div className="flex-shrink-0">
                   <div className="card" style={{ width: "5rem", height: "5rem", padding: "var(--space-sm)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <img src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" className="w-full h-full object-contain" />
+                    <Image src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" width={64} height={64} className="w-full h-full object-contain" />
                   </div>
                 </div>
                 <div className="flex-1">

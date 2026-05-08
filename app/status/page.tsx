@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   robots: 'noindex',
 }
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 

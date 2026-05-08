@@ -1,6 +1,3 @@
-// 完全符合Cloudflare Workers标准的健康检查
-export const runtime = 'edge'
-
 export async function GET() {
   return new Response(
     JSON.stringify({

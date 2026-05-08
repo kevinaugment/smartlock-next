@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Noise Level Estimator - SLockHub.com',
     description: 'Estimate smart lock motor noise levels in decibels. Compare lock mechanisms, assess nighttime disturbance risk, and find quieter alternatives for bedrooms and offices.',
-    alternates: { canonical: '/calculators/noise-level' },
-    openGraph: {
-        title: 'Noise Level Estimator - SLockHub.com',
-        description: 'Estimate smart lock motor noise levels in decibels. Compare lock mechanisms, assess nighttime disturbance risk, and find quieter alternatives for bedrooms and offices.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/noise-level',
+})
 
 export default function NoiseLevelLayout({ children }: { children: React.ReactNode }) {
     return (

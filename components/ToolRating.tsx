@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 interface ToolRatingProps {
     toolSlug: string
@@ -13,15 +13,7 @@ export function ToolRating({ toolSlug }: ToolRatingProps) {
 
     const storageKey = `tool_rating_${toolSlug}`
 
-    useEffect(() => {
-        const savedVote = localStorage.getItem(storageKey)
-        if (savedVote) {
-            setVoted(true)
-            fetchStats()
-        }
-    }, [storageKey])
-
-    async function fetchStats() {
+    const fetchStats = useCallback(async () => {
         try {
             const res = await fetch(`/api/ratings?slug=${toolSlug}`)
             const data = await res.json()
@@ -31,7 +23,15 @@ export function ToolRating({ toolSlug }: ToolRatingProps) {
         } catch {
             // 静默失败
         }
-    }
+    }, [toolSlug])
+
+    useEffect(() => {
+        const savedVote = localStorage.getItem(storageKey)
+        if (savedVote) {
+            setVoted(true)
+            fetchStats()
+        }
+    }, [fetchStats, storageKey])
 
     async function handleVote(isHelpful: boolean) {
         if (voted || loading) return

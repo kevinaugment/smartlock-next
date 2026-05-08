@@ -1,5 +1,3 @@
-export const runtime = 'edge'
-
 import { getBrands } from '@/lib/services/brand-service'
 
 export async function GET() {

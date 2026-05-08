@@ -1,51 +1,254 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, ExternalLink, Shield, Battery, Wifi, Key, Fingerprint } from 'lucide-react'
+import { cache } from 'react'
+import { ExternalLink } from 'lucide-react'
 import StarRating from '@/components/brands/StarRating'
-import { getProductBySlug } from '@/lib/services/brand-service'
-import { ProductModel, BrandModel } from '@/lib/db/brand-models'
+import type { ProductDetail } from '@/lib/services/brand-service'
+import { ProductModel, ProductSeriesModel, type ProductWithBrand } from '@/lib/db/brand-models'
+import { SeoPathways } from '@/components/seo/SeoPathways'
+import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
+
+const getSeoProducts = cache(() => ProductModel.getAllForSeo())
+const getProductsForDetail = cache(() => ProductModel.getAllForComparison())
+const getSeriesForDetail = cache(() => ProductSeriesModel.getAllForSeo())
+
+async function getProductDetail(productSlug: string): Promise<ProductDetail | null> {
+    const [products, seriesList] = await Promise.all([
+        getProductsForDetail(),
+        getSeriesForDetail(),
+    ])
+    const product = products.find((item) => item.slug === productSlug)
+    if (!product) return null
+
+    const series = seriesList.find((item) => item.id === product.series_id)
+    let ecosystems: string[] = []
+    if (product.ecosystems_json) {
+        try {
+            ecosystems = JSON.parse(product.ecosystems_json)
+        } catch {
+            ecosystems = []
+        }
+    }
+
+    return { ...product, series_name: series?.name || '', ecosystems }
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; product: string }> }): Promise<Metadata> {
     const { product: productSlug } = await params
-    const product = await ProductModel.getBySlug(productSlug)
+    const product = await getProductDetail(productSlug)
     if (!product) return { title: 'Product Not Found' }
 
+    const title = product.meta_title || `${product.name} — SLockHub.com`
+    const description = product.meta_description || product.description || ''
+
     return {
-        title: product.meta_title || `${product.name} — SLockHub.com`,
-        description: product.meta_description || product.description || '',
+        title,
+        description,
         alternates: { canonical: `/brands/${product.brand_slug}/${product.slug}` },
+        openGraph: {
+            title,
+            description,
+            siteName: 'SLockHub.com',
+            type: 'website',
+            url: `https://www.slockhub.com/brands/${product.brand_slug}/${product.slug}`,
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+        },
     }
 }
 
 export async function generateStaticParams() {
     try {
-        const products = await ProductModel.getAll(200, 0)
+        const products = await getSeoProducts()
         return products.map(p => ({ slug: p.brand_slug, product: p.slug }))
     } catch {
         return []
     }
 }
 
-function getPriceTier(cents: number | undefined): string {
-    if (!cents) return 'Contact Manufacturer'
-    const usd = cents / 100
-    if (usd < 150) return 'Budget-Friendly'
-    if (usd < 300) return 'Mid-Range'
+function getPriceTier(priceUsd: number | undefined): string {
+    if (!priceUsd) return 'Contact Manufacturer'
+    if (priceUsd < 150) return 'Budget-Friendly'
+    if (priceUsd < 300) return 'Mid-Range'
     return 'Premium'
+}
+
+function formatUsd(price: number | null | undefined): string {
+    if (price == null) return 'Contact manufacturer'
+    return `$${price}`
+}
+
+function getDoorFitVerdict(product: ProductDetail): string {
+    if (product.door_thickness_min_mm && product.door_thickness_max_mm) {
+        return `Fits doors from ${product.door_thickness_min_mm} to ${product.door_thickness_max_mm} mm`
+    }
+    if (product.bore_diameter_mm) {
+        return `Requires a ${product.bore_diameter_mm} mm bore opening`
+    }
+    return 'Verify thickness, bore, and backset before ordering'
+}
+
+function getBatteryCostVerdict(product: ProductDetail): string {
+    const battery = product.battery_life_months ? `${product.battery_life_months} months per battery cycle` : 'battery life varies by usage'
+    const price = product.price_usd ? `${formatUsd(product.price_usd)} list price band` : 'pricing depends on retailer'
+    return `${battery}; ${price}.`
+}
+
+function getQuickVerdict(product: ProductDetail): string {
+    const strengths: string[] = []
+    strengths.push(product.protocol.toUpperCase())
+    if (product.supports_matter) strengths.push('Matter-ready')
+    if (product.has_fingerprint) strengths.push('fingerprint access')
+    if (product.has_keypad) strengths.push('keypad access')
+    if (product.ansi_grade) strengths.push(`ANSI Grade ${product.ansi_grade}`)
+    return `${product.name} is a ${getPriceTier(product.price_usd)} ${product.brand_name} lock positioned around ${strengths.slice(0, 3).join(', ') || 'core smart-lock basics'}.`
+}
+
+function getSkipIfVerdict(product: ProductDetail): string {
+    const reasons: string[] = []
+    if (!product.supports_matter) reasons.push('Matter support is mandatory')
+    if (!product.has_fingerprint) reasons.push('fingerprint access is required')
+    if (!product.has_remote_access) reasons.push('remote access is a must-have')
+    if (!product.door_thickness_min_mm && !product.bore_diameter_mm) reasons.push('you need fully listed door-fit specs before shortlisting')
+    if (reasons.length === 0) return 'Skip only if your door measurements or ecosystem requirements do not match the model specs.'
+    return `Skip this model if ${reasons.slice(0, 3).join(', ')}.`
+}
+
+function getProtocolReliabilityVerdict(product: ProductDetail): string {
+    const protocol = product.protocol.toUpperCase()
+    if (product.rf_range_meters) {
+        return `${protocol} model with listed RF range of ${product.rf_range_meters}m${product.rf_frequency ? ` at ${product.rf_frequency}` : ''}.`
+    }
+    if (product.secondary_protocol) {
+        return `${protocol} primary connectivity with ${product.secondary_protocol.toUpperCase()} as a secondary protocol.`
+    }
+    if (product.supports_matter) {
+        return `${protocol} connectivity with Matter support for stronger ecosystem portability.`
+    }
+    return `${protocol} connectivity; verify hub, bridge, and range requirements for your installation.`
+}
+
+function getCredentialCapacityVerdict(product: ProductDetail): string {
+    const capacities = [
+        product.max_pin_codes ? `${product.max_pin_codes} PIN codes` : null,
+        product.max_fingerprints ? `${product.max_fingerprints} fingerprints` : null,
+        product.max_cards ? `${product.max_cards} cards/NFC credentials` : null,
+        product.max_app_users ? `${product.max_app_users} app users` : null,
+    ].filter(Boolean)
+    if (capacities.length === 0) return 'Credential capacity is not listed; verify limits before using this lock for shared access.'
+    return capacities.join(', ')
+}
+
+function getBestPageLinks(product: ProductDetail): Array<{ href: string; label: string }> {
+    const links: Array<{ href: string; label: string }> = []
+    if (product.supports_matter) links.push({ href: '/best/matter-smart-locks', label: 'Best Matter Smart Locks' })
+    if (product.protocol.toLowerCase().includes('z-wave') || product.protocol.toLowerCase().includes('zwave')) links.push({ href: '/best/z-wave-smart-locks', label: 'Best Z-Wave Smart Locks' })
+    if (product.protocol.toLowerCase().includes('zigbee')) links.push({ href: '/best/zigbee-smart-locks', label: 'Best Zigbee Smart Locks' })
+    if (product.protocol.toLowerCase().includes('wifi') || product.protocol.toLowerCase().includes('wi-fi')) links.push({ href: '/best/wifi-smart-locks', label: 'Best Wi-Fi Smart Locks' })
+    if (product.has_fingerprint) links.push({ href: '/best/fingerprint-smart-locks', label: 'Best Fingerprint Smart Locks' })
+    if (product.battery_life_months && product.battery_life_months >= 12) links.push({ href: '/best/smart-locks-with-longest-battery-life', label: 'Longest Battery Life Smart Locks' })
+    return links.slice(0, 3)
+}
+
+function getProtocolHref(product: ProductDetail): string {
+    const protocol = product.protocol.toLowerCase().replace(/\s+/g, '-').replace('zwave', 'z-wave').replace('wi-fi', 'wifi')
+    return `/protocols/${protocol}`
+}
+
+function getCompareHref(product: ProductDetail): { href: string; label: string } {
+    const candidates = ['yale', 'schlage', 'august', 'kwikset']
+    const competitor = candidates.find(candidate => candidate !== product.brand_slug) || 'yale'
+    const titleName = competitor.charAt(0).toUpperCase() + competitor.slice(1)
+    return {
+        href: `/compare/${product.brand_slug}-vs-${competitor}`,
+        label: `${product.brand_name} vs ${titleName}`,
+    }
+}
+
+function getSiblingProducts(products: ProductWithBrand[], currentSlug: string): ProductWithBrand[] {
+    return products
+        .filter(product => product.slug !== currentSlug)
+        .sort((a, b) => {
+            if (b.rating !== a.rating) return b.rating - a.rating
+            if (b.review_count !== a.review_count) return b.review_count - a.review_count
+            return a.display_order - b.display_order
+        })
+        .slice(0, 3)
 }
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string; product: string }> }) {
     const { slug: brandSlug, product: productSlug } = await params
-    const product = await getProductBySlug(productSlug)
+    const [product, allProducts] = await Promise.all([
+        getProductDetail(productSlug),
+        getProductsForDetail(),
+    ])
 
     if (!product || product.brand_slug !== brandSlug) notFound()
 
     const ecosystems = product.ecosystems
+    const siblingProducts = getSiblingProducts(
+        allProducts.filter(item => item.brand_slug === product.brand_slug),
+        product.slug
+    )
+    const compareLink = getCompareHref(product)
+    const bestPageLinks = getBestPageLinks(product)
+    const productUrl = `https://www.slockhub.com/brands/${product.brand_slug}/${product.slug}`
+    const additionalProperty = [
+        { name: 'Primary protocol', value: product.protocol.toUpperCase() },
+        ...(product.secondary_protocol ? [{ name: 'Secondary protocol', value: product.secondary_protocol.toUpperCase() }] : []),
+        ...(product.supports_matter ? [{ name: 'Matter support', value: 'Yes' }] : []),
+        ...(product.battery_life_months ? [{ name: 'Battery life', value: `${product.battery_life_months} months` }] : []),
+        ...(product.ansi_grade ? [{ name: 'ANSI grade', value: `Grade ${product.ansi_grade}` }] : []),
+        ...(product.encryption_type ? [{ name: 'Encryption', value: product.encryption_type }] : []),
+        ...(product.door_thickness_min_mm && product.door_thickness_max_mm
+            ? [{ name: 'Door thickness', value: `${product.door_thickness_min_mm}-${product.door_thickness_max_mm} mm` }]
+            : []),
+        ...(product.bore_diameter_mm ? [{ name: 'Bore diameter', value: `${product.bore_diameter_mm} mm` }] : []),
+    ]
 
     return (
         <div className="page-bg">
             <div className="container-main section">
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            '@context': 'https://schema.org',
+                            '@type': 'Product',
+                            name: product.name,
+                            description: product.description,
+                            url: productUrl,
+                            sku: product.slug,
+                            brand: { '@type': 'Brand', name: product.brand_name },
+                            ...(product.model_number && { model: product.model_number }),
+                            ...(product.review_count > 0 && {
+                                aggregateRating: {
+                                    '@type': 'AggregateRating',
+                                    ratingValue: product.rating.toFixed(1),
+                                    reviewCount: product.review_count,
+                                },
+                            }),
+                            ...(product.price_usd && {
+                                offers: {
+                                    '@type': 'Offer',
+                                    url: product.buy_url || productUrl,
+                                    priceCurrency: 'USD',
+                                    price: product.price_usd.toFixed(2),
+                                    availability: 'https://schema.org/InStock',
+                                },
+                            }),
+                            additionalProperty: additionalProperty.map((item) => ({
+                                '@type': 'PropertyValue',
+                                name: item.name,
+                                value: item.value,
+                            })),
+                        }),
+                    }}
+                />
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-2" style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xl)' }}>
                     <Link href="/" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }}>Home</Link>
@@ -83,9 +286,53 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                             </p>
                         </div>
 
+                        <div className="content-card" style={{ background: 'var(--color-bg-alt)' }}>
+                            <h2 className="section-title">Quick Verdict</h2>
+                            <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-lg)' }}>
+                                {getQuickVerdict(product)}
+                            </p>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <SpecItem label="Door fit" value={getDoorFitVerdict(product)} />
+                                <SpecItem label="Battery / cost" value={getBatteryCostVerdict(product)} />
+                                <SpecItem label="Best for" value={product.series_name || `${product.protocol.toUpperCase()} buyers`} />
+                            </div>
+                        </div>
+
+                        <div className="content-card">
+                            <h2 className="section-title">Should You Choose This Model?</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <SpecItem label="Choose it when" value={getQuickVerdict(product)} />
+                                <SpecItem label="Skip it when" value={getSkipIfVerdict(product)} />
+                                <SpecItem label="Credential fit" value={getCredentialCapacityVerdict(product)} />
+                            </div>
+                        </div>
+
+                        <ReportLeadCapture
+                            reportType="product-comparison-report"
+                            title={`${product.name} Shortlist Report`}
+                            description="Download a buyer-ready PDF with the model context, door-fit signals, protocol choice, and cost checkpoints for this lock."
+                            sourcePath={`/brands/${product.brand_slug}/${product.slug}`}
+                            context={{
+                                product: product.slug,
+                                brand: product.brand_name,
+                                protocol: product.protocol,
+                                matter: product.supports_matter,
+                                batteryMonths: product.battery_life_months || null,
+                                priceUsd: product.price_usd || null,
+                            }}
+                            bullets={[
+                                'Captures model-level protocol, battery, price, and door-fit context.',
+                                'Useful when comparing this lock against sibling models or brand alternatives.',
+                                'Gives product pages a conversion path beyond retailer clicks.',
+                            ]}
+                        />
+
                         {/* Connectivity Specs */}
                         <div className="content-card">
                             <h2 className="section-title">Connectivity</h2>
+                            <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-md)' }}>
+                                {getProtocolReliabilityVerdict(product)}
+                            </p>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                 <SpecItem label="Primary Protocol" value={product.protocol.toUpperCase()} />
                                 {product.secondary_protocol && <SpecItem label="Secondary" value={product.secondary_protocol.toUpperCase()} />}
@@ -161,12 +408,68 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                 </div>
                             </div>
                         )}
+
+                        {siblingProducts.length > 0 && (
+                            <div className="content-card">
+                                <h2 className="section-title">Compare With Other {product.brand_name} Models</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    {siblingProducts.map((sibling) => (
+                                        <Link
+                                            key={sibling.slug}
+                                            href={`/brands/${sibling.brand_slug}/${sibling.slug}`}
+                                            className="card"
+                                            style={{ textDecoration: 'none', display: 'block', margin: 0 }}
+                                        >
+                                            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xs)' }}>
+                                                Same-brand alternative
+                                            </div>
+                                            <h3 style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-sm)' }}>
+                                                {sibling.name}
+                                            </h3>
+                                            <div className="flex flex-wrap gap-2" style={{ marginBottom: 'var(--space-sm)' }}>
+                                                <span className="badge badge-default">{sibling.protocol.toUpperCase()}</span>
+                                                {sibling.battery_life_months && <span className="badge badge-default">{sibling.battery_life_months} mo</span>}
+                                                {sibling.price_usd && <span className="badge badge-default">{formatUsd(sibling.price_usd)}</span>}
+                                            </div>
+                                            <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
+                                                Rated {sibling.rating.toFixed(1)}/5 with {sibling.review_count} reviews.
+                                            </p>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="content-card">
+                            <h2 className="section-title">Related Buying Paths</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <Link href={getProtocolHref(product)} className="link-card">
+                                    <h3 className="link-card__title">{product.protocol.toUpperCase()} Protocol Guide</h3>
+                                    <p className="link-card__desc">Check hub, range, and ecosystem tradeoffs before buying.</p>
+                                </Link>
+                                <Link href={compareLink.href} className="link-card">
+                                    <h3 className="link-card__title">{compareLink.label}</h3>
+                                    <p className="link-card__desc">See how this brand compares with a major smart lock alternative.</p>
+                                </Link>
+                                {(bestPageLinks[0] ? (
+                                    <Link href={bestPageLinks[0].href} className="link-card">
+                                        <h3 className="link-card__title">{bestPageLinks[0].label}</h3>
+                                        <p className="link-card__desc">Find ranked alternatives with matching buyer intent.</p>
+                                    </Link>
+                                ) : (
+                                    <Link href="/best/smart-locks-2026" className="link-card">
+                                        <h3 className="link-card__title">Best Smart Locks 2026</h3>
+                                        <p className="link-card__desc">Compare this model against broader ranked picks.</p>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
                     </div>
 
                     {/* Sidebar */}
                     <div className="lg:col-span-1 space-y-6">
                         {/* Price Tier & Purchase */}
-                        <div className="content-card" style={{ textAlign: 'center' }}>
+                        <div className="content-card sticky-action-card" style={{ textAlign: 'center' }}>
                             <div style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>
                                 {getPriceTier(product.price_usd)}
                             </div>
@@ -184,6 +487,14 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                     Check Price <ExternalLink className="w-4 h-4" />
                                 </a>
                             )}
+                            <div className="grid grid-cols-1 gap-2" style={{ marginTop: 'var(--space-sm)' }}>
+                                <Link href="/calculators/compatibility" className="btn btn-secondary">
+                                    Check Door Fit
+                                </Link>
+                                <Link href={compareLink.href} className="btn btn-ghost">
+                                    Compare Alternatives
+                                </Link>
+                            </div>
                         </div>
 
                         {/* Ecosystems */}
@@ -208,7 +519,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                 </div>
                                 <div className="flex justify-between">
                                     <span style={{ opacity: 0.8 }}>Battery Life</span>
-                                    <span style={{ fontWeight: 600 }}>{product.battery_life_months} months</span>
+                                    <span style={{ fontWeight: 600 }}>{product.battery_life_months ? `${product.battery_life_months} months` : '—'}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span style={{ opacity: 0.8 }}>Security</span>
@@ -243,29 +554,22 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                     </div>
                 </div>
 
-                {/* Structured Data */}
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{
-                        __html: JSON.stringify({
-                            '@context': 'https://schema.org',
-                            '@type': 'Product',
-                            name: product.name,
-                            description: product.description,
-                            brand: { '@type': 'Brand', name: product.brand_name },
-                            ...(product.model_number && { model: product.model_number }),
-                            ...(product.price_usd && {
-                                offers: {
-                                    '@type': 'Offer',
-                                    priceCurrency: 'USD',
-                                    price: (product.price_usd / 100).toFixed(2),
-                                    availability: 'https://schema.org/InStock',
-                                },
-                            }),
+                <SeoPathways topic="product" title="Validate This Lock for Your Door" />
 
-                        }),
-                    }}
-                />
+                <div className="mobile-action-bar">
+                    <div className="mobile-action-bar__inner">
+                        {product.buy_url ? (
+                            <a href={product.buy_url} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                                Check Price
+                            </a>
+                        ) : (
+                            <Link href={compareLink.href} className="btn btn-primary">
+                                Compare
+                            </Link>
+                        )}
+                        <Link href="/calculators/compatibility" className="btn btn-secondary">Door Fit</Link>
+                    </div>
+                </div>
             </div>
         </div>
     )

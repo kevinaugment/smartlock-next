@@ -151,17 +151,110 @@ export async function generateMetadata({ params }: { params: Promise<{ protocol:
 
     const title = `${proto.name} Smart Locks: Compatible Products & Guide 2026 — SLockHub.com`
     const description = `Browse all ${proto.name}-compatible smart locks. ${proto.description.slice(0, 120)}...`
+    const canonical = `/protocols/${protocol}`
 
     return {
         title,
         description,
-        alternates: { canonical: `/protocols/${protocol}` },
-        openGraph: { title, description, siteName: 'SLockHub.com', type: 'website' },
+        alternates: { canonical },
+        openGraph: { title, description, url: canonical, siteName: 'SLockHub.com', type: 'website' },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+        },
     }
 }
 
 export function generateStaticParams() {
     return Object.keys(protocolData).map(protocol => ({ protocol }))
+}
+
+function normalizeProtocol(value: string | undefined): string {
+    return (value || '').toLowerCase().replace(/\s+/g, '-')
+}
+
+function matchesProtocol(product: ProductWithBrand, protocol: string): boolean {
+    const primary = normalizeProtocol(product.protocol)
+    const secondary = normalizeProtocol(product.secondary_protocol)
+    const normalizedProtocol = protocol.replace('z-wave', 'zwave')
+    return primary.includes(protocol) || primary.includes(normalizedProtocol) || secondary.includes(protocol) || secondary.includes(normalizedProtocol) || (protocol === 'matter' && product.supports_matter)
+}
+
+function getProtocolProducts(products: ProductWithBrand[], protocol: string): ProductWithBrand[] {
+    return products.filter(product => matchesProtocol(product, protocol))
+}
+
+function getBestProtocolProducts(products: ProductWithBrand[]): ProductWithBrand[] {
+    return [...products].sort((a, b) => {
+        if (b.rating !== a.rating) return b.rating - a.rating
+        if (b.review_count !== a.review_count) return b.review_count - a.review_count
+        return a.display_order - b.display_order
+    }).slice(0, 6)
+}
+
+function getAverageBattery(products: ProductWithBrand[]): string {
+    const months = products.map(product => product.battery_life_months).filter((value): value is number => value != null)
+    if (months.length === 0) return 'Battery data limited'
+    return `${Math.round(months.reduce((sum, value) => sum + value, 0) / months.length)} months avg`
+}
+
+function getAveragePrice(products: ProductWithBrand[]): string {
+    const prices = products.map(product => product.price_usd).filter((value): value is number => value != null)
+    if (prices.length === 0) return 'Retailer pricing varies'
+    const avg = prices.reduce((sum, value) => sum + value, 0) / prices.length
+    return `${formatPrice(avg)} avg`
+}
+
+function formatPrice(price: number): string {
+    const normalized = price >= 1000 ? price / 100 : price
+    return `$${Math.round(normalized)}`
+}
+
+function getMatterCoverage(products: ProductWithBrand[]): number {
+    return products.filter(product => product.supports_matter).length
+}
+
+function getFingerprintCoverage(products: ProductWithBrand[]): number {
+    return products.filter(product => product.has_fingerprint).length
+}
+
+function getAlternativeProtocols(protocol: string) {
+    const order = ['wifi', 'z-wave', 'zigbee', 'thread', 'matter', 'bluetooth']
+    return order.filter(item => item !== protocol).slice(0, 3).map(item => ({
+        slug: item,
+        name: protocolData[item].name,
+        range: protocolData[item].range,
+        batteryImpact: protocolData[item].batteryImpact,
+        hub: protocolData[item].hubRequired ? 'Hub needed' : 'No hub by default',
+    }))
+}
+
+function getBestPageHref(protocol: string): { href: string; label: string } {
+    const map: Record<string, { href: string; label: string }> = {
+        wifi: { href: '/best/wifi-smart-locks', label: 'Best Wi-Fi smart locks' },
+        'z-wave': { href: '/best/z-wave-smart-locks', label: 'Best Z-Wave smart locks' },
+        zigbee: { href: '/best/zigbee-smart-locks', label: 'Best Zigbee smart locks' },
+        thread: { href: '/best/thread-smart-locks', label: 'Best Thread smart locks' },
+        matter: { href: '/best/matter-smart-locks', label: 'Best Matter smart locks' },
+        bluetooth: { href: '/best/smart-locks-2026', label: 'Best smart locks 2026' },
+    }
+    return map[protocol] || { href: '/best/smart-locks-2026', label: 'Best smart locks 2026' }
+}
+
+function getPlanningLinks(protocol: string) {
+    const links = [
+        { href: '/calculators/protocol-wizard', label: 'Protocol Wizard', detail: 'Choose by hub, range, and battery tradeoffs.' },
+        { href: '/calculators/signal-strength', label: 'Signal Strength Calculator', detail: 'Estimate range and wall-penetration risk before installing.' },
+        { href: '/calculators/battery-life', label: 'Battery Life Calculator', detail: 'Model maintenance intervals by protocol and usage frequency.' },
+    ]
+    if (protocol === 'zigbee' || protocol === 'z-wave' || protocol === 'thread') {
+        links.push({ href: '/calculators/mesh-planner', label: 'Mesh Planner', detail: 'Plan repeater spacing and mesh reliability.' })
+    }
+    if (protocol === 'bluetooth') {
+        links[1] = { href: '/calculators/ble-range', label: 'BLE Range Calculator', detail: 'Validate phone-to-lock proximity before choosing Bluetooth.' }
+    }
+    return links.slice(0, 4)
 }
 
 // ============================================
@@ -177,19 +270,60 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
     // 从数据库获取该协议的产品
     let products: ProductWithBrand[] = []
     try {
-        const allProducts = await ProductModel.getAll(200, 0)
-        products = allProducts.filter(p =>
-            p.protocol?.toLowerCase() === protocol.replace('-', '') ||
-            p.protocol?.toLowerCase() === protocol ||
-            p.secondary_protocol?.toLowerCase() === protocol.replace('-', '') ||
-            p.secondary_protocol?.toLowerCase() === protocol
-        )
+        const allProducts = await ProductModel.getAllForComparison()
+        products = getProtocolProducts(allProducts, protocol)
     } catch {
         // 数据库不可用时优雅降级
     }
 
+    const topProducts = getBestProtocolProducts(products)
+    const bestPageLink = getBestPageHref(protocol)
+    const alternativeProtocols = getAlternativeProtocols(protocol)
+    const planningLinks = getPlanningLinks(protocol)
+    const pageUrl = `https://www.slockhub.com/protocols/${protocol}`
+
     return (
         <div className="page-wrapper-alt">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify([
+                        {
+                            '@context': 'https://schema.org',
+                            '@type': 'WebPage',
+                            name: `${proto.name} Smart Locks`,
+                            description: proto.description,
+                            url: pageUrl,
+                            isPartOf: {
+                                '@type': 'WebSite',
+                                name: 'SLockHub.com',
+                                url: 'https://www.slockhub.com',
+                            },
+                        },
+                        {
+                            '@context': 'https://schema.org',
+                            '@type': 'BreadcrumbList',
+                            itemListElement: [
+                                { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.slockhub.com' },
+                                { '@type': 'ListItem', position: 2, name: 'Protocols', item: 'https://www.slockhub.com/protocols' },
+                                { '@type': 'ListItem', position: 3, name: proto.name, item: pageUrl },
+                            ],
+                        },
+                        ...(topProducts.length > 0 ? [{
+                            '@context': 'https://schema.org',
+                            '@type': 'ItemList',
+                            name: `${proto.name} smart locks`,
+                            numberOfItems: topProducts.length,
+                            itemListElement: topProducts.map((product, index) => ({
+                                '@type': 'ListItem',
+                                position: index + 1,
+                                name: `${product.brand_name} ${product.name}`,
+                                url: `https://www.slockhub.com/brands/${product.brand_slug}/${product.slug}`,
+                            })),
+                        }] : []),
+                    ]),
+                }}
+            />
             <div className="container-main section">
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-2" style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xl)' }}>
@@ -216,10 +350,20 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                     </p>
                 </div>
 
+                <section className="content-card" style={{ marginBottom: 'var(--space-2xl)' }}>
+                    <h2 className="section-title">{proto.name} Scorecard</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <ScorecardStat label="Catalog models" value={`${products.length}`} detail="Active products matching this protocol" />
+                        <ScorecardStat label="Battery planning" value={getAverageBattery(products)} detail={proto.batteryImpact} />
+                        <ScorecardStat label="Typical price" value={getAveragePrice(products)} detail="Average where price is listed" />
+                        <ScorecardStat label="Matter / biometrics" value={`${getMatterCoverage(products)} / ${getFingerprintCoverage(products)}`} detail="Matter-capable models / fingerprint models" />
+                    </div>
+                </section>
+
                 {/* Technical Specs */}
                 <div style={{ marginBottom: 'var(--space-3xl)' }}>
                     <h2 className="section-title">Technical Specifications</h2>
-                    <div className="card overflow-hidden p-0">
+                    <div className="card overflow-hidden p-0 comparison-table-desktop">
                         <table className="data-table">
                             <tbody>
                                 {[
@@ -237,6 +381,109 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                                 ))}
                             </tbody>
                         </table>
+                    </div>
+                    <div className="comparison-card-grid">
+                        {[
+                            { label: 'Frequency', value: proto.frequency },
+                            { label: 'Indoor Range', value: proto.range },
+                            { label: 'Max Devices', value: proto.maxNodes },
+                            { label: 'Security', value: proto.security },
+                            { label: 'Battery Impact', value: proto.batteryImpact },
+                            { label: 'Hub Required', value: proto.hubRequired ? 'Yes — hub or bridge needed' : 'No — connects directly' },
+                        ].map((spec) => (
+                            <div key={spec.label} className="comparison-card">
+                                <div className="comparison-card__title">{spec.label}</div>
+                                <div className="comparison-card__value" style={{ textAlign: 'left' }}>{spec.value}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <section style={{ marginBottom: 'var(--space-3xl)' }}>
+                    <h2 className="section-title">{proto.name} vs Alternatives</h2>
+                    <div className="card overflow-hidden p-0 comparison-table-desktop">
+                        <table className="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Protocol</th>
+                                    <th>Range</th>
+                                    <th>Battery profile</th>
+                                    <th>Hub requirement</th>
+                                    <th>Compare</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className="font-medium text-color-primary">{proto.name}</td>
+                                    <td>{proto.range}</td>
+                                    <td>{proto.batteryImpact}</td>
+                                    <td>{proto.hubRequired ? 'Hub or bridge' : 'Direct or controller-led'}</td>
+                                    <td>
+                                        <Link href={bestPageLink.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
+                                            {bestPageLink.label}
+                                        </Link>
+                                    </td>
+                                </tr>
+                                {alternativeProtocols.map(item => (
+                                    <tr key={item.slug}>
+                                        <td className="font-medium text-color-primary">{item.name}</td>
+                                        <td>{item.range}</td>
+                                        <td>{item.batteryImpact}</td>
+                                        <td>{item.hub}</td>
+                                        <td>
+                                            <Link href={`/protocols/${item.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
+                                                View guide
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="comparison-card-grid">
+                        {[{
+                            protocol: proto.name,
+                            range: proto.range,
+                            batteryImpact: proto.batteryImpact,
+                            hub: proto.hubRequired ? 'Hub or bridge' : 'Direct or controller-led',
+                            href: bestPageLink.href,
+                            label: bestPageLink.label,
+                        }, ...alternativeProtocols.map((item) => ({
+                            protocol: item.name,
+                            range: item.range,
+                            batteryImpact: item.batteryImpact,
+                            hub: item.hub,
+                            href: `/protocols/${item.slug}`,
+                            label: 'View guide',
+                        }))].map((item) => (
+                            <div key={item.protocol} className="comparison-card">
+                                <div className="comparison-card__title">{item.protocol}</div>
+                                <div className="comparison-card__rows">
+                                    <div className="comparison-card__row">
+                                        <span className="comparison-card__label">Range</span>
+                                        <span className="comparison-card__value">{item.range}</span>
+                                    </div>
+                                    <div className="comparison-card__row">
+                                        <span className="comparison-card__label">Battery</span>
+                                        <span className="comparison-card__value">{item.batteryImpact}</span>
+                                    </div>
+                                    <div className="comparison-card__row">
+                                        <span className="comparison-card__label">Hub</span>
+                                        <span className="comparison-card__value">{item.hub}</span>
+                                    </div>
+                                </div>
+                                <Link href={item.href} style={{ color: 'var(--color-accent)', fontWeight: 600, marginTop: 'var(--space-sm)' }}>
+                                    {item.label}
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                <div className="mobile-action-bar">
+                    <div className="mobile-action-bar__inner">
+                        <Link href="/calculators/protocol-wizard" className="btn btn-primary">Protocol Wizard</Link>
+                        <Link href="/calculators/rf-coverage" className="btn btn-secondary">RF Coverage</Link>
                     </div>
                 </div>
 
@@ -282,6 +529,38 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                         ))}
                     </div>
                 </div>
+
+                {topProducts.length > 0 && (
+                    <section style={{ marginBottom: 'var(--space-3xl)' }}>
+                        <div className="flex items-center justify-between gap-4" style={{ marginBottom: 'var(--space-lg)' }}>
+                            <h2 className="section-title" style={{ marginBottom: 0 }}>Best Locks Using {proto.name}</h2>
+                            <Link href={bestPageLink.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
+                                {bestPageLink.label}
+                            </Link>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {topProducts.map((product) => (
+                                <Link
+                                    key={product.slug}
+                                    href={`/brands/${product.brand_slug}/${product.slug}`}
+                                    className="card"
+                                    style={{ textDecoration: 'none', padding: 'var(--space-md)' }}
+                                >
+                                    <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '4px' }}>
+                                        {product.brand_name}
+                                    </div>
+                                    <div style={{ fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-sm)' }}>
+                                        {product.name}
+                                    </div>
+                                    <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: 'var(--space-sm)' }}>
+                                        {product.protocol.toUpperCase()}{product.supports_matter ? ' · Matter' : ''}{product.battery_life_months ? ` · ${product.battery_life_months}mo battery` : ''}{product.ansi_grade ? ` · Grade ${product.ansi_grade}` : ''}
+                                    </p>
+                                    <StarRating productId={product.id} size="sm" />
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+                )}
 
                 {/* Compatible Products */}
                 <div style={{ marginBottom: 'var(--space-3xl)' }}>
@@ -351,6 +630,18 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                     )}
                 </div>
 
+                <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+                    <h2 className="section-title">Planning Tools for {proto.name}</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {planningLinks.map(link => (
+                            <Link key={link.href} href={link.href} className="link-card">
+                                <h3 className="link-card__title">{link.label}</h3>
+                                <p className="link-card__desc">{link.detail}</p>
+                            </Link>
+                        ))}
+                    </div>
+                </section>
+
                 {/* FAQ */}
                 <div className="card" style={{ marginBottom: 'var(--space-3xl)' }}>
                     <h2 className="section-title">Frequently Asked Questions</h2>
@@ -384,25 +675,17 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                     </div>
                 </div>
 
-                {/* FAQ Schema */}
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{
-                        __html: JSON.stringify({
-                            '@context': 'https://schema.org',
-                            '@type': 'FAQPage',
-                            mainEntity: proto.faqs.map(faq => ({
-                                '@type': 'Question',
-                                name: faq.question,
-                                acceptedAnswer: {
-                                    '@type': 'Answer',
-                                    text: faq.answer,
-                                },
-                            })),
-                        }),
-                    }}
-                />
             </div>
+        </div>
+    )
+}
+
+function ScorecardStat({ label, value, detail }: { label: string; value: string; detail: string }) {
+    return (
+        <div className="card" style={{ background: 'var(--color-bg-alt)' }}>
+            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xs)' }}>{label}</div>
+            <div style={{ fontSize: '1.35rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>{value}</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>{detail}</div>
         </div>
     )
 }

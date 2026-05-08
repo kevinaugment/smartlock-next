@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import BatteryCalculator from './BatteryCalculator'
 import {
@@ -7,16 +8,24 @@ import {
 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { SeoPathways } from '@/components/seo/SeoPathways'
+import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
 
 // SEO Metadata
 export const metadata: Metadata = {
   title: 'Smart Lock Battery Life Calculator | Accurate mAh-Based Estimates (2026)',
   description: 'Calculate exact smart lock battery life for Wi-Fi, Zigbee, Z-Wave & Thread protocols. Real power consumption data, temperature compensation, 4-battery AA configuration.',
   keywords: 'smart lock battery life, battery calculator, zigbee battery life, wifi lock battery, z-wave battery life, smart lock power consumption',
+  alternates: { canonical: '/calculators/battery-life' },
   openGraph: {
     title: 'Smart Lock Battery Life Calculator - Protocol-Specific Estimates',
     description: 'Accurate battery life calculator using real mAh ratings and power consumption data',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Smart Lock Battery Life Calculator',
+    description: 'Estimate battery replacement intervals by protocol, usage pattern, temperature, and battery chemistry.',
   },
 }
 
@@ -67,28 +76,17 @@ export default function BatteryLifePage() {
     ]
   }
 
-  const howToSchema = {
+  const webPageSchema = {
     '@context': 'https://schema.org',
-    '@type': 'HowTo',
-    name: 'How to Optimize Smart Lock Battery Life',
-    description: 'Step-by-step guide to maximize your smart lock battery performance',
-    step: [
-      {
-        '@type': 'HowToStep',
-        name: 'Choose Efficient Protocol',
-        text: 'Use Zigbee or Z-Wave instead of Wi-Fi for 4× longer battery life'
-      },
-      {
-        '@type': 'HowToStep',
-        name: 'Use Lithium Batteries',
-        text: 'Lithium AA batteries provide 30% longer life than alkaline, especially in cold weather'
-      },
-      {
-        '@type': 'HowToStep',
-        name: 'Disable Unnecessary Features',
-        text: 'Turn off keypad backlight and reduce auto-lock frequency to conserve power'
-      }
-    ]
+    '@type': 'WebPage',
+    name: 'Smart Lock Battery Life Calculator',
+    url: 'https://www.slockhub.com/calculators/battery-life',
+    description: 'Calculate smart lock battery life by protocol, usage, temperature, and battery chemistry.',
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'SLockHub.com',
+      url: 'https://www.slockhub.com',
+    },
   }
 
   return (
@@ -104,9 +102,8 @@ export default function BatteryLifePage() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
       />
-
       <div className="page-bg">
         <div className="container-main section">
           {/* Breadcrumb */}
@@ -147,15 +144,56 @@ export default function BatteryLifePage() {
 
           <ToolRating toolSlug="battery-life" />
 
+          <SeoPathways topic="product" title="Validate Battery Fit Before Buying" />
+
+          <div className="max-w-7xl mx-auto">
+            <CalculatorSeoBlock
+              title="How battery estimates are calculated"
+              answers={[
+                'How long batteries should last for your protocol, battery chemistry, usage rate, and temperature.',
+                'Whether Wi-Fi convenience is worth the extra replacement cost for your door count.',
+                'When lithium batteries, mesh protocols, or hub-based locks become cheaper than frequent alkaline replacements.',
+              ]}
+              formula={{
+                label: 'Battery model',
+                equation: 'Estimated life = usable battery capacity / ((idle current x idle hours) + (active current x operations x active seconds))',
+                notes: 'The model separates idle draw from lock/unlock events because Wi-Fi locks often spend far more energy staying connected than moving the bolt.',
+              }}
+              assumptions={[
+                'Default residential use is about 10 lock or unlock operations per day.',
+                'Cold weather reduces alkaline capacity sharply; lithium cells hold voltage better outdoors.',
+                'Poor door alignment and weak signal can increase current draw through motor strain and radio retries.',
+              ]}
+              example={{
+                title: 'Family front door with Wi-Fi lock',
+                inputs: '4 AA alkaline cells, Wi-Fi, 20 operations/day, mild climate',
+                result: 'Battery replacement may land near the 2-4 month range instead of the 10-12 month range common for Zigbee or Z-Wave.',
+                decision: 'Use this result in TCO comparisons before choosing hub-free Wi-Fi for multiple doors.',
+              }}
+              sources={[
+                'Battery manufacturer capacity and temperature curves.',
+                'Silicon Labs, Nordic, Espressif, Bluetooth, and Wi-Fi chipset power data.',
+                'Protocol behavior differences between always-connected Wi-Fi and low-power mesh radios.',
+              ]}
+              links={[
+                { href: '/best/smart-locks-with-longest-battery-life', title: 'Best Battery-Life Locks', description: 'Compare models that prioritize long replacement intervals.' },
+                { href: '/calculators/lock-tco', title: 'Add Battery Cost to TCO', description: 'Turn replacement frequency into 5-year ownership cost.' },
+                { href: '/calculators/signal-strength', title: 'Check Signal Retries', description: 'Weak signal can quietly shorten real-world battery life.' },
+              ]}
+            />
+          </div>
+
           {/* Be-Tech Brand Recommendation (MANDATORY) */}
           <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-xl)' }}>
             <div className="content-card">
               <div className="flex items-center gap-6">
                 <div className="flex-shrink-0">
                   <div className="card" style={{ width: '5rem', height: '5rem', padding: 'var(--space-sm)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <img
+                    <Image
                       src="/images/brands/be-tech-logo.png"
                       alt="Be-Tech Logo"
+                      width={64}
+                      height={64}
                       className="w-full h-full object-contain"
                     />
                   </div>

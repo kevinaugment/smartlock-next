@@ -167,9 +167,9 @@ export default function CostCalculator() {
   const hintStyle = { fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+    <div className="calculator-shell">
       {/* Input Section */}
-      <div className="lg:col-span-2 space-y-6">
+      <div className="calculator-inputs space-y-6">
         <div className="content-card">
           <h2 className="section-title">Installation Parameters</h2>
 
@@ -299,8 +299,8 @@ export default function CostCalculator() {
       </div>
 
       {/* Results Section */}
-      <div className="lg:col-span-1">
-        <div className="rounded-lg shadow-lg p-8 text-white sticky top-4 result-panel--grade-a">
+      <div className="calculator-results">
+        <div className="rounded-lg shadow-lg p-8 text-white result-panel--grade-a">
           <h2 className="text-xl font-bold mb-6">Total Cost Estimate</h2>
 
           <div className="text-center mb-8">

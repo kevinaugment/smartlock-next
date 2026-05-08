@@ -9,6 +9,17 @@ export const metadata: Metadata = {
   title: 'Smart Lock Resources — Professional Guides, Tables & Diagrams | SLockHub',
   description: 'Professional smart lock resources: glossary of 45+ terms, protocol comparison tables, SVG installation diagrams, and interactive buying guide flowcharts.',
   alternates: { canonical: '/resources' },
+  openGraph: {
+    title: 'Smart Lock Resources',
+    description: 'Glossaries, tables, diagrams, buying guides, and planning tools for smart lock decisions.',
+    type: 'website',
+    url: 'https://www.slockhub.com/resources',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Smart Lock Resources',
+    description: 'Use glossaries, reference tables, diagrams, and buying guides to support product and protocol decisions.',
+  },
 }
 
 const professionalResources = [
@@ -110,9 +121,37 @@ const tools = [
 ]
 
 export default function Resources() {
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Smart Lock Resources',
+    description: 'Professional reference resources, diagrams, tables, and buying guides for smart lock research.',
+    url: 'https://www.slockhub.com/resources',
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: professionalResources.length + tools.length,
+      itemListElement: [
+        ...professionalResources.map((item, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: item.title,
+          url: `https://www.slockhub.com${item.href}`,
+        })),
+        ...tools.map((tool, index) => ({
+          '@type': 'ListItem',
+          position: professionalResources.length + index + 1,
+          name: tool.name,
+          url: tool.url.startsWith('/') ? `https://www.slockhub.com${tool.url}` : tool.url,
+        })),
+      ],
+    },
+  }
+
   return (
-    <div className="page-bg">
-      <div className="container-main section">
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <div className="page-bg">
+        <div className="container-main section">
         <div className="max-w-6xl mx-auto">
           <div className="page-header">
             <h1 className="page-header__title">Resources</h1>
@@ -120,6 +159,27 @@ export default function Resources() {
               Professional guides, reference tables, SVG diagrams, and decision tools for smart lock experts
             </p>
           </div>
+
+          <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+            <h2 className="section-title">Use Resources by Decision Stage</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="card">
+                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>Learn the terminology</h3>
+                <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)' }}>Start with definitions, protocol basics, and physical door anatomy before comparing products.</p>
+                <Link href="/resources/glossary" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Open glossary</Link>
+              </div>
+              <div className="card">
+                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>Validate measurements and specs</h3>
+                <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)' }}>Use diagrams and reference tables to confirm door prep, security grades, protocol tradeoffs, and battery expectations.</p>
+                <Link href="/resources/reference-tables" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Open reference tables</Link>
+              </div>
+              <div className="card">
+                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>Move into calculators</h3>
+                <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)' }}>After research, route directly into signal, compatibility, battery, and TCO tools.</p>
+                <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Open calculators</Link>
+              </div>
+            </div>
+          </section>
 
           {/* Professional Resources */}
           <div className="mb-24">
@@ -225,6 +285,7 @@ export default function Resources() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   )
 }

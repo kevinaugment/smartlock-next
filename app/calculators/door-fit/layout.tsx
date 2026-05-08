@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Door Measurement Fit Checker - SLockHub.com',
     description: 'Check if your door dimensions are compatible with smart lock installation. Verify backset, thickness, bore hole size, and edge prep requirements.',
-    alternates: { canonical: '/calculators/door-fit' },
-    openGraph: {
-        title: 'Door Measurement Fit Checker - SLockHub.com',
-        description: 'Check if your door dimensions are compatible with smart lock installation. Verify backset, thickness, bore hole size, and edge prep requirements.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/door-fit',
+})
 
 export default function DoorFitLayout({ children }: { children: React.ReactNode }) {
     return (

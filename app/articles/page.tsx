@@ -5,18 +5,46 @@ import { CATEGORIES } from '@/lib/articles/types';
 import { BookOpen, Clock, Calendar } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Knowledge Base - SLockHub.com',
-  description: 'Comprehensive smart lock guides, tutorials, and documentation covering protocols, security, installation, troubleshooting, and real-world applications.',
+  title: 'Smart Lock Knowledge Base | Guides, Protocols, Security & Installation',
+  description: 'Browse smart lock guides by protocol, security, installation, compatibility, troubleshooting, and use case. Start with high-demand decision guides and related calculators.',
   alternates: { canonical: '/articles' },
   openGraph: {
-    title: 'Knowledge Base - SLockHub.com',
-    description: 'Comprehensive smart lock guides, tutorials, and documentation.',
+    title: 'Smart Lock Knowledge Base',
+    description: 'Guides for smart lock protocols, security, compatibility, installation, and product decisions.',
     siteName: 'SLockHub.com',
     type: 'website',
+    url: 'https://www.slockhub.com/articles',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Smart Lock Knowledge Base',
+    description: 'Start with the highest-value smart lock guides, then use calculators and comparison pages to validate decisions.',
   },
 }
 
-export const runtime = 'edge';
+const startHereLinks = [
+  {
+    href: '/articles/guides/door-compatibility-guide',
+    title: 'Door Compatibility Guide',
+    description: 'Highest-impression article opportunity. Validate door thickness, backset, bore size, and retrofit risk.',
+  },
+  {
+    href: '/articles/protocols/connect-lock-to-homekit',
+    title: 'Connect a Lock to HomeKit',
+    description: 'Apple ecosystem setup path with links into Matter, Thread, and HomeKit product pages.',
+  },
+  {
+    href: '/articles/protocols/zigbee-vs-zwave-comparison',
+    title: 'Zigbee vs Z-Wave',
+    description: 'Protocol comparison that supports signal, battery, and mesh planning decisions.',
+  },
+]
+
+const articlePathways = [
+  { href: '/calculators/compatibility', title: 'Check Door Fit', description: 'Use after compatibility guides to validate measurements.' },
+  { href: '/calculators/protocol-wizard', title: 'Choose Protocol', description: 'Turn protocol research into a recommendation.' },
+  { href: '/best/matter-smart-locks', title: 'Compare Products', description: 'Move from research to a model shortlist.' },
+]
 
 export default function ArticlesPage() {
   const articles = getAllArticles();
@@ -56,6 +84,33 @@ export default function ArticlesPage() {
               Comprehensive guides, tutorials, and documentation for smart lock systems
             </p>
           </div>
+
+          <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+            <h2 className="section-title">Start With High-Intent Guides</h2>
+            <p style={{ color: 'var(--color-text-secondary)', maxWidth: '52rem', lineHeight: 1.7, marginBottom: 'var(--space-xl)' }}>
+              These articles connect the biggest organic opportunities to calculators, best pages, protocol pages, and product decisions.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {startHereLinks.map((item) => (
+                <Link key={item.href} href={item.href} className="link-card">
+                  <h3 className="link-card__title">{item.title}</h3>
+                  <p className="link-card__desc">{item.description}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+            <h2 className="section-title">Research to Decision Path</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {articlePathways.map((item) => (
+                <Link key={item.href} href={item.href} className="link-card">
+                  <h3 className="link-card__title">{item.title}</h3>
+                  <p className="link-card__desc">{item.description}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
 
           {/* Categories */}
           <div className="mb-16">

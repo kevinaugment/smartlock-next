@@ -95,12 +95,18 @@ export default function Header() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setMobileMenuOpen(false)
+        setMobileAccordion(null)
         setActiveDesktopMenu(null)
       }
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [])
+
+  useEffect(() => {
+    document.body.classList.toggle('mobile-nav-open', mobileMenuOpen)
+    return () => document.body.classList.remove('mobile-nav-open')
+  }, [mobileMenuOpen])
 
   const toggleAccordion = useCallback((key: string) => {
     setMobileAccordion(prev => (prev === key ? null : key))
@@ -223,9 +229,11 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2"
+            className="md:hidden mobile-menu-toggle"
             style={{ color: 'var(--color-text-secondary)' }}
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
           >
             {mobileMenuOpen ? (
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -241,7 +249,7 @@ export default function Header() {
 
         {/* ============ Mobile Navigation ============ */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-2" style={{ borderTop: '1px solid var(--color-border)' }}>
+          <div id="mobile-navigation" className="md:hidden mobile-nav-panel" style={{ borderTop: '1px solid var(--color-border)' }}>
             <nav className="flex flex-col" aria-label="Mobile navigation">
 
               {/* Knowledge Base accordion */}

@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Installation Time Estimator - SLockHub.com',
     description: 'Estimate smart lock installation time and labor costs. Factor in door type, wiring requirements, technician count, and labor rates for accurate project planning.',
-    alternates: { canonical: '/calculators/installation-time' },
-    openGraph: {
-        title: 'Installation Time Estimator - SLockHub.com',
-        description: 'Estimate smart lock installation time and labor costs. Factor in door type, wiring requirements, technician count, and labor rates for accurate project planning.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/installation-time',
+})
 
 export default function InstallationTimeLayout({ children }: { children: React.ReactNode }) {
     return (

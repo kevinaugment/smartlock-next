@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Access Control Capacity Calculator - SLockHub.com',
     description: 'Calculate access control system capacity for buildings and campuses. Plan user counts, credential types, and throughput for smart lock deployments.',
-    alternates: { canonical: '/calculators/access-capacity' },
-    openGraph: {
-        title: 'Access Control Capacity Calculator - SLockHub.com',
-        description: 'Calculate access control system capacity for buildings and campuses.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/access-capacity',
+})
 
 export default function AccessCapacityLayout({ children }: { children: React.ReactNode }) {
     return (

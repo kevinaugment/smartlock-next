@@ -4,9 +4,20 @@ import { AlertTriangle, Check, X, ExternalLink } from 'lucide-react'
 import { getBrands } from '@/lib/services/brand-service'
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Brands - SLockHub.com',
-  description: 'Overview of major smart lock brands and manufacturers with protocol support, product lines, and best use cases.',
+  title: 'Smart Lock Brands | Compare Protocols, Products & Best Use Cases',
+  description: 'Browse smart lock brands by protocol support, product depth, price tier, and use case. Compare Yale, August, Schlage, Samsung, Nuki, Tedee, Weiser, and more.',
   alternates: { canonical: '/brands' },
+  openGraph: {
+    title: 'Smart Lock Brands',
+    description: 'Compare major smart lock brands by protocol support, product lines, target market, and buying path.',
+    type: 'website',
+    url: 'https://www.slockhub.com/brands',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Smart Lock Brands',
+    description: 'Browse smart lock brands, product lines, protocols, and comparison paths.',
+  },
 }
 
 const features = [
@@ -18,6 +29,33 @@ const features = [
   { name: 'Guest Codes', description: 'Temporary access codes' },
   { name: 'Activity Log', description: 'Track who accessed and when' },
   { name: 'Voice Control', description: 'Alexa/Google Assistant support' },
+]
+
+const brandPathways = [
+  {
+    title: 'I already know the brand',
+    links: [
+      { href: '/brands/yale', label: 'Yale products' },
+      { href: '/brands/schlage', label: 'Schlage products' },
+      { href: '/brands/samsung', label: 'Samsung products' },
+    ],
+  },
+  {
+    title: 'I want ecosystem fit',
+    links: [
+      { href: '/best/matter-smart-locks', label: 'Matter locks' },
+      { href: '/best/homekit-smart-locks', label: 'HomeKit locks' },
+      { href: '/protocols', label: 'Protocol guides' },
+    ],
+  },
+  {
+    title: 'I need a purchase check',
+    links: [
+      { href: '/calculators/compatibility', label: 'Door compatibility' },
+      { href: '/calculators/lock-tco', label: 'Ownership cost' },
+      { href: '/compare', label: 'Brand comparisons' },
+    ],
+  },
 ]
 
 function getProtocols(brand: { supports_wifi: boolean; supports_zigbee: boolean; supports_zwave: boolean; supports_thread: boolean; supports_matter: boolean; supports_bluetooth: boolean }) {
@@ -40,15 +78,92 @@ export default async function Brands() {
     // 数据库不可用时使用空数组，页面仍然可以渲染
   }
 
+  const topBrands = [...brands]
+    .sort((a, b) => b.product_count - a.product_count)
+    .slice(0, 6)
+
+  const protocolStats = [
+    { label: 'Wi-Fi', count: brands.filter((brand) => brand.supports_wifi).length, href: '/protocols/wifi' },
+    { label: 'Matter', count: brands.filter((brand) => brand.supports_matter).length, href: '/protocols/matter' },
+    { label: 'Z-Wave', count: brands.filter((brand) => brand.supports_zwave).length, href: '/protocols/z-wave' },
+    { label: 'Zigbee', count: brands.filter((brand) => brand.supports_zigbee).length, href: '/protocols/zigbee' },
+  ]
+
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Smart Lock Brands',
+    description: 'Browse smart lock brands by protocol support, product depth, price tier, and use case.',
+    url: 'https://www.slockhub.com/brands',
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: brands.length,
+      itemListElement: brands.slice(0, 20).map((brand, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: brand.name,
+        url: `https://www.slockhub.com/brands/${brand.slug}`,
+      })),
+    },
+  }
+
   return (
-    <div className="page-bg">
-      <div className="container-main section">
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <div className="page-bg">
+        <div className="container-main section">
         <div className="page-header">
           <h1 className="page-header__title">Smart Lock Brands</h1>
           <p className="page-header__subtitle">
             Overview of major smart lock manufacturers, their protocols, and best use cases
           </p>
         </div>
+
+        <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+          <h2 className="section-title">Start With Brand Depth and Protocol Fit</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {brandPathways.map((path) => (
+              <div key={path.title} className="card">
+                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>{path.title}</h3>
+                <ol className="space-y-3">
+                  {path.links.map((link, index) => (
+                    <li key={link.href} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+                      <span className="badge badge-accent">{index + 1}</span>
+                      <Link href={link.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }}>{link.label}</Link>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {topBrands.length > 0 && (
+          <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+            <h2 className="section-title">Largest Brand Catalogs</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {topBrands.map((brand) => (
+                <Link key={brand.slug} href={`/brands/${brand.slug}`} className="link-card">
+                  <h3 className="link-card__title">{brand.name}</h3>
+                  <p className="link-card__desc">{brand.product_count} products indexed. Protocols: {getProtocols(brand).join(', ') || 'Not specified'}.</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+          <h2 className="section-title">Protocol Coverage Across Brands</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {protocolStats.map((stat) => (
+              <Link key={stat.label} href={stat.href} className="link-card">
+                <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>{stat.count}</div>
+                <h3 className="link-card__title">{stat.label} brands</h3>
+                <p className="link-card__desc">Review protocol tradeoffs and compatible locks.</p>
+              </Link>
+            ))}
+          </div>
+        </section>
 
         {/* Disclaimer */}
         <div className="callout callout-warning" style={{ marginBottom: 'var(--space-3xl)' }}>
@@ -178,6 +293,7 @@ export default async function Brands() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   )
 }

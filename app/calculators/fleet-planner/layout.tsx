@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Multi-Property Fleet Planner - SLockHub.com',
     description: 'Analyze protocol fragmentation across your property portfolio. Calculate unification costs, maintenance savings, and payback period for fleet standardization.',
-    alternates: { canonical: '/calculators/fleet-planner' },
-    openGraph: {
-        title: 'Multi-Property Fleet Planner - SLockHub.com',
-        description: 'Analyze protocol fragmentation across your property portfolio. Calculate unification costs, maintenance savings, and payback period for fleet standardization.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/fleet-planner',
+})
 
 export default function FleetPlannerLayout({ children }: { children: React.ReactNode }) {
     return (

@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'RF Coverage Estimator - SLockHub.com',
     description: 'Plan mesh network topology and signal coverage for smart lock deployments. Calculate required hubs, effective range, and signal quality based on building specs and protocol.',
-    alternates: { canonical: '/calculators/rf-coverage' },
-    openGraph: {
-        title: 'RF Coverage Estimator - SLockHub.com',
-        description: 'Plan mesh network topology and signal coverage for smart lock deployments. Calculate required hubs, effective range, and signal quality based on building specs and protocol.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/rf-coverage',
+})
 
 export default function RFCoverageLayout({ children }: { children: React.ReactNode }) {
     return (

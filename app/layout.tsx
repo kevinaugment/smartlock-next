@@ -73,8 +73,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${instrumentSans.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}>
       <body className="flex flex-col min-h-screen">
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
         <Header />
-        <main className="flex-grow">
+        <main id="main-content" className="flex-grow" tabIndex={-1}>
           {children}
         </main>
         <Footer />
@@ -84,4 +87,3 @@ export default function RootLayout({
     </html>
   )
 }
-

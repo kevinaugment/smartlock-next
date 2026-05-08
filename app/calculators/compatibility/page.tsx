@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import CompatibilityChecker from './CompatibilityChecker'
 import {
@@ -7,11 +8,25 @@ import {
 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { SeoPathways } from '@/components/seo/SeoPathways'
+import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
+import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Door Compatibility Checker | ANSI A156.2 Standards',
   description: 'Verify smart lock compatibility using ANSI/BHMA A156.2 standards. Check door thickness (35-57mm), backset (60/70mm), material, and bore holes. Instant compatibility score.',
   keywords: 'smart lock compatibility, door thickness, backset measurement, ANSI A156.2, bore hole size, door compatibility checker',
+  alternates: { canonical: '/calculators/compatibility' },
+  openGraph: {
+    title: 'Smart Lock Door Compatibility Checker',
+    description: 'Check door thickness, backset, bore size, material, and installation risk before buying a smart lock.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Smart Lock Door Compatibility Checker',
+    description: 'Verify physical smart lock fit before purchase using ANSI/BHMA door-prep standards.',
+  },
 }
 
 export default function CompatibilityPage() {
@@ -35,10 +50,24 @@ export default function CompatibilityPage() {
     description: 'Check smart lock door compatibility using ANSI A156.2 standards for thickness, backset, and bore holes'
   }
 
+  const webPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Smart Lock Door Compatibility Checker',
+    url: 'https://www.slockhub.com/calculators/compatibility',
+    description: 'Verify smart lock compatibility using ANSI/BHMA A156.2 standards for door thickness, backset, bore size, material, and installation risk.',
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'SLockHub.com',
+      url: 'https://www.slockhub.com',
+    },
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
 
       <div className="page-bg">
         <div className="container-main section">
@@ -71,13 +100,71 @@ export default function CompatibilityPage() {
 
           <ToolRating toolSlug="compatibility" />
 
+          <SeoPathways topic="compatibility" title="Validate the Full Door Fit" />
+
+          <div className="max-w-7xl mx-auto">
+            <CalculatorSeoBlock
+              title="How to interpret door compatibility"
+              answers={[
+                'Whether your existing door prep fits common smart deadbolt dimensions.',
+                'Which measurement is most likely to force drilling, adapter kits, or a different lock type.',
+                'Whether material, fire rating, or glass construction makes a retrofit lock safer than a full replacement.',
+              ]}
+              formula={{
+                label: 'Fit score',
+                equation: 'Compatibility score = thickness fit + backset fit + bore fit + latch bore fit + material risk adjustment',
+                notes: 'The score is intentionally conservative. One failed physical dimension can block installation even when the other measurements look standard.',
+              }}
+              assumptions={[
+                'Most bored residential locks are designed around 35-57mm door thickness.',
+                'Common U.S. backsets are 60mm and 70mm; uncommon backsets usually require re-drilling or an adjustable latch.',
+                'Glass, narrow stile, and fire-rated doors need manufacturer-specific hardware confirmation.',
+              ]}
+              example={{
+                title: 'Older side door with small bore',
+                inputs: '44mm wood door, 60mm backset, 38mm bore, standard latch bore',
+                result: 'Thickness and backset pass, but the bore likely needs drilling to 54mm.',
+                decision: 'Budget for modification or choose a retrofit lock that mounts over the existing interior thumbturn.',
+              }}
+              sources={[
+                'ANSI/BHMA A156.2 bored lock dimensional standards.',
+                'Manufacturer installation manuals for Schlage, Yale, August, Kwikset, and Be-Tech models.',
+                'UL and fire-door guidance where hardware modification may affect compliance.',
+              ]}
+              links={[
+                { href: '/calculators/installation-cost', title: 'Estimate Modification Cost', description: 'Price the drilling, adapter, or locksmith work before buying.' },
+                { href: '/calculators/signal-strength', title: 'Check Signal Risk', description: 'Metal and exterior doors can affect lock connectivity after fit is solved.' },
+                { href: '/best/matter-smart-locks', title: 'Shop Compatible Matter Locks', description: 'Compare cross-platform models after the physical fit passes.' },
+              ]}
+            />
+          </div>
+
+          <div className="max-w-7xl mx-auto">
+            <ReportLeadCapture
+              reportType="door-compatibility-audit"
+              title="Door Compatibility Audit PDF"
+              description="Turn your measurements into a one-page compatibility brief before you shortlist products or request installation quotes."
+              sourcePath="/calculators/compatibility"
+              context={{
+                calculator: 'compatibility',
+                standard: 'ANSI/BHMA A156.2',
+                focus: 'door-fit screening',
+              }}
+              bullets={[
+                'Includes fit checkpoints for thickness, backset, bore, and material risk.',
+                'Useful for forwarding to an installer or property stakeholder before purchase.',
+                'Pairs naturally with installation-cost estimates when any measurement fails.',
+              ]}
+            />
+          </div>
+
           {/* Be-Tech Brand */}
           <div className="max-w-7xl mx-auto mt-8">
             <div className="content-card">
               <div className="flex items-center gap-6">
                 <div className="flex-shrink-0">
                   <div className="card" style={{ width: "5rem", height: "5rem", padding: "var(--space-sm)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <img src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" className="w-full h-full object-contain" />
+                    <Image src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" width={64} height={64} className="w-full h-full object-contain" />
                   </div>
                 </div>
                 <div className="flex-1">

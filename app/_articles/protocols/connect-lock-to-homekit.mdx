@@ -1,6 +1,6 @@
 ---
-title: "How to Connect Any Smart Lock to Apple HomeKit (2026 Guide)"
-description: "Step-by-step HomeKit setup for smart locks. Scan your HomeKit code, pair via Home app, fix 'Unable to Add Accessory' errors, and set up auto-lock automations. Works with Matter locks too."
+title: "HomeKit Smart Lock Setup Guide (2026): Add, Pair, and Fix No Response"
+description: "Add a smart lock to Apple HomeKit or Matter in 2-5 minutes. Check Home Hub requirements, scan the HomeKit code, fix Unable to Add Accessory, and set lock automations."
 category: protocols
 pubDate: 2024-03-20
 updatedDate: 2026-03-05
@@ -23,13 +23,17 @@ featured: false
 relatedArticles:
   - "smart-home-platform-integration"
   - "pair-smart-lock-with-hub"
-
+relatedTools:
+  - "protocol-selection-wizard"
+  - "compatibility"
 ---
 
 
 ## Quick Answer
 
-**To add smart lock to HomeKit: Ensure iPhone iOS 16.1+, have Home Hub (HomePod/Apple TV/iPad), open Home app → + → Add Accessory → Scan lock's HomeKit QR code → Follow setup prompts → Assign room → Done (2-5 min).** Lock must support HomeKit or Matter (check box for logo). Requires "Always" location permission for automations.
+**To add a smart lock to HomeKit: confirm the lock supports Apple Home or Matter, keep your iPhone near the lock, open Home app → + → Add Accessory → scan the HomeKit or Matter code → assign a room → test lock/unlock.** Setup usually takes 2-5 minutes.
+
+For remote control, notifications, automations, and reliable “No Response” recovery, you also need a Home Hub such as HomePod, HomePod mini, or Apple TV.
 
 **Requirements:**
 - iPhone/iPad with iOS 16.1+
@@ -37,7 +41,16 @@ relatedArticles:
 - Lock with HomeKit or Matter support
 - Lock's HomeKit code  - QR or 8-digit
 
+**Choosing a lock first?** Use the [Protocol Selection Wizard](/calculators/protocol-wizard) to decide between HomeKit, Matter-over-Thread, Wi-Fi, and Z-Wave before buying.
+
 ## Before You Start
+
+### HomeKit vs Matter Quick Check
+
+- **Works with Apple Home:** can be added directly to HomeKit.
+- **Matter logo:** can be added to Apple Home and may also work with Google Home, Alexa, or SmartThings.
+- **Thread lock:** needs a Thread Border Router, usually HomePod mini, HomePod, or Apple TV 4K.
+- **Wi-Fi lock:** may pair through Apple Home if it supports HomeKit or Matter, but battery life is usually shorter than Thread or Bluetooth.
 
 ### Check Compatibility
 
@@ -273,6 +286,8 @@ Some locks via HomeKit:
 
 ### "Unable to Add Accessory"
 
+This is the highest-friction HomeKit setup error. In most cases it means the lock is already paired, the Home Hub is offline, the phone is too far from the lock, or the code was scanned before the lock entered pairing mode.
+
 **Fixes:**
 ```
 □ Check Home Hub online
@@ -391,4 +406,3 @@ Non-Matter locks:
 **Time: 2-5 minutes**
 
 **Pro tip:** After adding lock to HomeKit, create a "Goodnight" scene that locks all doors, turns off lights, and sets thermostat. Activate with "Hey Siri, goodnight" or automatically at bedtime. HomeKit's real power is in automations and scenes - not just individual device control!
-

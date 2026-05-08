@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'PoE Power Budget Calculator - SLockHub.com',
     description: 'Calculate Power over Ethernet budget for smart lock and access control installations. Plan PoE switch capacity and power allocation.',
-    alternates: { canonical: '/calculators/poe-power' },
-    openGraph: {
-        title: 'PoE Power Budget Calculator - SLockHub.com',
-        description: 'Calculate Power over Ethernet budget for smart lock and access control installations.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/poe-power',
+})
 
 export default function PoePowerLayout({ children }: { children: React.ReactNode }) {
     return (

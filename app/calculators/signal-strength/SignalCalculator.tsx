@@ -198,9 +198,9 @@ export default function SignalCalculator() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+    <div className="calculator-shell">
       {/* Input Section */}
-      <div className="lg:col-span-2 space-y-6">
+      <div className="calculator-inputs space-y-6">
         <div className="rounded-lg shadow-lg border p-8" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Signal Analysis Parameters</h2>
 
@@ -391,8 +391,8 @@ export default function SignalCalculator() {
       </div>
 
       {/* Results Section */}
-      <div className="lg:col-span-1">
-        <div className={`rounded-lg shadow-lg p-8 text-white sticky top-4 ${result.signalPercent >= 60 ? 'result-panel--grade-a' :
+      <div className="calculator-results">
+        <div className={`rounded-lg shadow-lg p-8 text-white ${result.signalPercent >= 60 ? 'result-panel--grade-a' :
             result.signalPercent >= 40 ? 'result-panel--grade-c' :
               'result-panel--grade-f'
           }`}>

@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Guest Code Capacity Planner - SLockHub.com',
     description: 'Plan guest code capacity for your smart lock system. Calculate how many unique codes you need for Airbnb, rental properties, and commercial access.',
-    alternates: { canonical: '/calculators/guest-code' },
-    openGraph: {
-        title: 'Guest Code Capacity Planner - SLockHub.com',
-        description: 'Plan guest code capacity for your smart lock system for rentals and commercial access.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/guest-code',
+})
 
 export default function GuestCodeLayout({ children }: { children: React.ReactNode }) {
     return (

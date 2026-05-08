@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import SignalCalculator from './SignalCalculator'
 import {
@@ -7,15 +8,23 @@ import {
 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { SeoPathways } from '@/components/seo/SeoPathways'
+import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Signal Strength Calculator — Check Your BLE, WiFi & Z-Wave Range | SLockHub',
-  description: 'Free interactive calculator to estimate smart lock wireless range. Enter wall materials, distance, and protocol (Z-Wave 908MHz, Zigbee 2.4GHz, BLE, WiFi) to check if your signal will reach reliably.',
+  title: 'Smart Lock Signal Strength Calculator (2026) | Z-Wave, Wi-Fi, BLE Range',
+  description: 'Estimate smart lock signal strength by protocol, distance, wall material, frequency, RSSI, and link margin. Compare Z-Wave, Zigbee, Thread, Wi-Fi, and BLE range.',
   keywords: 'signal strength calculator, RF signal analysis, Z-Wave range, Zigbee signal strength, smart lock connectivity, dBm calculator, path loss, RSSI calculator',
+  alternates: { canonical: '/calculators/signal-strength' },
   openGraph: {
-    title: 'Smart Lock Signal Strength Calculator — Check Your Wireless Range',
-    description: 'Physics-based RF signal calculator using Free Space Path Loss and material attenuation. Test Z-Wave, Zigbee, WiFi, BLE, and Thread signal strength.',
+    title: 'Smart Lock Signal Strength Calculator (2026)',
+    description: 'Physics-based RF signal calculator using distance, protocol, wall materials, RSSI, and link margin.',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Smart Lock Signal Strength Calculator (2026)',
+    description: 'Estimate whether your smart lock signal will reach reliably through walls, doors, and distance.',
   },
 }
 
@@ -47,26 +56,24 @@ export default function SignalStrengthPage() {
     ]
   }
 
+  const webPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Smart Lock Signal Strength Calculator',
+    url: 'https://www.slockhub.com/calculators/signal-strength',
+    description: 'Estimate smart lock signal strength by protocol, distance, wall material, frequency, RSSI, and link margin.',
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'SLockHub.com',
+      url: 'https://www.slockhub.com',
+    },
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'HowTo',
-          name: 'How to Calculate Smart Lock RF Signal Strength',
-          description: 'Use our physics-based calculator to estimate signal strength, path loss, and repeater needs for your smart lock installation.',
-          totalTime: 'PT5M',
-          step: [
-            { '@type': 'HowToStep', position: 1, name: 'Select Protocol', text: 'Choose your smart lock protocol: Z-Wave (908MHz), Zigbee (2.4GHz), Thread, Bluetooth, or Wi-Fi.' },
-            { '@type': 'HowToStep', position: 2, name: 'Enter Distance', text: 'Input the distance from hub to lock in meters for free-space path loss calculation.' },
-            { '@type': 'HowToStep', position: 3, name: 'Add Obstacles', text: 'Select wall materials between hub and lock (drywall, brick, concrete, metal) to factor in attenuation.' },
-            { '@type': 'HowToStep', position: 4, name: 'Review RSSI', text: 'Check the calculated RSSI (dBm) and link margin to determine signal reliability.' },
-            { '@type': 'HowToStep', position: 5, name: 'Optimize Placement', text: 'Follow recommendations for repeater placement or hub relocation to achieve reliable connectivity.' },
-          ],
-        })
-      }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
 
       <div className="page-bg">
         <div className="container-main section">
@@ -82,8 +89,14 @@ export default function SignalStrengthPage() {
             <div className="page-header__icon"><Signal className="w-14 h-14" /></div>
             <h1 className="page-header__title">Smart Lock Signal Strength Calculator</h1>
             <p className="page-header__subtitle">
-              Calculate RF signal strength using physics-based models (FSPL, dBm) for accurate range prediction
+              Estimate if your Z-Wave, Zigbee, Thread, Wi-Fi, or BLE smart lock signal can reach through your walls and doors
             </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto" style={{ marginBottom: 'var(--space-3xl)' }}>
+            <SignalSummary label="Best penetration" value="Z-Wave" detail="908 MHz has lower path loss than 2.4 GHz protocols" />
+            <SignalSummary label="Target margin" value="10 dB+" detail="Recommended link margin for reliable lock operation" />
+            <SignalSummary label="Worst obstacle" value="Metal" detail="Metal doors, frames, and panels can block most RF signal" />
           </div>
 
           <div className="max-w-4xl mx-auto" style={{ marginBottom: 'var(--space-3xl)' }}>
@@ -99,13 +112,52 @@ export default function SignalStrengthPage() {
 
           <ToolRating toolSlug="signal-strength" />
 
+          <SeoPathways topic="signal" title="Improve Connectivity Planning" />
+
+          <div className="max-w-7xl mx-auto">
+            <CalculatorSeoBlock
+              title="How to use the signal result"
+              answers={[
+                'Whether a lock is likely to stay connected at the planned distance and through the listed wall materials.',
+                'Which protocol has enough link margin for your floor plan before adding repeaters.',
+                'Whether a weak connection may shorten battery life through repeated retries.',
+              ]}
+              formula={{
+                label: 'RF model',
+                equation: 'RSSI = transmit power - free space path loss - material attenuation; link margin = RSSI - receiver sensitivity',
+                notes: 'A positive margin is not enough for locks. Target at least 10 dB reserve because doors move, people block signal, and 2.4 GHz interference changes throughout the day.',
+              }}
+              assumptions={[
+                'Residential indoor range assumes 2-3 interior walls unless you add metal, concrete, or exterior doors.',
+                'Sub-GHz Z-Wave generally loses less signal through dense materials than 2.4 GHz protocols.',
+                'Mesh repeaters help Zigbee, Z-Wave, and Thread but not plain Bluetooth or direct Wi-Fi locks.',
+              ]}
+              example={{
+                title: 'Back door behind masonry',
+                inputs: 'Zigbee lock, 14m from hub, one brick wall, one exterior metal door',
+                result: 'Low or negative link margin once material attenuation is included.',
+                decision: 'Move the hub closer, add a mesh repeater, or use a Z-Wave lock before blaming the lock hardware.',
+              }}
+              sources={[
+                'ITU-R free-space and indoor propagation models.',
+                'IEEE 802.15.4, IEEE 802.11, Bluetooth, Thread, and Z-Wave radio specifications.',
+                'Manufacturer radio datasheets and published indoor range assumptions.',
+              ]}
+              links={[
+                { href: '/calculators/protocol-wizard', title: 'Choose a Protocol', description: 'Pick Wi-Fi, Z-Wave, Zigbee, Thread, or Bluetooth based on range and ecosystem.' },
+                { href: '/calculators/mesh-planner', title: 'Plan Mesh Nodes', description: 'Estimate repeater placement after checking your link margin.' },
+                { href: '/best/z-wave-smart-locks', title: 'Compare Z-Wave Locks', description: 'Prioritize sub-GHz models where wall penetration matters.' },
+              ]}
+            />
+          </div>
+
           {/* Be-Tech Brand Recommendation */}
           <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-xl)' }}>
             <div className="content-card">
               <div className="flex items-center gap-6">
                 <div className="flex-shrink-0">
                   <div className="card" style={{ width: '5rem', height: '5rem', padding: 'var(--space-sm)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <img src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" className="w-full h-full object-contain" />
+                    <Image src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" width={64} height={64} className="w-full h-full object-contain" />
                   </div>
                 </div>
                 <div className="flex-1">
@@ -507,5 +559,15 @@ export default function SignalStrengthPage() {
         </div>
       </div>
     </>
+  )
+}
+
+function SignalSummary({ label, value, detail }: { label: string; value: string; detail: string }) {
+  return (
+    <div className="content-card" style={{ margin: 0 }}>
+      <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xs)' }}>{label}</div>
+      <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>{value}</div>
+      <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>{detail}</p>
+    </div>
   )
 }

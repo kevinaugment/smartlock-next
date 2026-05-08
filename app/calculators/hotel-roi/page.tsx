@@ -96,7 +96,7 @@ export default function HotelROI() {
                 softwareCost: Math.round(annualSoftwareCost),
             },
         }
-    }, [roomCount, avgOccupancy, currentSystem, frontDeskStaff, avgHourlyWage, keycardReplacementRate, keycardCost, lockoutsPerDay, lockoutResolutionMin, smartLockCostPerDoor, installCostPerDoor, monthlySoftwareFee])
+    }, [roomCount, avgOccupancy, currentSystem, avgHourlyWage, keycardReplacementRate, keycardCost, lockoutsPerDay, lockoutResolutionMin, smartLockCostPerDoor, installCostPerDoor, monthlySoftwareFee])
 
     return (
         <div className="page-bg">

@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Fire Code Compliance Checker - SLockHub.com',
     description: 'Check if your smart lock installation meets fire code and NFPA requirements. Verify egress, ADA, and emergency exit compliance.',
-    alternates: { canonical: '/calculators/fire-compliance' },
-    openGraph: {
-        title: 'Fire Code Compliance Checker - SLockHub.com',
-        description: 'Check if your smart lock installation meets fire code and NFPA requirements.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/fire-compliance',
+})
 
 export default function FireComplianceLayout({ children }: { children: React.ReactNode }) {
     return (

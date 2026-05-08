@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Network Bandwidth Calculator - SLockHub.com',
     description: 'Calculate network bandwidth requirements for smart lock deployments. Plan your infrastructure for reliable cloud-connected access control.',
-    alternates: { canonical: '/calculators/network-bandwidth' },
-    openGraph: {
-        title: 'Network Bandwidth Calculator - SLockHub.com',
-        description: 'Calculate network bandwidth requirements for smart lock deployments.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/network-bandwidth',
+})
 
 export default function NetworkBandwidthLayout({ children }: { children: React.ReactNode }) {
     return (

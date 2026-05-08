@@ -77,6 +77,12 @@ export interface ProductSeries {
     updated_at: string
 }
 
+export interface ProductSeriesSeoEntry {
+    id: number
+    brand_id: number
+    name: string
+}
+
 export const ProductSeriesModel = {
     async getByBrandId(brandId: number): Promise<ProductSeries[]> {
         return query<ProductSeries>(
@@ -89,6 +95,15 @@ export const ProductSeriesModel = {
         return queryOne<ProductSeries>(
             `SELECT * FROM product_series WHERE slug = ? AND is_active = 1`,
             [slug]
+        )
+    },
+
+    async getAllForSeo(): Promise<ProductSeriesSeoEntry[]> {
+        return query<ProductSeriesSeoEntry>(
+            `SELECT id, brand_id, name
+             FROM product_series
+             WHERE is_active = 1
+             ORDER BY brand_id ASC, display_order ASC`
         )
     },
 }
@@ -158,6 +173,12 @@ export interface ProductWithBrand extends Product {
     brand_slug: string
 }
 
+export interface ProductSeoEntry {
+    slug: string
+    brand_slug: string
+    updated_at: string
+}
+
 export const ProductModel = {
     async getAll(limit = 50, offset = 0): Promise<ProductWithBrand[]> {
         return query<ProductWithBrand>(
@@ -168,6 +189,26 @@ export const ProductModel = {
              ORDER BY p.rating DESC
              LIMIT ? OFFSET ?`,
             [limit, offset]
+        )
+    },
+
+    async getAllForSeo(): Promise<ProductSeoEntry[]> {
+        return query<ProductSeoEntry>(
+            `SELECT p.slug, b.slug AS brand_slug, p.updated_at
+             FROM products p
+             JOIN brands b ON p.brand_id = b.id
+             WHERE p.is_active = 1
+             ORDER BY b.display_order ASC, p.display_order ASC, p.rating DESC`
+        )
+    },
+
+    async getAllForComparison(): Promise<ProductWithBrand[]> {
+        return query<ProductWithBrand>(
+            `SELECT p.*, b.name AS brand_name, b.slug AS brand_slug
+             FROM products p
+             JOIN brands b ON p.brand_id = b.id
+             WHERE p.is_active = 1
+             ORDER BY b.display_order ASC, p.display_order ASC, p.rating DESC`
         )
     },
 

@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Cyber Risk Scorecard - SLockHub.com',
     description: 'Evaluate the digital attack surface of your smart lock deployment across authentication, encryption, firmware, network, and physical security categories.',
-    alternates: { canonical: '/calculators/cyber-risk' },
-    openGraph: {
-        title: 'Cyber Risk Scorecard - SLockHub.com',
-        description: 'Evaluate the digital attack surface of your smart lock deployment across authentication, encryption, firmware, network, and physical security categories.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/cyber-risk',
+})
 
 export default function CyberRiskLayout({ children }: { children: React.ReactNode }) {
     return (

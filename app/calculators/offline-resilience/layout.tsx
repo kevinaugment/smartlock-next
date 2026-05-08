@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Offline Resilience Scorecard - SLockHub.com',
     description: 'Evaluate how well your smart lock system works during outages. Score your setup across protocol choice, local hub, backup power, physical keys, and cloud dependency.',
-    alternates: { canonical: '/calculators/offline-resilience' },
-    openGraph: {
-        title: 'Offline Resilience Scorecard - SLockHub.com',
-        description: 'Evaluate how well your smart lock system works during outages. Score your setup across protocol choice, local hub, backup power, physical keys, and cloud dependency.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/offline-resilience',
+})
 
 export default function OfflineResilienceLayout({ children }: { children: React.ReactNode }) {
     return (

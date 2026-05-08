@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'Warranty & Lifecycle Calculator - SLockHub.com',
     description: 'Calculate smart lock warranty coverage and lifecycle costs. Plan replacement schedules and compare warranty options across brands.',
-    alternates: { canonical: '/calculators/warranty-lifecycle' },
-    openGraph: {
-        title: 'Warranty & Lifecycle Calculator - SLockHub.com',
-        description: 'Calculate smart lock warranty coverage and lifecycle costs.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/warranty-lifecycle',
+})
 
 export default function WarrantyLifecycleLayout({ children }: { children: React.ReactNode }) {
     return (

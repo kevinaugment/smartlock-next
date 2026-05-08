@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'PIN Security Strength Checker - SLockHub.com',
     description: 'Analyze smart lock PIN code strength and security. Check for common patterns, brute-force resistance, and get recommendations for stronger access codes.',
-    alternates: { canonical: '/calculators/pin-strength' },
-    openGraph: {
-        title: 'PIN Security Strength Checker - SLockHub.com',
-        description: 'Analyze smart lock PIN code strength and security. Check for common patterns, brute-force resistance, and get recommendations for stronger access codes.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/pin-strength',
+})
 
 export default function PinStrengthLayout({ children }: { children: React.ReactNode }) {
     return (

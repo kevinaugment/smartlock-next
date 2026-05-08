@@ -6,9 +6,20 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { type Components } from 'react-markdown';
 import { Copy, Check, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 
 interface ArticleContentProps {
   content: string;
+}
+
+function headingId(children: ReactNode): string {
+  return String(children)
+    .toLowerCase()
+    .replace(/<[^>]+>/g, '')
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
 }
 
 /* ── Copy Button for Code Blocks ─────────────────────────── */
@@ -86,7 +97,7 @@ export function ArticleContent({ content }: ArticleContentProps) {
     h2: ({ children }) => (
       <h2
         className="text-3xl font-bold mt-8 mb-4"
-        id={String(children).toLowerCase().replace(/\s+/g, '-')}
+        id={headingId(children)}
         style={{ fontFamily: 'var(--font-display)', color: 'var(--color-text-primary)' }}
       >
         {children}
@@ -95,7 +106,7 @@ export function ArticleContent({ content }: ArticleContentProps) {
     h3: ({ children }) => (
       <h3
         className="text-2xl font-semibold mt-6 mb-3"
-        id={String(children).toLowerCase().replace(/\s+/g, '-')}
+        id={headingId(children)}
         style={{ fontFamily: 'var(--font-display)', color: 'var(--color-text-primary)' }}
       >
         {children}
@@ -219,9 +230,13 @@ export function ArticleContent({ content }: ArticleContentProps) {
       <td>{children}</td>
     ),
     img: ({ src, alt }) => (
-      <img
-        src={src}
-        alt={alt}
+      <Image
+        src={typeof src === 'string' ? src : ''}
+        alt={alt ?? ''}
+        width={1200}
+        height={675}
+        sizes="(max-width: 768px) 100vw, 768px"
+        unoptimized
         className="max-w-full h-auto my-6"
         style={{ borderRadius: 'var(--radius-md)' }}
       />

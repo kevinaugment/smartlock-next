@@ -6,9 +6,10 @@ import type { Heading } from '@/lib/markdown'
 
 interface TableOfContentsProps {
   headings: Heading[]
+  variant?: 'all' | 'mobile' | 'desktop'
 }
 
-export default function TableOfContents({ headings }: TableOfContentsProps) {
+export default function TableOfContents({ headings, variant = 'all' }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>('')
 
   useEffect(() => {
@@ -45,8 +46,36 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
   }
 
   return (
-    <nav className="sticky top-24 hidden lg:block">
-      <div className="card" style={{ padding: 'var(--space-xl)' }}>
+    <>
+      {variant !== 'desktop' && (
+      <details className="mobile-toc card" style={{ marginBottom: 'var(--space-lg)' }}>
+        <summary style={{ cursor: 'pointer', fontWeight: 700, color: 'var(--color-text-primary)' }}>
+          On this page
+        </summary>
+        <ul className="space-y-1 text-sm" style={{ marginTop: 'var(--space-md)' }}>
+          {headings.slice(0, 8).map((heading) => (
+            <li key={heading.id}>
+              <a
+                href={`#${heading.id}`}
+                onClick={(e) => handleClick(e, heading.id)}
+                className="block py-2 px-3 rounded-md transition-all"
+                style={{
+                  color: activeId === heading.id ? 'var(--color-accent)' : 'var(--color-text-secondary)',
+                  background: activeId === heading.id ? 'var(--color-accent-subtle)' : 'transparent',
+                  fontWeight: activeId === heading.id ? 600 : 400,
+                }}
+              >
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </details>
+      )}
+
+      {variant !== 'mobile' && (
+      <nav className="sticky top-24 hidden lg:block">
+        <div className="card" style={{ padding: 'var(--space-xl)' }}>
         <h2
           className="text-sm font-bold uppercase mb-4 flex items-center gap-2"
           style={{ color: 'var(--color-text-primary)', letterSpacing: '0.05em' }}
@@ -113,6 +142,8 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
           </button>
         </div>
       </div>
-    </nav>
+      </nav>
+      )}
+    </>
   )
 }

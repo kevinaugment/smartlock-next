@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import CostCalculator from './CostCalculator'
 import {
@@ -7,11 +8,25 @@ import {
 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { SeoPathways } from '@/components/seo/SeoPathways'
+import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
+import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Installation Cost Calculator | 2025-2026 Real Rates',
-  description: 'Calculate smart lock installation costs with verified 2026 labor rates: Locksmith $85/hr, Handyman $65/hr. Includes hardware, wiring, modifications. HomeAdvisor & BLS data.',
+  title: 'Smart Lock Installation Cost Calculator (2026) | Labor + Hardware Estimate',
+  description: 'Estimate smart lock installation cost by door count, lock type, labor tier, wiring, and modifications. Compare DIY, handyman, locksmith, and electrician rates for 2026.',
   keywords: 'smart lock installation cost, locksmith rates 2026, installation price calculator, handyman rates, smart lock labor cost',
+  alternates: { canonical: '/calculators/installation-cost' },
+  openGraph: {
+    title: 'Smart Lock Installation Cost Calculator (2026)',
+    description: 'Estimate hardware, labor, wiring, and door modification costs before installing a smart lock.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Smart Lock Installation Cost Calculator (2026)',
+    description: 'Estimate smart lock installation cost by door count, labor tier, wiring, and modifications.',
+  },
 }
 
 export default function InstallationCostPage() {
@@ -35,26 +50,24 @@ export default function InstallationCostPage() {
     description: 'Calculate total smart lock installation cost with 2026 labor rates and market pricing'
   }
 
+  const webPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Smart Lock Installation Cost Calculator',
+    url: 'https://www.slockhub.com/calculators/installation-cost',
+    description: 'Estimate smart lock installation cost by door count, lock type, labor tier, wiring, and modifications.',
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'SLockHub.com',
+      url: 'https://www.slockhub.com',
+    },
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'HowTo',
-          name: 'How to Estimate Smart Lock Installation Cost',
-          description: 'Use our calculator to estimate the total cost of smart lock installation including hardware, labor, and materials with 2026 market pricing.',
-          totalTime: 'PT3M',
-          step: [
-            { '@type': 'HowToStep', position: 1, name: 'Select Lock Type', text: 'Choose between deadbolt, lever handle, or mortise lock to set base costs.' },
-            { '@type': 'HowToStep', position: 2, name: 'Enter Door Count', text: 'Input the number of doors to install smart locks on for volume pricing.' },
-            { '@type': 'HowToStep', position: 3, name: 'Choose Installation Type', text: 'Select DIY, handyman, or professional locksmith installation tier.' },
-            { '@type': 'HowToStep', position: 4, name: 'Add Options', text: 'Include optional accessories like hub, bridge, or reinforcement plate.' },
-            { '@type': 'HowToStep', position: 5, name: 'Review Total Cost', text: 'Review detailed cost breakdown with per-door and total project pricing.' },
-          ],
-        })
-      }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
 
       <div className="page-bg">
         <div className="container-main section">
@@ -71,7 +84,13 @@ export default function InstallationCostPage() {
           <div className="text-center mb-12">
             <div className="page-header__icon"><DollarSign className="w-14 h-14 mx-auto" /></div>
             <h1 className="page-header__title">Smart Lock Installation Cost Calculator</h1>
-            <p className="page-header__subtitle">Calculate accurate costs using real 2025-2026 labor rates and verified market data</p>
+            <p className="page-header__subtitle">Estimate hardware, labor, wiring, and door modification costs before booking a locksmith or buying a lock</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12">
+            <CostSummary label="Typical installed cost" value="$350-600" detail="Common single-door hardware + labor range" />
+            <CostSummary label="Standard labor time" value="2-3 hrs" detail="For a prepared deadbolt door" />
+            <CostSummary label="Biggest cost driver" value="Door prep" detail="Drilling, mortise work, wiring, or strike alignment" />
           </div>
 
           <div className="max-w-4xl mx-auto mb-12">
@@ -88,13 +107,71 @@ export default function InstallationCostPage() {
 
           <ToolRating toolSlug="installation-cost" />
 
+          <SeoPathways topic="installation" title="Plan the Rest of the Installation" />
+
+          <div className="max-w-7xl mx-auto">
+            <CalculatorSeoBlock
+              title="How to estimate installation budget before you hire"
+              answers={[
+                'Whether your quote is mostly hardware cost, labor cost, or door modification cost.',
+                'When DIY is realistic versus when a locksmith or electrician is the cheaper risk-adjusted choice.',
+                'How much non-standard backsets, bores, wiring, or strike alignment can add per door.',
+              ]}
+              formula={{
+                label: 'Cost model',
+                equation: 'Total installed cost = lock hardware + installer hourly rate x labor hours + wiring + door modification + optional travel or finishing charges',
+                notes: 'The calculator treats labor, prep work, and materials as separate drivers so you can see whether a lower hardware price is cancelled out by a difficult install.',
+              }}
+              assumptions={[
+                'Standard replacement deadbolt installs usually take 1.5-2.5 hours.',
+                'Fresh bores, mortise correction, or wiring can add 1-3 hours per opening.',
+                'Urban service areas often price 20-30% above national averages.',
+              ]}
+              example={{
+                title: 'Single front door retrofit',
+                inputs: '1 door, mid-range lock, locksmith labor, standard bore, no wiring',
+                result: '$420-520 total installed cost with labor making up roughly 35-40% of the project.',
+                decision: 'If the quote is above this band, inspect whether travel, trim repair, or door prep is the real cost driver.',
+              }}
+              sources={[
+                'HomeAdvisor and Angi rate benchmarks for locksmith and handyman labor.',
+                'U.S. Bureau of Labor Statistics employment and wage data for locksmith-related trades.',
+                'Retail smart lock pricing from manufacturer MSRP and major U.S. retailers.',
+              ]}
+              links={[
+                { href: '/calculators/compatibility', title: 'Check Door Compatibility', description: 'Confirm whether your door needs adapters, drilling, or extension kits.' },
+                { href: '/calculators/lock-tco', title: 'Model 5-Year TCO', description: 'Combine install cost with batteries, subscriptions, and lifecycle replacement.' },
+                { href: '/articles/guides/door-compatibility-guide', title: 'Read the Door Fit Guide', description: 'Measure thickness, backset, and bore sizes before booking labor.' },
+              ]}
+            />
+          </div>
+
+          <div className="max-w-7xl mx-auto">
+            <ReportLeadCapture
+              reportType="smart-lock-tco-report"
+              title="Smart Lock TCO Report PDF"
+              description="Package the cost model into a shareable PDF that separates hardware, labor, modification, and recurring ownership costs."
+              sourcePath="/calculators/installation-cost"
+              context={{
+                calculator: 'installation-cost',
+                laborBenchmark: '2025-2026 U.S. locksmith and handyman rates',
+                focus: 'installed cost and quote review',
+              }}
+              bullets={[
+                'Summarizes installed-cost assumptions for one-door and multi-door planning.',
+                'Helps compare DIY, handyman, locksmith, and electrician quote structures.',
+                'Flags modification and wiring costs that can hide behind low hardware prices.',
+              ]}
+            />
+          </div>
+
           {/* Be-Tech Brand */}
           <div className="max-w-7xl mx-auto mt-8">
             <div className="content-card">
               <div className="flex items-center gap-6">
                 <div className="flex-shrink-0">
                   <div className="card" style={{ width: "5rem", height: "5rem", padding: "var(--space-sm)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <img src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" className="w-full h-full object-contain" />
+                    <Image src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" width={64} height={64} className="w-full h-full object-contain" />
                   </div>
                 </div>
                 <div className="flex-1">
@@ -277,5 +354,15 @@ export default function InstallationCostPage() {
         </div>
       </div>
     </>
+  )
+}
+
+function CostSummary({ label, value, detail }: { label: string; value: string; detail: string }) {
+  return (
+    <div className="content-card" style={{ margin: 0 }}>
+      <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xs)' }}>{label}</div>
+      <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>{value}</div>
+      <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>{detail}</p>
+    </div>
   )
 }

@@ -244,8 +244,8 @@ export default function CompatibilityChecker() {
   const hintStyle = { fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-      <div className="lg:col-span-2 space-y-6">
+    <div className="calculator-shell">
+      <div className="calculator-inputs space-y-6">
         <div className="content-card">
           <h2 className="section-title">Door Specifications</h2>
 
@@ -441,8 +441,8 @@ export default function CompatibilityChecker() {
       </div>
 
       {/* Results */}
-      <div className="lg:col-span-1">
-        <div className={`rounded-lg shadow-lg p-8 text-white sticky top-4 ${getScoreClass(result.score)}`}>
+      <div className="calculator-results">
+        <div className={`rounded-lg shadow-lg p-8 text-white ${getScoreClass(result.score)}`}>
           <h2 className="text-xl font-bold mb-6">Compatibility Score</h2>
           <div className="text-center mb-8">
             <div className="text-6xl font-bold mb-2">{result.score}%</div>

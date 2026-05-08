@@ -7,7 +7,20 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
+  title: 'SLockHub | Smart Lock Guides, Calculators, Brands & Protocols',
+  description: 'Research smart locks with expert guides, calculators, brand comparisons, protocol explainers, product shortlists, and installation planning tools.',
   alternates: { canonical: '/' },
+  openGraph: {
+    title: 'SLockHub - Smart Lock Engineering Hub',
+    description: 'Smart lock guides, calculators, protocols, brand comparisons, and product decision tools.',
+    type: 'website',
+    url: 'https://www.slockhub.com',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SLockHub - Smart Lock Engineering Hub',
+    description: 'Research smart lock protocols, products, installation fit, signal reliability, and ownership cost.',
+  },
 }
 
 const jsonLd = {
@@ -25,8 +38,25 @@ const jsonLd = {
       name: 'SLockHub.com',
       url: 'https://www.slockhub.com',
     },
+    {
+      '@type': 'ItemList',
+      name: 'Primary Smart Lock Research Paths',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Smart Lock Calculators', url: 'https://www.slockhub.com/calculators' },
+        { '@type': 'ListItem', position: 2, name: 'Smart Lock Brands', url: 'https://www.slockhub.com/brands' },
+        { '@type': 'ListItem', position: 3, name: 'Smart Lock Protocols', url: 'https://www.slockhub.com/protocols' },
+        { '@type': 'ListItem', position: 4, name: 'Smart Lock Compare Hub', url: 'https://www.slockhub.com/compare' },
+      ],
+    },
   ],
 }
+
+const decisionHubs = [
+  { href: '/calculators/compatibility', title: 'Check Door Fit', description: 'Start here if you are unsure whether a smart lock will fit your door.' },
+  { href: '/calculators/protocol-wizard', title: 'Choose a Protocol', description: 'Pick Wi-Fi, Z-Wave, Zigbee, Thread, Bluetooth, or Matter by use case.' },
+  { href: '/brands', title: 'Browse Brands', description: 'Compare brand catalogs, protocol support, and product depth.' },
+  { href: '/compare', title: 'Compare Options', description: 'Move into brand-vs-brand and protocol comparison paths.' },
+]
 
 export default function HomePage() {
   return (
@@ -113,6 +143,20 @@ export default function HomePage() {
                   {stat.label}
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-sm section-alt">
+        <div className="container-main">
+          <h2 className="section-title section-title--center">Start by Decision Type</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
+            {decisionHubs.map((item) => (
+              <Link key={item.href} href={item.href} className="link-card">
+                <h3 className="link-card__title">{item.title}</h3>
+                <p className="link-card__desc">{item.description}</p>
+              </Link>
             ))}
           </div>
         </div>

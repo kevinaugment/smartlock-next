@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildSeoMetadata({
     title: 'BLE Range & Proximity Calculator - SLockHub.com',
     description: 'Calculate Bluetooth Low Energy range and signal coverage for smart lock installations. Plan BLE proximity zones and optimize placement.',
-    alternates: { canonical: '/calculators/ble-range' },
-    openGraph: {
-        title: 'BLE Range & Proximity Calculator - SLockHub.com',
-        description: 'Calculate Bluetooth Low Energy range and signal coverage for smart lock installations.',
-        siteName: 'SLockHub.com',
-        type: 'website',
-    },
-}
+    canonical: '/calculators/ble-range',
+})
 
 export default function BleRangeLayout({ children }: { children: React.ReactNode }) {
     return (

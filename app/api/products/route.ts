@@ -1,7 +1,7 @@
-export const runtime = 'edge'
-
 import { getProductsForCalculator, getRecommendedProducts } from '@/lib/services/brand-service'
 import { ProductModel } from '@/lib/db/brand-models'
+
+export const dynamic = 'force-dynamic'
 
 export async function GET(request: Request) {
     try {

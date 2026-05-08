@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { cache } from 'react'
 import { getAllArticles } from '@/lib/articles/registry'
 import { BrandModel, ProductModel, TopNPageModel } from '@/lib/db/brand-models'
 
@@ -21,6 +22,8 @@ function toSitemapDate(dateStr: string | undefined | null): string {
 
 // Evaluated once at build time — every deploy refreshes sitemap dates
 const BUILD_DATE = new Date().toISOString().slice(0, 10) // YYYY-MM-DD
+
+const getSeoProducts = cache(() => ProductModel.getAllForSeo())
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const articles = getAllArticles()
@@ -187,7 +190,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             }
         }
 
-        const products = await ProductModel.getAll(200, 0)
+        const products = await getSeoProducts()
         productPages = products.map((p) => ({
             url: `${BASE_URL}/brands/${p.brand_slug}/${p.slug}`,
             lastModified: toSitemapDate(p.updated_at),

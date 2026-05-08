@@ -1,4 +1,6 @@
 import { Metadata } from 'next'
+import { buildSeoMetadata } from '@/lib/seo/metadata'
+import Image from 'next/image'
 import Link from 'next/link'
 import STRCalculator from './STRCalculator'
 import {
@@ -9,11 +11,12 @@ import {
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 
-export const metadata: Metadata = {
-  title: 'Airbnb Smart Lock ROI Calculator | Short-Term Rental Investment Analysis',
-  description: 'Calculate smart lock ROI for Airbnb/VRBO rentals. Analyze labor savings, lockout costs, rekeying expenses using 2026 STR industry data from AirDNA & Mashvisor.',
-  keywords: 'Airbnb smart lock ROI, VRBO rental calculator, STR investment, vacation rental smart lock, property manager calculator, short-term rental ROI',
-}
+export const metadata: Metadata = buildSeoMetadata({
+    title: 'Airbnb Smart Lock ROI Calculator | Short-Term Rental Investment Analysis',
+    description: 'Calculate smart lock ROI for Airbnb/VRBO rentals. Analyze labor savings, lockout costs, rekeying expenses using 2026 STR industry data from AirDNA & Mashvisor.',
+    canonical: '/calculators/str-roi',
+    keywords: 'Airbnb smart lock ROI, VRBO rental calculator, STR investment, vacation rental smart lock, property manager calculator, short-term rental ROI',
+})
 
 export default function STRROIPage() {
   const breadcrumbSchema = {
@@ -78,7 +81,7 @@ export default function STRROIPage() {
               <div className="flex items-center gap-6">
                 <div className="flex-shrink-0">
                   <div className="card" style={{ width: "5rem", height: "5rem", padding: "var(--space-sm)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <img src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" className="w-full h-full object-contain" />
+                    <Image src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" width={64} height={64} className="w-full h-full object-contain" />
                   </div>
                 </div>
                 <div className="flex-1">

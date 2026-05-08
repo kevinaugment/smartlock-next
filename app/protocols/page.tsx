@@ -3,14 +3,20 @@ import Link from 'next/link'
 import { Wifi, Radio, Bluetooth, Cpu, ArrowRight } from 'lucide-react'
 
 export const metadata: Metadata = {
-    title: 'Smart Lock Protocols — Compatibility & Product Matrix — SLockHub.com',
-    description: 'Browse smart lock products by communication protocol. Z-Wave, Zigbee, Wi-Fi, Bluetooth, Thread, and Matter compatibility guides.',
+    title: 'Smart Lock Protocols | Compare Z-Wave, Zigbee, Wi-Fi, Thread, Matter & Bluetooth',
+    description: 'Browse smart lock protocols by range, battery impact, hub requirement, and ecosystem fit. Start with protocol guides, then move into calculators and best pages.',
     alternates: { canonical: '/protocols' },
     openGraph: {
-        title: 'Smart Lock Protocols — SLockHub.com',
-        description: 'Browse smart lock products by communication protocol.',
+        title: 'Smart Lock Protocols',
+        description: 'Compare smart lock protocols by range, battery life, ecosystem fit, and hub requirement.',
         siteName: 'SLockHub.com',
         type: 'website',
+        url: 'https://www.slockhub.com/protocols',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Smart Lock Protocols',
+        description: 'Start with protocol guides, then validate signal, battery, and product fit.',
     },
 }
 
@@ -89,10 +95,36 @@ const protocols = [
     },
 ]
 
+const protocolActions = [
+    { href: '/calculators/protocol-wizard', title: 'Use the protocol wizard', description: 'Turn your ecosystem and range requirements into a protocol recommendation.' },
+    { href: '/calculators/signal-strength', title: 'Check signal range', description: 'Validate wall penetration and repeater needs before locking into a protocol.' },
+    { href: '/calculators/battery-life', title: 'Estimate battery impact', description: 'Compare Wi-Fi, Zigbee, Z-Wave, Thread, and BLE maintenance tradeoffs.' },
+]
+
 export default function ProtocolsPage() {
+    const collectionSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'Smart Lock Protocols',
+        description: 'Browse smart lock communication protocols and related planning tools.',
+        url: 'https://www.slockhub.com/protocols',
+        mainEntity: {
+            '@type': 'ItemList',
+            numberOfItems: protocols.length,
+            itemListElement: protocols.map((proto, index) => ({
+                '@type': 'ListItem',
+                position: index + 1,
+                name: proto.name,
+                url: `https://www.slockhub.com/protocols/${proto.slug}`,
+            })),
+        },
+    }
+
     return (
-        <div className="page-wrapper-alt">
-            <div className="container-main section">
+        <>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+            <div className="page-wrapper-alt">
+                <div className="container-main section">
                 {/* Header */}
                 <div className="page-header">
                     <div className="page-header__icon">
@@ -103,6 +135,18 @@ export default function ProtocolsPage() {
                         Browse compatible smart locks by communication protocol. Find the right technology for your home or business.
                     </p>
                 </div>
+
+                <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+                    <h2 className="section-title">Protocol Research to Product Decision</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {protocolActions.map((item) => (
+                            <Link key={item.href} href={item.href} className="link-card">
+                                <h3 className="link-card__title">{item.title}</h3>
+                                <p className="link-card__desc">{item.description}</p>
+                            </Link>
+                        ))}
+                    </div>
+                </section>
 
                 {/* Protocol Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" style={{ marginBottom: 'var(--space-3xl)' }}>
@@ -180,6 +224,7 @@ export default function ProtocolsPage() {
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+        </>
     )
 }

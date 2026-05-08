@@ -1,10 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import fs from 'fs/promises';
-import path from 'path';
-import matter from 'gray-matter';
 import { getArticleBySlug, getArticlesByCategory, getAllArticles } from '@/lib/articles/registry';
+import { getArticleContent } from '@/lib/articles/content';
 import { CATEGORIES } from '@/lib/articles/types';
 import { ArticleHeader } from '@/components/articles/ArticleHeader';
 import { ArticleContent } from '@/components/articles/ArticleContent';
@@ -179,22 +177,7 @@ export default async function ArticlePage({
     notFound();
   }
 
-  // 读取MDX文件内容
-  let content = '';
-  try {
-    const filePath = path.join(
-      process.cwd(),
-      'app/_articles',
-      article.category,
-      `${article.slug}.mdx`
-    );
-    const fileContent = await fs.readFile(filePath, 'utf-8');
-    const { content: mdxContent } = matter(fileContent);
-    content = mdxContent;
-  } catch (error) {
-    console.error(`Error reading article file: ${article.slug}`, error);
-    content = 'Error loading article content.';
-  }
+  const content = getArticleContent(article.category, article.slug);
 
   // 获取相关文章 — 优先使用注册表的跨分类推荐，回退到同分类
   let relatedArticles = (article.relatedArticles || [])

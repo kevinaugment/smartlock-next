@@ -5,6 +5,9 @@ import { BrandModel, ProductModel, TopNPageModel } from '@/lib/db/brand-models'
 
 const BASE_URL = 'https://www.slockhub.com'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 /**
  * Normalize any date string to W3C Datetime YYYY-MM-DD format for sitemaps.
  * Handles: ISO strings, space-separated DB timestamps, plain YYYY-MM-DD.

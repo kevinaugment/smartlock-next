@@ -6,6 +6,10 @@ import { getTopNPageData } from '@/lib/services/brand-service'
 import { TopNPageModel } from '@/lib/db/brand-models'
 import { SeoPathways } from '@/components/seo/SeoPathways'
 
+export const dynamic = 'force-dynamic'
+export const dynamicParams = true
+export const revalidate = 0
+
 const CURRENT_YEAR = '2026'
 
 function getSelectionMethodology(pageTitle: string, productCount: number): string[] {

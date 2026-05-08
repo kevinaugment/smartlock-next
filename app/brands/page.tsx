@@ -3,6 +3,9 @@ import type { Metadata } from 'next'
 import { AlertTriangle, Check, X, ExternalLink } from 'lucide-react'
 import { getBrands } from '@/lib/services/brand-service'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const metadata: Metadata = {
   title: 'Smart Lock Brands | Compare Protocols, Products & Best Use Cases',
   description: 'Browse smart lock brands by protocol support, product depth, price tier, and use case. Compare Yale, August, Schlage, Samsung, Nuki, Tedee, Weiser, and more.',

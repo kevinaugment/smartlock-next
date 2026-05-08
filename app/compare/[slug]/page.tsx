@@ -7,6 +7,10 @@ import { BrandModel, ProductModel, type Brand, type ProductWithBrand } from '@/l
 import { SeoPathways } from '@/components/seo/SeoPathways'
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
 
+export const dynamic = 'force-dynamic'
+export const dynamicParams = true
+export const revalidate = 0
+
 // ============================================
 // 类型
 // ============================================

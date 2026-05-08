@@ -18,6 +18,12 @@
       "database_id": "1d2ea8dd-d7eb-440b-8b91-a9070bd7bb34"
     }
   ],
+  "kv_namespaces": [
+    {
+      "binding": "SLOCKHUB_KV",
+      "id": "e74437f3564648baa95fc4279478d3dd"
+    }
+  ],
   "observability": {
     "enabled": true
   },

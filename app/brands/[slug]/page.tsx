@@ -6,6 +6,10 @@ import StarRating from '@/components/brands/StarRating'
 import { getBrandBySlug } from '@/lib/services/brand-service'
 import { BrandModel, type Brand, type Product } from '@/lib/db/brand-models'
 
+export const dynamic = 'force-dynamic'
+export const dynamicParams = true
+export const revalidate = 0
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params
     const brand = await BrandModel.getBySlug(slug)

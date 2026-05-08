@@ -9,6 +9,10 @@ import { ProductModel, ProductSeriesModel, type ProductWithBrand } from '@/lib/d
 import { SeoPathways } from '@/components/seo/SeoPathways'
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
 
+export const dynamic = 'force-dynamic'
+export const dynamicParams = true
+export const revalidate = 0
+
 const getSeoProducts = cache(() => ProductModel.getAllForSeo())
 const getProductsForDetail = cache(() => ProductModel.getAllForComparison())
 const getSeriesForDetail = cache(() => ProductSeriesModel.getAllForSeo())

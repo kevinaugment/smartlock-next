@@ -209,8 +209,8 @@ export default function PinStrengthChecker() {
                 <Link href="/calculators" className="back-link">← Back to Calculators</Link>
 
                 {/* Header */}
-                <div className="text-center mb-12">
-                    <div className="page-header__icon"><ShieldCheck className="w-14 h-14 mx-auto" /></div>
+                <div className="page-header">
+                    <div className="page-header__icon"><ShieldCheck className="w-14 h-14" /></div>
                     <h1 className="text-4xl font-bold mb-4">PIN Security Strength Checker</h1>
                     <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)' }}>
                         Evaluate the security of your smart lock PIN code against common attack patterns
@@ -356,7 +356,7 @@ export default function PinStrengthChecker() {
 
                     {/* Results Panel */}
                     <div className="lg:col-span-1">
-                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${gradeClasses[result.grade]}`}>
+                        <div className={`result-panel ${gradeClasses[result.grade]}`}>
                             <h2 className="text-xl font-bold mb-6">Security Assessment</h2>
                             <div className="text-center mb-8">
                                 <div className="text-7xl font-bold mb-2">{pin ? result.grade : '—'}</div>

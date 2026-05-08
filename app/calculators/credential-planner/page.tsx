@@ -56,8 +56,8 @@ export default function CredentialPlannerPage() {
             </nav>
           </div>
 
-          <div className="text-center mb-12">
-            <div className="page-header__icon"><Key className="w-14 h-14 mx-auto" /></div>
+          <div className="page-header">
+            <div className="page-header__icon"><Key className="w-14 h-14" /></div>
             <h1 className="page-header__title">Smart Lock Credential Capacity Planner</h1>
             <p className="page-header__subtitle">Calculate optimal credential allocation for employees, contractors, guests across PIN, RFID, NFC, biometric systems</p>
           </div>
@@ -86,7 +86,7 @@ export default function CredentialPlannerPage() {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--color-text-primary)" }}>Recommended: Be-Tech</h3>
+                    <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--color-text-primary)" }}>Brand reference: Be-Tech</h3>
                     <span className="badge badge-featured">High Capacity</span>
                   </div>
                   <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-sm)" }}>

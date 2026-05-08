@@ -142,8 +142,8 @@ export default function RetrofitAdvisor() {
             <div className="container-main section">
                 <Link href="/calculators" className="back-link">← Back to Calculators</Link>
 
-                <div className="text-center mb-12">
-                    <div className="page-header__icon"><GitCompare className="w-14 h-14 mx-auto" /></div>
+                <div className="page-header">
+                    <div className="page-header__icon"><GitCompare className="w-14 h-14" /></div>
                     <h1 className="text-4xl font-bold mb-4">Retrofit vs Replace Advisor</h1>
                     <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)' }}>
                         Should you retrofit your existing lock or buy a full smart lock replacement?
@@ -315,12 +315,12 @@ export default function RetrofitAdvisor() {
 
                     {/* Results Panel */}
                     <div className="lg:col-span-1">
-                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.recommended === 'retrofit' ? 'result-panel--grade-a' : 'result-panel--grade-b'}`}>
+                        <div className={`result-panel ${result.recommended === 'retrofit' ? 'result-panel--grade-a' : 'result-panel--grade-b'}`}>
 
                             <h2 className="text-xl font-bold mb-4">Recommendation</h2>
                             <div className="text-center mb-6">
                                 <div className="text-3xl font-bold mb-2">
-                                    {result.recommended === 'retrofit' ? '🔧 Retrofit' : '🔄 Replace'}
+                                    {result.recommended === 'retrofit' ? 'Retrofit' : 'Replace'}
                                 </div>
                                 <div className="text-sm opacity-90">{result.reasoning}</div>
                             </div>
@@ -362,7 +362,7 @@ export default function RetrofitAdvisor() {
                 <div className="max-w-7xl mx-auto mt-12 grid md:grid-cols-2 gap-8">
                     {/* Retrofit */}
                     <div className="rounded-lg shadow-lg overflow-hidden" style={{ background: 'var(--color-surface)' }}>
-                        <div className="p-4 bg-green-600 text-white font-bold text-lg">🔧 Retrofit</div>
+                        <div className="p-4 bg-green-600 font-bold text-lg">Retrofit</div>
                         <div className="p-6">
                             <h4 className="font-bold mb-3" style={{ color: 'var(--color-success)' }}>Pros</h4>
                             <ul className="space-y-2 mb-6">
@@ -391,7 +391,7 @@ export default function RetrofitAdvisor() {
 
                     {/* Replace */}
                     <div className="rounded-lg shadow-lg overflow-hidden" style={{ background: 'var(--color-surface)' }}>
-                        <div className="p-4 bg-blue-600 text-white font-bold text-lg">🔄 Full Replace</div>
+                        <div className="p-4 bg-blue-600 font-bold text-lg">Full Replace</div>
                         <div className="p-6">
                             <h4 className="font-bold mb-3" style={{ color: 'var(--color-success)' }}>Pros</h4>
                             <ul className="space-y-2 mb-6">

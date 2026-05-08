@@ -14,6 +14,7 @@ import {
     type ProductWithBrand,
     type TopNPage,
 } from '@/lib/db/brand-models'
+import { query } from '@/lib/db'
 
 // ============================================
 // 类型
@@ -68,15 +69,19 @@ export interface CalculatorProduct {
 
 /** 获取所有品牌（带产品数量） */
 export async function getBrands(): Promise<BrandWithCount[]> {
-    const brands = await BrandModel.getAll()
-    const result: BrandWithCount[] = []
+    const brands = await query<Brand & { product_count: number | string }>(
+        `SELECT b.*, COUNT(p.id) AS product_count
+         FROM brands b
+         LEFT JOIN products p ON p.brand_id = b.id AND p.is_active = 1
+         WHERE b.status = 'published'
+         GROUP BY b.id
+         ORDER BY b.display_order ASC`
+    )
 
-    for (const brand of brands) {
-        const products = await ProductModel.getByBrandId(brand.id)
-        result.push({ ...brand, product_count: products.length })
-    }
-
-    return result
+    return brands.map((brand) => ({
+        ...brand,
+        product_count: Number(brand.product_count) || 0,
+    }))
 }
 
 /** 获取品牌详情（含系列和产品） */

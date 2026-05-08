@@ -65,77 +65,47 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* Hero — Precision Engineering + Animated Mesh Gradient */}
-      <section className="hero hero--mesh noise-overlay">
-        {/* Animated Mesh Gradient Background */}
-        <div aria-hidden="true" className="hero__mesh-container">
-          <div className="hero__mesh-orb hero__mesh-orb--cyan" />
-          <div className="hero__mesh-orb hero__mesh-orb--indigo" />
-          <div className="hero__mesh-orb hero__mesh-orb--violet" />
-        </div>
-
-        <div className="container-main" style={{ position: 'relative', zIndex: 2 }}>
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center" style={{ minHeight: '420px' }}>
-            {/* Left — Text Content (60%) */}
-            <div className="lg:col-span-3">
-              <h1 className="hero__title">
-                Smart Lock<br />Engineering Hub
-              </h1>
-              <p className="hero__subtitle" style={{ maxWidth: '32rem' }}>
-                Technical guides, decision tools, and protocol documentation for access control systems
+      <section className="home-hero">
+        <div className="container-main">
+          <div className="home-hero__grid">
+            <div>
+              <div className="tool-eyebrow">Smart lock research operations</div>
+              <h1 className="hero__title">Plan, compare, and validate smart lock deployments</h1>
+              <p className="hero__subtitle">
+                Practical calculators, protocol references, brand data, and installation checks for access control decisions.
               </p>
-              <div className="grid-actions" style={{ justifyContent: 'flex-start' }}>
-                <Link href="/articles" className="btn btn-gradient btn-lg" style={{ borderRadius: 'var(--radius-lg)' }}>
-                  <BookOpen className="w-5 h-5" /> Explore 70+ Expert Guides
+              <div className="grid-actions home-hero__actions">
+                <Link href="/calculators" className="btn btn-primary btn-lg">
+                  <Calculator className="w-5 h-5" /> Open Calculators
                 </Link>
-                <Link href="/calculators" className="btn btn-glass btn-lg" style={{ borderRadius: 'var(--radius-lg)' }}>
-                  <Calculator className="w-5 h-5" /> Calculate Costs &amp; Compare
+                <Link href="/brands" className="btn btn-secondary btn-lg">
+                  <Lock className="w-5 h-5" /> Browse Brand Data
+                </Link>
+                <Link href="/articles" className="btn btn-ghost btn-lg">
+                  <BookOpen className="w-5 h-5" /> Read Guides
                 </Link>
               </div>
             </div>
 
-            {/* Right — Floating Calculator Preview (40%) */}
-            <div className="lg:col-span-2 hidden lg:block">
-              <div className="glass-panel--dark gradient-stripe--top" style={{ padding: 'var(--space-xl)', position: 'relative' }}>
-                <div className="tco-preview__label">
-                  TCO Calculator Preview
-                </div>
-                <div className="tco-preview__value">
-                  <span className="tco-preview__amount">$794</span>
-                  <span className="tco-preview__period">over 5 years</span>
-                </div>
-                <div className="tco-preview__bars">
-                  {[
-                    { label: 'Hardware', value: '$600', pct: 76 },
-                    { label: 'Hub/Gateway', value: '$80', pct: 10 },
-                    { label: 'Battery', value: '$60', pct: 8 },
-                    { label: 'Labor', value: '$54', pct: 6 },
-                  ].map((item) => (
-                    <div key={item.label} className="tco-preview__bar-row">
-                      <span className="tco-preview__bar-label">{item.label}</span>
-                      <div className="tco-preview__bar-track">
-                        <div className="tco-preview__bar-fill" style={{ width: `${item.pct}%` }} />
-                      </div>
-                      <span className="tco-preview__bar-value">{item.value}</span>
-                    </div>
-                  ))}
-                </div>
-                <Link href="/calculators/lock-tco" className="btn btn-glass tco-preview__cta">
-                  Open Full Calculator →
+            <aside className="home-hero__panel" aria-label="Primary checks">
+              <div className="tool-eyebrow">Deployment checks</div>
+              {decisionHubs.map((item) => (
+                <Link key={item.href} href={item.href} className="home-check-row">
+                  <span>{item.title}</span>
+                  <small>{item.description}</small>
                 </Link>
-              </div>
-            </div>
+              ))}
+            </aside>
           </div>
 
-          {/* Stats — Glassmorphism Mini Cards */}
-          <div className="hero__stats stagger-reveal">
+          <div className="home-metrics">
             {[
               { value: '70+', label: 'Technical Articles' },
               { value: '32', label: 'Interactive Tools' },
               { value: '7', label: 'Topic Categories' },
               { value: '100%', label: 'Free & Open' },
             ].map((stat) => (
-              <div key={stat.label} className="glass-panel" style={{ padding: 'var(--space-lg)', textAlign: 'center' }}>
+              <div key={stat.label} className="home-metric">
                 <div className="hero__stat-value">
                   {stat.value}
                 </div>
@@ -148,7 +118,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section-sm section-alt">
+      <section className="section-sm section-alt home-decision-section">
         <div className="container-main">
           <h2 className="section-title section-title--center">Start by Decision Type</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-6xl mx-auto">

@@ -1,22 +1,21 @@
 import type { Metadata } from 'next'
-import { Space_Grotesk, Space_Mono } from 'next/font/google'
+import { Inter, Space_Mono } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import CookieConsent from '@/components/CookieConsent'
 import AnalyticsScripts from '@/components/AnalyticsScripts'
 
-const bodyFont = Space_Grotesk({
+const bodyFont = Inter({
   subsets: ['latin'],
   variable: '--font-body',
   display: 'swap',
 })
 
-const spaceGrotesk = Space_Grotesk({
+const displayFont = Inter({
   subsets: ['latin'],
   variable: '--font-display',
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
 })
 
 const spaceMono = Space_Mono({
@@ -72,7 +71,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${bodyFont.variable} ${spaceMono.variable}`}>
+    <html lang="en" className={`${displayFont.variable} ${bodyFont.variable} ${spaceMono.variable}`}>
       <body className="flex flex-col min-h-screen">
         <a href="#main-content" className="skip-link">
           Skip to main content

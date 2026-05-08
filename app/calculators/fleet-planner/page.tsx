@@ -77,8 +77,8 @@ export default function FleetPlanner() {
       <div className="container-main section">
         <Link href="/calculators" className="back-link">← Back</Link>
 
-        <div className="text-center mb-12">
-          <div className="page-header__icon"><Building2 className="w-14 h-14 mx-auto" /></div>
+        <div className="page-header">
+          <div className="page-header__icon"><Building2 className="w-14 h-14" /></div>
           <h1 className="text-4xl font-bold mb-4">Multi-Property Fleet Planner</h1>
           <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Analyze protocol fragmentation across your property portfolio</p>
         </div>
@@ -152,7 +152,7 @@ export default function FleetPlanner() {
           </div>
 
           <div>
-            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.fragmentationScore < 30 ? 'result-panel--grade-a' :
+            <div className={`result-panel ${result.fragmentationScore < 30 ? 'result-panel--grade-a' :
                 result.fragmentationScore < 60 ? 'result-panel--grade-c' :
                   'result-panel--grade-f'
               }`}>

@@ -69,8 +69,8 @@ export default function RFCoverage() {
       <div className="container-main section">
         <Link href="/calculators" className="back-link">← Back</Link>
 
-        <div className="text-center mb-12">
-          <div className="page-header__icon"><Radio className="w-14 h-14 mx-auto" /></div>
+        <div className="page-header">
+          <div className="page-header__icon"><Radio className="w-14 h-14" /></div>
           <h1 className="text-4xl font-bold mb-4">RF Coverage Estimator</h1>
           <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Plan mesh network topology and signal coverage</p>
         </div>
@@ -153,7 +153,7 @@ export default function RFCoverage() {
           </div>
 
           <div>
-            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.signalQuality === 'Excellent' ? 'result-panel--grade-a' :
+            <div className={`result-panel ${result.signalQuality === 'Excellent' ? 'result-panel--grade-a' :
                 result.signalQuality === 'Good' ? 'result-panel--grade-b' :
                   'result-panel--grade-c'
               }`}>

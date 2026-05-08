@@ -123,8 +123,8 @@ export default function SecurityComplianceChecker() {
             <div className="container-main section">
                 <Link href="/calculators" className="back-link">← Back</Link>
 
-                <div className="text-center mb-12">
-                    <div className="page-header__icon"><ShieldCheck className="w-14 h-14 mx-auto" /></div>
+                <div className="page-header">
+                    <div className="page-header__icon"><ShieldCheck className="w-14 h-14" /></div>
                     <h1 className="page-header__title">Security Compliance Checker</h1>
                     <p className="page-header__subtitle">
                         Evaluate ANSI/BHMA grade compliance, UL 437, and EN 12209 requirements
@@ -214,7 +214,7 @@ export default function SecurityComplianceChecker() {
 
                     {/* Results */}
                     <div>
-                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.compliant ? 'result-panel--grade-a' : 'result-panel--grade-f'}`}>
+                        <div className={`result-panel ${result.compliant ? 'result-panel--grade-a' : 'result-panel--grade-f'}`}>
                             <h2 className="text-xl font-bold mb-6">Compliance Assessment</h2>
                             <div className="text-center mb-8">
                                 <div className="text-5xl font-bold mb-2">{result.status}</div>

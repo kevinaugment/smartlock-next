@@ -125,8 +125,8 @@ export default function CyberRiskScorecard() {
             <div className="container-main section">
                 <Link href="/calculators" className="back-link">← Back to Calculators</Link>
 
-                <div className="text-center mb-12">
-                    <div className="page-header__icon"><ShieldAlert className="w-14 h-14 mx-auto" /></div>
+                <div className="page-header">
+                    <div className="page-header__icon"><ShieldAlert className="w-14 h-14" /></div>
                     <h1 className="text-4xl font-bold mb-4">Cyber Risk Scorecard</h1>
                     <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)' }}>
                         Evaluate the digital attack surface of your smart lock deployment
@@ -298,7 +298,7 @@ export default function CyberRiskScorecard() {
 
                     {/* Results */}
                     <div className="lg:col-span-1">
-                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.gradeClass}`}>
+                        <div className={`result-panel ${result.gradeClass}`}>
                             <h2 className="text-xl font-bold mb-4">Cyber Risk Score</h2>
                             <div className="text-center mb-6">
                                 <div className="text-7xl font-bold mb-1">{result.grade}</div>

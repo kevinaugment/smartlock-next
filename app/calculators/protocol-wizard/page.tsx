@@ -33,6 +33,35 @@ export default function ProtocolWizardPage() {
     { protocol: 'Wi-Fi', standard: 'IEEE 802.11-2020', frequency: '2.4/5 GHz', range: '20-30m indoor', battery: '3-4 months', hubCost: '$0' },
     { protocol: 'Bluetooth', standard: 'Bluetooth 5.0-6.0', frequency: '2.4 GHz', range: '10-15m indoor', battery: '10-12 months', hubCost: '$0' },
   ]
+  const batteryRows = [
+    { name: 'Zigbee', months: 12 },
+    { name: 'Z-Wave', months: 12 },
+    { name: 'Thread', months: 10 },
+    { name: 'Bluetooth', months: 10 },
+    { name: 'Wi-Fi', months: 3 },
+  ]
+  const decisionCards = [
+    {
+      title: 'Zigbee',
+      items: ['Long battery life is important', 'Five or more devices need mesh benefits', 'Hub cost must stay moderate', 'Alexa or SmartThings is primary', 'Mature product selection matters'],
+    },
+    {
+      title: 'Z-Wave',
+      items: ['Best indoor range is needed', '2.4 GHz congestion should be avoided', 'Commercial-grade ecosystem is preferred', 'Local control is required', 'Advanced automation is part of the plan'],
+    },
+    {
+      title: 'Thread',
+      items: ['Apple HomeKit is primary', 'Matter compatibility is a priority', 'Future ecosystem flexibility matters', 'Newer protocol support is acceptable', 'Budget allows a Thread border router'],
+    },
+    {
+      title: 'Wi-Fi',
+      items: ['Only one or two locks are planned', 'No hub is preferred', 'Fast cloud-connected response matters', 'Quarterly battery changes are acceptable', 'Reliable internet is always available'],
+    },
+    {
+      title: 'Bluetooth',
+      items: ['Single-door setup', 'No remote access needed', 'Phone is normally present', 'Lowest setup friction is the goal', 'Retrofit lock is preferred'],
+    },
+  ]
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -84,8 +113,8 @@ export default function ProtocolWizardPage() {
             </nav>
           </div>
 
-          <div className="text-center mb-12">
-            <div className="page-header__icon"><Wand2 className="w-14 h-14 mx-auto" /></div>
+          <div className="page-header">
+            <div className="page-header__icon"><Wand2 className="w-14 h-14" /></div>
             <h1 className="page-header__title">Smart Lock Protocol Selection Wizard</h1>
             <p className="page-header__subtitle">Answer 6 questions to find the optimal protocol for your needs</p>
           </div>
@@ -142,27 +171,23 @@ export default function ProtocolWizardPage() {
             />
           </div>
 
-          {/* Be-Tech Brand */}
+          {/* Brand reference */}
           <div className="max-w-7xl mx-auto mt-12">
-            <div className="content-card">
-              <div className="flex items-center gap-6">
-                <div className="flex-shrink-0">
-                  <div className="card" style={{ width: "5rem", height: "5rem", padding: "var(--space-sm)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <Image src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" width={64} height={64} className="w-full h-full object-contain" />
-                  </div>
+            <div className="reference-panel">
+              <div className="reference-panel__media">
+                <Image src="/images/brands/be-tech-logo.png" alt="Be-Tech Logo" width={64} height={64} className="w-full h-full object-contain" />
+              </div>
+              <div className="reference-panel__content">
+                <div className="reference-panel__header">
+                  <h3 className="reference-panel__title">Brand reference: Be-Tech</h3>
+                  <span className="badge badge-featured">Multi-protocol catalog</span>
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--color-text-primary)" }}>Recommended: Be-Tech</h3>
-                    <span className="badge badge-featured">Multi-Protocol</span>
-                  </div>
-                  <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-sm)" }}>
-                    Be-Tech offers locks across all major protocols: Zigbee, Z-Wave, Wi-Fi, and Bluetooth. Choose your ideal protocol then select a Be-Tech model for guaranteed quality and compatibility.
-                  </p>
-                  <a href="https://www.betechlock.com/" target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.875rem", color: "var(--color-accent)", fontWeight: 500 }}>
-                    Visit Official Website →
-                  </a>
-                </div>
+                <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
+                  Be-Tech offers locks across Zigbee, Z-Wave, Wi-Fi, and Bluetooth. Use the protocol result to narrow the transport layer first, then verify the exact model and regional compatibility.
+                </p>
+                <a href="https://www.betechlock.com/" target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.875rem", color: "var(--color-accent)", fontWeight: 500 }}>
+                  Visit official website →
+                </a>
               </div>
             </div>
           </div>
@@ -233,21 +258,14 @@ export default function ProtocolWizardPage() {
               {/* Battery Life Visualization */}
               <div className="mt-8">
                 <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-md)" }}>Battery Life Comparison (10 operations/day)</h3>
-                <div className="space-y-3">
-                  {[
-                    { name: 'Zigbee', months: 12, color: 'bg-green-500' },
-                    { name: 'Z-Wave', months: 12, color: 'bg-green-500' },
-                    { name: 'Thread', months: 10, color: 'bg-blue-500' },
-                    { name: 'Bluetooth', months: 10, color: 'bg-blue-500' },
-                    { name: 'Wi-Fi', months: 3, color: 'bg-red-500' }
-                  ].map(p => (
-                    <div key={p.name} className="flex items-center gap-4">
-                      <div className="w-24" style={{ fontSize: "0.875rem", fontWeight: 500, color: "var(--color-text-secondary)" }}>{p.name}</div>
-                      <div className="flex-1 rounded-full h-8 relative" style={{ background: 'var(--color-border)' }}>
-                        <div className={`absolute inset-y-0 left-0 ${p.color} rounded-full flex items-center justify-end pr-3`} style={{ width: `${(p.months / 12) * 100}%` }}>
-                          <span className="text-xs font-semibold text-white">{p.months} mo</span>
-                        </div>
+                <div className="data-bar-list">
+                  {batteryRows.map((p) => (
+                    <div key={p.name} className="data-bar-row">
+                      <div className="data-bar-row__label">{p.name}</div>
+                      <div className="data-bar">
+                        <div className="data-bar__fill" style={{ width: `${(p.months / 12) * 100}%` }} />
                       </div>
+                      <div className="data-bar-row__value">{p.months} mo</div>
                     </div>
                   ))}
                 </div>
@@ -306,61 +324,21 @@ export default function ProtocolWizardPage() {
           <div className="max-w-7xl mx-auto mt-12">
             <div className="content-card">
               <h2 className="section-title">Quick Decision Matrix</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="rounded-lg p-6" style={{ border: "2px solid var(--color-success)" }}>
-                  <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)" }}>Choose Zigbee If:</h3>
-                  <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
-                    <li>✓ Want long battery life (12+ mo)</li>
-                    <li>✓ Have 5+ devices (mesh benefits)</li>
-                    <li>✓ Budget-conscious (cheap hubs)</li>
-                    <li>✓ Alexa/SmartThings ecosystem</li>
-                    <li>✓ Mature product selection</li>
-                  </ul>
-                </div>
-                <div className="rounded-lg p-6" style={{ border: "2px solid var(--color-accent)" }}>
-                  <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)" }}>Choose Z-Wave If:</h3>
-                  <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
-                    <li>✓ Best range needed (thick walls)</li>
-                    <li>✓ No 2.4GHz interference wanted</li>
-                    <li>✓ Commercial/enterprise grade</li>
-                    <li>✓ 100% local control required</li>
-                    <li>✓ Advanced automation features</li>
-                  </ul>
-                </div>
-                <div className="rounded-lg p-6" style={{ border: "2px solid var(--color-accent)" }}>
-                  <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)" }}>Choose Thread If:</h3>
-                  <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
-                    <li>✓ Apple HomeKit primary</li>
-                    <li>✓ Future-proofing priority</li>
-                    <li>✓ Matter ecosystem desired</li>
-                    <li>✓ Latest technology wanted</li>
-                    <li>✓ Budget allows ($100+ hub)</li>
-                  </ul>
-                </div>
-                <div className="rounded-lg p-6" style={{ border: "2px solid var(--color-warning)" }}>
-                  <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)" }}>Choose Wi-Fi If:</h3>
-                  <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
-                    <li>✓ 1-2 locks only (not scaling)</li>
-                    <li>✓ No hub wanted (simplicity)</li>
-                    <li>✓ Fast response critical (&lt;200ms)</li>
-                    <li>✓ Monthly battery changes OK</li>
-                    <li>✓ Reliable internet available</li>
-                  </ul>
-                </div>
-                <div className="rounded-lg p-6" style={{ border: "2px solid var(--color-border)" }}>
-                  <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)" }}>Choose Bluetooth If:</h3>
-                  <ul className="space-y-2" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
-                    <li>✓ Single door, budget minimal</li>
-                    <li>✓ No remote access needed</li>
-                    <li>✓ Phone always present</li>
-                    <li>✓ Simplest setup desired</li>
-                    <li>✓ Retrofit existing deadbolt</li>
-                  </ul>
-                </div>
-                <div className="rounded-lg p-6" style={{ border: '2px solid var(--color-border)', background: 'var(--color-surface)' }}>
-                  <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "var(--space-sm)" }}>Pro Tip</h3>
+              <div className="decision-grid">
+                {decisionCards.map((card) => (
+                  <div key={card.title} className="decision-card">
+                    <h3 className="decision-card__title">{card.title}</h3>
+                    <ul className="decision-list">
+                      {card.items.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+                <div className="decision-card">
+                  <h3 className="decision-card__title">Planning note</h3>
                   <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
-                    For 10+ locks, Zigbee/Z-Wave mesh saves $400-800 over 5 years vs Wi-Fi (battery + hub cost). Use our TCO calculator for exact ROI.
+                    For 10+ locks, Zigbee or Z-Wave mesh can reduce 5-year battery and maintenance cost compared with Wi-Fi. Use the TCO calculator for the exact project model.
                   </p>
                 </div>
               </div>

@@ -81,8 +81,8 @@ export default function InstallationCostPage() {
             </nav>
           </div>
 
-          <div className="text-center mb-12">
-            <div className="page-header__icon"><DollarSign className="w-14 h-14 mx-auto" /></div>
+          <div className="page-header">
+            <div className="page-header__icon"><DollarSign className="w-14 h-14" /></div>
             <h1 className="page-header__title">Smart Lock Installation Cost Calculator</h1>
             <p className="page-header__subtitle">Estimate hardware, labor, wiring, and door modification costs before booking a locksmith or buying a lock</p>
           </div>
@@ -176,7 +176,7 @@ export default function InstallationCostPage() {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--color-text-primary)" }}>Recommended: Be-Tech</h3>
+                    <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--color-text-primary)" }}>Brand reference: Be-Tech</h3>
                     <span className="badge badge-success">Easy Install</span>
                   </div>
                   <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-sm)" }}>
@@ -269,21 +269,21 @@ export default function InstallationCostPage() {
                   <div className="w-32 text-right font-semibold text-sm">Standard (2.5 hrs)</div>
                   <div className="flex-1 rounded-full h-10 relative" style={{ background: "var(--color-bg-alt)" }}>
                     <div className="absolute inset-y-0 left-0 bg-blue-500 rounded-full" style={{ width: '42%' }}></div>
-                    <span className="absolute inset-0 flex items-center justify-start pl-4 text-sm font-semibold text-white">New installation, standard prep</span>
+                    <span className="absolute inset-0 flex items-center justify-start pl-4 text-sm font-semibold">New installation, standard prep</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-32 text-right font-semibold text-sm">Complex (4 hrs)</div>
                   <div className="flex-1 rounded-full h-10 relative" style={{ background: "var(--color-bg-alt)" }}>
                     <div className="absolute inset-y-0 left-0 bg-orange-500 rounded-full" style={{ width: '67%' }}></div>
-                    <span className="absolute inset-0 flex items-center justify-start pl-4 text-sm font-semibold text-white">Wiring + modification</span>
+                    <span className="absolute inset-0 flex items-center justify-start pl-4 text-sm font-semibold">Wiring + modification</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-32 text-right font-semibold text-sm">Commercial (6 hrs)</div>
                   <div className="flex-1 rounded-full h-10 relative" style={{ background: "var(--color-bg-alt)" }}>
                     <div className="absolute inset-y-0 left-0 bg-red-600 rounded-full" style={{ width: '100%' }}></div>
-                    <span className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-white">Access control integration</span>
+                    <span className="absolute inset-0 flex items-center justify-center text-sm font-semibold">Access control integration</span>
                   </div>
                 </div>
               </div>

@@ -75,8 +75,8 @@ export default function SubscriptionCompare() {
       <div className="container-main section">
         <Link href="/calculators" className="back-link">← Back</Link>
 
-        <div className="text-center mb-12">
-          <div className="page-header__icon"><Scale className="w-14 h-14 mx-auto" /></div>
+        <div className="page-header">
+          <div className="page-header__icon"><Scale className="w-14 h-14" /></div>
           <h1 className="text-4xl font-bold mb-4">Subscription vs Purchase Comparison</h1>
           <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Compare long-term costs of cloud subscription vs local solution</p>
         </div>
@@ -135,7 +135,7 @@ export default function SubscriptionCompare() {
           </div>
 
           <div>
-            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.winner === 'local' ? 'result-panel--grade-a' : 'result-panel--grade-b'}`}>
+            <div className={`result-panel ${result.winner === 'local' ? 'result-panel--grade-a' : 'result-panel--grade-b'}`}>
               <h2 className="text-xl font-bold mb-6">Cost Comparison</h2>
               <div className="text-center mb-8">
                 <div className="text-6xl font-bold mb-2">${result.difference}</div>

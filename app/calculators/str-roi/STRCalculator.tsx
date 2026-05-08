@@ -258,7 +258,7 @@ export default function STRCalculator() {
 
         {/* Results Section */}
         <div className="lg:col-span-1">
-          <div className={`rounded-lg shadow-xl p-8 text-white sticky top-4 ${getROIClass(result.roi)}`}>
+          <div className={`result-panel ${getROIClass(result.roi)}`}>
             <h2 className="text-xl font-bold mb-6">Annual ROI Summary</h2>
 
             <div className="text-center mb-8">

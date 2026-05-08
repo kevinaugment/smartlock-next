@@ -423,23 +423,24 @@ export default function CalculatorsPage() {
           <CalculatorDiscovery calculators={calculators} categories={categories} />
 
           {/* Features Section */}
-          <div className="card-elevated mb-16 p-12" style={{ background: 'var(--color-bg-alt)' }}>
+          <div className="content-card mb-16">
             <h2 className="section-title section-title--center">Why Use Our Calculators?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 { icon: <Zap className="w-7 h-7" />, title: 'Instant Results', desc: 'Get immediate calculations without waiting' },
                 { icon: <Calculator className="w-7 h-7" />, title: 'Expert Algorithms', desc: 'Based on ANSI/BHMA standards and real data' },
                 { icon: <Wrench className="w-7 h-7" />, title: 'Customizable', desc: 'Adjust parameters to match your exact needs' },
               ].map((f) => (
-                <div key={f.title} className="text-center">
+                <div key={f.title} className="feature-item">
                   <div
-                    className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4"
-                    style={{ background: 'var(--color-accent)', color: 'white' }}
+                    className="feature-item__icon feature-item__icon--accent feature-item__icon--lg"
                   >
                     {f.icon}
                   </div>
-                  <h3 className="font-semibold mb-2 text-color-primary">{f.title}</h3>
-                  <p className="text-sm text-color-secondary">{f.desc}</p>
+                  <div>
+                    <h3 className="feature-item__title">{f.title}</h3>
+                    <p className="feature-item__desc text-sm">{f.desc}</p>
+                  </div>
                 </div>
               ))}
             </div>

@@ -119,8 +119,8 @@ export default function GuestCodeCapacityPlanner() {
             <div className="container-main section">
                 <Link href="/calculators" className="back-link">← Back</Link>
 
-                <div className="text-center mb-12">
-                    <div className="page-header__icon"><KeyRound className="w-14 h-14 mx-auto" /></div>
+                <div className="page-header">
+                    <div className="page-header__icon"><KeyRound className="w-14 h-14" /></div>
                     <h1 className="page-header__title">Guest Code Capacity Planner</h1>
                     <p className="page-header__subtitle">
                         Plan guest code storage, rotation schedules, and collision risk for your smart locks
@@ -207,7 +207,7 @@ export default function GuestCodeCapacityPlanner() {
                     </div>
 
                     <div>
-                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 result-panel--grade-${result.grade.toLowerCase()}`}>
+                        <div className={`result-panel result-panel--grade-${result.grade.toLowerCase()}`}>
                             <h2 className="text-xl font-bold mb-6">Code Capacity</h2>
                             <div className="text-center mb-8">
                                 <div className="text-5xl font-bold mb-2">{result.codeUtilization}%</div>

@@ -180,11 +180,14 @@ export default function ProtocolWizard() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
+    <div className="tool-workflow">
       <div className="calculator-shell">
         <div className="calculator-inputs">
-          <div className="card">
-            <h2 className="text-2xl font-bold text-color-primary mb-6">Your Requirements</h2>
+          <section className="workspace-panel">
+            <div className="workspace-panel__header">
+              <span className="workspace-panel__step">01</span>
+              <h2>Your Requirements</h2>
+            </div>
 
             <div className="space-y-6">
               <div>
@@ -244,28 +247,35 @@ export default function ProtocolWizard() {
                 </select>
               </div>
             </div>
-          </div>
+          </section>
         </div>
 
         <div className="calculator-results">
           <div className={`result-panel ${getScoreClass(topChoice.score)}`}>
-            <div className="text-center mb-6">
-              <div className="text-5xl mb-2 text-white/90">★</div>
-              <h2 className="text-3xl font-bold mb-2">Recommended: {topChoice.name}</h2>
-              <div className="text-xl opacity-90">{topChoice.match} ({topChoice.score}% compatibility)</div>
+            <div className="result-panel__header">
+              <span className="workspace-panel__step">02</span>
+              <h2>Recommendation</h2>
             </div>
+            <div className="result-panel__summary">
+              <div>
+                <div className="result-panel__label">Protocol</div>
+                <div className="result-panel__title">{topChoice.name}</div>
+              </div>
+              <div className="result-panel__score">{topChoice.score}%</div>
+            </div>
+            <p className="result-panel__meta">{topChoice.match} compatibility</p>
 
             <div className="grid grid-cols-1 gap-4 mb-6">
               <div className="bg-white/10 rounded-lg p-4">
-                <p className="text-sm font-semibold mb-2">✓ Advantages</p>
+                <p className="text-sm font-semibold mb-2">Advantages</p>
                 <ul className="text-sm space-y-1 opacity-90">
-                  {topChoice.pros.map((pro, i) => <li key={i}>• {pro}</li>)}
+                  {topChoice.pros.map((pro, i) => <li key={i}>{pro}</li>)}
                 </ul>
               </div>
               <div className="bg-white/10 rounded-lg p-4">
                 <p className="text-sm font-semibold mb-2">Considerations</p>
                 <ul className="text-sm space-y-1 opacity-90">
-                  {topChoice.cons.map((con, i) => <li key={i}>• {con}</li>)}
+                  {topChoice.cons.map((con, i) => <li key={i}>{con}</li>)}
                 </ul>
               </div>
             </div>
@@ -278,11 +288,14 @@ export default function ProtocolWizard() {
         </div>
       </div>
 
-      <div className="card">
-        <h2 className="text-2xl font-bold text-color-primary mb-6">All Protocol Comparisons</h2>
+      <section className="workspace-panel">
+        <div className="workspace-panel__header">
+          <span className="workspace-panel__step">03</span>
+          <h2>All Protocol Comparisons</h2>
+        </div>
         <div className="space-y-4">
           {results.map((protocol, idx) => (
-            <div key={protocol.name} className={`border-2 rounded-lg p-6 ${idx === 0 ? 'border-cyan-500 bg-cyan-50/10' : 'border-border'}`}>
+            <div key={protocol.name} className={`protocol-row ${idx === 0 ? 'protocol-row--selected' : ''}`}>
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="text-xl font-bold text-color-primary">{idx + 1}. {protocol.name}</h3>
@@ -297,7 +310,7 @@ export default function ProtocolWizard() {
                 <div>
                   <p className="font-semibold text-color-success mb-1">Pros:</p>
                   <ul className="text-color-secondary space-y-0.5">
-                    {protocol.pros.map((pro, i) => <li key={i}>✓ {pro}</li>)}
+                    {protocol.pros.map((pro, i) => <li key={i}>{pro}</li>)}
                   </ul>
                 </div>
                 <div>
@@ -310,7 +323,7 @@ export default function ProtocolWizard() {
             </div>
           ))}
         </div>
-      </div>
+      </section>
     </div>
   )
 }

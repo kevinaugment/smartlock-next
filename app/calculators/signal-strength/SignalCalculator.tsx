@@ -392,7 +392,7 @@ export default function SignalCalculator() {
 
       {/* Results Section */}
       <div className="calculator-results">
-        <div className={`rounded-lg shadow-lg p-8 text-white ${result.signalPercent >= 60 ? 'result-panel--grade-a' :
+        <div className={`result-panel ${result.signalPercent >= 60 ? 'result-panel--grade-a' :
             result.signalPercent >= 40 ? 'result-panel--grade-c' :
               'result-panel--grade-f'
           }`}>

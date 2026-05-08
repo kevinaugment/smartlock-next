@@ -12,6 +12,8 @@
     "preview": "npm run cf:bindings && npm run cf:build && wrangler dev",
     "deploy": "npm run cf:bindings && wrangler deploy",
     "upload": "npm run cf:bindings && wrangler deploy --dry-run --outdir bundled",
+    "cf:d1:import": "wrangler d1 execute slockhub --remote --file database/d1-import-ordered.sql",
+    "cf:d1:counts": "wrangler d1 execute slockhub --remote --command \"SELECT 'brands' AS table_name, COUNT(*) AS count FROM brands UNION ALL SELECT 'products', COUNT(*) FROM products UNION ALL SELECT 'product_series', COUNT(*) FROM product_series UNION ALL SELECT 'top_n_pages', COUNT(*) FROM top_n_pages\"",
     "test:db-facade": "tsx tests/db-facade.test.ts"
   },
   "dependencies": {

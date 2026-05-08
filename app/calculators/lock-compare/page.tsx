@@ -100,8 +100,8 @@ export default function LockComparisonTool() {
             <div className="container-main section">
                 <Link href="/calculators" className="back-link">← Back</Link>
 
-                <div className="text-center mb-12">
-                    <div className="page-header__icon"><GitCompare className="w-14 h-14 mx-auto" /></div>
+                <div className="page-header">
+                    <div className="page-header__icon"><GitCompare className="w-14 h-14" /></div>
                     <h1 className="page-header__title">Smart Lock Comparison Tool</h1>
                     <p className="page-header__subtitle">
                         Select 2-4 smart lock models for side-by-side comparison

@@ -95,8 +95,8 @@ export default function EnergyCostCalculator() {
             <div className="container-main section">
                 <Link href="/calculators" className="back-link">← Back to Calculators</Link>
 
-                <div className="text-center mb-12">
-                    <div className="page-header__icon"><Zap className="w-14 h-14 mx-auto" /></div>
+                <div className="page-header">
+                    <div className="page-header__icon"><Zap className="w-14 h-14" /></div>
                     <h1 className="text-4xl font-bold mb-4">Energy Cost Calculator</h1>
                     <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)' }}>
                         Calculate the ongoing energy cost of your smart lock deployment
@@ -221,7 +221,7 @@ export default function EnergyCostCalculator() {
 
                     {/* Results */}
                     <div className="lg:col-span-1">
-                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4 result-panel--grade-c">
+                        <div className="result-panel result-panel--grade-c">
                             <h2 className="text-xl font-bold mb-6">Energy Cost</h2>
                             <div className="text-center mb-6">
                                 <div className="text-5xl font-bold mb-1">${result.annualCost}</div>

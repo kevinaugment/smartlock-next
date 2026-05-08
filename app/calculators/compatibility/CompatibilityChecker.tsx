@@ -442,7 +442,7 @@ export default function CompatibilityChecker() {
 
       {/* Results */}
       <div className="calculator-results">
-        <div className={`rounded-lg shadow-lg p-8 text-white ${getScoreClass(result.score)}`}>
+        <div className={`result-panel ${getScoreClass(result.score)}`}>
           <h2 className="text-xl font-bold mb-6">Compatibility Score</h2>
           <div className="text-center mb-8">
             <div className="text-6xl font-bold mb-2">{result.score}%</div>

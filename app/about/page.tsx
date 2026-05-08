@@ -43,7 +43,7 @@ export default function AboutPage() {
         {/* What We Offer */}
         <div className="mb-16">
           <h2 className="section-title section-title--center">What We Offer</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl">
             {[
               {
                 icon: <BookOpen className="w-8 h-8" />,
@@ -61,11 +61,8 @@ export default function AboutPage() {
                 desc: 'Protocol comparisons, brand reviews, and industry best practices to help you choose the right solution'
               },
             ].map((item) => (
-              <div key={item.title} className="card card-hover text-center">
-                <div
-                  className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-                  style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}
-                >
+              <div key={item.title} className="card card-hover">
+                <div className="feature-item__icon feature-item__icon--accent feature-item__icon--lg" style={{ marginBottom: 'var(--space-md)' }}>
                   {item.icon}
                 </div>
                 <h3 className="text-lg font-bold mb-3" style={{ color: 'var(--color-text-primary)' }}>{item.title}</h3>
@@ -76,7 +73,7 @@ export default function AboutPage() {
         </div>
 
         {/* Stats */}
-        <div className="card-elevated mb-16" style={{ padding: 'var(--space-2xl)', background: 'var(--color-accent-subtle)' }}>
+        <div className="content-card mb-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { value: '70+', label: 'Articles' },

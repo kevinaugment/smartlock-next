@@ -7,20 +7,25 @@ export default function Footer() {
   return (
     <footer className="footer mt-auto">
       <div className="container-main footer__inner">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* About */}
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="header-brand-bar" />
-              <Lock className="w-6 h-6" style={{ color: 'var(--color-accent)' }} />
-              <span className="text-lg font-bold" style={{ color: 'var(--color-text-inverse)' }}>SLockHub.com</span>
+        <div className="footer__top">
+          <div className="footer__brand">
+            <div className="footer__brand-mark">
+              <Lock className="w-5 h-5" />
+              <span>SLockHub</span>
             </div>
-            <p className="text-sm mb-4" style={{ color: 'var(--color-text-muted)' }}>
-              Your comprehensive resource for smart lock knowledge, tools, and expert guidance.
+            <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+              Smart lock calculators, protocol references, and product data for practical access-control decisions.
             </p>
           </div>
 
-          {/* Knowledge Base */}
+          <div className="footer__meta">
+            <span>Tool index</span>
+            <span>Protocol data</span>
+            <span>Brand reference</span>
+          </div>
+        </div>
+
+        <div className="footer__grid">
           <div>
             <h3 className="footer__heading">Knowledge Base</h3>
             <ul className="space-y-2 text-sm">
@@ -33,7 +38,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Tools */}
           <div>
             <h3 className="footer__heading">Calculators</h3>
             <ul className="space-y-2 text-sm">
@@ -49,39 +53,39 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Company */}
           <div>
-            <h3 className="footer__heading">Company</h3>
+            <h3 className="footer__heading">Decision Data</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/about">About Us</Link></li>
-              <li><Link href="/faq">FAQ</Link></li>
               <li><Link href="/compare">Protocol Comparison</Link></li>
               <li><Link href="/brands">Brands</Link></li>
               <li><Link href="/resources">Resources</Link></li>
               <li><Link href="/resources/glossary">Glossary</Link></li>
               <li><Link href="/resources/reference-tables">Reference Tables</Link></li>
               <li><Link href="/resources/buying-guide">Buying Guide</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="footer__heading">Site</h3>
+            <ul className="space-y-2 text-sm">
+              <li><Link href="/about">About</Link></li>
+              <li><Link href="/faq">FAQ</Link></li>
               <li><Link href="/contact">Contact</Link></li>
+              <li><Link href="/status">System Status</Link></li>
+              <li><Link href="/sitemap">Sitemap</Link></li>
               <li><Link href="/privacy">Privacy Policy</Link></li>
               <li><Link href="/terms">Terms of Service</Link></li>
             </ul>
           </div>
         </div>
 
-        {/* Gradient Divider */}
-        <hr className="footer-gradient-divider mt-8" />
-
-
-        {/* Bottom Bar */}
-        <div className="pt-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
-              © {currentYear} SLockHub.com. All rights reserved.
-            </p>
-            <div className="flex gap-6 text-sm">
-              <Link href="/sitemap">Sitemap</Link>
-              <Link href="/status">System Status</Link>
-            </div>
+        <div className="footer__bottom">
+          <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
+            © {currentYear} SLockHub. All rights reserved.
+          </p>
+          <div className="flex gap-6 text-sm">
+            <Link href="/sitemap">Sitemap</Link>
+            <Link href="/status">Status</Link>
           </div>
         </div>
       </div>

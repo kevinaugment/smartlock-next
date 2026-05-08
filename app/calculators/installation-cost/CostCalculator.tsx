@@ -300,7 +300,7 @@ export default function CostCalculator() {
 
       {/* Results Section */}
       <div className="calculator-results">
-        <div className="rounded-lg shadow-lg p-8 text-white result-panel--grade-a">
+        <div className="result-panel result-panel--grade-a">
           <h2 className="text-xl font-bold mb-6">Total Cost Estimate</h2>
 
           <div className="text-center mb-8">

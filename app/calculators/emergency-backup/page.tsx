@@ -135,8 +135,8 @@ export default function EmergencyBackup() {
       <div className="container-main section">
         <Link href="/calculators" className="back-link">← Back</Link>
 
-        <div className="text-center mb-12">
-          <div className="page-header__icon"><ShieldAlert className="w-14 h-14 mx-auto" /></div>
+        <div className="page-header">
+          <div className="page-header__icon"><ShieldAlert className="w-14 h-14" /></div>
           <h1 className="text-4xl font-bold mb-4">Emergency Backup Evaluator</h1>
           <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Evaluate your emergency unlock backup plan</p>
         </div>
@@ -227,7 +227,7 @@ export default function EmergencyBackup() {
           </div>
 
           <div>
-            <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 result-panel--grade-${result.grade.toLowerCase()}`}>
+            <div className={`result-panel result-panel--grade-${result.grade.toLowerCase()}`}>
               <h2 className="text-xl font-bold mb-6">Backup Readiness</h2>
               <div className="text-center mb-8">
                 <div className="text-7xl font-bold mb-2">{result.grade}</div>
@@ -299,7 +299,7 @@ export default function EmergencyBackup() {
           )}
         </div>
 
-        <div className="max-w-6xl mx-auto mt-12 p-8 rounded-lg text-white result-panel--grade-b">
+        <div className="max-w-6xl mx-auto mt-12 result-panel result-panel--grade-b">
           <h2 className="text-2xl font-bold mb-4">Emergency Scenarios to Plan For</h2>
           <div className="grid md:grid-cols-2 gap-4 text-sm">
             <div className="flex items-start gap-2">

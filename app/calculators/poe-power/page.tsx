@@ -148,8 +148,8 @@ export default function PoEPowerBudgetCalculator() {
             <div className="container-main section">
                 <Link href="/calculators" className="back-link">← Back</Link>
 
-                <div className="text-center mb-12">
-                    <div className="page-header__icon"><Zap className="w-14 h-14 mx-auto" /></div>
+                <div className="page-header">
+                    <div className="page-header__icon"><Zap className="w-14 h-14" /></div>
                     <h1 className="page-header__title">PoE Power Budget Calculator</h1>
                     <p className="page-header__subtitle">
                         Plan Power over Ethernet budgets for hardwired commercial smart lock installations
@@ -234,7 +234,7 @@ export default function PoEPowerBudgetCalculator() {
                     </div>
 
                     <div>
-                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.budgetUtilization <= 80 ? 'result-panel--grade-a' :
+                        <div className={`result-panel ${result.budgetUtilization <= 80 ? 'result-panel--grade-a' :
                                 result.budgetUtilization <= 100 ? 'result-panel--grade-c' :
                                     'result-panel--grade-f'
                             }`}>

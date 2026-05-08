@@ -65,8 +65,8 @@ export default function InstallationTime() {
       <div className="container-main section">
         <Link href="/calculators" className="back-link">← Back</Link>
 
-        <div className="text-center mb-12">
-          <div className="page-header__icon"><Timer className="w-14 h-14 mx-auto" /></div>
+        <div className="page-header">
+          <div className="page-header__icon"><Timer className="w-14 h-14" /></div>
           <h1 className="text-4xl font-bold mb-4">Installation Time Estimator</h1>
           <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Estimate technician hours and labor cost</p>
         </div>
@@ -144,7 +144,7 @@ export default function InstallationTime() {
           </div>
 
           <div>
-            <div className="p-8 rounded-lg shadow-lg text-white sticky top-4 result-panel--grade-c">
+            <div className="result-panel result-panel--grade-c">
               <h2 className="text-xl font-bold mb-6">Time & Cost Estimate</h2>
               <div className="text-center mb-8">
                 <div className="text-6xl font-bold mb-2">{result.crewDays}</div>

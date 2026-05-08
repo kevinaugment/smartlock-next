@@ -133,8 +133,8 @@ export default function NetworkBandwidthCalculator() {
             <div className="container-main section">
                 <Link href="/calculators" className="back-link">← Back</Link>
 
-                <div className="text-center mb-12">
-                    <div className="page-header__icon"><Wifi className="w-14 h-14 mx-auto" /></div>
+                <div className="page-header">
+                    <div className="page-header__icon"><Wifi className="w-14 h-14" /></div>
                     <h1 className="page-header__title">Network Bandwidth Calculator</h1>
                     <p className="page-header__subtitle">
                         Estimate bandwidth requirements for cloud-connected smart lock deployments
@@ -221,7 +221,7 @@ export default function NetworkBandwidthCalculator() {
                     </div>
 
                     <div>
-                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4 result-panel--grade-b">
+                        <div className="result-panel result-panel--grade-b">
                             <h2 className="text-xl font-bold mb-6">Bandwidth Estimate</h2>
                             <div className="text-center mb-8">
                                 <div className="text-5xl font-bold mb-2">{result.totalMbps < 1 ? `${result.totalKbps} Kbps` : `${result.totalMbps} Mbps`}</div>

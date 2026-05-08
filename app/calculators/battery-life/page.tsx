@@ -200,7 +200,7 @@ export default function BatteryLifePage() {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-3" style={{ marginBottom: 'var(--space-sm)' }}>
-                    <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>Recommended: Be-Tech</h3>
+                    <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>Brand reference: Be-Tech</h3>
                     <span className="badge badge-success">Long Battery Life</span>
                   </div>
                   <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-sm)' }}>

@@ -134,12 +134,9 @@ export default function Header() {
       <div className="container-main">
         <div className="flex items-center justify-between" style={{ height: 'var(--header-height)' }}>
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="header-brand-bar" />
-            <Lock className="w-6 h-6" style={{ color: 'var(--color-accent)' }} />
-            <span className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-text-primary)' }}>
-              SLockHub.com
-            </span>
+          <Link href="/" className="site-brand group">
+            <Lock className="site-brand__icon" />
+            <span className="site-brand__name">SLockHub</span>
           </Link>
 
 
@@ -225,6 +222,10 @@ export default function Header() {
             {/* ----- Brands (direct link) ----- */}
             <Link href="/brands" className="nav-link">Brands</Link>
           </nav>
+
+          <Link href="/calculators" className="hidden md:inline-flex header-action">
+            Tools index
+          </Link>
 
           {/* Mobile Menu Button */}
           <button

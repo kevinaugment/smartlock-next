@@ -103,8 +103,8 @@ export default function HotelROI() {
             <div className="container-main section">
                 <Link href="/calculators" className="back-link">← Back to Calculators</Link>
 
-                <div className="text-center mb-12">
-                    <div className="page-header__icon"><Building2 className="w-14 h-14 mx-auto" /></div>
+                <div className="page-header">
+                    <div className="page-header__icon"><Building2 className="w-14 h-14" /></div>
                     <h1 className="text-4xl font-bold mb-4">Hotel & Hospitality ROI Calculator</h1>
                     <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)' }}>
                         Calculate the return on investment for smart lock deployment in hotels and hospitality properties
@@ -276,7 +276,7 @@ export default function HotelROI() {
 
                     {/* Results Panel */}
                     <div className="lg:col-span-1">
-                        <div className="p-8 rounded-lg shadow-lg text-white sticky top-4 result-panel--grade-b">
+                        <div className="result-panel result-panel--grade-b">
                             <h2 className="text-xl font-bold mb-6">ROI Summary</h2>
                             <div className="text-center mb-6">
                                 <div className="text-5xl font-bold mb-1">{result.paybackMonths}</div>

@@ -142,8 +142,8 @@ export default function BLERangeCalculator() {
             <div className="container-main section">
                 <Link href="/calculators" className="back-link">← Back</Link>
 
-                <div className="text-center mb-12">
-                    <div className="page-header__icon"><Bluetooth className="w-14 h-14 mx-auto" /></div>
+                <div className="page-header">
+                    <div className="page-header__icon"><Bluetooth className="w-14 h-14" /></div>
                     <h1 className="page-header__title">BLE Range & Proximity Calculator</h1>
                     <p className="page-header__subtitle">
                         Estimate Bluetooth Low Energy signal coverage for proximity-based smart lock unlocking
@@ -229,7 +229,7 @@ export default function BLERangeCalculator() {
                     </div>
 
                     <div>
-                        <div className={`p-8 rounded-lg shadow-lg text-white sticky top-4 ${result.reliabilityScore >= 95 ? 'result-panel--grade-a' :
+                        <div className={`result-panel ${result.reliabilityScore >= 95 ? 'result-panel--grade-a' :
                                 result.reliabilityScore >= 80 ? 'result-panel--grade-b' :
                                     result.reliabilityScore >= 50 ? 'result-panel--grade-c' :
                                         'result-panel--grade-f'

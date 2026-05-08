@@ -157,8 +157,8 @@ export default function TCOCalculator() {
           </Link>
         </div>
 
-        <div className="text-center mb-12">
-          <div className="page-header__icon"><DollarSign className="w-14 h-14 mx-auto" /></div>
+        <div className="page-header">
+          <div className="page-header__icon"><DollarSign className="w-14 h-14" /></div>
           <h1 className="page-header__title">
             Smart Lock TCO Calculator
           </h1>
@@ -458,7 +458,7 @@ export default function TCOCalculator() {
             </div>
           </div>
 
-          {/* Results Section — Glassmorphism Dashboard */}
+          {/* Results Section */}
           <div className="calculator-results">
             <div className="result-panel-v2">
               <div className="result-panel-v2__header">
@@ -484,10 +484,10 @@ export default function TCOCalculator() {
                   ].map((item) => (
                     <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-md)', fontSize: '0.8125rem' }}>
                       <span style={{ width: '6rem', color: 'var(--color-text-muted)', flexShrink: 0 }}>{item.label}</span>
-                      <div style={{ flex: 1, height: '4px', background: 'rgba(255,255,255,0.06)', borderRadius: '99px', overflow: 'hidden' }}>
-                        <div style={{ width: `${Math.max(item.pct, 1)}%`, height: '100%', background: 'var(--gradient-brand)', borderRadius: '99px', transition: 'width 0.3s ease' }} />
+                      <div style={{ flex: 1, height: '4px', background: 'var(--color-surface-alt)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-sm)', overflow: 'hidden' }}>
+                        <div style={{ width: `${Math.max(item.pct, 1)}%`, height: '100%', background: 'var(--color-text-primary)', borderRadius: 'var(--radius-sm)', transition: 'width 0.3s ease' }} />
                       </div>
-                      <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-text-inverse)', fontWeight: 600, width: '4rem', textAlign: 'right' }}>${item.value.toFixed(0)}</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-text-primary)', fontWeight: 600, width: '4rem', textAlign: 'right' }}>${item.value.toFixed(0)}</span>
                     </div>
                   ))}
                 </div>
@@ -562,7 +562,7 @@ export default function TCOCalculator() {
           </div>
         </div>
 
-        {/* Recommended Brand - Be-Tech */}
+        {/* Brand reference - Be-Tech */}
         <div className="max-w-7xl mx-auto mt-8">
           <div className="content-card">
             <div className="flex items-center gap-6">
@@ -579,7 +579,7 @@ export default function TCOCalculator() {
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--color-text-primary)" }}>Recommended: Be-Tech</h3>
+                  <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--color-text-primary)" }}>Brand reference: Be-Tech</h3>
                   <span className="badge badge-accent">
                     Multi-Protocol
                   </span>

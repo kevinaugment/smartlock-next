@@ -155,18 +155,27 @@ export default async function Brands() {
           </section>
         )}
 
-        <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
-          <h2 className="section-title">Protocol Coverage Across Brands</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {protocolStats.map((stat) => (
-              <Link key={stat.label} href={stat.href} className="link-card">
-                <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>{stat.count}</div>
-                <h3 className="link-card__title">{stat.label} brands</h3>
-                <p className="link-card__desc">Review protocol tradeoffs and compatible locks.</p>
-              </Link>
-            ))}
+        {brands.length > 0 ? (
+          <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+            <h2 className="section-title">Protocol Coverage Across Brands</h2>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {protocolStats.map((stat) => (
+                <Link key={stat.label} href={stat.href} className="link-card">
+                  <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>{stat.count}</div>
+                  <h3 className="link-card__title">{stat.label} brands</h3>
+                  <p className="link-card__desc">Review protocol tradeoffs and compatible locks.</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ) : (
+          <div className="callout callout-warning" style={{ marginBottom: 'var(--space-3xl)' }}>
+            <p className="callout-title">Brand database is not populated</p>
+            <p>
+              The brand catalog tables are empty in the active database. Import the D1 seed data before using protocol coverage and brand comparison pages in production.
+            </p>
           </div>
-        </section>
+        )}
 
         {/* Disclaimer */}
         <div className="callout callout-warning" style={{ marginBottom: 'var(--space-3xl)' }}>

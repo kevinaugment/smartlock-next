@@ -56,8 +56,8 @@ export default function STRROIPage() {
             </nav>
           </div>
 
-          <div className="text-center mb-12">
-            <div className="page-header__icon"><Home className="w-14 h-14 mx-auto" /></div>
+          <div className="page-header">
+            <div className="page-header__icon"><Home className="w-14 h-14" /></div>
             <h1 className="page-header__title">Short-Term Rental Smart Lock ROI Calculator</h1>
             <p className="page-header__subtitle">Calculate labor savings, lockout costs, and payback period for your Airbnb/VRBO smart lock investment</p>
           </div>
@@ -86,7 +86,7 @@ export default function STRROIPage() {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--color-text-primary)" }}>Recommended: Be-Tech</h3>
+                    <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--color-text-primary)" }}>Brand reference: Be-Tech</h3>
                     <span className="badge badge-success">STR Optimized</span>
                   </div>
                   <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-sm)" }}>
@@ -225,7 +225,7 @@ export default function STRROIPage() {
                     // 5 Properties: 10% bulk discount on hardware, 20% installation savings, 10% better efficiency
                     { label: '5 Properties', months: 3.8, savings: 4980, hardware: 1590, color: 'bg-blue-500' },
                     // 20+ Properties: 15% bulk discount, 30% installation savings, 20% better efficiency  
-                    { label: '20+ Properties', months: 3.2, savings: 21740, hardware: 5840, color: 'bg-purple-500' }
+                    { label: '20+ Properties', months: 3.2, savings: 21740, hardware: 5840, color: 'bg-blue-500' }
                   ].map(scenario => (
                     <div key={scenario.label} className="space-y-2">
                       <div className="flex justify-between text-sm">
@@ -234,7 +234,7 @@ export default function STRROIPage() {
                       </div>
                       <div className="relative h-10 rounded-full overflow-hidden" style={{ background: "var(--color-border)" }}>
                         <div className={`absolute inset-y-0 left-0 ${scenario.color} rounded-full flex items-center justify-end pr-4`} style={{ width: `${(scenario.months / 12) * 100}%` }}>
-                          <span className="text-xs font-semibold text-white">{scenario.months}mo</span>
+                          <span className="text-xs font-semibold">{scenario.months}mo</span>
                         </div>
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                           <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>← 12 months →</span>

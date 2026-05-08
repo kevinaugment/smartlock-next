@@ -1,0 +1,34 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "smartlock-next",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-05-08",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "r2_buckets": [
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "smartlock-next-cache"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "smartlock-next-preview",
+      "database_id": "REPLACE_WITH_PREVIEW_D1_DATABASE_ID"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "keep_vars": true,
+  "vars": {
+    "NEXT_RUNTIME": "cloudflare"
+  },
+  "build": {
+    "command": "npm run cf:build"
+  }
+}

@@ -15,6 +15,16 @@ const nextConfig = {
   // Page extensions
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
 
+  experimental: {
+    outputFileTracingIncludes: {
+      '*': [
+        './node_modules/@libsql/client/lib-esm/web.js',
+        './node_modules/@libsql/isomorphic-ws/web.mjs',
+        './node_modules/@libsql/isomorphic-ws/web.cjs',
+      ],
+    },
+  },
+
   // SEO: 301 redirects for consolidated/removed pages
   async redirects() {
     return [

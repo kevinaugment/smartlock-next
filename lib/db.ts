@@ -1,14 +1,68 @@
 // Turso数据库连接配置 - 兼容Vercel Edge Runtime
-import { createClient } from '@libsql/client'
+type TursoClient = {
+  execute(input: { sql: string; args: any[] }): Promise<{ rows: unknown[]; rowsAffected: number }>
+  batch(
+    statements: Array<{ sql: string; args: any[] }>,
+    mode: 'write'
+  ): Promise<unknown[]>
+}
+
+type D1Result<T = unknown> = {
+  results?: T[]
+  success: boolean
+  meta?: {
+    changes?: number
+    rows_written?: number
+  }
+}
+
+type D1PreparedStatement = {
+  bind(...values: any[]): D1PreparedStatement
+  first<T = unknown>(): Promise<T | null>
+  run<T = unknown>(): Promise<D1Result<T>>
+  all<T = unknown>(): Promise<D1Result<T>>
+}
+
+type D1Database = {
+  prepare(query: string): D1PreparedStatement
+  batch<T = unknown>(statements: D1PreparedStatement[]): Promise<D1Result<T>[]>
+}
+
+let tursoClient: TursoClient | null = null
+const d1DatabaseOverrideKey = Symbol.for('smartlock-next.db.d1Override')
+
+async function loadCreateClient() {
+  const libsql = await import('@libsql/client')
+  return libsql.createClient
+}
+
+async function getD1Database(): Promise<D1Database | null> {
+  const globalWithOverride = globalThis as typeof globalThis & {
+    [d1DatabaseOverrideKey]?: D1Database | null
+  }
+  if (globalWithOverride[d1DatabaseOverrideKey]) return globalWithOverride[d1DatabaseOverrideKey]
+
+  try {
+    const { getCloudflareContext } = await import('@opennextjs/cloudflare')
+    const context = getCloudflareContext()
+    const env = context.env as Record<string, unknown>
+    return (env.DB as D1Database | undefined) ?? null
+  } catch {
+    return null
+  }
+}
 
 // 创建Turso客户端
-export function getTursoClient() {
-  const client = createClient({
+export async function getTursoClient() {
+  if (tursoClient) return tursoClient
+
+  const createClient = await loadCreateClient()
+  tursoClient = createClient({
     url: process.env.TURSO_DATABASE_URL!,
     authToken: process.env.TURSO_AUTH_TOKEN!,
   })
   
-  return client
+  return tursoClient
 }
 
 function isRetryableDatabaseError(error: unknown): boolean {
@@ -40,7 +94,14 @@ async function withDatabaseRetry<T>(operation: () => Promise<T>): Promise<T> {
 
 // 便捷查询函数
 export async function query<T = any>(sql: string, params?: any[]): Promise<T[]> {
-  const client = getTursoClient()
+  const d1 = await getD1Database()
+  if (d1) {
+    const statement = d1.prepare(sql).bind(...(params || []))
+    const result = await statement.all<T>()
+    return result.results || []
+  }
+
+  const client = await getTursoClient()
   
   try {
     const result = await withDatabaseRetry(() => client.execute({
@@ -62,7 +123,14 @@ export async function queryOne<T = any>(sql: string, params?: any[]): Promise<T 
 
 // 执行命令（INSERT, UPDATE, DELETE）
 export async function execute(sql: string, params?: any[]): Promise<number> {
-  const client = getTursoClient()
+  const d1 = await getD1Database()
+  if (d1) {
+    const statement = d1.prepare(sql).bind(...(params || []))
+    const result = await statement.run()
+    return result.meta?.changes ?? result.meta?.rows_written ?? 0
+  }
+
+  const client = await getTursoClient()
   
   try {
     const result = await withDatabaseRetry(() => client.execute({
@@ -78,7 +146,13 @@ export async function execute(sql: string, params?: any[]): Promise<number> {
 
 // 批量执行
 export async function batch(statements: Array<{ sql: string; params?: any[] }>) {
-  const client = getTursoClient()
+  const d1 = await getD1Database()
+  if (d1) {
+    const prepared = statements.map(({ sql, params }) => d1.prepare(sql).bind(...(params || [])))
+    return await d1.batch(prepared)
+  }
+
+  const client = await getTursoClient()
   
   try {
     const batch = statements.map(({ sql, params }) => ({

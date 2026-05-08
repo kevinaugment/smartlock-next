@@ -9,7 +9,6 @@ export const metadata: Metadata = {
   robots: 'noindex',
 }
 
-export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
@@ -27,7 +26,7 @@ export default async function StatusPage() {
   try {
     const articlesResult = await queryOne<{ count: number }>('SELECT COUNT(*) as count FROM articles')
     checks.push({
-      name: 'Turso Database Connection',
+      name: 'Database Connection',
       status: 'success',
       message: 'Database connected'
     })
@@ -40,7 +39,7 @@ export default async function StatusPage() {
     })
   } catch (e) {
     checks.push({
-      name: 'Turso Database Connection',
+      name: 'Database Connection',
       status: 'error',
       message: e instanceof Error ? e.message : 'Connection failed'
     })
@@ -100,13 +99,13 @@ export default async function StatusPage() {
             <div style={{ marginTop: 'var(--space-xl)', paddingTop: 'var(--space-lg)', borderTop: '1px solid var(--color-border)' }}>
               <div className="grid grid-cols-2 gap-4" style={{ fontSize: '0.875rem' }}>
                 <div>
-                  <span style={{ fontWeight: 600 }}>Platform:</span> Vercel Edge
+                  <span style={{ fontWeight: 600 }}>Platform:</span> Cloudflare Workers
                 </div>
                 <div>
-                  <span style={{ fontWeight: 600 }}>Database:</span> Turso (LibSQL)
+                  <span style={{ fontWeight: 600 }}>Database:</span> D1 with Turso fallback
                 </div>
                 <div>
-                  <span style={{ fontWeight: 600 }}>Runtime:</span> Edge Runtime
+                  <span style={{ fontWeight: 600 }}>Runtime:</span> Workerd / OpenNext
                 </div>
                 <div>
                   <span style={{ fontWeight: 600 }}>Timestamp:</span> {new Date().toISOString()}

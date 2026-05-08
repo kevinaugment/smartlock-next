@@ -10,20 +10,24 @@ node_modules
 /.next/
 /out/
 .next
+.open-next/
 
 # Production
 /build
 dist
+bundled/
 
 # Misc
 .DS_Store
 *.pem
 .gitnexus/
+.wrangler/
 
 # Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.baseline-artifacts/
 
 # Local env files
 .env

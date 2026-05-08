@@ -26,10 +26,6 @@ function toFilename(reportType: ReportType) {
 }
 
 async function persistLead(payload: z.infer<typeof reportLeadSchema>, request: NextRequest) {
-  if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN) {
-    return { stored: false, reason: 'database-not-configured' }
-  }
-
   try {
     await execute(`
       CREATE TABLE IF NOT EXISTS report_leads (

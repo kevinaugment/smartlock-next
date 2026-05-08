@@ -1,7 +1,7 @@
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **smartlock-next** (4186 symbols, 4801 relationships, 43 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **smartlock-next** (4584 symbols, 5442 relationships, 52 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 
@@ -39,25 +39,5 @@ This project is indexed by GitNexus as **smartlock-next** (4186 symbols, 4801 re
 | Rename / extract / split / refactor | `.claude/skills/gitnexus/gitnexus-refactoring/SKILL.md` |
 | Tools, resources, schema reference | `.claude/skills/gitnexus/gitnexus-guide/SKILL.md` |
 | Index, status, clean, wiki CLI commands | `.claude/skills/gitnexus/gitnexus-cli/SKILL.md` |
-| Work in the Db area (34 symbols) | `.claude/skills/generated/db/SKILL.md` |
-| Work in the Lock-tco area (17 symbols) | `.claude/skills/generated/lock-tco/SKILL.md` |
-| Work in the [slug] area (16 symbols) | `.claude/skills/generated/slug/SKILL.md` |
-| Work in the Articles area (13 symbols) | `.claude/skills/generated/articles/SKILL.md` |
-| Work in the Components area (8 symbols) | `.claude/skills/generated/components/SKILL.md` |
-| Work in the Services area (7 symbols) | `.claude/skills/generated/services/SKILL.md` |
-| Work in the Signal-strength area (7 symbols) | `.claude/skills/generated/signal-strength/SKILL.md` |
-| Work in the Compatibility area (7 symbols) | `.claude/skills/generated/compatibility/SKILL.md` |
-| Work in the Ratings area (6 symbols) | `.claude/skills/generated/ratings/SKILL.md` |
-| Work in the Pin-strength area (6 symbols) | `.claude/skills/generated/pin-strength/SKILL.md` |
-| Work in the Str-roi area (6 symbols) | `.claude/skills/generated/str-roi/SKILL.md` |
-| Work in the Installation-cost area (6 symbols) | `.claude/skills/generated/installation-cost/SKILL.md` |
-| Work in the Brands area (5 symbols) | `.claude/skills/generated/brands/SKILL.md` |
-| Work in the Protocol-wizard area (5 symbols) | `.claude/skills/generated/protocol-wizard/SKILL.md` |
-| Work in the Cluster_1 area (4 symbols) | `.claude/skills/generated/cluster-1/SKILL.md` |
-| Work in the App area (4 symbols) | `.claude/skills/generated/app/SKILL.md` |
-| Work in the [product] area (4 symbols) | `.claude/skills/generated/product/SKILL.md` |
-| Work in the Mesh-planner area (4 symbols) | `.claude/skills/generated/mesh-planner/SKILL.md` |
-| Work in the Credential-planner area (4 symbols) | `.claude/skills/generated/credential-planner/SKILL.md` |
-| Work in the Battery-life area (4 symbols) | `.claude/skills/generated/battery-life/SKILL.md` |
 
 <!-- gitnexus:end -->

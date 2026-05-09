@@ -6,8 +6,8 @@ description: >-
   setup before daily use.
 category: installation
 pubDate: 2024-03-12T00:00:00.000Z
-wordCount: 530
-readingTime: 2
+wordCount: 942
+readingTime: 5
 keywords:
   - test smart lock
   - smart lock testing
@@ -26,418 +26,70 @@ relatedArticles:
   - door-alignment-guide
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## Quick Answer
-
-**Test smart lock after installation: Basic test (5 min) - lock/unlock 5× manually + app + keypad. Full test (20 min) - 50 operations all methods, alignment check, auto-lock verify, battery/signal status. Don't consider install complete until all tests pass.** Only use lock daily after 24-hour burn-in with no issues.
+Do not consider a smart lock installation finished when the app says setup is complete. The lock still has to prove that the deadbolt moves cleanly, the keypad works, the app reports the correct state, the backup key opens the door, and the lock can repeat normal use without jamming.
 
-**Minimum testing:** 50 operations (lock/unlock cycles) before trusting lock
+Most post-installation problems come from mechanical fit, not software. A deadbolt that barely scrapes the strike plate may pass one app test and then fail at night when the door shifts, the weather seal pushes back, or the batteries are weaker. Testing catches those problems while the tools are still out.
 
-## Why Testing Matters
+Use this guide after [Install Smart Lock Step by Step](/articles/installation/install-smart-lock-step-by-step), and keep [Door Alignment Guide](/articles/guides/door-alignment-guide) nearby if the bolt does not move smoothly.
 
-### Consequences of Inadequate Testing
+## The Minimum Test
 
-```
-Installed but not tested:
-❌ Discover jam when guests arrive (emergency)
-❌ Find misalignment after door already painted
-❌ Code doesn't work when you need it
-❌ Auto-lock fails, left unlocked overnight
-❌ Battery drains fast due to poor signal
+Start with the door open. Lock and unlock manually from the inside several times. The thumb turn should move smoothly, without grinding, scraping, or springing back. Then close the door and repeat the same test. If the closed-door movement feels harder, fix alignment before testing electronics.
 
-Properly tested:
-✅ Issues caught immediately (easy to fix)
-✅ Confidence in reliability
-✅ No surprises during daily use
-✅ Optimization opportunities identified
-```
+Next, test each normal access method:
 
-**Rule:** If you're not willing to test, you're not done installing
-
-## Quick Test (5 Minutes)
-
-**Minimum viable test:**
-
-```
-☑️ Test 1: Manual operation (door open)
-   - Turn thumb turn → Extends smoothly
-   - Turn opposite → Retracts smoothly
-   - No grinding or resistance
-
-☑️ Test 2: Manual operation (door closed)
-   - Lock manually → Deadbolt enters strike smoothly
-   - Unlock manually → Deadbolt retracts cleanly
-   - Repeat 3 times
-
-☑️ Test 3: App control
-   - Lock via app → Works within 2 seconds
-   - Unlock via app → Works within 2 seconds
-   - Status updates immediately
-
-☑️ Test 4: Keypad (if equipped)
-   - Enter PIN → Unlocks
-   - Repeat with 2 different codes
-   - No error beeps
-
-☑️ Test 5: Battery and signal check
-   - Battery shows 100% (new batteries)
-   - Signal strength good (RSSI > -75)
-   - Lock shows "Online"
-```
-
-**Pass all 5? Proceed to full test**
-
-## Full Test (20-30 Minutes)
-
-### Test 1: Alignment Verification (Critical)
-
-```
-Purpose: Ensure deadbolt aligned with strike plate
-
-□ Open door
-□ Extend deadbolt manually
-□ Close door SLOWLY while watching
-□ Deadbolt should:
-  ✅ Enter strike hole smoothly
-  ✅ Not hit metal edge
-  ✅ No grinding or scraping
-
-□ If misaligned:
-  - Stop immediately
-  - Adjust strike plate
-  - Re-test until perfect
-
-□ Mark as PASS only if:
-  - Zero resistance
-  - Zero sound (except soft click at end)
-  - Works from multiple door positions (push/pull slightly)
-```
-
-### Test 2: Stress Test (50 Cycles)
-
-```
-Purpose: Verify mechanical reliability
-
-Perform 50 lock/unlock cycles:
-□ 10× via app
-□ 10× via keypad (different codes)
-□ 10× manual thumb turn
-□ 10× with door closed
-□ 10× with door open
-
-Track failures:
-- How many times it jammed? ___
-- How many timeouts? ___
-- How many error beeps? ___
-
-Goal: 0 failures in 50 attempts (100% success rate)
-
-Acceptable: 1-2 failures (98%+ rate)
-Fail: 3+ failures (needs troubleshooting)
-```
-
-### Test 3: All Access Methods
-
-```
-☑️ App unlock
-   - iOS app (if applicable)
-   - Android app (if applicable)
-   - Web dashboard (if available)
-
-☑️ Voice control (if integrated)
-   - "Alexa, unlock front door"
-   - "Hey Google, unlock front door"
-   - "Hey Siri, unlock front door"
-   - Should require authentication
-
-☑️ Keypad codes
-   - Master code
-   - User code 1
-   - User code 2
-   - Temporary code (if set)
-
-☑️ Physical key (if equipped)
-   - Insert and turn
-   - Should override electronics
-
-☑️ Auto-lock (if enabled)
-   - Lock door manually
-   - Wait auto-lock timeout (30 sec, 5 min, etc.)
-   - Verify lock engages automatically
-
-☑️ Auto-unlock (if enabled)
-   - Walk away 300m
-   - Return to door
-   - Should unlock automatically
-```
-
-### Test 4: Edge Cases
-
-```
-☑️ Rapid operations
-   - Lock → Immediately unlock → Lock
-   - Should handle rapid commands
-   - No timeout or confusion
-
-☑️ Interrupted operation
-   - Start lock command
-   - Manually turn thumb turn mid-operation
-   - Lock should complete or gracefully fail
-
-☑️ Wrong code handling
-   - Enter incorrect PIN 3 times
-   - Verify lockout behavior (if applicable)
-   - Verify error beeps/messages
-
-☑️ Low battery simulation
-   - Remove 1 battery (lock should warn)
-   - Replace battery
-   - Verify low battery alert works
-```
-
-### Test 5: Network Stability
-
-```
-☑️ Response time
-   - Measure 10 app commands
-   - Average should be <1 second (local)
-   - <3 seconds (WiFi cloud)
-
-☑️ Command success rate
-   - All 10 commands should succeed
-   - No timeouts
-   - No "No Response" errors
-
-☑️ Status updates
-   - Lock manually
-   - Check app updates within 5 seconds
-   - Should show "Locked" accurately
-
-☑️ Offline recovery
-   - Unplug hub (Zigbee/Z-Wave)
-   - Wait 2 minutes
-   - Replug hub
-   - Lock should reconnect within 5 minutes
-```
-
-### Test 6: Safety Features
-
-```
-☑️ Tamper detection (if equipped)
-   - Try to remove lock forcefully
-   - Should trigger alarm/notification
-
-☑️ Deadbolt monitoring
-   - Lock door electronically
-   - Manually turn deadbolt from inside
-   - App should show "Unlocked" (senses manual override)
-
-☑️ Door ajar sensor (if equipped)
-   - Lock while door open
-   - Should warn "Door open" (if supported)
-
-☑️ Auto-relock after unlock
-   - Unlock door
-   - Don't open door
-   - Should re-lock after timeout (if enabled)
-```
-
-## 24-Hour Burn-In Test
-
-**After passing all tests above:**
-
-```
-Day 1 (after installation):
-□ Perform full test
-□ Use lock normally
-□ Monitor for any issues
-
-Day 2 (24 hours later):
-□ Check battery level (should be 100% or 95-99%)
-□ Check lock still online
-□ Verify no unexpected behavior
-□ Test 10 more operations
-
-Pass criteria:
-✅ No jams in 24 hours
-✅ No offline events
-✅ Battery level stable
-✅ All operations smooth
-
-Fail criteria:
-❌ Any jam
-❌ Went offline even once
-❌ Battery dropped >5%
-❌ Any unexpected behavior
-
-If fail: Troubleshoot before daily use
-```
-
-## Testing Checklist (Printable)
-
-**Print this and check off:**
-
-```
-□ Basic Test (5 min)
-  □ Manual lock/unlock (door open) 3×
-  □ Manual lock/unlock (door closed) 3×
-  □ App lock/unlock 2×
-  □ Keypad unlock 2×
-  □ Battery 100%, Signal good
-
-□ Full Test (20 min)
-  □ Alignment perfect (no grinding)
-  □ 50-cycle stress test (0-2 failures)
-  □ All access methods work
-  □ Edge cases handled
-  □ Network stable (<1 sec response)
-  □ Safety features functional
-
-□ 24-Hour Burn-In
-  □ Day 1: Full test passed
-  □ Day 2: No issues in 24 hours
-  □ Battery stable
-  □ Ready for daily use
-
-Installation complete: ___________
-                      (Date/Time)
-
-Tested by: ___________
-
-Issues found: ___________
-
-Resolution: ___________
-```
-
-## Common Test Failures & Fixes
-
-### Failure: Jams on Close (>2/50 tests)
-
-**Fix:**
-```
-□ Adjust strike plate alignment
-□ Enlarge strike hole 1-2mm
-□ Loosen mounting screws 1/4 turn
-□ Re-test until 0 jams in 50 attempts
-```
-
-### Failure: Slow Response (>3 seconds)
-
-**Fix:**
-```
-□ Add repeater between hub and lock
-□ Check signal strength (RSSI)
-□ Change Zigbee channel (if interference)
-□ Update hub firmware
-```
-
-### Failure: Battery Drops >5% in 24 Hours
-
-**Fix:**
-```
-□ Check signal strength (weak signal drains battery)
-□ Add repeater
-□ Disable unnecessary features
-□ Verify not over-polling (reduce to 5 min)
-```
-
-### Failure: Intermittent Offline
-
-**Fix:**
-```
-□ Strengthen signal (add repeater)
-□ Update firmware (hub + lock)
-□ Check for interference (WiFi overlap)
-□ Verify batteries seated properly
-```
-
-## When to Retest
-
-**Retest after:**
-```
-☑️ Any adjustment to lock mounting
-☑️ Any adjustment to strike plate
-☑️ Firmware updates
-☑️ Hub replacement or relocation
-☑️ Adding/removing repeaters
-☑️ Seasonal changes (door expansion/contraction)
-☑️ Any period of unusual behavior
-```
-
-**Annual retest:**
-```
-Once per year, full test again:
-- Ensures long-term reliability
-- Catches gradual degradation
-- Identifies maintenance needs
-```
-
-## Documentation
-
-**After successful testing, document:**
-```
-□ Installation date: ___________
-□ Firmware versions:
-  - Lock: ___________
-  - Hub: ___________
-□ Signal strength (RSSI): ___________
-□ Battery brand/type: ___________
-□ Test results: PASS / FAIL
-□ Issues encountered: ___________
-□ Fixes applied: ___________
-□ Next test due: ___________ (1 year later)
-```
-
-**Store with:**
-- Lock manual
-- Warranty information
-- Backup key
-- Master code  - secured
-
-## Related Resources
-
-**Installation:**
-- [Install Smart Lock Step-by-Step] - /support/install-smart-lock-step-by-step - Complete guide
-- [Door Compatibility] - /installation/door-compatibility-guide - Pre-install check
-
-**Troubleshooting:**
-- [Lock Won't Complete](/articles/guides/smart-lock-wont-lock-unlock-completely) - Alignment fixes
-- [Complete Troubleshooting](/articles/guides/complete-troubleshooting-guide) - All common issues
-
----
-
-## Summary Checklist
-
-**Test smart lock after installation:**
-
-**Quick Test (5 min):**
-1. ☑️ Manual lock/unlock 5×
-2. ☑️ App control 2×
-3. ☑️ Keypad unlock 2×
-4. ☑️ Battery + signal check
-
-**Full Test (20 min):**
-5. ☑️ Alignment verification (door open + closed)
-6. ☑️ 50-cycle stress test (0-2 failures acceptable)
-7. ☑️ All access methods tested
-8. ☑️ Edge cases verified
-9. ☑️ Network stability confirmed
-
-**24-Hour Burn-In:**
-10. ☑️ No issues in first 24 hours
-11. ☑️ Battery level stable
-12. ☑️ Ready for daily use ✅
-
-**Don't skip testing! 30 minutes of testing saves hours of troubleshooting later.**
-
-**Pro tip:** Video record your testing session. If issues arise later, you have documented proof of how it worked initially. This helps diagnose: "Did something change in environment/setup?" vs "Was it always like this?" Plus, manufacturer support often asks for videos of the problem - you'll have a baseline to compare against.
-
-## 2026 Field Notes
-
-- Start with mechanical alignment, calibration state, and sensor behavior. That combination still explains most real-world lock failures faster than a blind factory reset.
-- App screens and setup flows now vary more by ecosystem generation than by lock brand alone. Confirm the exact model, companion app, and controller role before following any step-by-step sequence.
-- Mechanical alignment, battery chemistry, and firmware state remain the three fastest ways to separate a one-time setup issue from a recurring field failure.
-
-## When to Escalate
-
-- Escalate after repeated motor binding, recurring offline alarms, or failed firmware updates that return after fresh batteries and a verified signal path.
-- For rental and commercial doors, schedule changes during a maintenance window and confirm you still have one physical or offline fallback credential before you reset or re-pair anything.
+1. Lock and unlock from the app.
+2. Unlock with the keypad code.
+3. Lock and unlock with the physical key if the lock has one.
+4. Confirm the app status changes correctly after manual operation.
+5. Check battery level and signal status in the app or hub.
+
+If any of these fail, stop and fix the issue before adding users, guests, tenants, or automations.
+
+## Alignment Test
+
+Alignment is the most important test because it affects reliability, battery life, and security. With the door open, extend the deadbolt and look at the bolt position. Retract it, close the door slowly, and watch whether the bolt lines up with the strike opening.
+
+The bolt should enter the strike without pushing, lifting, pulling, or slamming the door. There should be no grinding sound and no visible rub mark on the bolt. If the lock motor sounds strained or reverses direction, the door is not ready.
+
+Common fixes include tightening hinges, adjusting the strike plate, deepening the strike pocket, correcting weather-strip pressure, and recalibrating the lock after the mechanical fit is smooth.
+
+## Keypad And Code Test
+
+Create at least two user codes and test each one. Confirm that the keypad wakes reliably, accepts the code, unlocks the door, and gives clear feedback. If the lock supports temporary codes, create one and confirm the start and expiration behavior.
+
+Then test wrong-code behavior. Enter an incorrect code a few times and confirm the lock responds as expected. For exterior doors, rentals, and businesses, failed-attempt lockout and alerts are useful security controls.
+
+For code management, pair this test with [How to Add User Code](/articles/guides/how-to-add-user-code), [Change Master Code](/articles/guides/change-master-code), and [Share Access Securely](/articles/security/share-access-securely).
+
+## App, Hub, And Network Test
+
+Run several app commands from normal use locations, not while standing next to the lock with the door open. Confirm that commands complete, status updates match the real door state, and the lock does not repeatedly show offline.
+
+For Wi-Fi locks, check signal at the door and confirm the lock uses the intended 2.4 GHz network. For Zigbee, Z-Wave, or Thread locks, check that the hub, border router, or repeater path is stable. Weak signal can cause slow response, failed commands, and battery drain.
+
+If the lock has trouble staying online, use [Improve Connection Stability](/articles/protocols/improve-connection-stability) and [Smart Lock Keeps Going Offline](/articles/protocols/smart-lock-keeps-going-offline).
+
+## Auto-Lock And Door Sensor Test
+
+If auto-lock is enabled, test it with the door closed and with the normal timeout. Confirm that the door actually locks, not just that the app says it locked. If the lock includes a door position sensor, open and close the door several times and confirm the app reports the state correctly.
+
+Be careful with short auto-lock timers during setup. A timer that is convenient in daily use can be annoying while moving furniture, cleaning, or testing the door. Set the final timer after you understand the normal traffic pattern.
+
+## Repeat-Cycle Test
+
+After the basic tests pass, run repeated cycles. You do not need a theatrical stress test, but you should operate the lock enough times to expose obvious problems. A practical test is 10 manual cycles, 10 keypad cycles, and 10 app or hub cycles, with at least some of those done while the door is closed.
+
+There should be no jams, timeouts, repeated retries, or wrong status reports. One failure during a new installation is not something to ignore. It is usually a clue that alignment, calibration, battery seating, or signal quality still needs attention.
+
+## Backup Access Test
+
+Test the backup before you need it. If there is a physical key, insert it and unlock the door. If there is an emergency battery terminal, confirm where it is and what battery type it requires. If a landlord, host, or business uses a backup lockbox or local contact, make sure the process is documented.
+
+For rentals and commercial doors, backup access is part of the installation, not an optional extra. Use the [Emergency Backup Planner](/calculators/emergency-backup) if someone other than you may depend on the door.
+
+## Final Pass Criteria
+
+The installation is ready for daily use when the deadbolt moves smoothly with the door open and closed, every access method works, status reporting is accurate, signal and battery status are healthy, auto-lock behaves correctly, and backup access has been tested.
+
+If the lock fails any of those checks, fix the cause before relying on it. A smart lock that only works during setup is not installed; it is just attached to the door.

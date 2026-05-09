@@ -15,33 +15,49 @@ tags:
   - data-table
   - standard
 updatedDate: '2026-05-09T00:00:00.000Z'
-wordCount: 217
-readingTime: 1
+wordCount: 654
+readingTime: 3
 ---
-## Integration Support
+Short-term rental lock integration is not just a yes-or-no feature. A platform may create guest codes automatically, but still handle date changes, cancellations, offline sync, cleaner access, or multi-channel bookings poorly. The real question is whether the integration matches the host's operating model.
 
-| Brand | Airbnb Direct | VRBO Direct | Guesty / Hospitable | Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| **August / Yale** | ✅ Yes | ❌ No | ✅ Yes | Via Airbnb "Linked Accounts" |
-| **Schlage Encode** | ❌ No | ❌ No | ✅ Yes | Needs 3rd party (e.g., Seam) |
-| **RemoteLock** | ✅ Yes | ✅ Yes | ✅ Yes | The gold standard for API |
-| **TTLock (Gateway)** | ❌ No | ❌ No | ✅ Yes | Most affordable option |
-| **Nuki** | ✅ Yes | ❌ No | ✅ Yes | Best for EU headers |
+Use this matrix as a starting point for comparing Airbnb, VRBO, PMS, and smart lock workflows. Before relying on any integration, test the exact lock model, account type, PMS plan, and code-delivery process you will use in production.
 
-### Key Takeaways
-*   **RemoteLock**: Best for multi-platform syncing (Airbnb + VRBO + Booking).
-*   **Schlage**: Great hardware, but requires middleware (like Yonomi or Seam) for automation.
+## Integration Support Matrix
 
----
+| Lock platform | Airbnb direct | VRBO direct | PMS support | Best fit | Watch item |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| August / Yale | Often available through linked accounts | Limited | Common through supported PMS or middleware | Single-channel Airbnb hosts and simple portfolios | Confirm exact model, region, and code sync timing |
+| Schlage Encode | Usually through partner software rather than direct channel control | Usually through partner software | Common through middleware and PMS partners | Hosts who want strong hardware and can accept middleware | Test date changes and failed sync handling |
+| RemoteLock | Strong platform focus | Strong platform focus | Broad PMS and channel support | Multi-platform operators and managers | Check subscription cost and supported lock families |
+| TTLock with gateway | Usually middleware-based | Usually middleware-based | Common in budget PMS setups | Cost-sensitive portfolios | Gateway reliability and support quality vary |
+| Nuki | Stronger in EU-focused workflows | Varies by market | Supported by many STR tools | European apartments and retrofit installs | Confirm local guest access and building-door constraints |
 
-## 2026 Planning Notes
+Integration availability changes by region, account type, software plan, and firmware generation. Treat the table as a shortlist, then verify the workflow with current vendor documentation and a real reservation test.
 
-Use this page to narrow choices and frame the discussion, then verify the exact lock model, door prep, and deployment workflow that will be used in the field.
+## What A Good Integration Should Do
 
-For guest or tenant access, always confirm offline keypad behavior, code rotation speed, and what happens if the internet or PMS integration is unavailable.
+A useful STR lock integration creates a unique code for each reservation, sends it to the guest at the right time, activates it near check-in, expires it at checkout, and keeps a record of what happened. It should also handle common exceptions without manual chaos.
 
-## How to Use This Reference
+The exception cases matter more than the happy path. Test what happens when a guest changes dates, extends a stay, cancels, checks in early, requests late checkout, or books through a different channel. Also test whether cleaner and maintenance codes are separate from guest codes.
 
-1. Confirm the exact door type, lock family, controller path, and operating environment you are designing for.
-2. Eliminate options that fail the mechanical, compliance, offline-access, or lifecycle-cost requirements that matter most for this deployment.
-3. Validate the final choice against the current manufacturer documentation and a test on the real door whenever the consequence of failure is high.
+For a deeper workflow guide, read [Airbnb Smart Lock Integration](/articles/integration/airbnb-smart-lock-integration-schlage-yale-august) and [Smart Locks for Airbnb](/articles/use-cases/smart-locks-airbnb-complete-guide).
+
+## Offline And Backup Behavior
+
+Automation is only helpful if the code reaches the lock before the guest needs it. A cloud service can create a reservation code, but the lock still has to receive and store it. If the property's internet is down at check-in, a newly created cloud-only code may not help.
+
+For high-risk arrivals, make sure the code is synced before the guest travels. Keep an emergency code or backup access process that does not depend on a live PMS connection. The [Offline Functionality Matrix](/articles/resources/offline-functionality-matrix) and [Emergency Backup Planner](/calculators/emergency-backup) help define that fallback.
+
+## Choosing By Host Type
+
+Single-listing Airbnb hosts usually need the simplest reliable path: keypad access, automatic guest code creation if available, low-battery alerts, and a backup key policy. A direct or simple linked-account integration can be enough.
+
+Multi-channel hosts need more discipline. If bookings come from Airbnb, VRBO, Booking.com, direct bookings, and a PMS, choose the system that treats the PMS as the source of truth. Otherwise, access rules can drift between platforms.
+
+Professional managers should evaluate reporting, staff roles, cleaner access, audit logs, support response, lock replacement process, and subscription cost. A cheaper lock can become expensive if every sync failure turns into a guest support call.
+
+## Verification Checklist
+
+Before committing to a platform, run one full test reservation. Confirm code creation, message delivery, lock sync, check-in access, checkout expiration, date change handling, cancellation handling, cleaner code behavior, low-battery alerts, and manual override.
+
+The best integration is not the one with the longest partner list. It is the one that makes guest arrival predictable and gives the host a clear recovery path when automation fails.

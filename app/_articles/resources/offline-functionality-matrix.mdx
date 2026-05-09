@@ -14,33 +14,49 @@ tags:
   - data-table
   - standard
 updatedDate: '2026-05-09T00:00:00.000Z'
-wordCount: 233
-readingTime: 1
+wordCount: 602
+readingTime: 3
 ---
-## Feature Availability (No Internet)
+A smart lock should not become useless the moment the internet goes down. The exact offline behavior depends on the lock, hub, app, and credential type, but the basic pattern is consistent: locally stored PINs and mechanical keys are the most dependable fallback, while remote actions and cloud-based changes are the first things to fail.
 
-| Feature | Wi-Fi Lock | Zigbee/Z-Wave (Hub-Based) | Bluetooth Only | Keypad (Offline) |
+Use this matrix when planning backup access for homes, rentals, and commercial doors. It is a planning reference, not a substitute for testing the exact lock on the exact door.
+
+## Feature Availability Without Internet
+
+| Feature | Wi-Fi lock | Zigbee/Z-Wave with hub | Bluetooth nearby | Offline keypad |
 | :--- | :--- | :--- | :--- | :--- |
-| **Unlock via App** | ❌ No | ✅ Yes (Local Hub) | ✅ Yes (Near) | N/A |
-| **PIN Code Entry** | ✅ Yes (Cached) | ✅ Yes (Cached) | N/A | ✅ Yes (Always) |
-| **Add/Delete User** | ❌ No | ✅ Yes (Local Hub) | ✅ Yes (Near) | ✅ Yes (Manual) |
-| **View Logs** | ❌ No | ✅ Yes (Local Hub) | ✅ Yes (Sync Later) | ❌ No |
-| **Remote Unlock** | ❌ No | ❌ No | ❌ No | N/A |
+| Unlock with existing PIN | Usually works if code is stored locally | Usually works if code is stored locally | Not applicable unless keypad exists | Works |
+| Unlock from phone nearby | Often limited unless Bluetooth is available | Works only if local hub/app path supports it | Works when phone is near the lock | Not applicable |
+| Remote unlock from another location | Usually unavailable | Usually unavailable unless a local controller has remote path restored | Unavailable | Not applicable |
+| Add or delete users | Usually unavailable | Possible only with local controller support | Sometimes possible nearby | Manual programming only on some locks |
+| View fresh logs | Usually unavailable until sync returns | Depends on hub and local log storage | May sync later | Usually unavailable |
+| Auto-lock | Works if configured locally | Works if configured locally | Works if configured locally | Works if built into lock |
+| Physical key | Works | Works | Works | Works |
 
-### Key Takeaways
-*   **Cache is King**: Good smart locks cache PIN codes locally. They don't need the cloud to verify "1234".
-*   **Hub Local API**: Hubs like Hubitat or Home Assistant can control Zigbee locks even when the internet is cut.
+The important distinction is stored access versus new access. A guest, tenant, or employee code that already exists inside the lock may continue working. A new code created through a cloud app during an outage may not reach the lock until the connection returns.
 
----
+## What To Test
 
-## 2026 Planning Notes
+Do not rely on the product page for offline behavior. Test the lock before a real outage matters:
 
-Published range, battery, and interoperability numbers are planning inputs only. Walls, radio congestion, border routers, and firmware policy still change the field result materially.
+1. Create a normal user code and confirm it works.
+2. Disconnect internet while leaving local power on.
+3. Try the keypad code, app control nearby, auto-lock, and physical key.
+4. Try creating a new code during the outage.
+5. Restore internet and confirm logs and code changes sync correctly.
 
-Treat local radio health, border-router or hub placement, and fallback behavior during internet loss as first-class design inputs, not afterthoughts.
+For hub-based systems, test both internet loss and hub power loss. A Zigbee or Z-Wave lock may work locally during internet loss, but it cannot rely on a hub that is unplugged or offline.
 
-## How to Use This Reference
+## Rental And Business Implications
 
-1. Confirm the exact door type, lock family, controller path, and operating environment you are designing for.
-2. Eliminate options that fail the mechanical, compliance, offline-access, or lifecycle-cost requirements that matter most for this deployment.
-3. Validate the final choice against the current manufacturer documentation and a test on the real door whenever the consequence of failure is high.
+Offline behavior matters most when someone else depends on the door. Airbnb guests, long-term tenants, cleaners, contractors, employees, and emergency contacts should not be blocked because the owner assumed the cloud would always be available.
+
+For short-term rentals, store the guest code in the lock before check-in whenever possible. For long-term rentals, keep tenant access local and stable. For offices and commercial sites, define who can open the door during internet loss, controller failure, and power failure.
+
+Use the [Emergency Backup Planner](/calculators/emergency-backup) to document the fallback path, then pair it with [Smart Locks for Airbnb](/articles/use-cases/smart-locks-airbnb-complete-guide), [Long-Term Rental Strategy](/articles/use-cases/long-term-rental-strategy), or [Enterprise Smart Lock Deployment](/articles/use-cases/enterprise-commercial-deployment), depending on the site.
+
+## Reading The Matrix Correctly
+
+"Works offline" does not always mean "works forever." A lock can store PINs locally but still need battery power. A hub can run local automations but still need power and a healthy local network. A phone can unlock by Bluetooth but only when the authorized user is physically nearby.
+
+The safest plan uses more than one fallback: a local PIN, a physical key or controlled lockbox, a responsible local contact, and a documented emergency process. That is especially important for rentals and businesses where a failed door creates real cost.

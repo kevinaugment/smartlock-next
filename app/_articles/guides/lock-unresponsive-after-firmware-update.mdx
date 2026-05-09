@@ -6,8 +6,8 @@ description: >-
   brands.
 category: guides
 pubDate: 2024-03-26T00:00:00.000Z
-wordCount: 930
-readingTime: 4
+wordCount: 561
+readingTime: 3
 keywords:
   - firmware update failed
   - lock broken after update
@@ -26,63 +26,41 @@ relatedArticles:
   - forgot-master-code-reset
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## Quick Answer
+## Secure Entry Before Troubleshooting Software
 
-If a smart lock becomes unresponsive after a firmware update, remove the batteries for a full minute, press a keypad button a few times to drain residual power, reinstall fresh batteries, and wait for the lock to boot. Then test manual operation, keypad response, and app status separately. Do not factory reset until you know whether the lock is truly dead or only disconnected from the app.
+If a lock becomes unresponsive after a firmware update, first make sure you can still enter. Keep the door open if you are inside. If you are outside, use the physical key, another working credential, emergency power terminals, or a trusted backup user before changing settings.
 
-If the lock has no lights, no beeps, and no response with known-good batteries, contact the manufacturer quickly. Firmware updates should not permanently disable a lock, and warranty support may need the update time, model, serial number, and app screenshots.
+Do not repeatedly send app commands while the update state is unclear. If the lock is midway through recovery or reconnecting, repeated commands can drain batteries and make the event log harder to interpret.
 
-## First: Make Sure You Can Still Enter
+## Power Cycle and Wait
 
-Before troubleshooting software, confirm you have a safe entry path. Keep the door open if you are inside. If you are outside, use the physical key, another working credential, emergency battery terminals, or a trusted backup user before changing settings.
+Remove all batteries for a full minute. Press a keypad button a few times while the batteries are out, then reinstall fresh batteries in the correct direction. After power returns, wait longer than usual. Some locks rebuild state, retry an update, or reconnect to the hub during the first few minutes.
 
-Do not repeatedly command the lock while the door is closed and the firmware state is unclear. If the lock is half-updated, repeated commands can create confusing logs and drain batteries.
+If nothing lights up, try another known-good battery set and inspect the contacts for corrosion or residue. A firmware update may be blamed when the actual problem is weak cells, one reversed battery, or dirty contacts discovered during the reboot.
 
-## Power Cycle Correctly
+## Separate Dead Lock From Offline Lock
 
-Remove every battery, not just one. Wait at least 60 seconds. Press a keypad button two or three times while the batteries are out, then reinstall fresh batteries in the correct direction.
+Test manual operation first. If the thumb turn or key cannot move the bolt, the issue is mechanical and should be handled like a jam or alignment problem. If manual operation works but the keypad is dead, focus on power, contacts, reset, and warranty support.
 
-After reinstalling, wait longer than usual. Some locks rebuild state, retry the update, or reconnect to the hub during the first few minutes after power is restored. Test only after the boot sequence finishes.
+If the keypad responds but the app says offline, the lock is not necessarily bricked. It may need Bluetooth proximity, Wi-Fi setup, hub reconnection, or time to report the new firmware version. For Z-Wave, Zigbee, or Matter systems, the hub or controller may also need a refresh before the lock appears normal.
 
-If nothing lights up, try another set of batteries. New batteries can be weak, mixed, expired, or installed with one cell reversed. Clean visible battery contacts if you see corrosion or residue.
+## Let a Stuck Update Resolve Once
 
-## Separate Mechanical, Keypad, and App Problems
+If the app still shows an update in progress, give it time. Firmware progress bars are often poor indicators, especially over Bluetooth or sleepy battery radios. If the update has been frozen for a long period, power cycle once and reopen the app near the lock.
 
-Test the thumb turn or key first. If the lock cannot move manually, the problem is mechanical, not firmware. Check the deadbolt, strike plate, and door alignment before chasing app recovery.
+Avoid retrying the same update over and over unless the app clearly tells you to. After one clean recovery attempt, gather model, firmware, app version, timestamp, and screenshots for support.
 
-Next, test the keypad. If the keypad lights or beeps but app commands fail, the lock is powered and the issue is likely connection, pairing, or cloud state. If the keypad is dead but the thumb turn works, focus on batteries, battery contacts, reset, and warranty support.
+## Reset Only After Recovery Paths Fail
 
-Finally, check the app. A lock that shows offline after an update is not necessarily bricked. It may need Bluetooth proximity, hub reconnection, Wi-Fi setup, or a few minutes to report the new firmware version.
+A factory reset can recover a corrupted configuration, but it also removes users, schedules, pairing, automations, fingerprints, and sometimes calibration. Use it only after fresh batteries, a proper power cycle, and reconnection checks fail.
 
-## Let a Stuck Update Finish
-
-If the app still shows an update in progress, wait. Firmware updates can take longer than the progress bar suggests, especially on weak Bluetooth, low battery, or hub-based connections. Interrupting power too early can make recovery harder.
-
-If the update has been frozen for 30 minutes or more, power cycle once. After reboot, open the app near the lock and check whether it resumes, rolls back, or offers another update attempt. Do not run the same update repeatedly unless the app clearly instructs you to retry.
-
-## Factory Reset as a Last Resort
-
-Factory reset can recover a corrupted configuration, but it also removes users, schedules, pairing, automations, fingerprints, and sometimes calibration. Use it only after power cycling, fresh batteries, and connection checks fail.
-
-Most resets use an interior program or reset button. The sequence varies by model, but it often involves holding the button while reinstalling a battery, then waiting for a light or beep pattern. Use the current manual for the exact lock before resetting.
-
-After reset, pair the lock as a new device, set a new master or programming code, re-add only current users, and test keypad, app, manual operation, and auto-lock.
-
-## Brand Notes
-
-Yale and August app-based locks may offer recovery prompts after reconnecting nearby over Bluetooth. Schlage and Kwikset models often recover after a long battery pull, but keypad/programming-code behavior varies by model. Z-Wave and Zigbee locks may also require exclusion and re-pairing from the hub if the device record is stale.
-
-For hub-based systems, update the hub or controller first when the manufacturer recommends it. A lock firmware update can fail or look broken when the hub is running outdated integration code.
+Most resets require the interior program or reset button and a model-specific sequence. Use the current manual for the exact lock. After reset, pair as a new device, set a new master or programming code, re-add only current users, and test manual, keypad, app, and auto-lock behavior.
 
 ## Prevent the Next Failed Update
 
-Before updating, put in fresh batteries or confirm the battery is comfortably above half. Make sure the door can be opened with a key or backup credential. Keep the phone near the lock if the update uses Bluetooth, and do not let the phone sleep if the app warns against it.
+Before updating, install fresh batteries or confirm the lock is comfortably above half. Make sure the physical key or another backup credential works. Keep the phone near the lock if the update uses Bluetooth, and do not start updates right before guests arrive, before leaving town, or during business hours on a critical door.
 
-Avoid starting firmware updates right before guests arrive, before leaving town, or during business hours on a critical door. Schedule updates when you can stay nearby and test every access method afterward.
-
-## When to Contact Support
-
-Contact support if the lock remains dead after fresh batteries and a proper power cycle, if the reset button does not respond, if the app reports a failed firmware state, or if the lock repeatedly fails during the same update. Send the model, serial number, app version, firmware version if visible, update timestamp, and the steps already tried.
+For hub-based systems, update the hub or controller first when the manufacturer recommends it. A lock update can look broken when the integration layer is stale.
 
 ## Related Guides
 

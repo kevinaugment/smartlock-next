@@ -6,8 +6,8 @@ description: >-
   guests, and service providers.
 category: guides
 pubDate: 2024-04-05T00:00:00.000Z
-wordCount: 1040
-readingTime: 4
+wordCount: 502
+readingTime: 3
 keywords:
   - share access
   - grant access
@@ -28,72 +28,37 @@ relatedArticles:
   - delete-smart-lock-user
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## Quick Answer
+## Share the Smallest Useful Permission
 
-Share smart lock access with the smallest permission and shortest time window that still solves the real need. Use unique temporary codes for guests and contractors, recurring schedules for regular service providers, normal user access for household members, and admin access only for someone who should be allowed to manage the lock itself.
+Secure access sharing means giving the person enough entry to solve the real need and no more. A guest usually needs a temporary PIN. A cleaner may need a recurring schedule. A household member may need a normal user code. Admin access should be reserved for someone allowed to manage users, settings, and recovery.
 
-Never share the master code as a convenience shortcut. A master or programming code is hard to revoke cleanly and may let someone add users, change settings, or remove evidence from the access list. If someone only needs to open the door, give them unlock-only access.
+Never share the master or programming code as a shortcut. It is difficult to revoke cleanly and may let someone add users, change settings, or blur the access record. If someone only needs to open the door, give them unlock-only access.
 
-## Choose the Right Access Type
+## Make Every Credential Traceable
 
-Different people need different access. The safest setup is usually simple:
+Every person or role should have a unique code or app invitation. Shared codes make logs vague and cleanup harder. If four people know one code, you cannot tell who entered, and you have to rotate the code for everyone when one relationship ends.
 
-| Person | Best access | Notes |
-|---|---|---|
-| Short-term guest | Temporary PIN | Expires after the visit |
-| Cleaner or dog walker | Recurring schedule | Works only during service window |
-| Contractor | One-day or job-length code | Remove after work is complete |
-| Family member | Permanent user code or app user | No admin unless they manage settings |
-| Trusted co-owner | Admin app access | Use sparingly |
-| Emergency neighbor | Sealed backup code or key | Review periodically |
-
-If the lock supports app invitations, check the role before sending. "User," "guest," and "admin" are not interchangeable.
-
-## Use Unique Codes
-
-Every person should have their own code. Shared codes make access logs vague and revocation messy. If four people know the same code and something happens, you cannot tell who entered, and you have to change the code for everyone.
-
-Use descriptive names in the app: "Maria cleaner Tue 9-1," "Guest Chen May 12-15," or "Electrician panel work." Good labels make audits faster months later.
-
-For rental properties, create a new code for every booking. Do not recycle a previous guest's code just because it is easy to remember.
+Name access entries so they still make sense later: "Cleaner Tue 9-1," "Guest Chen May 12-15," or "Electrician panel work." For rentals, create a new code for every booking instead of recycling memorable codes.
 
 ## Time-Limit Access by Default
 
-Temporary access is safer because it expires even if you forget to clean up. For guests, start the code a little before arrival and end it after the final reasonable entry window. For contractors, use the workday or project window. For cleaners, use a recurring schedule instead of 24/7 access.
+Temporary access should be the default for guests, contractors, vendors, and short visits. Start the code shortly before arrival and end it after the last reasonable access window. For recurring service providers, use scheduled access instead of a permanent all-day code.
 
-Permanent access should be rare and intentional. If you cannot name why a permanent code exists, remove it.
+Permanent access should be rare and intentional. If you cannot explain why a permanent code exists, remove it. For co-owners or managers with app access, confirm the role before sending the invitation; user, guest, and admin roles are not interchangeable.
 
-## Share the Code Carefully
+## Send Less, But Make It Clear
 
-Send only the information the user needs: the code, active window, timezone, door name, and keypad instructions. Some locks require pressing a lock, checkmark, or pound button after the digits.
+Share the code, active window, timezone, door name, and keypad behavior. Some locks require a checkmark, lock button, or pound key after the digits. Avoid forwarding old message threads that expose previous codes. Do not post codes in group chats with people who no longer need access.
 
-Avoid forwarding long message threads that include old codes. Do not post codes in group chats with people who no longer need access. For high-risk doors, use a password manager share, encrypted message, or phone call instead of plain SMS.
+For higher-risk doors, use a password-manager share, encrypted message, or phone call instead of plain text. Ask the person to confirm receipt, but do not encourage screenshots or long-term storage for temporary access.
 
-Ask the user to confirm receipt, but avoid asking them to screenshot or store the code in insecure places if the access is temporary.
+## Revoke and Review
 
-## Monitor Without Overreaching
+Remove access when the stay ends, the work is complete, a staff member leaves, a phone is lost, or trust changes. For urgent removals, delete both app access and PIN access, then test that the old code no longer works.
 
-Access logs are useful for security and operations, but they should not become casual surveillance. Review logs when troubleshooting, after a guest stay, after a service visit, or when investigating an incident.
+Access logs are useful for operations and investigations, but they should not become casual surveillance. For staff, tenants, or commercial users, make the policy clear: what is logged, why it is logged, and who can review it.
 
-For staff, tenants, or commercial users, make the access policy clear. People should know when access is logged, why it is logged, and who can review it.
-
-## Revoke Access Promptly
-
-Remove access when the stay ends, the work is complete, a staff member leaves, a relationship ends, a phone is lost, or trust changes. For urgent removals, delete app access and PIN access, then test that the old code no longer works.
-
-If the user had admin access, review the full user list after removal. An admin may have created other codes. Change the master code if it was shared or possibly exposed.
-
-## Keep a Backup Plan
-
-Secure sharing should not eliminate emergency access. Keep one reliable backup path: physical key, owner app access, trusted local contact, or documented emergency code. Store backup details somewhere secure and update them when people change.
-
-For rentals and offices, the backup process should be written down. A lockout during a guest arrival or staff shift is not the time to discover only one person knows the recovery path.
-
-## Common Mistakes
-
-The most common mistake is giving admin app access when a temporary code would have worked. The second is forgetting to remove old permanent codes. The third is using one shared code for guests, cleaners, and family because it is easy to remember.
-
-Convenience is useful only if you can still revoke access. If a credential cannot be traced, limited, or removed, it is not a good smart lock credential.
+Keep one reliable backup path, such as a physical key, owner app access, trusted local contact, or documented emergency code. For rentals and offices, write this down so recovery does not depend on one person's memory.
 
 ## Related Guides
 

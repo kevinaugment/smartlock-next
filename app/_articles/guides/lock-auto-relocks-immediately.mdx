@@ -6,8 +6,8 @@ description: >-
   relock behavior.
 category: guides
 pubDate: 2024-04-16T00:00:00.000Z
-wordCount: 930
-readingTime: 4
+wordCount: 549
+readingTime: 3
 keywords:
   - auto relock
   - instant relock
@@ -26,67 +26,35 @@ relatedArticles:
   - set-up-lock-automations
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## Quick Answer
+## Treat Instant Relock as a Rule Conflict First
 
-If a smart lock relocks immediately after you unlock it, the auto-lock timer is probably too short, another automation is locking the door, or the door sensor is reporting the wrong state. Increase the lock's auto-lock delay to at least 3 to 5 minutes, disable duplicate routines in smart-home platforms, and test whether the door sensor changes correctly between open and closed.
+A smart lock that relocks immediately after unlocking is usually following a rule somewhere. The rule may be the lock's native auto-lock timer, a door-sensor-based routine, a night or away mode, or a smart-home automation that was created months ago and forgotten. The first fix is not a factory reset. It is finding which rule is issuing the lock command.
 
-For a quick temporary fix, turn off auto-lock in the lock app, unlock the door, and confirm it stays unlocked. Then re-enable auto-lock with a longer delay after you find the cause.
+Temporarily turn off auto-lock in the lock app and unlock the door. If it now stays unlocked, the native timer or sensor rule is the likely cause. If it still relocks, look outside the lock app: HomeKit, Alexa, Google Home, SmartThings, Home Assistant, a security panel, or a property-management integration.
 
-## Confirm the Behavior
+## Match the Timing to the Cause
 
-First identify how fast the relock happens. A relock after 5 to 30 seconds usually points to a short timer or hidden automation. A relock the moment the door closes may point to a door-sensor rule. A relock only when everyone leaves may come from a geofence or away-mode routine.
+The delay tells you where to look. A relock after 5 to 30 seconds usually means the timer is too short. A relock as soon as the door closes points to a door sensor rule. A relock only at night, when everyone leaves, or after an alarm mode changes is usually a platform routine.
 
-Test several unlock methods: keypad, app, thumb turn, physical key, and voice assistant if enabled. If only one method causes instant relock, the rule may be tied to that trigger. If every unlock method behaves the same, the lock's native auto-lock setting is more likely.
+Test more than one unlock method. Use the keypad, app, thumb turn, and physical key if available. If only app unlock triggers the problem, a platform automation may be reacting to app state. If every method relocks, native auto-lock or a door sensor is more likely.
 
-## Increase the Native Auto-Lock Delay
+## Set a Delay That Fits Real Use
 
-Open the lock app and look for `Auto-lock`, `Relock`, `Automatic lock`, or `Lock after unlock`. Change the delay to 5 minutes as a baseline. For families, mobility needs, deliveries, or doors used during chores, 7 to 10 minutes may be more realistic.
+Set the native auto-lock delay to at least 3 to 5 minutes as a baseline. For families, deliveries, mobility needs, or doors used while carrying items, 7 to 10 minutes may be more realistic. A 30-second setting can look secure in the app and still be unusable in daily life.
 
-Avoid 30-second or 60-second settings unless the door is rarely used and people never need time to bring items inside. A smart lock that relocks while someone is still entering will train people to disable the feature entirely.
+After changing the delay, test with the door open and closed. Confirm that the timer restarts after a second unlock, and that the lock does not throw the bolt while the door is still open.
 
-After changing the delay, test with the door open and then closed. Confirm that the timer starts after the final unlock, not after the first unlock in a sequence.
+## Check Sensor and Platform Rules
 
-## Audit Smart-Home Automations
+Watch the door state in the app while opening and closing the door. If the sensor reports closed too early, the lock may relock before someone is through the doorway. Recalibrate the sensor, realign the magnet, and replace a separate sensor battery if needed. If the sensor remains unreliable, use a timer-only rule until it is fixed.
 
-Instant relock often comes from a second system. Check every platform connected to the lock:
+Then audit connected platforms for routines triggered by unlock, door closed, night mode, away mode, alarm armed, or "secure house." Keep one automatic locking rule, not several. If a smart-home platform controls relocking, either disable native auto-lock or make the native timer longer so it acts only as a fallback.
 
-| Platform | Where to look |
-|---|---|
-| Apple Home | Automation tab |
-| Alexa | Routines and Hunches |
-| Google Home | Automations and Home/Away routines |
-| SmartThings | Routines, SmartApps, and lock guest access |
-| Home Assistant | Automations, scripts, and blueprints |
+## Use Overrides Deliberately
 
-Look for triggers such as "when door unlocks," "when door closes," "when everyone leaves," "at night," or "secure house." Disable anything that locks the same door automatically, then test again. Keep one rule, not three.
+During move-in, maintenance, parties, or repeated trips to the car, turn auto-lock off or use passage mode if your model supports it. Set a reminder to turn it back on. Privacy mode and passage mode are not the same thing on many locks, so confirm which setting blocks access and which setting keeps the door unlocked.
 
-If you want the smart-home platform to control relocking, turn off the lock's native auto-lock or set it longer than the platform delay so the rules do not compete.
-
-## Check the Door Sensor
-
-Some locks auto-lock when the door sensor reports closed. If the sensor says closed while the door is still open, the lock may relock before you are through the doorway.
-
-Open the app and watch the door status while physically opening and closing the door. If the state is wrong or delayed, recalibrate the sensor, move the magnet closer, replace the sensor battery if applicable, and test again.
-
-If the sensor remains unreliable, disable sensor-based relock and use a timer-only delay until the sensor is fixed.
-
-## Look for Modes and Smart Suggestions
-
-Some ecosystems have modes that can override normal lock settings: away mode, night mode, vacation mode, security routines, or "hunches" that decide the door should be locked. These can feel like random instant relocks because they are not configured inside the lock app.
-
-Temporarily disable these features while testing. Once the door behaves normally, re-enable only the routines you can explain. If a rule exists only because an app suggested it months ago, remove it.
-
-## Use Temporary Overrides
-
-During move-in, maintenance, parties, or repeated trips to the car, turn auto-lock off or use passage mode if your lock supports it. Set a phone reminder to turn it back on. Some locks support schedules, so auto-lock can be off during business hours and on overnight.
-
-If your lock has a physical privacy or passage toggle, learn how it interacts with auto-lock. On some models, privacy mode blocks external access; on others, passage mode keeps the door unlocked. They are not the same setting.
-
-## When the Problem Persists
-
-If the lock still relocks immediately after native settings, automations, and sensor status are cleaned up, reset the lock's auto-lock configuration before doing a full factory reset. Remove only the lock-related routines first.
-
-A factory reset is reasonable only when you cannot identify the rule, the app shows corrupted settings, or the lock was inherited with unknown automations. Document current users and backup access before resetting.
+If instant relock persists after native settings, sensor status, and automations are cleaned up, reset only the auto-lock configuration before considering a full factory reset. Document active users and backup access before any reset.
 
 ## Related Guides
 

@@ -1,0 +1,26 @@
+---
+title: "RSSI & Link Budget 101"
+description: "How to read signal strength numbers like a pro."
+category: resources
+pubDate: 2024-05-20
+slug: rssi-link-budget-glossary
+author: SmartLockHub Team
+keywords: ["rssi link budget glossary", "rssi & link budget 101", "smart lock resources", "glossary"]
+tags: ["glossary"]
+---
+
+## Understanding RSSI
+
+**Received Signal Strength Indicator (RSSI)** is measured in dBm (decibel-milliwatts). It is a negative number.
+*   **Closer to 0 is better.**
+*   **-50 dBm**: Excellent signal.
+*   **-70 dBm**: Average, stable.
+*   **-80 dBm**: Weak, expect latency.
+*   **-90 dBm**: Unusable / Disconnected.
+
+### Link Budget
+The "budget" is the total signal power available minus all the losses (walls, distance) before the signal becomes too weak to hear.
+*   **Zigbee Transmit Power**: +8 dBm to +20 dBm.
+*   **Minimum Sensitivity**: -100 dBm.
+*   **Budget**: ~110-120 dB.
+*   A concrete wall eats 20 dB of that budget instantly.

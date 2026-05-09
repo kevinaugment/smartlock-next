@@ -1141,8 +1141,7 @@ body.mobile-nav-open {
   height: 16px;
 }
 
-.mega-nav__item:hover .mega-menu,
-.mega-nav__item:focus-within .mega-menu {
+.mega-nav__item[data-menu-open="true"] .mega-menu {
   opacity: 1;
   pointer-events: auto;
   transform: translateX(-50%) translateY(8px);

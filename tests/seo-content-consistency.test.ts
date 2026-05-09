@@ -52,6 +52,67 @@ function readFrontmatter(category: string, slug: string): Record<string, unknown
   return matter(readFileSync(filePath, 'utf8')).data
 }
 
+function extractMarkdownLinks(source: string): string[] {
+  const links = new Set<string>()
+  const markdownLinkPattern = /(?<!!)\[[^\]]+\]\(([^)\s#]+)(?:#[^)\s]+)?\)/g
+  for (const match of source.matchAll(markdownLinkPattern)) {
+    links.add(match[1])
+  }
+  return Array.from(links)
+}
+
+function normalizeInternalPath(href: string): string | null {
+  if (!href.startsWith('/')) return null
+  if (href.startsWith('//')) return null
+  return href.split(/[?#]/)[0].replace(/\/$/, '') || '/'
+}
+
+function parseLegacyFrontmatterValue(raw: string): string | string[] {
+  const value = raw.trim()
+  if (value.startsWith('[') && value.endsWith(']')) {
+    return value
+      .slice(1, -1)
+      .split(',')
+      .map((item) => item.trim().replace(/^['"]|['"]$/g, ''))
+      .filter(Boolean)
+  }
+  return value.replace(/^['"]|['"]$/g, '')
+}
+
+function parseLegacyResourceArticles(): Array<Record<string, string | string[]>> {
+  const legacyDir = path.join('content', 'resources')
+  const entries: Array<Record<string, string | string[]>> = []
+
+  for (const file of readdirSync(legacyDir).filter((name) => name.endsWith('.md'))) {
+    const lines = readFileSync(path.join(legacyDir, file), 'utf8').split(/\r?\n/)
+    let index = 0
+
+    while (index < lines.length) {
+      while (index < lines.length && !(lines[index] === '---' && /^title:/.test(lines[index + 1] || ''))) {
+        index += 1
+      }
+      if (index >= lines.length) break
+
+      const frontmatterStart = index + 1
+      let frontmatterEnd = frontmatterStart
+      while (frontmatterEnd < lines.length && lines[frontmatterEnd] !== '---') {
+        frontmatterEnd += 1
+      }
+
+      const data: Record<string, string | string[]> = {}
+      for (const line of lines.slice(frontmatterStart, frontmatterEnd)) {
+        const separator = line.indexOf(':')
+        if (separator === -1) continue
+        data[line.slice(0, separator).trim()] = parseLegacyFrontmatterValue(line.slice(separator + 1))
+      }
+      entries.push(data)
+      index = frontmatterEnd + 1
+    }
+  }
+
+  return entries
+}
+
 function getSeededCalculatorSlugs(): Set<string> {
   const seedSources = [
     readFileSync(path.join('database', 'seed.sql'), 'utf8'),
@@ -71,6 +132,7 @@ function getSeededCalculatorSlugs(): Set<string> {
 function main() {
   const articles = getAllArticles()
   const registrySlugs = new Set(articles.map((article) => article.slug))
+  const articlePathKeys = new Set(articles.map((article) => `/articles/${article.category}/${article.slug}`))
   const seededCalculatorSlugs = getSeededCalculatorSlugs()
   const calculatorSlugs = new Set(
     readdirSync(path.join('app', 'calculators')).filter((slug) =>
@@ -116,6 +178,18 @@ function main() {
   for (const [category, info] of Object.entries(CATEGORIES)) {
     const actual = articles.filter((article) => article.category === category).length
     assert.equal(info.count, actual, `${category} category count must match registry`)
+  }
+
+  for (const legacyArticle of parseLegacyResourceArticles()) {
+    const slug = legacyArticle.slug as string
+    const article = getArticleBySlug(slug)
+    assert.ok(article, `legacy resource article ${slug} must be registered`)
+    assert.equal(article?.category, 'resources', `legacy resource article ${slug} must stay in resources`)
+    assert.equal(
+      existsSync(articlePath('resources', slug)),
+      true,
+      `legacy resource article ${slug} must have an MDX file`
+    )
   }
 
   for (const [calculatorSlug, links] of Object.entries(calculatorLinksMap)) {
@@ -186,11 +260,36 @@ function main() {
       mdxSlugs.add(slug)
 
       const frontmatter = readFrontmatter(category, slug)
+      const source = readFileSync(articlePath(category, slug), 'utf8')
+
+      for (const href of extractMarkdownLinks(source)) {
+        const internalPath = normalizeInternalPath(href)
+        if (!internalPath) continue
+
+        if (internalPath.startsWith('/articles/')) {
+          assert.equal(
+            articlePathKeys.has(internalPath) || Object.keys(CATEGORIES).some((categoryKey) => internalPath === `/articles/${categoryKey}`),
+            true,
+            `${slug} links to missing article route ${internalPath}`
+          )
+        }
+
+        if (internalPath.startsWith('/calculators/')) {
+          const calculatorSlug = internalPath.replace('/calculators/', '')
+          assert.equal(calculatorSlugs.has(calculatorSlug), true, `${slug} links to missing calculator route ${internalPath}`)
+        }
+      }
+
       for (const relatedSlug of (frontmatter.relatedArticles as string[] | undefined) || []) {
         assert.equal(registrySlugs.has(relatedSlug), true, `${slug} MDX related article ${relatedSlug} must exist`)
       }
     }
   }
+
+  const headerSource = readFileSync(path.join('components', 'Header.tsx'), 'utf8')
+  const cssSource = readFileSync(path.join('app', 'globals.css'), 'utf8')
+  assert.match(headerSource, /data-menu-open=/, 'Header desktop mega menu must expose explicit open state to CSS')
+  assert.doesNotMatch(cssSource, /\.mega-nav__item:hover\s+\.mega-menu/, 'Mega menu visibility must not be controlled by hover-only CSS')
 
   assert.equal(mdxSlugs.size, articles.length, 'MDX article count must match registry count')
   for (const slug of mdxSlugs) {

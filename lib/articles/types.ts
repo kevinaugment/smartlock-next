@@ -77,6 +77,6 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     name: 'Tables and Glossary',
     slug: 'resources',
     description: 'Use smart lock specs, standards, glossary terms, diagrams, costs, and reference tables.',
-    count: 25,
+    count: 45,
   },
 };

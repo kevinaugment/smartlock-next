@@ -141,10 +141,10 @@ export default function Header() {
 
 
           {/* ============ Desktop Mega Navigation ============ */}
-          <nav className="hidden md:flex mega-nav" aria-label="Main navigation">
+          <nav className="hidden md:flex mega-nav" aria-label="Main navigation" onPointerLeave={() => setActiveDesktopMenu(null)}>
 
             {/* ----- Smart Lock Guides ----- */}
-            <div className="mega-nav__item" {...desktopMenuHandlers('kb')}>
+            <div className="mega-nav__item" data-menu-open={activeDesktopMenu === 'kb'} {...desktopMenuHandlers('kb')}>
               <button className="mega-nav__trigger" aria-expanded={activeDesktopMenu === 'kb'} aria-haspopup="true">
                 Smart Lock Guides
                 <ChevronDown className="mega-nav__chevron" />
@@ -168,7 +168,7 @@ export default function Header() {
             </div>
 
             {/* ----- Calculators ----- */}
-            <div className="mega-nav__item" {...desktopMenuHandlers('calc')}>
+            <div className="mega-nav__item" data-menu-open={activeDesktopMenu === 'calc'} {...desktopMenuHandlers('calc')}>
               <button className="mega-nav__trigger" aria-expanded={activeDesktopMenu === 'calc'} aria-haspopup="true">
                 Calculators
                 <ChevronDown className="mega-nav__chevron" />
@@ -197,7 +197,7 @@ export default function Header() {
             <Link href="/compare" className="nav-link">Compare</Link>
 
             {/* ----- Resources ----- */}
-            <div className="mega-nav__item" {...desktopMenuHandlers('res')}>
+            <div className="mega-nav__item" data-menu-open={activeDesktopMenu === 'res'} {...desktopMenuHandlers('res')}>
               <button className="mega-nav__trigger" aria-expanded={activeDesktopMenu === 'res'} aria-haspopup="true">
                 Resources
                 <ChevronDown className="mega-nav__chevron" />

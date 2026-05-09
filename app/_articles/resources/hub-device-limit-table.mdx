@@ -1,0 +1,26 @@
+---
+title: "Hub Device Capacity Limits"
+description: "Maximum number of devices supported by popular smart home hubs."
+category: resources
+pubDate: 2024-05-20
+slug: hub-device-limit-table
+author: SmartLockHub Team
+keywords: ["hub device limit table", "hub device capacity limits", "smart lock resources", "data table", "standard"]
+tags: ["data-table", "standard"]
+---
+
+## Device Caps by Ecosystem
+
+| Hub / Ecosystem | Max Devices | Realistic Limit | Notes |
+| :--- | :--- | :--- | :--- |
+| **SmartThings V3** | ~200 | ~64 direct | Needs repeaters for more |
+| **Philips Hue Bridge** | 50 | 40-45 | Performance drops near limit |
+| **Eero (Zigbee)** | ~50 | ~30 | Varies by router model |
+| **Home Assistant (SkyConnect)** | 32 (Direct) | 100+ (Mesh) | Depends on Zigbee Stick |
+| **Aqara M2** | 128 | ~64 | Requires repeaters |
+
+### Key Takeaways
+*   **The 32-Device Rule**: Most Zigbee coordinators can only handle 32 direct children. You *must* add routers (plugs) to go beyond this.
+*   **Hue Limit**: If you hit 50 lights, buy a second bridge.
+
+---

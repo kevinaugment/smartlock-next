@@ -1,0 +1,22 @@
+---
+title: "Network Hops & Latency"
+description: "Why more repeaters isn't always better."
+category: resources
+pubDate: 2024-05-20
+slug: network-hops-glossary
+author: SmartLockHub Team
+keywords: ["network hops glossary", "network hops & latency", "smart lock resources", "glossary"]
+tags: ["glossary"]
+---
+
+## The Cost of Hops
+
+A "Hop" is when a message jumps from Device A -> Device B -> Hub.
+*   **Zigbee Max Hops**: ~15-30 (depending on profile).
+*   **Z-Wave Max Hops**: 4.
+
+### Impact on Latency
+Each hop adds delay (~10-50ms).
+*   **1 Hop**: Instant response.
+*   **4 Hops**: Noticeable lag (human perception threshold ~100ms).
+*   **Too Many Hops**: Packet loss and "Lock Not Responding" errors.

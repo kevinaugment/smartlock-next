@@ -20,6 +20,15 @@ This project is indexed by GitNexus as **smartlock-next** (5000 symbols, 6049 re
 - NEVER rename symbols with find-and-replace — use `gitnexus_rename` which understands the call graph.
 - NEVER commit changes without running `gitnexus_detect_changes()` to check affected scope.
 
+## Repository Workflow
+
+- Maintain this project as one developer, one mainline, one local working directory.
+- Default to working directly on `main`; do not create feature branches, Codex branches, or extra git worktrees unless the user explicitly asks for them.
+- Default final pushes must go to `origin/main`, not to a temporary branch.
+- Before starting new work, run `git status --short --branch` and resolve or report any dirty state instead of piling new edits onto unknown local changes.
+- Before finishing, leave the working tree clean after commit and push. Do not leave large uncommitted diffs, generated artifacts, or abandoned worktrees behind.
+- Do not use additional local clones or worktrees to work around conflicts. If `main` cannot be updated cleanly, stop and report the conflict clearly.
+
 ## Resources
 
 | Resource | Use for |

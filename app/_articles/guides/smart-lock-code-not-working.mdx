@@ -6,8 +6,8 @@ description: >-
   Schlage, Kwikset, August locks.
 category: guides
 pubDate: 2024-02-24T00:00:00.000Z
-wordCount: 1380
-readingTime: 6
+wordCount: 1120
+readingTime: 5
 keywords:
   - smart lock code not working
   - PIN won't unlock door
@@ -26,390 +26,68 @@ relatedArticles:
   - smart-locks-airbnb-complete-guide
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## Quick Answer: The Synchronization-First Diagnosis
-
-**PIN code failures divide into three dominant categories with clear diagnostic hierarchy: synchronization incomplete (35% of cases), temporal expiration (25%), and user entry error (20%), collectively accounting for 80% of all code rejection incidents.** The diagnostic priority sequence proves critical: verify code existence and sync status in app first before assuming user entry mistakes or hardware failures, as cloud-to-lock synchronization delays create false negatives where codes appear configured yet remain unknown to lock firmware awaiting delayed command propagation.
-
-The fastest remediation path: confirm code displays correctly in app user management (verifying configured digits match intended credentials), check temporal validity for temporary codes (extending expiration if needed), then re-enter code on physical keypad deliberately with 2-second inter-digit pauses preventing rapid-entry parsing errors, ensuring no accidental extra digits or premature Enter presses. This methodical re-entry eliminates the 20% of failures attributable to human input mistakes before escalating to technical troubleshooting.
-
-For newly-added codes failing immediately, the dominant culprit proves incomplete synchronization: app configuration updates require 2-5 minutes (occasionally 10 minutes for weak connectivity) propagating through cloud infrastructure to lock firmware, during which premature testing encounters "invalid code" responses misinterpreted as configuration errors rather than incomplete sync, triggering unnecessary deletion and recreation that resets delay cycle.
-
-## Common Causes (By Frequency)
-
-### 1. Code Not Synced to Lock (35% of Cases)
-
-**Symptoms:**
-- Just added code in app
-- Code shows in app but won't unlock
-- No error message when entering code  - just doesn't unlock
-- Other codes work fine
-
-**Quick Test:**
-```
-□ Check if lock is online
-  - App shows "Connected" or "Online"
-  - If offline, code never received
-  
-□ Verify code shows in lock's memory (if viewable)
-  - Some apps show "Synced" status
-```
-
-**Solutions:**
-```
-□ Wait 2-5 minutes after adding code
-  - Lock needs time to receive command
-  - WiFi locks: 30 seconds
-  - Zigbee/Z-Wave: 1-2 minutes
-  
-□ Wake up lock to force sync
-  - Press any button on keypad
-  - OR: Send lock/unlock command from app
-  - Triggers lock to check for pending updates
-  
-□ Delete and re-add code
-  - App → Users → [Name] → Delete
-  - Wait 1 minute
-  - Add code again
-  - Wait 2 minutes, test
-```
-
-**Expected result:** Code works within 5 minutes of adding
-
-### 2. Code Expired (25% of Cases)
-
-**Symptoms:**
-- Code worked yesterday, not today
-- Guest/temporary code
-- Calendar icon or "Expired" in app
-- Error beep when code entered
-
-**Quick Test:**
-```
-□ Check code status in app
-  - Look for "Active" vs "Expired"
-  - Check start/end dates
-  
-□ Verify current date/time on lock
-  - Some locks show time on screen
-  - Incorrect clock = codes expire early
-```
-
-**Solutions:**
-```
-□ Extend expiration date
-  - App → Users → [Name] → Edit
-  - Set new end date
-  - Save, wait 2 minutes, test
-  
-□ Convert to permanent code
-  - Edit → Change to "No expiration"
-  
-□ Check lock's clock (if accessible)
-  - Settings → Time/Date
-  - Sync with network time
-  - Wrong time causes premature expiration
-```
-
-**Why this happens:** You set expiration to "March 20, 12:00AM" thinking midnight end of March 20, but lock interprets as START of March 20 (code expired at midnight).
-
-### 3. Wrong Code Entered (20% of Cases)
-
-**Symptoms:**
-- Error beep immediately
-- LED flashes red
-- Keypad may lock out after 5+ attempts
-- Code definitely correct in app
-
-**Quick Test:**
-```
-□ View actual code in app (not just username)
-  - Don't rely on memory
-  - App → Users → [Name] → Show Code
-  
-□ Test with different code you know works
-  - Master code or your personal code
-  - If works = Original code is issue
-```
-
-**Solutions:**
-```
-□ Re-enter code SLOWLY
-  - 1-2 seconds between digits
-  - Press each digit firmly
-  - Wait for beep after each digit
-  
-□ Check for leading/trailing digits
-  - Some locks require "Enter" or "#" after code
-  - Or "0" before code
-  - Check manual for specific lock
-  
-□ Verify code length
-  - Most locks: 4-8 digits
-  - App may allow longer but lock truncates
-  
-□ Look for similar digits
-  - 1 vs 7, 0 vs 8 on worn keypad
-  - Clean keypad with damp cloth
-```
-
-**Keypad lockout:** After 5-10 failed attempts, keypad locks for 1-5 minutes. Wait, then try again.
-
-### 4. Code Slot Full/Conflict (10% of Cases)
-
-**Symptoms:**
-- Can't add new code  - no error, just doesn't save
-- Code shows in app but doesn't work
-- Recently deleted many users
-- Lock at maximum users  - 20-100 depending on model
-
-**Quick Test:**
-```
-□ Count active users in app
-  - Many locks: 20-30 user max
-  - Some: 100+ users
-  - Check manual for your lock's limit
-  
-□ Check for duplicate codes
-  - Two users same PIN = Conflict (some locks reject)
-```
-
-**Solutions:**
-```
-□ Delete unused codes first
-  - Old guests, ex-employees, etc.
-  - Free up slots
-  
-□ Use different code
-  - May have collision with existing code
-  - Try code +1 or -1
-  
-□ Factory reset user codes (last resort)
-  - Erases ALL codes
-  - Re-add only needed users
-```
-
-### 5. Keypad Hardware Issue (5% of Cases)
-
-**Symptoms:**
-- Specific digit doesn't respond
-- Must press very hard
-- Digit registers multiple times
-- Physical damage visible
-
-**Quick Test:**
-```
-□ Test each digit separately
-  - Press each 0-9
-  - Note which don't beep or respond
-  
-□ Try entering code without problem digit
-  - If you can avoid that digit
-```
-
-**Solutions:**
-```
-□ Clean keypad
-  - Damp cloth (not dripping wet)
-  - Remove dirt/grime
-  - Dry thoroughly
-  
-□ Check for moisture
-  - Water damage under keypad cover
-  - Remove batteries, let dry 24 hours
-  
-□ Change code to avoid dead digit
-  - If "5" doesn't work, use code without 5
-  
-□ Contact manufacturer for replacement keypad
-  - Under warranty if <2 years
-```
-
-### 6. Low Battery (3% of Cases)
-
-**Symptoms:**
-- Code worked earlier today
-- Keypad dim or no backlight
-- Slow response  - 2-3 second delay
-- Battery warning recently
-
-**Quick Test:**
-```
-□ Check battery level in app
-  - <20% = Replace immediately
-  
-□ Try physical key (if equipped)
-  - If key works but keypad doesn't = Battery issue
-```
-
-**Solutions:**
-```
-□ Replace batteries
-  - All 4 at once
-  - Fresh alkaline
-  
-□ Use 9V emergency power (if equipped)
-  - Touch 9V to bottom terminals
-  - Enter code while holding 9V
-  - Replace AA batteries from inside
-```
-
-## Step-by-Step Diagnostic Process
-
-```
-Step 1: Verify code in app
-  ├─ Code shows correctly? → Continue
-  └─ Code missing? → Re-add code → Test
-
-Step 2: Check code status
-  ├─ Active/Not expired? → Continue
-  └─ Expired? → Extend date → Test
-
-Step 3: Test master code
-  ├─ Master works? → User code issue → Re-add user code
-  └─ Master fails too? → Continue
-
-Step 4: Check battery
-  ├─ <30%? → Replace batteries → Test
-  └─ Good battery? → Continue
-
-Step 5: Test keypad digits
-  ├─ All digits work? → Re-enter code SLOWLY
-  └─ Digit dead? → Change code to avoid digit OR replace keypad
-
-Step 6: Factory reset codes (last resort)
-  └─ Erase all, re-add needed codes
-```
-
-## Protocol & Brand-Specific Notes
-
-**Yale locks:**
-- Require "#" after code on some models
-- Check if "Privacy mode" enabled  - disables codes
-
-**Schlage locks:**
-- 4-8 digit codes only
-- Some models: Press Schlage button, THEN code
-
-**Kwikset SmartCode:**
-- Press any key to wake, THEN code
-- No "#" or "Enter" needed
-
-**August Smart Lock:**
-- Keypad sold separately
-- Codes managed in August app, synced to keypad
-
-**Airbnb hosts:**
-- Always test code BEFORE guest arrives
-- Set start time 1 hour before check-in  - buffer
-- Set end time day AFTER checkout  - safety margin
-
-## Prevention Tips
-
-```
-□ Test codes immediately after adding
-  - Don't assume sync worked
-  
-□ Set expiration to 11:59 PM of LAST day
-  - Not 12:00 AM (ambiguous)
-  
-□ Keep master code separate from daily codes
-  - Master = Never changes
-  - Daily = Can expire without losing access
-  
-□ Name codes descriptively
-  - "Guest - John - March 15-20"
-  - Not just "Guest 1"
-  
-□ Delete old codes promptly
-  - Don't let inactive codes accumulate
-  
-□ Clean keypad monthly
-  - Prevents button failures
-```
-
-## Emergency: All Codes Don't Work
-
-**If NO codes work (including master):**
-
-1. **Use physical backup key**
-   - Every smart lock should have one
-   - Check manual for key override location
-
-2. **9V battery emergency**
-   - Touch 9V to bottom terminals
-   - Powers lock temporarily
-   - Enter code quickly
-
-3. **Factory reset lock**
-   - WARNING: Erases ALL codes and settings
-   - Process varies by brand (check manual)
-   - Usually: Hold reset button 10-20 seconds
-
-4. **Contact manufacturer support**
-   - May be firmware issue
-   - Warranty replacement if defective
-
-## Related Resources
-
-**User Management:**
-- [How to Add User Code] - /support/add-smart-lock-user-code - Step-by-step
-- [Create Temporary Guest Code] - /support/create-temporary-guest-code - Time-limited access
-
-**Troubleshooting:**
-- [Complete Troubleshooting Guide] - /guides/complete-troubleshooting-guide - Full diagnostics
-- [Smart Lock Battery Emergency] - /guides/smart-lock-battery-emergency - Locked out recovery
-
-**Tools & Resources**
-
-🔒 **[Emergency Backup Evaluator](/calculators/emergency-backup)** - Test backup access methods  
-👥 **[Credential Capacity Planner](/calculators/credential-planner)** - Check code capacity limits
-
----
-
-## Related Articles
-
-**Comprehensive Troubleshooting:**
-- [Complete Troubleshooting Guide](/articles/guides/complete-troubleshooting-guide) - Master troubleshooting resource
-
-**Code Management:**
-- [Change Master Code](/articles/guides/change-master-code) - Reset default codes
-- [Forgot Master Code](/articles/guides/forgot-master-code-reset) - Recovery procedures
-- [Create Temporary Codes](/articles/guides/create-temporary-guest-code) - Guest code setup
-- [Failed Code Attempts](/articles/security/multiple-failed-code-attempts) - Security lockout
-
-**Installation Issues:**
-- [Installation Step-by-Step](/articles/installation/install-smart-lock-step-by-step) - Proper installation
-- [Calibrate Smart Lock](/articles/installation/calibrate-smart-lock) - Fix mechanical issues
-
-**For Airbnb:**
-- [Airbnb Smart Lock Guide] - /use-cases/smart-locks-airbnb-guide - Complete automation setup
-
-
-## Summary: Priority-Ordered Diagnostic Sequence
-
-Code failure troubleshooting demands systematic cause elimination following priority-ordered diagnostic hierarchy addressing most probable failure modes first, avoiding the common mistake of immediately assuming hardware defects or user incompetence when 80% of failures stem from synchronization delays, temporal expiration, or entry mistakes resolvable within minutes.
-
-**Synchronization verification** (35% of failures) represents mandatory first diagnostic step for recently-added codes: confirm code displays in app user management, verify lock shows "Connected" or "Online" status enabling command receipt, then respect 2-5 minute synchronization latency before concluding sync failure. Users attempting immediate post-configuration testing invariably encounter "invalid" responses misinterpreted as errors rather than incomplete propagation, triggering premature deletion/recreation that compounds rather than resolves delays.
-
-The wake-up technique—pressing any keypad button or sending lock/unlock app command—forces lock to poll cloud servers for pending updates, accelerating synchronization for locks in deep sleep missing scheduled check-ins. This active sync trigger proves particularly valuable for battery-saving locks checking updates infrequently (every 10-15 minutes) where passive waiting extends synchronization to worst-case intervals.
-
-**Temporal validation** (25% of failures) proves trivially verifiable yet frequently overlooked: check code status shows "Active" rather than "Expired," verify current date falls within configured access window, and confirm lock internal clock accuracy (incorrect time causing premature expiration for temporary codes). The 11:59 PM last-valid-day expiration rule prevents majority of premature expiration failures where midnight boundary conditions evaluate differently across cloud servers versus local firmware.
-
-**Entry discipline** (20% of failures) eliminates user input mistakes: deliberate 2-second inter-digit pacing prevents rapid-entry parsing errors, visual verification ensures no accidental extra digits, and avoiding premature Enter key presses allows complete code entry. The "slow and steady" approach proves universally effective across lock brands with varying keypad sensitivity and timeout behaviors.
-
-**Battery voltage consideration** often proves overlooked failure contributor: locks below 30% battery sometimes exhibit intermittent keypad recognition failures, sluggish motor response, or communication dropouts manifesting as code rejections despite correct entry. Proactive battery replacement at 30% threshold rather than waiting for sub-10% warnings prevents voltage-induced erratic behavior.
-
-**Delete-and-recreate strategy** addresses persistent synchronization failures unresolved by passive waiting: removing problematic code from app, waiting 1-2 minutes for deletion to propagate, then creating fresh code with same credentials often succeeds where original configuration stuck in indeterminate sync state. This forced-refresh approach proves particularly effective for codes exhibiting "synced" status in app yet failing keypad authentication.
-
-**The 70% resolution reality**: Synchronization delay + temporal expiration collectively account for 60% of failures, while user entry error adds 20%, meaning systematic verification of these three categories resolves 80% of incidents without hardware intervention, firmware updates, or technical support escalation. Jumping immediately to factory reset or warranty claims bypasses trivial fixes resolving majority of failures within 5-10 minutes.
-
-## 2026 Field Notes
-
-- Start with credential sync, keypad behavior, and administrator recovery path. That combination still explains most real-world lock failures faster than a blind factory reset.
-- App screens and setup flows now vary more by ecosystem generation than by lock brand alone. Confirm the exact model, companion app, and controller role before following any step-by-step sequence.
-- Guest access workflows now depend heavily on how quickly codes sync, how offline keypads behave, and whether your PMS or channel manager can tolerate temporary cloud outages.
-
-## When to Escalate
-
-- Escalate after repeated motor binding, recurring offline alarms, or failed firmware updates that return after fresh batteries and a verified signal path.
-- For rental and commercial doors, schedule changes during a maintenance window and confirm you still have one physical or offline fallback credential before you reset or re-pair anything.
+## Quick Answer
+
+When a smart lock PIN does not work, first confirm the code in the app, check whether it is active or expired, wait for sync if it was just created, and enter it slowly on the keypad. If other codes work, the issue is probably that specific user code or schedule. If no codes work, check battery level, keypad response, lockout mode, and connectivity.
+
+Do not immediately factory reset the lock. Most PIN failures are caused by timing, sync, expiration, entry format, or one bad user record.
+
+## Check Whether the Code Actually Exists
+
+Open the lock app and look at the user's code, not just the user's name. It is common to remember an old code, mistype a new one, or send a guest the wrong digits.
+
+If the app shows the code as pending, sending, or not synced, wait and wake the lock by pressing the keypad or sending a status command from the app. A new code can appear in the app before the lock has received it.
+
+If the code does not appear at all, recreate it with a new PIN and test before sharing.
+
+## Check the Schedule
+
+Temporary and recurring codes fail when the current time is outside the allowed window. Confirm the start date, end date, days of week, timezone, and active hours.
+
+Midnight is a common trap. If a code should work through March 20, do not set it to expire at 12:00 AM on March 20 unless the app clearly means the end of the day. Use 11:59 PM on March 20 or 12:00 AM on March 21.
+
+If the lock's internal clock or hub timezone is wrong, scheduled codes can fail even when the app looks correct. Sync the lock, hub, or account timezone if the schedule seems off by hours.
+
+## Enter the Code Slowly
+
+Keypads can reject correct codes when digits are entered too quickly, missed, doubled, or followed by the wrong final button. Press each digit firmly and wait for the lock's feedback. Some models require pressing a checkmark, lock button, or pound key after the PIN.
+
+Clean the keypad if one digit is hard to press or does not beep. On worn keypads, avoid codes that rely on a failing digit until the keypad is repaired.
+
+If there have been several failed attempts, wait for the lockout timer to expire. Many locks temporarily disable the keypad after repeated wrong codes.
+
+## Compare With Another Code
+
+Try a code you know works. If another code opens the door, the keypad and motor are probably fine. Focus on the failing user's PIN, schedule, sync status, or permissions.
+
+If no code works, use app unlock, fingerprint, physical key, or emergency power if available. Then check batteries and keypad hardware from the inside.
+
+## Replace Weak Batteries
+
+Low batteries can make a keypad behave strangely before the lock is fully dead. The backlight may be dim, beeps may lag, or the motor may start and stop after accepting a code.
+
+Replace all batteries with fresh cells from the same pack. Do not mix old and new batteries. If the lock has 9V emergency terminals, use them only long enough to enter and replace the internal batteries.
+
+## Fix Sync and Connectivity
+
+For Wi-Fi locks, confirm the lock is online. For Bluetooth locks, stand near the door. For Z-Wave and Zigbee locks, confirm the hub is online and close enough to reach the lock.
+
+If the lock was offline when you created the code, delete the user and create it again after the lock reconnects. Avoid repeatedly editing the same stuck code; a clean new user record is easier to verify.
+
+## Check User Limits and Duplicates
+
+Some locks have limited code slots. If the lock is full, a new code may fail to save, fail to sync, or silently overwrite a slot depending on the system. Delete old guests, test codes, and unused service-provider codes before adding more.
+
+Also avoid duplicate PINs. Some systems reject them; others allow confusing duplicates that make logs useless.
+
+## When It Is a Hardware Issue
+
+Suspect keypad hardware if a specific number never responds, the keypad registers double presses, moisture is visible, or all codes fail while app unlock still works. Dry the keypad, clean it gently, and contact the manufacturer if the problem continues.
+
+Suspect the motor or alignment if the code is accepted but the bolt does not move fully. That is no longer a PIN problem; see the partial-lock and motor-noise guides.
+
+## Related Guides
+
+- [How to Add User Code](/articles/guides/how-to-add-user-code)
+- [How to Create Temporary Guest Code](/articles/guides/create-temporary-guest-code)
+- [Smart Lock Won't Lock or Unlock Completely](/articles/guides/smart-lock-wont-lock-unlock-completely)

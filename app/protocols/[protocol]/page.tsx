@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Radio, ArrowRight, Star, Shield, Battery, DollarSign, Fingerprint } from 'lucide-react'
-import { ProductModel, type ProductWithBrand } from '@/lib/db/brand-models'
-import StarRating from '@/components/brands/StarRating'
+import { Radio, ArrowRight, Shield } from 'lucide-react'
+
+export const dynamic = 'force-static'
 
 // ============================================
 // 协议数据
@@ -170,55 +170,6 @@ export function generateStaticParams() {
     return Object.keys(protocolData).map(protocol => ({ protocol }))
 }
 
-function normalizeProtocol(value: string | undefined): string {
-    return (value || '').toLowerCase().replace(/\s+/g, '-')
-}
-
-function matchesProtocol(product: ProductWithBrand, protocol: string): boolean {
-    const primary = normalizeProtocol(product.protocol)
-    const secondary = normalizeProtocol(product.secondary_protocol)
-    const normalizedProtocol = protocol.replace('z-wave', 'zwave')
-    return primary.includes(protocol) || primary.includes(normalizedProtocol) || secondary.includes(protocol) || secondary.includes(normalizedProtocol) || (protocol === 'matter' && product.supports_matter)
-}
-
-function getProtocolProducts(products: ProductWithBrand[], protocol: string): ProductWithBrand[] {
-    return products.filter(product => matchesProtocol(product, protocol))
-}
-
-function getBestProtocolProducts(products: ProductWithBrand[]): ProductWithBrand[] {
-    return [...products].sort((a, b) => {
-        if (b.rating !== a.rating) return b.rating - a.rating
-        if (b.review_count !== a.review_count) return b.review_count - a.review_count
-        return a.display_order - b.display_order
-    }).slice(0, 6)
-}
-
-function getAverageBattery(products: ProductWithBrand[]): string {
-    const months = products.map(product => product.battery_life_months).filter((value): value is number => value != null)
-    if (months.length === 0) return 'Battery data limited'
-    return `${Math.round(months.reduce((sum, value) => sum + value, 0) / months.length)} months avg`
-}
-
-function getAveragePrice(products: ProductWithBrand[]): string {
-    const prices = products.map(product => product.price_usd).filter((value): value is number => value != null)
-    if (prices.length === 0) return 'Retailer pricing varies'
-    const avg = prices.reduce((sum, value) => sum + value, 0) / prices.length
-    return `${formatPrice(avg)} avg`
-}
-
-function formatPrice(price: number): string {
-    const normalized = price >= 1000 ? price / 100 : price
-    return `$${Math.round(normalized)}`
-}
-
-function getMatterCoverage(products: ProductWithBrand[]): number {
-    return products.filter(product => product.supports_matter).length
-}
-
-function getFingerprintCoverage(products: ProductWithBrand[]): number {
-    return products.filter(product => product.has_fingerprint).length
-}
-
 function getAlternativeProtocols(protocol: string) {
     const order = ['wifi', 'z-wave', 'zigbee', 'thread', 'matter', 'bluetooth']
     return order.filter(item => item !== protocol).slice(0, 3).map(item => ({
@@ -257,6 +208,134 @@ function getPlanningLinks(protocol: string) {
     return links.slice(0, 4)
 }
 
+function getProtocolScorecards(protocol: string, proto: (typeof protocolData)[string]) {
+    const map: Record<string, { label: string; value: string; detail: string }[]> = {
+        wifi: [
+            { label: 'Best fit', value: 'Single-site remote access', detail: 'Best when you want app control without a hub rollout.' },
+            { label: 'Battery planning', value: 'High maintenance', detail: 'Expect shorter service intervals and plan spare batteries.' },
+            { label: 'Controller path', value: 'Router + cloud', detail: 'Performance depends on Wi-Fi quality, ISP uptime, and vendor app resilience.' },
+            { label: 'Security posture', value: proto.security, detail: 'Segment IoT devices and keep firmware current.' },
+        ],
+        'z-wave': [
+            { label: 'Best fit', value: 'Reliability-first deployments', detail: 'Strong choice for apartments, rentals, and thick-wall properties.' },
+            { label: 'Battery planning', value: proto.batteryImpact, detail: 'Sub-GHz radios usually reduce service visits versus Wi-Fi locks.' },
+            { label: 'Controller path', value: 'Hub-centered', detail: 'Pair with SmartThings, Hubitat, Home Assistant, or security hubs.' },
+            { label: 'Security posture', value: proto.security, detail: 'Use S2 inclusion and document recovery steps for controller failure.' },
+        ],
+        zigbee: [
+            { label: 'Best fit', value: 'Large low-power meshes', detail: 'Good when you already run Echo, SmartThings, Hubitat, ZHA, or Zigbee2MQTT.' },
+            { label: 'Battery planning', value: proto.batteryImpact, detail: 'Mesh repeaters and clean channels usually extend lock battery life.' },
+            { label: 'Controller path', value: 'Coordinator + repeaters', detail: 'Channel planning and router placement matter more than raw spec sheets.' },
+            { label: 'Security posture', value: proto.security, detail: 'Use modern coordinators and verify secure pairing before rollout.' },
+        ],
+        bluetooth: [
+            { label: 'Best fit', value: 'Phone-first local access', detail: 'Strong for owner-occupied doors and proximity unlock, weak for fleet remote control.' },
+            { label: 'Battery planning', value: proto.batteryImpact, detail: 'BLE is efficient, but phone scanning settings still affect experience.' },
+            { label: 'Controller path', value: 'No hub by default', detail: 'Add a bridge only if you truly need remote guest management.' },
+            { label: 'Security posture', value: proto.security, detail: 'Validate phone credential recovery and backup entry before relying on auto-unlock.' },
+        ],
+        thread: [
+            { label: 'Best fit', value: 'Future-facing Matter homes', detail: 'Best when the property already has stable border routers and modern ecosystems.' },
+            { label: 'Battery planning', value: proto.batteryImpact, detail: 'Thread is efficient, but border-router placement still controls real-world reliability.' },
+            { label: 'Controller path', value: 'Border router required', detail: 'Treat Apple, Google, Amazon, or SmartThings controllers as infrastructure, not accessories.' },
+            { label: 'Security posture', value: proto.security, detail: 'Keep controllers updated and avoid mixing unsupported legacy expectations into the rollout.' },
+        ],
+        matter: [
+            { label: 'Best fit', value: 'Cross-platform households', detail: 'Best when Apple, Google, Alexa, or SmartThings all need first-class support.' },
+            { label: 'Battery planning', value: proto.batteryImpact, detail: 'Battery depends on whether the lock runs over Thread or Wi-Fi.' },
+            { label: 'Controller path', value: 'Controller-led', detail: 'Matter simplifies interoperability but still needs the right controller and transport.' },
+            { label: 'Security posture', value: proto.security, detail: 'Use vendor firmware that is current with recent Matter controller behavior.' },
+        ],
+    }
+
+    return map[protocol] || [
+        { label: 'Best fit', value: proto.name, detail: proto.description },
+        { label: 'Battery planning', value: proto.batteryImpact, detail: 'Match battery maintenance to site access constraints.' },
+        { label: 'Controller path', value: proto.hubRequired ? 'Hub or bridge' : 'Direct connection', detail: 'Confirm the controller path before you buy hardware.' },
+        { label: 'Security posture', value: proto.security, detail: 'Review encryption, pairing, and firmware expectations before deployment.' },
+    ]
+}
+
+function getProtocolChecklist(protocol: string) {
+    const map: Record<string, string[]> = {
+        wifi: [
+            'Verify 2.4 GHz coverage at the door, not just in the hallway.',
+            'Plan battery service intervals before choosing Wi-Fi for rentals or remote sites.',
+            'Confirm the lock stores local codes when internet service is down.',
+            'Segment IoT traffic if the property also runs cameras or guest Wi-Fi.',
+        ],
+        'z-wave': [
+            'Choose the hub first, then confirm the lock supports its inclusion and backup workflow.',
+            'Place powered repeaters between hub and door before blaming the lock radio.',
+            'Document S2 inclusion, exclusion, and controller recovery procedures.',
+            'Use Z-Wave when wall penetration and repeatable battery behavior matter more than no-hub convenience.',
+        ],
+        zigbee: [
+            'Pick a coordinator and Zigbee channel that avoids major Wi-Fi overlap.',
+            'Add powered routers near metal or exterior doors before rollout.',
+            'Standardize on one stack such as SmartThings, Hubitat, ZHA, or Zigbee2MQTT.',
+            'Validate battery and routing behavior after pairing, not just during bench testing.',
+        ],
+        bluetooth: [
+            'Treat Bluetooth as local access first; add a bridge only if remote control is justified.',
+            'Check phone wake-up behavior, wallet key support, and backup entry options.',
+            'Test unlock distance from the actual approach path, not beside the door.',
+            'Avoid BLE-only assumptions for staff-managed rentals that need remote recovery.',
+        ],
+        thread: [
+            'Confirm a stable border router exists before buying a Thread-only lock.',
+            'Keep router placement close enough to the entry path for first-pair reliability.',
+            'Validate the Matter controller, Thread transport, and mobile ecosystem together.',
+            'Use Thread when you want local-first automation without inheriting old hub lock-in.',
+        ],
+        matter: [
+            'Identify whether the specific lock uses Matter over Thread or Matter over Wi-Fi.',
+            'Confirm the chosen controller supports the lock features you actually need today.',
+            'Test multi-admin and household sharing flows before deploying across families or staff.',
+            'Prefer Matter where ecosystem flexibility matters more than one vendor’s app workflow.',
+        ],
+    }
+
+    return map[protocol] || []
+}
+
+function getProtocolReadingList(protocol: string) {
+    const map: Record<string, { href: string; title: string; description: string }[]> = {
+        wifi: [
+            { href: '/articles/protocols/wifi-vs-z-wave-smart-locks', title: 'Wi-Fi vs Z-Wave Smart Locks', description: 'Remote convenience versus range-first reliability.' },
+            { href: '/articles/protocols/wifi-vs-zigbee-smart-locks', title: 'Wi-Fi vs Zigbee Smart Locks', description: 'No-hub setup versus low-power mesh planning.' },
+            { href: '/articles/protocols/wifi-smart-lock-battery-drain', title: 'Wi-Fi Smart Lock Battery Drain', description: 'Diagnose signal, motor, and battery drain before replacing hardware.' },
+        ],
+        'z-wave': [
+            { href: '/articles/protocols/z-wave-vs-matter-smart-locks', title: 'Z-Wave vs Matter Smart Locks', description: 'Protocol tradeoffs for rentals, apartments, and mixed ecosystems.' },
+            { href: '/articles/protocols/best-z-wave-smart-locks-hubs-apartments', title: 'Z-Wave Lock Planning for Hubs and Apartments', description: 'Hub compatibility, repeater placement, and apartment reliability.' },
+            { href: '/articles/protocols/zigbee-vs-zwave-comparison', title: 'Zigbee vs Z-Wave Comparison', description: 'Detailed mesh comparison for wall loss, battery, and ecosystem fit.' },
+        ],
+        zigbee: [
+            { href: '/articles/protocols/zigbee-vs-zwave-comparison', title: 'Zigbee vs Z-Wave Comparison', description: 'Mesh planning, interference, and deployment tradeoffs.' },
+            { href: '/articles/protocols/zigbee-smart-locks-home-assistant', title: 'Zigbee Smart Locks for Home Assistant', description: 'Coordinator, channel, and router decisions for Home Assistant.' },
+            { href: '/articles/protocols/thread-vs-zigbee-smart-locks', title: 'Thread vs Zigbee Smart Locks', description: 'Mature Zigbee mesh versus Thread and Matter paths.' },
+        ],
+        bluetooth: [
+            { href: '/articles/protocols/bluetooth-vs-wifi-smart-locks', title: 'Bluetooth vs Wi-Fi Smart Locks', description: 'Local phone unlock versus remote cloud access.' },
+            { href: '/articles/protocols/apple-home-key-smart-locks-guide', title: 'Apple Home Key vs Matter', description: 'Wallet access, NFC, and ecosystem fit for phone-based unlock.' },
+            { href: '/articles/protocols/smart-lock-protocols-overview', title: 'Smart Lock Protocols Overview', description: 'Battery, range, hub, and deployment context across all protocols.' },
+        ],
+        thread: [
+            { href: '/articles/protocols/matter-over-thread-smart-locks', title: 'Matter over Thread Smart Locks', description: 'Border routers, controller requirements, and buying implications.' },
+            { href: '/articles/protocols/thread-vs-zigbee-smart-locks', title: 'Thread vs Zigbee Smart Locks', description: 'Future-ready IP mesh versus mature Zigbee networks.' },
+            { href: '/articles/protocols/matter-vs-homekit-vs-zwave-smart-locks', title: 'Matter vs HomeKit vs Z-Wave', description: 'Platform and protocol decisions for mixed-device properties.' },
+        ],
+        matter: [
+            { href: '/articles/protocols/matter-over-thread-smart-locks', title: 'Matter over Thread Smart Locks', description: 'Understand controllers, border routers, and rollout limits.' },
+            { href: '/articles/protocols/matter-vs-homekit-vs-zwave-smart-locks', title: 'Matter vs HomeKit vs Z-Wave', description: 'Cross-platform flexibility versus mature lock ecosystems.' },
+            { href: '/articles/protocols/aliro-smart-locks-explained', title: 'Aliro vs Matter', description: 'Emerging wallet-key and credential standards beyond Matter alone.' },
+        ],
+    }
+
+    return map[protocol] || []
+}
+
 // ============================================
 // 页面组件
 // ============================================
@@ -267,19 +346,12 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
 
     if (!proto) notFound()
 
-    // 从数据库获取该协议的产品
-    let products: ProductWithBrand[] = []
-    try {
-        const allProducts = await ProductModel.getAllForComparison()
-        products = getProtocolProducts(allProducts, protocol)
-    } catch {
-        // 数据库不可用时优雅降级
-    }
-
-    const topProducts = getBestProtocolProducts(products)
     const bestPageLink = getBestPageHref(protocol)
     const alternativeProtocols = getAlternativeProtocols(protocol)
     const planningLinks = getPlanningLinks(protocol)
+    const scorecards = getProtocolScorecards(protocol, proto)
+    const checklist = getProtocolChecklist(protocol)
+    const readingList = getProtocolReadingList(protocol)
     const pageUrl = `https://www.slockhub.com/protocols/${protocol}`
 
     return (
@@ -309,18 +381,6 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                                 { '@type': 'ListItem', position: 3, name: proto.name, item: pageUrl },
                             ],
                         },
-                        ...(topProducts.length > 0 ? [{
-                            '@context': 'https://schema.org',
-                            '@type': 'ItemList',
-                            name: `${proto.name} smart locks`,
-                            numberOfItems: topProducts.length,
-                            itemListElement: topProducts.map((product, index) => ({
-                                '@type': 'ListItem',
-                                position: index + 1,
-                                name: `${product.brand_name} ${product.name}`,
-                                url: `https://www.slockhub.com/brands/${product.brand_slug}/${product.slug}`,
-                            })),
-                        }] : []),
                     ]),
                 }}
             />
@@ -353,10 +413,9 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                 <section className="content-card" style={{ marginBottom: 'var(--space-2xl)' }}>
                     <h2 className="section-title">Range, Battery, Hub Score</h2>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <ScorecardStat label="Catalog models" value={`${products.length}`} detail="Active products matching this protocol" />
-                        <ScorecardStat label="Battery planning" value={getAverageBattery(products)} detail={proto.batteryImpact} />
-                        <ScorecardStat label="Typical price" value={getAveragePrice(products)} detail="Average where price is listed" />
-                        <ScorecardStat label="Matter / biometrics" value={`${getMatterCoverage(products)} / ${getFingerprintCoverage(products)}`} detail="Matter-capable models / fingerprint models" />
+                        {scorecards.map((card) => (
+                            <ScorecardStat key={card.label} label={card.label} value={card.value} detail={card.detail} />
+                        ))}
                     </div>
                 </section>
 
@@ -530,105 +589,42 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                     </div>
                 </div>
 
-                {topProducts.length > 0 && (
-                    <section style={{ marginBottom: 'var(--space-3xl)' }}>
-                        <div className="flex items-center justify-between gap-4" style={{ marginBottom: 'var(--space-lg)' }}>
-                            <h2 className="section-title" style={{ marginBottom: 0 }}>Best Locks Using {proto.name}</h2>
-                            <Link href={bestPageLink.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
-                                {bestPageLink.label}
+                <section style={{ marginBottom: 'var(--space-3xl)' }}>
+                    <div className="flex items-center justify-between gap-4" style={{ marginBottom: 'var(--space-lg)' }}>
+                        <h2 className="section-title" style={{ marginBottom: 0 }}>Best Next Steps for {proto.name}</h2>
+                        <Link href={bestPageLink.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
+                            {bestPageLink.label}
+                        </Link>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <Link href={bestPageLink.href} className="link-card">
+                            <h3 className="link-card__title">{bestPageLink.label}</h3>
+                            <p className="link-card__desc">Move from protocol research into an actual product shortlist for this transport path.</p>
+                        </Link>
+                        <Link href="/brands" className="link-card">
+                            <h3 className="link-card__title">Browse All Brands</h3>
+                            <p className="link-card__desc">Compare lock ecosystems, app behavior, and door-format coverage before narrowing to one protocol.</p>
+                        </Link>
+                        {readingList.slice(0, 2).map((item) => (
+                            <Link key={item.href} href={item.href} className="link-card">
+                                <h3 className="link-card__title">{item.title}</h3>
+                                <p className="link-card__desc">{item.description}</p>
                             </Link>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {topProducts.map((product) => (
-                                <Link
-                                    key={product.slug}
-                                    href={`/brands/${product.brand_slug}/${product.slug}`}
-                                    className="card"
-                                    style={{ textDecoration: 'none', padding: 'var(--space-md)' }}
-                                >
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '4px' }}>
-                                        {product.brand_name}
-                                    </div>
-                                    <div style={{ fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-sm)' }}>
-                                        {product.name}
-                                    </div>
-                                    <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: 'var(--space-sm)' }}>
-                                        {product.protocol.toUpperCase()}{product.supports_matter ? ' · Matter' : ''}{product.battery_life_months ? ` · ${product.battery_life_months}mo battery` : ''}{product.ansi_grade ? ` · Grade ${product.ansi_grade}` : ''}
-                                    </p>
-                                    <StarRating productId={product.id} size="sm" />
-                                </Link>
-                            ))}
-                        </div>
-                    </section>
-                )}
+                        ))}
+                    </div>
+                </section>
 
-                {/* Compatible Products */}
-                <div style={{ marginBottom: 'var(--space-3xl)' }}>
-                    <h2 className="section-title">
-                        Locks, Brands, Battery
-                    </h2>
-                    {products.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {products.map((product) => (
-                                <Link
-                                    key={product.slug}
-                                    href={`/brands/${product.brand_slug}/${product.slug}`}
-                                    className="card"
-                                    style={{ textDecoration: 'none', padding: 'var(--space-md)' }}
-                                >
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '4px' }}>
-                                        {product.brand_name}
-                                    </div>
-                                    <div style={{ fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-sm)' }}>
-                                        {product.name}
-                                    </div>
-                                    <div className="flex flex-wrap gap-2" style={{ marginBottom: 'var(--space-sm)' }}>
-                                        {product.price_usd && (
-                                            <span style={{
-                                                padding: '2px 6px',
-                                                background: 'var(--color-bg-alt)',
-                                                borderRadius: 'var(--radius-sm)',
-                                                fontSize: '0.7rem',
-                                            }}>
-                                                <DollarSign className="w-3 h-3 inline" />${product.price_usd}
-                                            </span>
-                                        )}
-                                        {product.battery_life_months && (
-                                            <span style={{
-                                                padding: '2px 6px',
-                                                background: 'var(--color-bg-alt)',
-                                                borderRadius: 'var(--radius-sm)',
-                                                fontSize: '0.7rem',
-                                            }}>
-                                                <Battery className="w-3 h-3 inline" /> {product.battery_life_months}mo
-                                            </span>
-                                        )}
-                                        {product.has_fingerprint && (
-                                            <span style={{
-                                                padding: '2px 6px',
-                                                background: 'var(--color-bg-alt)',
-                                                borderRadius: 'var(--radius-sm)',
-                                                fontSize: '0.7rem',
-                                            }}>
-                                                <Fingerprint className="w-3 h-3 inline" /> FP
-                                            </span>
-                                        )}
-                                    </div>
-                                    <StarRating productId={product.id} size="sm" />
-                                </Link>
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="card" style={{ textAlign: 'center', padding: 'var(--space-3xl)' }}>
-                            <p style={{ color: 'var(--color-text-muted)', marginBottom: 'var(--space-md)' }}>
-                                We&apos;re building our {proto.name} product database. Check back soon for compatible locks!
-                            </p>
-                            <Link href="/brands" className="btn btn-secondary">
-                                Browse All Brands
-                            </Link>
-                        </div>
-                    )}
-                </div>
+                <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+                    <h2 className="section-title">Deployment Checklist</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {checklist.map((item) => (
+                            <div key={item} className="flex items-start gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+                                <span style={{ color: 'var(--color-accent)', marginTop: '2px', flexShrink: 0 }}>•</span>
+                                <span>{item}</span>
+                            </div>
+                        ))}
+                    </div>
+                </section>
 
                 <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
                     <h2 className="section-title">Signal, Battery, Protocol Tools</h2>
@@ -641,6 +637,20 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                         ))}
                     </div>
                 </section>
+
+                {readingList.length > 0 && (
+                    <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+                        <h2 className="section-title">Deeper Reading</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {readingList.map((item) => (
+                                <Link key={item.href} href={item.href} className="link-card">
+                                    <h3 className="link-card__title">{item.title}</h3>
+                                    <p className="link-card__desc">{item.description}</p>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+                )}
 
                 {/* FAQ */}
                 <div className="card" style={{ marginBottom: 'var(--space-3xl)' }}>

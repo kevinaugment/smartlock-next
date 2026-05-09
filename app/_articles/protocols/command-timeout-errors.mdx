@@ -6,8 +6,8 @@ description: >-
   execution.
 category: protocols
 pubDate: 2024-04-08T00:00:00.000Z
-wordCount: 1055
-readingTime: 4
+wordCount: 595
+readingTime: 3
 keywords:
   - command timeout
   - command failed
@@ -27,379 +27,46 @@ relatedArticles:
   - improve-connection-stability
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## 2026 Update Snapshot
-
-- Smart lock interoperability is broader in 2026, but advanced functions still vary by exact firmware, radio path, and vendor cloud policy.
-- Verify whether core actions stay available during internet loss, cloud outages, or controller restarts. That distinction still separates resilient deployments from fragile ones.
-- Treat local radio health, border-router or hub placement, and fallback behavior during internet loss as first-class design inputs, not afterthoughts.
-## Quick Answer: The Round-Trip Latency Budget Exhaustion Problem
-
-**Command timeout errors occur when complete command-response cycle (app transmit → network routing → lock execution → status confirmation → app receive) exceeds platform's timeout threshold (typically 10-30 seconds), caused by RF link degradation adding per-hop transmission delays (60%), lock processing contention from concurrent operations (20%), or battery depletion slowing motor actuation and radio transmission (15%).** These timeouts create ambiguous failure states where command potentially executed yet confirmation lost—lock physically secured yet app displays "failed"—requiring physical verification before retry attempts that risk duplicate operations (unlocking already-unlocked door, locking already-locked door creating motor strain).
-
-The timeout threshold represents system architecture trade-off balancing responsiveness (short timeout provides quick failure feedback enabling rapid retry) against reliability (long timeout accommodates legitimate delays from weak signals, mesh routing, or slow motor operation preventing false-negative errors). Conservative platforms implement 10-15 second timeouts prioritizing quick feedback accepting higher false-timeout rate (command succeeded yet confirmation delayed beyond threshold), while lenient platforms use 30-45 second timeouts prioritizing accuracy accepting slower user experience. This timeout variance explains cross-platform behavioral differences where identical lock configuration experiences frequent timeouts on aggressive-timeout platform (SmartThings' 15-second default) yet zero timeouts on lenient platform (Home Assistant's 30-second default).
-
-## Command-Response Round-Trip Latency Budget Analysis
-
-Smart lock command execution implements request-response pattern where initiating device (app/hub) expects acknowledgment within bounded time, creating latency budget partitioned across multiple architectural layers each contributing independent delays that accumulate into total round-trip time.
-
-### Latency Budget Decomposition and Timeout Thresholds
-
-| Communication Stage | Optimal Latency | Degraded Latency | Failure Mode Latency | Contributing Factors | Optimization Strategy |
-|-------------------|----------------|------------------|---------------------|---------------------|----------------------|
-| **App → Cloud** | 50-150ms | 200-500ms | 1000-3000ms  - timeout | Internet latency, cellular vs WiFi | Local control bypass, WiFi preference |
-| **Cloud → Hub** | 100-300ms | 500-1500ms | 2000-5000ms  - timeout | Cloud routing, hub internet speed | Hub wired ethernet, QoS prioritization |
-| **Hub → Lock (mesh)** | 200-800ms | 1000-3000ms | 5000-15000ms  - retries exhausted | RF signal, mesh hops, interference | Repeater placement, channel optimization |
-| **Lock Processing** | 1500-2500ms | 3000-6000ms | 8000-15000ms  - motor stall | Motor load, battery voltage, calibration | Battery replacement, alignment fix |
-| **Lock → Hub (status)** | 100-400ms | 800-2000ms | 3000-8000ms  - broadcast lost | RF signal, collision, retry | Signal improvement, broadcast power |
-| **Hub → Cloud → App** | 150-400ms | 600-1500ms | 2000-5000ms  - network | Symmetric return path | Same as outbound |
-| **Total Round-Trip** | **2.1-4.6 sec** | **6.1-14.5 sec** | **21-46 sec** | Cumulative worst-case | Multi-layer optimization |
-
-**Timeout threshold positioning**: Platforms set timeout between typical success (4-6 seconds) and guaranteed failure (20+ seconds), trading false-negative rate (timing out successful-but-slow commands) against user experience (waiting indefinitely for truly failed commands). The 10-30 second industry standard reflects empirical data: 95% of successful commands complete within 8 seconds, 99% within 15 seconds, remaining 1% either succeed slowly (15-30 seconds) or represent genuine failures.
-
-**The ambiguous timeout problem**: Timeout merely indicates "no response within threshold", not "command failed"—lock may have executed action successfully yet confirmation packet lost during return path. This ambiguity creates critical user decision: retry command (risk duplicate operation if original succeeded) or physically verify (definitive status requiring proximity). Premium platforms implement idempotent commands (duplicate lock/unlock safely ignored) and aggressive status polling (hub queries lock immediately post-timeout verifying actual state) mitigating ambiguity.
-
-### Types of Timeouts
-
-**Connection timeout:**
-```
-Can't reach lock at all
-Lock appears offline
-Complete communication failure
-```
-
-**Command timeout:**
-```
-Connected to lock
-Command sent
-No response within time limit
-Lock may have acted but didn't confirm
-```
-
-**Response timeout:**
-```
-Command sent and received
-Lock acting on it
-Taking too long to complete
-Motor slow or struggling
-```
-
-## Common Causes & Fixes
-
-### 1. Weak Signal (60%)
-
-**Problem:**
-```
-Command travels slowly:
-Phone → Cloud → Hub → Repeater → Lock
-Each hop adds 0.5-2 seconds
-Weak links = Retransmissions
-Total time exceeds timeout limit
-```
-
-**Fix:**
-```
-□ Check signal strength:
-  - RSSI < -80 dBm = Problem
-  - LQI < 100 = Poor quality
-  - Check in lock settings
-
-□ Add repeater:
-  - Halfway between hub and lock
-  - Zigbee plug: $20
-  - Z-Wave extender: $35
-  - Improves reliability 80%
-
-□ Reduce distance:
-  - Move hub closer (if possible)
-  - Direct line of sight
-  - Fewer walls/obstacles
-
-□ Change RF channel:
-  - Zigbee: Away from WiFi
-  - Check for interference
-  - Hub settings → Channel
-```
-
-### 2. Lock Busy (20%)
-
-**Problem:**
-```
-Lock already processing:
-- Previous command still executing
-- Auto-lock in progress
-- Calibration running
-- Can't accept new command
-
-Result: New command times out
-```
-
-**Fix:**
-```
-□ Wait for completion:
-  - Let current operation finish
-  - Usually 2-5 seconds
-  - Then retry
-
-□ Check lock status:
-  - Is it moving?
-  - LED flashing?
-  - Wait for idle state
-
-□ Cancel conflicting operation:
-  - If stuck in loop
-  - Power cycle lock
-  - Remove batteries 30 sec
-
-□ Disable auto-lock temporarily:
-  - If causing conflicts
-  - Re-enable after testing
-```
-
-### 3. Low Battery (15%)
-
-**Problem:**
-```
-Battery <30%:
-- Motor underpowered
-- Takes 5-10 seconds vs 2-3
-- May not complete fully
-- Response delayed
-
-App times out before lock responds
-```
-
-**Fix:**
-```
-□ Replace batteries:
-  - All 4 at once
-  - Name brand alkaline or lithium
-  - Test immediately
-
-□ Check battery level:
-  - Should improve to 100%
-  - Faster response time
-  - No more timeouts
-```
-
-### 4. Network Congestion (3%)
-
-**Problem:**
-```
-Hub overloaded:
-- Too many devices
-- Heavy traffic
-- Commands queued
-- Delayed processing
-```
-
-**Fix:**
-```
-□ Restart hub:
-  - Clears queue
-  - Fresh start
-  - Unplug 30 sec
-
-□ Reduce polling:
-  - Lock checks status every X min
-  - Reduce frequency
-  - Saves network capacity
-
-□ Upgrade hub:
-  - Older hubs slower
-  - Modern hubs faster
-  - More capacity
-```
-
-### 5. Cloud Latency (2%)
-
-**Problem:**
-```
-Remote command via cloud:
-Phone → Internet → Cloud → Home → Lock
-Multiple long hops
-Each with potential delay
-Total time unpredictable
-```
-
-**Fix:**
-```
-□ Use local control when possible:
-  - Bluetooth (if near lock)
-  - Local hub commands
-  - Bypasses cloud
-
-□ Check internet speed:
-  - Home upload speed
-  - Phone data speed
-  - Both affect round-trip
-
-□ Consider local-only lock:
-  - If cloud unreliable
-  - Zigbee/Z-Wave hub
-  - No cloud dependency
-```
-
-## Timeout Settings
-
-### Adjust Timeout Duration
-
-**Platform-specific:**
-```
-SmartThings:
-- Settings → Network → Timeout
-- Default: 20 seconds
-- Increase to 30-40 if frequent timeouts
-
-Home Assistant:
-- Lock integration settings
-- Command timeout: 30 seconds
-- Can increase to 60
-
-Manufacturer app:
-- Usually can't adjust
-- Fixed at 20-30 seconds
-- Contact support if too short
-```
-
-**Balance:**
-- Too short: False timeout errors
-- Too long: Slow feedback
-- Optimal: 20-30 seconds
-
-## Troubleshooting Workflow
-
-```
-Command timeout occurs:
-  ↓
-Check 1: Is lock actually locked/unlocked?
-  ├─ Yes → Timeout false alarm (lock worked)
-  │        → Fix: Improve signal for confirmation
-  └─ No → Command truly failed
-           → Continue
-  ↓
-Check 2: Can you reach lock at all?
-  ├─ No → Offline issue
-  │       → See: [Lock Offline Guide]
-  └─ Yes → Continue
-  ↓
-Check 3: Battery level?
-  ├─ <30% → Replace batteries
-  │         → Test again
-  └─ >30% → Continue
-  ↓
-Check 4: Signal strength?
-  ├─ Poor (< -80 dBm) → Add repeater
-  │                    → Reduce distance
-  └─ Good → Continue
-  ↓
-Check 5: Multiple timeouts?
-  ├─ Yes → Systematic issue
-  │        → Review all above
-  │        → Contact support
-  └─ No → One-off glitch
-           → Retry command
-```
-
-## Testing & Verification
-
-**After fixes:**
-```
-□ Test 10 commands:
-  - 5 lock commands
-  - 5 unlock commands
-  - Count timeouts: ___/10
-
-□ Success criteria:
-  - 0 timeouts = Excellent ✓
-  - 1-2 timeouts = Acceptable
-  - 3+ timeouts = Still problematic
-
-□ Test different times:
-  - Peak hours (evening)
-  - Off-peak (morning)
-  - Network load affects
-
-□ Test different locations:
-  - Local (near lock)
-  - Remote (away from home)
-  - Compare reliability
-```
-
-## Prevention
-
-```
-☑ Maintain strong signal:
-  - RSSI > -75 dBm
-  - Add repeaters proactively
-  - Monitor monthly
-
-☑ Keep batteries fresh:
-  - Replace at 30%
-  - Don't wait for low
-  - Prevents slow response
-
-☑ Reduce command conflicts:
-  - Don't spam commands
-  - Wait for completion
-  - One command at a time
-
-☑ Update firmware:
-  - Lock and hub
-  - Performance improvements
-  - Bug fixes
-
-☑ Monitor performance:
-  - Track timeout frequency
-  - Investigate patterns
-  - Address proactively
-```
-
-## When Timeout Isn't the Real Problem
-
-**False timeouts:**
-```
-Lock actually worked:
-- Command executed
-- Lock locked/unlocked
-- Just didn't confirm fast enough
-
-Check physically:
-- Is door actually locked?
-- Did deadbolt extend?
-- Ignore timeout message if it worked
-
-If consistently false timeouts:
-→ Signal issue (not lock issue)
-→ Add repeater for confirmation path
-```
-
-## Tools & Resources
-
-📡 **[RF Coverage Estimator](/calculators/rf-coverage)** - Check signal strength  
-🗺️ **[Mesh Network Planner](/calculators/mesh-planner)** - Optimize mesh topology
-
----
-
-## Related Articles
-
-**Connection Issues:**
-- [Improve Connection Stability](/articles/protocols/improve-connection-stability) - Network optimization
-- [Smart Lock Disconnects After Power Outage](/articles/protocols/smart-lock-disconnects-after-power-outage) - Reconnection
-
-**Troubleshooting:**
-- [Complete Troubleshooting Guide](/articles/guides/complete-troubleshooting-guide) - All timeout issues
-
-**Protocol Guides:**
-- [Protocol Overview](/articles/protocols/smart-lock-protocols-overview) - Understand latency
-- [Zigbee vs Z-Wave](/articles/protocols/zigbee-vs-zwave-comparison) - Protocol reliability
-- [Battery Life Guide](/articles/installation/smart-lock-battery-life-guide) - Signal impacts battery
-
----
-
-## Summary: Systematic Latency Budget Optimization Through Layer-Specific Reduction
-
-Command timeout resolution demands understanding cumulative latency architecture where total round-trip time equals sum of independent stage delays, recognizing timeout threshold (10-30 seconds) represents hard ceiling where exceeding any component's budget allocation triggers failure despite other stages performing optimally. Systematic optimization targets highest-latency contributors first (Hub → Lock mesh routing typically 20-60% of total budget, Lock processing 30-50%, cloud round-trip 10-30%) through signal improvement (repeater reducing Hub-Lock from 3 seconds to 800ms), battery replacement (restoring motor speed from 6 seconds to 2.5 seconds), or local control bypass (eliminating cloud's 500-1500ms each direction).
-
-**The physical verification imperative**: Timeout error indicates "no confirmation received" not "command definitively failed", creating 40-60% probability command succeeded yet return-path packet lost (outbound delivery succeeded, lock operated, status broadcast dropped). This ambiguity demands physical verification before retry: check door's actual locked/unlocked state preventing duplicate operations (re-locking locked door stresses motor, re-unlocking unlocked door wastes battery). Users instinctively retry immediately post-timeout (assuming failure) yet optimal response: walk to door, verify state, retry only if genuinely failed.
-
-**Timeout threshold configurability limitations**: Most consumer platforms hard-code timeout (manufacturer app: 15-20 seconds, cloud platforms: 20-30 seconds) preventing user adjustment despite diverse deployment scenarios (large home requiring 25-second budget versus apartment needing only 8 seconds). Enterprise platforms (Home Assistant, Hubitat) exposing timeout configuration enable environment-specific tuning: increase to 45 seconds accommodating long mesh routes and slow locks accepting delayed feedback, or decrease to 8 seconds in strong-signal deployments prioritizing rapid failure detection. This configurability proves critical for marginal deployments where default timeout creates 20-40% false-negative rate (successful commands timing out) resolvable through 50% threshold increase.
+A command timeout means the app or hub did not receive a response quickly enough. It does not always mean the lock failed to move. Sometimes the lock completed the action, but the confirmation message was delayed or lost.
+
+That ambiguity is why you should avoid repeated blind retries. If the app says timeout, first check the actual door state when possible. Repeated lock and unlock commands can create confusion, extra motor cycles, and misleading status.
+
+## Common Causes
+
+The most common cause is weak signal. The command has to travel from the app or hub to the lock and then return with status. Poor Wi-Fi, a weak Zigbee or Z-Wave mesh, too many hops, or interference can push that round trip beyond the platform timeout.
+
+Low batteries are another common cause. A weak battery can still power the keypad, but the motor may move slowly and the radio may respond poorly. Door alignment can create the same symptom when the motor struggles to throw the bolt.
+
+The lock can also be busy. Auto-lock, calibration, a previous command, or a firmware update may make a new command wait long enough to time out.
+
+## First Checks
+
+Start with the physical door. If you are nearby, see whether the lock is actually locked or unlocked. Then test the keypad or thumb turn. If local operation is slow or rough, fix batteries or alignment first.
+
+Next, check whether the app shows the lock online. If it is offline, use [Smart Lock Keeps Going Offline](/articles/protocols/smart-lock-keeps-going-offline). If it is online but commands are slow, focus on signal quality and motor load.
+
+Replace weak batteries with a fresh matched set before spending time on deeper network troubleshooting. Then test again with the door open and closed. A timeout only with the door closed points toward alignment.
+
+## Improve The Signal Path
+
+For Wi-Fi locks, check 2.4 GHz coverage at the door. Move the router or add a better access point if the signal is weak. For Zigbee, Z-Wave, or Thread locks, add a powered repeater or router device between the hub and the lock.
+
+After adding or moving infrastructure, give the network time to rebuild routes. Wake the lock from the keypad and test several commands. For broader guidance, use [Improve Connection Stability](/articles/protocols/improve-connection-stability).
+
+## Reduce Command Conflicts
+
+Avoid sending multiple commands while the lock is still moving. Wait for the motor to stop and the app to refresh before retrying. If auto-lock is enabled, temporarily disable it while troubleshooting so it does not overlap with manual testing.
+
+If a command times out during calibration, firmware update, or pairing, wait. Interrupting those processes can create worse problems than the timeout itself.
+
+## When To Reboot
+
+If the lock is responsive locally but the app keeps timing out, restart the hub, bridge, or router before removing lock batteries. For a battery lock, power cycling should be a later step, not the first one.
+
+If the lock becomes fully unresponsive, use the physical key or backup access method, then remove and reinsert batteries. After it boots, test local operation before testing app control.
+
+## Final Verification
+
+After each fix, run several commands from the app and one from the keypad. Confirm the app status matches the real door. If timeouts continue after fresh batteries, smooth alignment, and better signal, update firmware and contact manufacturer support with the exact error, lock model, hub, and when the timeout occurs.
+
+Timeouts are usually a symptom, not the root cause. Fix the signal path, battery state, and mechanical load, and the app usually becomes reliable again.

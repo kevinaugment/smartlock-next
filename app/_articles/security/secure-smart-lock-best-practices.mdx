@@ -6,8 +6,8 @@ description: >-
   unauthorized access.
 category: security
 pubDate: 2024-03-18T00:00:00.000Z
-wordCount: 515
-readingTime: 2
+wordCount: 797
+readingTime: 4
 keywords:
   - smart lock security
   - secure smart lock
@@ -26,478 +26,58 @@ relatedArticles:
   - encryption-standards-guide
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## 2026 Update Snapshot
-
-- Smart lock interoperability is broader in 2026, but advanced functions still vary by exact firmware, radio path, and vendor cloud policy.
-- Verify whether core actions stay available during internet loss, cloud outages, or controller restarts. That distinction still separates resilient deployments from fragile ones.
-- Always verify the current listing, code interpretation, or insurer requirement against the exact device, door assembly, and jurisdiction where you plan to use it.
-## Quick Answer
-
-**Secure smart lock with: unique 6-8 digit PIN codes (not 1234), 2FA on app, regular code audits (delete ex-users), firmware always updated, strong WiFi password, network isolation if possible, enable all notifications, review access logs weekly.** Most breaches from weak/shared codes (70%), not technical hacks. Good security = Good habits.
-
-**Security pillars:**
-1. 🔴 Strong access codes (70% of security)
-2. 🟡 Regular audits (20% of security)
-3. 🟠 Technical hardening (10% of security)
-
-## Access Code Security
-
-### Create Strong Codes
-
-**What makes codes secure:**
-```
-✅ 6-8 digits (not minimum 4)
-✅ Non-obvious (not 1234, 0000, birthday)
-✅ Unique per person
-✅ Changed after access revoked
-✅ Not written on door/visible
-
-❌ Sequential (1234, 5678)
-❌ Repeated (1111, 2222)
-❌ Dates (birthday, address)
-❌ Shared between users
-❌ Same as other locks
-```
-
-**Strong code examples:**
-- 573194  - random
-- 842637  - random
-- 196428  - random
-
-**Weak code examples:**
-- 1234  - most common, try this first
-- 0000  - second most common
-- 1212  - pattern
-- Address or birthday
-
-### Code Management
-
-```
-☑️ Unique code per person
-  - Never share codes
-  - Track who has what code
-  - Accountability for access
-
-☑️ Change master code from default
-  - Never keep factory default
-  - Change immediately after install
-
-☑️ Delete codes promptly
-  - Guest leaves: Delete same day
-  - Employee quits: Delete within 1 hour
-  - Relationship ends: Delete immediately
-
-☑️ Audit codes quarterly
-  - Review all active codes
-  - Delete unused (90+ days)
-  - Verify each should still have access
-
-☑️ Document code assignments
-  - Spreadsheet or password manager
-  - Who: Name
-  - Code: xxxxxx
-  - Date added: MM/DD/YY
-  - Expiration: MM/DD/YY or Permanent
-```
-
-## App & Account Security
-
-### Strong Authentication
-
-```
-☑️ Unique password for lock app
-  - Not same as other accounts
-  - 12+ characters
-  - Mix: uppercase, lowercase, numbers, symbols
-
-☑️ Enable 2FA (two-factor authentication)
-  - App-based (Google Authenticator, Authy)
-  - NOT SMS (less secure)
-  - Protects even if password stolen
-
-☑️ Biometric login (if available)
-  - Face ID / Touch ID
-  - Adds convenience + security
-  - Still have strong password backup
-
-☑️ Don't save password in browser
-  - Use password manager instead
-  - LastPass, 1Password, Bitwarden
-```
-
-### Access Permissions
-
-```
-☑️ Limit admin users
-  - Only trusted people get admin
-  - Regular users: Can't add/delete others
-  - Guest users: Time-limited, restricted
-
-☑️ Review shared access
-  - Who has app access?
-  - Still need it?
-  - Remove when no longer needed
-
-☑️ Disable guest accounts after use
-  - Don't leave active indefinitely
-  - Set expiration dates
-
-☑️ Monitor login activity
-  - Some apps show: Who logged in when
-  - Unusual login = Investigate
-```
-
-## Network Security
-
-### WiFi/Hub Security
-
-```
-☑️ Strong WiFi password
-  - WPA3 or WPA2 (not WEP)
-  - 16+ character password
-  - Change from default
-
-☑️ Hide SSID (optional)
-  - Makes network less visible
-  - Not foolproof but adds layer
-
-☑️ Disable WPS
-  - WPS = Security vulnerability
-  - Router settings → Disable WPS
-
-☑️ Update router firmware
-  - Check quarterly
-  - Patches security holes
-
-☑️ Change default router login
-  - Not "admin/admin"
-  - Strong unique password
-```
-
-### Network Isolation (Advanced)
-
-```
-☑️ Separate IoT VLAN (if technical)
-  - Smart home devices on separate network
-  - Limits breach impact
-  - Requires capable router
-
-☑️ Firewall rules
-  - Block unnecessary inbound
-  - Smart locks don't need inbound access
-  - Only outbound to manufacturer
-
-☑️ Disable UPnP
-  - Universal Plug and Play
-  - Convenience vs security trade-off
-  - Disable if not needed
-```
-
-## Firmware & Updates
-
-### Keep Updated
-
-```
-☑️ Enable automatic updates
-  - Lock firmware
-  - Hub firmware
-  - App updates
-  - Router firmware
-
-☑️ Check monthly if not automatic
-  - Lock: App → Settings → About
-  - Hub: Settings → System
-  - Router: Admin panel
-
-☑️ Don't postpone security updates
-  - Critical patches = Update immediately
-  - Even if inconvenient
-
-☑️ Subscribe to security alerts
-  - Manufacturer email lists
-  - Know about vulnerabilities
-```
-
-## Monitoring & Alerts
-
-### Active Monitoring
-
-```
-☑️ Enable all access notifications
-  - Door unlocked
-  - Door locked
-  - Code used
-  - Failed attempt
-
-☑️ Review access logs weekly
-  - Who accessed when
-  - Any unusual times?
-  - Unfamiliar patterns?
-
-☑️ Set up critical alerts
-  - Multiple failed attempts (5+)
-  - Access during unusual hours (2-6am)
-  - Tamper detection triggered
-  - Low battery (<30%)
-
-☑️ Review at same time each week
-  - Sunday evening routine
-  - 5 minutes to check logs
-  - Catch issues early
-```
-
-### What to Look For
-
-```
-⚠️ Warning signs:
-  - Access at 3am (when you're home asleep)
-  - Multiple failed codes (someone guessing)
-  - Unknown code used (deleted user still has access)
-  - Unlocked when you thought locked
-  - Pattern changes (usually locks at 10pm, now midnight)
-
-✓ Normal patterns:
-  - Regular family access times
-  - Expected guest access
-  - Automated locks/unlocks (as configured)
-```
-
-## Physical Security
-
-### Installation Security
-
-```
-☑️ Interior screws not accessible from exterior
-  - Standard for smart locks
-  - Verify during install
-
-☑️ Strike plate reinforced
-  - Long screws into door frame (3"+)
-  - Metal strike plate, not plastic
-
-☑️ Door itself secure
-  - Solid core door (not hollow)
-  - Frame properly anchored
-  - Hinges on interior (not exterior)
-
-☑️ Backup key secure
-  - Not hidden under mat
-  - With trusted neighbor
-  - Or in lockbox (quality, hidden location)
-```
-
-### Tamper Protection
-
-```
-☑️ Enable tamper alerts
-  - Lock attempts to remove
-  - Reports to app
-
-☑️ Alarm feature (if available)
-  - Some locks: Built-in alarm
-  - Loud sound if forced
-  - Deterrent + alert
-
-☑️ Camera integration
-  - Video doorbell + smart lock
-  - Visual record of access
-  - Verify identity before granting access
-```
-
-## Emergency Preparedness
-
-### Backup Access Methods
-
-```
-☑️ Multiple access methods
-  - PIN code (primary)
-  - Physical key (backup)
-  - App (when home)
-  - 9V emergency (if battery dies)
-
-☑️ Trusted emergency contact
-  - Neighbor with backup key
-  - Family with app access
-  - Know how to reach 24/7
-
-☑️ Emergency procedures documented
-  - "If locked out" checklist
-  - Contact numbers
-  - 9V battery location
-```
-
-## Security Checklist (Monthly)
-
-```
-□ Review access logs (10 min)
-  - Any suspicious activity?
-  - All access as expected?
-
-□ Test all access methods (5 min)
-  - PIN codes work
-  - App access works
-  - Physical key works
-
-□ Check battery level
-  - >30%? OK
-  - <30%? Replace this week
-
-□ Verify users current (5 min)
-  - List all users
-  - Each still needs access?
-  - Delete any that don't
-
-□ Check for firmware updates
-  - Lock, hub, router
-  - Apply if available
+The best smart lock security comes from ordinary discipline: strong unique codes, limited admin access, current firmware, healthy batteries, and a real backup plan. Modern lock encryption matters, but most avoidable risk comes from weak PINs, old users who still have access, unmanaged app accounts, and doors that do not lock cleanly.
 
-□ Test tamper alert (1 min)
-  - Try to remove lock slightly
-  - Alert should trigger
+Think of a smart lock as both a deadbolt and an access-control system. You need the physical door to be strong, and you need the digital access list to stay clean.
 
-Total time: 20-25 minutes monthly
-```
+## Start With The Door
 
-## Common Security Mistakes
-
-**What NOT to do:**
+No app setting can compensate for a weak door. Confirm that the deadbolt fully extends, the strike plate is secure, the frame is solid, and the lock does not scrape or reverse during operation. If the motor struggles, fix alignment before adding users or relying on auto-lock.
 
-```
-❌ Share master code widely
-  - Give individual codes instead
+For exterior doors, use appropriate screws, a properly fitted strike, and a lock grade that matches the risk. Review [Door Compatibility Guide](/articles/guides/door-compatibility-guide) and [Door Alignment Guide](/articles/guides/door-alignment-guide) if the lock was recently installed or moved.
 
-❌ Use same code for everyone
-  - Can't track who accessed
-
-❌ Write code on/near door
-  - Defeats purpose of lock
-
-❌ Ignore failed attempts
-  - Someone may be trying to break in
+## Use Better Codes
 
-❌ Never update firmware
-  - Vulnerabilities accumulate
+PIN codes should be long enough, hard to guess, and unique to each person or role. Avoid repeated digits, birthdays, street numbers, simple patterns, and reused codes from other locks. Change the master code from the factory default before anyone depends on the lock.
 
-❌ Allow ex-users to keep access
-  - Delete immediately upon separation
+Do not share one code across a household, staff team, cleaner, contractor, or guest group when individual codes are possible. Unique codes make it possible to remove access without disrupting everyone else, and they make audit logs meaningful.
 
-❌ Disable notifications (annoying but crucial)
+For temporary access, set an expiration instead of relying on memory. For rentals and businesses, remove access the same day someone no longer needs it. Use [How to Add User Code](/articles/guides/how-to-add-user-code), [Delete Smart Lock User](/articles/guides/delete-smart-lock-user), and [Share Access Securely](/articles/security/share-access-securely) as supporting procedures.
 
-❌ Skip regular audits
-  - Security erodes over time without maintenance
-```
+## Protect The App Account
 
-## When You Suspect Breach
+The vendor account is often the real admin key. Use a unique password and enable multi-factor authentication if the lock platform supports it. Remove old phones, former admins, ex-employees, co-hosts, or contractors from app access.
 
-**If you think security compromised:**
+Be careful with shared accounts. They are convenient, but they make it hard to know who changed a setting or created a code. Where the app supports roles, give admin permissions only to people who actually need to manage access.
 
-```
-Immediate actions:
-□ Change all codes (within 1 hour)
-□ Review recent access logs
-□ Check for unauthorized users in app
-□ Change app password
-□ Enable 2FA if not already
+If a phone is lost, stolen, sold, or returned by an employee, remove it from the lock account and rotate credentials that may have been exposed.
 
-□ Factory reset lock (if severe)
-  - Erases everything
-  - Re-pair and reconfigure
-  - Start fresh
+## Keep Firmware Current
 
-□ Change WiFi password
-  - If network breach suspected
+Firmware updates can patch vulnerabilities, improve pairing security, fix connection bugs, and support newer hubs or platforms. Check updates periodically and apply security updates promptly. For business or rental doors, schedule updates during a maintenance window and test the lock afterward.
 
-□ Contact authorities
-  - If actual break-in or attempted
+Do not start updates with weak batteries or poor connectivity. See [How to Update Smart Lock Firmware Safely](/articles/installation/update-smart-lock-firmware) for the safer sequence.
 
-□ Document everything
-  - Timestamps, suspicious activity
-  - For insurance/police if needed
-```
+## Secure The Network Path
 
-## Advanced Security (Optional)
+For Wi-Fi locks, use a strong Wi-Fi password and modern router security. Avoid old WEP networks, unchanged router admin passwords, and unsupported routers. For hub-based locks, keep the hub firmware current and protect the account that controls it.
 
-**For high-security needs:**
+Advanced users can place smart-home devices on a separate IoT network, but network isolation is not a substitute for basic account security. If the app password is weak or old users remain admins, a separate network will not solve the main problem.
 
-```
-□ Geofencing alerts
-  - Notify if access when you're away
-  - Requires phone location
+For connectivity and resilience, pair this with [Improve Connection Stability](/articles/protocols/improve-connection-stability) and [Offline Functionality Matrix](/articles/resources/offline-functionality-matrix).
 
-□ Photo capture on access
-  - Camera takes photo each unlock
-  - Video doorbell integration
+## Review Logs And Users
 
-□ Time restrictions
-  - Codes only work certain hours
-  - Prevents 3am unauthorized access
+Access logs are useful when each code belongs to a specific person or role. Review logs when something looks suspicious, after a lockout, after a rental dispute, or as part of a normal business access review. Do not treat logs as casual surveillance, especially in long-term rental settings.
 
-□ Attempt limits
-  - Lock out after 5 failed codes
-  - Prevents brute force
+At least quarterly, review every active user, code, app admin, automation, and integration. Delete anything that no longer has a clear purpose. For a family home this may take two minutes. For a rental or office, it should be part of the operating process.
 
-□ Audit trail export
-  - Download access logs
-  - Keep permanent records
-  - Compliance for rentals/business
-```
+## Prepare For Failure
 
-## Tools & Resources
+Security includes being able to enter safely when technology fails. Keep a physical key, emergency battery method, lockbox, trusted local contact, or other backup path appropriate to the property. The backup should be secure, but it must be usable by the person who will need it.
 
-🔒 **[Offline Resilience Scorecard](/calculators/offline-resilience)** - Security assessment
-🛡️ **[Emergency Backup Evaluator](/calculators/emergency-backup)** - Test backup plan
+Use the [Emergency Backup Planner](/calculators/emergency-backup) to document the fallback, especially for Airbnb, long-term rentals, and commercial doors.
 
----
+## Final Hardening Routine
 
-## Related Articles
-
-**Security Foundation:**
-- [Security Complete Analysis](/articles/security/smart-lock-security-complete-analysis) - Comprehensive security guide
-- [Data Privacy Compliance](/articles/security/data-privacy-compliance-guide) - Privacy regulations
-
-**Configuration:**
-- [Change Master Code](/articles/guides/change-master-code) - Strong code setup
-- [Audit Trail Setup](/articles/security/audit-trail-forensic-analysis) - Enable logging
-- [Multiple Failed Attempts](/articles/security/multiple-failed-code-attempts) - Lockout configuration
-
-**Access Management:**
-- [Share Access Securely](/articles/guides/share-access-securely) - Safe sharing
-- [Create Temporary Codes](/articles/guides/create-temporary-guest-code) - Time-limited access
-- [Delete Users](/articles/guides/delete-smart-lock-user) - Access revocation
-
-**Use Cases:**
-- [Enterprise Security](/articles/use-cases/enterprise-commercial-deployment) - Commercial hardening
-- [Airbnb Security](/articles/use-cases/smart-locks-airbnb-complete-guide) - STR security
-- [Z-Wave S2 Security] - /security/zwave-s2-security-architecture - Technical security
-
-**Best Practices:**
-- [User Management] - /support/how-to-add-user-code - Proper code setup
-- [Delete Users] - /support/delete-smart-lock-user - Access revocation
-
----
-
-## Summary Checklist
-
-**Secure your smart lock:**
-
-**Setup (one-time):**
-1. ☑️ Change master code from default
-2. ☑️ Strong app password + 2FA
-3. ☑️ Unique code per person (6-8 digits)
-4. ☑️ Enable all notifications
-5. ☑️ Update all firmware
-
-**Monthly maintenance:**
-6. ☑️ Review access logs (10 min)
-7. ☑️ Audit users (delete unused)
-8. ☑️ Check firmware updates
-9. ☑️ Test all access methods
-
-**After events:**
-10. ☑️ Delete code when guest leaves (same day)
-11. ☑️ Change codes after relationship ends
-12. ☑️ Review logs after travel
-
-**70% of smart lock security = Strong codes + Prompt deletions**
-
-**Pro tip:** Security is 70% process, 30% technology. The most secure lock in the world is compromised if you give the code to your ex or never delete old users. Set a recurring calendar reminder: "1st of each month: Smart lock security audit (20 min)". This habit alone prevents 90% of security issues!
+The practical routine is simple: harden the door, change default codes, use unique PINs, limit admins, update firmware, protect the account, review access quarterly, and maintain backup access. Those habits do more for real-world security than chasing the most dramatic hacking scenario.

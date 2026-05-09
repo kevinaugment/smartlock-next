@@ -89,6 +89,7 @@ export default function Header() {
   const [mobileAccordion, setMobileAccordion] = useState<string | null>(null)
   const [activeDesktopMenu, setActiveDesktopMenu] = useState<string | null>(null)
   const headerRef = useRef<HTMLElement>(null)
+  const desktopNavRef = useRef<HTMLElement>(null)
 
   // Close menus on Escape
   useEffect(() => {
@@ -107,6 +108,41 @@ export default function Header() {
     document.body.classList.toggle('mobile-nav-open', mobileMenuOpen)
     return () => document.body.classList.remove('mobile-nav-open')
   }, [mobileMenuOpen])
+
+  useEffect(() => {
+    if (!activeDesktopMenu) return
+
+    const isPointInside = (element: Element | null, x: number, y: number, padding = 0) => {
+      if (!element) return false
+      const rect = element.getBoundingClientRect()
+      return x >= rect.left - padding
+        && x <= rect.right + padding
+        && y >= rect.top - padding
+        && y <= rect.bottom + padding
+    }
+
+    const onPointerMove = (event: PointerEvent) => {
+      const activeItem = desktopNavRef.current?.querySelector(`[data-menu-key="${activeDesktopMenu}"]`)
+      if (!activeItem) {
+        setActiveDesktopMenu(null)
+        return
+      }
+
+      const target = document.elementFromPoint(event.clientX, event.clientY)
+      if (target && activeItem.contains(target)) return
+
+      const trigger = activeItem.querySelector('.mega-nav__trigger')
+      const menu = activeItem.querySelector('.mega-menu')
+      if (isPointInside(trigger, event.clientX, event.clientY, 8) || isPointInside(menu, event.clientX, event.clientY, 8)) {
+        return
+      }
+
+      setActiveDesktopMenu(null)
+    }
+
+    document.addEventListener('pointermove', onPointerMove, { passive: true })
+    return () => document.removeEventListener('pointermove', onPointerMove)
+  }, [activeDesktopMenu])
 
   const toggleAccordion = useCallback((key: string) => {
     setMobileAccordion(prev => (prev === key ? null : key))
@@ -141,10 +177,10 @@ export default function Header() {
 
 
           {/* ============ Desktop Mega Navigation ============ */}
-          <nav className="hidden md:flex mega-nav" aria-label="Main navigation" onPointerLeave={() => setActiveDesktopMenu(null)}>
+          <nav ref={desktopNavRef} className="hidden md:flex mega-nav" aria-label="Main navigation" onPointerLeave={() => setActiveDesktopMenu(null)}>
 
             {/* ----- Smart Lock Guides ----- */}
-            <div className="mega-nav__item" data-menu-open={activeDesktopMenu === 'kb'} {...desktopMenuHandlers('kb')}>
+            <div className="mega-nav__item" data-menu-key="kb" data-menu-open={activeDesktopMenu === 'kb'} {...desktopMenuHandlers('kb')}>
               <button className="mega-nav__trigger" aria-expanded={activeDesktopMenu === 'kb'} aria-haspopup="true">
                 Smart Lock Guides
                 <ChevronDown className="mega-nav__chevron" />
@@ -168,7 +204,7 @@ export default function Header() {
             </div>
 
             {/* ----- Calculators ----- */}
-            <div className="mega-nav__item" data-menu-open={activeDesktopMenu === 'calc'} {...desktopMenuHandlers('calc')}>
+            <div className="mega-nav__item" data-menu-key="calc" data-menu-open={activeDesktopMenu === 'calc'} {...desktopMenuHandlers('calc')}>
               <button className="mega-nav__trigger" aria-expanded={activeDesktopMenu === 'calc'} aria-haspopup="true">
                 Calculators
                 <ChevronDown className="mega-nav__chevron" />
@@ -197,7 +233,7 @@ export default function Header() {
             <Link href="/compare" className="nav-link">Compare</Link>
 
             {/* ----- Resources ----- */}
-            <div className="mega-nav__item" data-menu-open={activeDesktopMenu === 'res'} {...desktopMenuHandlers('res')}>
+            <div className="mega-nav__item" data-menu-key="res" data-menu-open={activeDesktopMenu === 'res'} {...desktopMenuHandlers('res')}>
               <button className="mega-nav__trigger" aria-expanded={activeDesktopMenu === 'res'} aria-haspopup="true">
                 Resources
                 <ChevronDown className="mega-nav__chevron" />

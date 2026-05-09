@@ -30,8 +30,5 @@
   "keep_vars": true,
   "vars": {
     "NEXT_RUNTIME": "cloudflare"
-  },
-  "build": {
-    "command": "npm run cf:build"
   }
 }

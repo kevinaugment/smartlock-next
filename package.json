@@ -11,9 +11,9 @@
     "cf:bindings": "node scripts/configure-cloudflare-bindings.mjs",
     "articles:generate": "node scripts/generate-article-content.mjs",
     "cf:build": "npm run cf:bindings && npm run articles:generate && opennextjs-cloudflare build",
-    "preview": "npm run cf:build && wrangler dev",
-    "deploy": "npm run cf:build && wrangler deploy",
-    "upload": "npm run cf:build && wrangler deploy --dry-run --outdir bundled",
+    "preview": "npm run cf:build && wrangler dev .open-next/worker.js --assets .open-next/assets",
+    "deploy": "npm run cf:build && wrangler deploy --x-autoconfig=false",
+    "upload": "npm run cf:build && wrangler deploy --x-autoconfig=false --dry-run --outdir bundled",
     "cf:d1:import": "wrangler d1 execute slockhub --remote --file database/d1-import-ordered.sql",
     "cf:d1:counts": "wrangler d1 execute slockhub --remote --command \"SELECT 'brands' AS table_name, COUNT(*) AS count FROM brands UNION ALL SELECT 'products', COUNT(*) FROM products UNION ALL SELECT 'product_series', COUNT(*) FROM product_series UNION ALL SELECT 'top_n_pages', COUNT(*) FROM top_n_pages\"",
     "test:db-facade": "tsx tests/db-facade.test.ts"
@@ -40,7 +40,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "1.3.0",
+    "@opennextjs/cloudflare": "^1.8.5",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.11.0",
     "@types/react": "^18.2.0",

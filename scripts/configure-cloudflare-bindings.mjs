@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process'
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -33,7 +33,15 @@ function readConfig() {
 }
 
 function writeConfig(config) {
-  writeFileSync(wranglerConfigPath, `${JSON.stringify(config, null, 2)}\n`)
+  const nextContent = `${JSON.stringify(config, null, 2)}\n`
+  const currentContent = existsSync(wranglerConfigPath)
+    ? readFileSync(wranglerConfigPath, 'utf8')
+    : ''
+  if (currentContent === nextContent) return
+
+  const tempPath = `${wranglerConfigPath}.tmp`
+  writeFileSync(tempPath, nextContent)
+  renameSync(tempPath, wranglerConfigPath)
 }
 
 function parseJsonArray(output) {

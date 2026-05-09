@@ -6,8 +6,8 @@ description: >-
   all smart lock brands.
 category: guides
 pubDate: 2024-03-06T00:00:00.000Z
-wordCount: 793
-readingTime: 3
+wordCount: 1020
+readingTime: 4
 keywords:
   - forgot smart lock code
   - reset master code
@@ -28,393 +28,60 @@ updatedDate: '2026-05-09T00:00:00.000Z'
 ---
 ## Quick Answer
 
-**If you forgot master code: Use app to view or change code (if you have app access), OR use backup physical key to enter, OR factory reset lock (last resort - erases all codes).** Factory reset process varies by brand but typically: Hold reset button 10-20 seconds until beep/flash. After reset, set new master code immediately.
+If you forgot the smart lock master code, do not factory reset first. Start with the least destructive recovery path: check the app for admin access, change the code from the app if allowed, use the physical backup key to get inside, and only then consider a factory reset. A factory reset can erase user codes, schedules, hub pairing, fingerprints, and automation settings.
 
-**Recovery options (try in order):**
-1. 🔴 **View code in app** (if you have admin access) - Instant
-2. 🟡 **Use backup physical key** (if equipped) - 2 minutes
-3. 🟠 **Factory reset lock** (last resort) - 10 minutes, erases everything
+If you still have app owner access, the fix is usually simple: open the lock app, find the master code or programming code settings, create a new code, save, and test it at the keypad with the door open. If you do not have app access or a key, you may need the interior reset button or professional help.
 
-## Recovery Methods
+## First: Separate Lockout From Forgotten Code
 
-### Method 1: View Master Code in App (Best Option)
+Forgetting the master code is not always the same as being locked out. If the door is open or you can enter with a user PIN, app unlock, fingerprint, or physical key, you have time to recover cleanly. If you are outside with no working credential, solve entry first and settings second.
 
-**If you still have app access:**
+Use any legitimate backup method available: app owner unlock, physical key, another admin user, emergency 9V power if the keypad is dead, or a locksmith. Once you are inside, leave the door open while changing settings so a mistake does not create another lockout.
 
-```
-This is the easiest solution - you may have forgotten code but app still knows it.
+## Check the App
 
-□ Open smart lock app
-□ Select your lock
-□ Go to Users / Codes / Settings
-□ Find "Master Code" or "Admin Code"
-□ Tap "Show" or "View Code"
-  - May require Face ID / Touch ID / Password
-  
-□ Code displayed: ________
+Many smart lock apps either show the master code after authentication or let the owner replace it. Look under `Settings`, `Users`, `Keypad`, `Access Codes`, `Master Code`, or `Programming Code`. The app may require Face ID, Touch ID, password confirmation, or account login before showing sensitive credentials.
 
-□ Test code on keypad immediately
-□ Write down code in secure location
-```
+If the app lets you change but not view the code, set a new random 6 to 8 digit code and save it. Wait for sync, then test the new code on the keypad. Also test that the old forgotten code no longer works if you later recover it from notes.
 
-**Time:** 1-2 minutes
+If the lock is offline, app changes may not reach the hardware. Wake the keypad, bring the phone close to Bluetooth locks, check the hub, or restore Wi-Fi before assuming the app recovery failed.
 
-**This works if:**
-- ✅ You have admin access to app
-- ✅ Lock is online
-- ✅ You remember app login
+## Use the Backup Key
 
-**This doesn't work if:**
-- ❌ Lost phone  - no app access
-- ❌ Forgot app password
-- ❌ Lock offline  - can't retrieve from cloud
+Most full-replacement deadbolt locks include a mechanical keyway. The keyhole may be visible, hidden under a cap, or placed below the keypad. Use the key to enter, then recover the master code from the app or reset the code from the interior side.
 
-### Method 2: Use Backup Physical Key
+If you lost the backup key but know the lock brand and key code, the manufacturer or a locksmith may be able to cut a replacement. If the door is urgent, a locksmith is usually safer than drilling or forcing the smart lock body.
 
-**If lock has key backup:**
+Interior retrofit locks such as some August models depend on the original deadbolt cylinder outside, so the old house key may still be the mechanical backup.
 
-```
-Most smart locks include physical key as backup.
+## Reset Only When Needed
 
-□ Locate backup key
-  - Should be on your keyring
-  - OR: Given to you at installation
-  - OR: Stored in safe location
+Factory reset is appropriate when you inherited a lock with unknown admin access, lost the app owner account, cannot recover the programming code, or need to remove every old credential after a security event. It is not the right first step for a single forgotten PIN if the app still works.
 
-□ Find keyway on lock
-  - Usually below handle (Schlage, Kwikset)
-  - Above handle (Yale)
-  - Behind decorative cap (some models)
+Most factory resets require access to the interior side of the lock. You remove the battery cover, hold a program or reset button, and keep holding through a beep or light pattern. Some models require removing and reinserting a battery while holding the button. The exact sequence is brand-specific, so check the current manual for your model before pressing buttons.
 
-□ Insert key and unlock
-  - Works even with dead battery
-  - Mechanical override
+After reset, set the new master code immediately. Then re-pair the lock to the app or hub, re-add only current users, test backup entry, and recreate any schedules you still need.
 
-□ Once inside:
-  - Access app to view/reset master code
-  - OR: Perform factory reset from interior
-```
+## Brand Notes
 
-**Time:** 2-5 minutes
+Yale Assure models usually use the Yale Access app or an interior programming button flow. Schlage Encode and Connect use a programming code, often printed on the original label or manual. Kwikset SmartCode locks use a program button and may require a door-handing step after reset. August primarily uses app owner access rather than a traditional keypad master code unless a keypad is paired.
 
-**If you lost backup key:**
-- Order replacement from manufacturer  - $10-20
-- Call locksmith to pick lock  - $100-150
-- Factory reset from interior  - if accessible
+For Z-Wave and Zigbee locks, remember that the hub may still contain stale user-code data. After a reset, exclude or remove the old device from the hub before pairing it again. Otherwise you can end up with duplicate devices or codes that appear in the hub but do not exist on the lock.
 
-### Method 3: Change Code via App
+## After You Regain Access
 
-**If you have app access but code not visible:**
+Store the new master code in a password manager with the lock brand, model, door name, and backup-key location. Do not keep it in a shared text thread or on paper near the door.
 
-```
-Some apps don't show code but allow changing it.
+Review the user list before you finish. Delete unknown codes, old guests, contractors, duplicate test codes, and app invites you no longer recognize. If you reset because you inherited or bought the property, treat the lock as untrusted until every credential has been recreated by you.
 
-□ App → Lock → Users → Master Code
-□ Tap "Change Code" or "Reset Code"
-□ Enter new code: ________
-□ Confirm new code
-□ Save
+## Prevent the Next Lockout
 
-□ Wait 2-5 minutes for sync
+Keep at least two recovery paths: one digital and one physical. For example, app owner access plus a physical key stored securely, or a trusted second admin plus a key. Replace weak batteries before they are critical, and test the backup key once after installation so you know it actually turns the cylinder.
 
-□ Test new code on keypad
-```
+If this is a rental or commercial door, document the recovery process. The person who knows how to reset the lock may not be the person standing at the door during an emergency.
 
-**Time:** 5 minutes
+## Related Guides
 
-### Method 4: Factory Reset (Last Resort)
-
-**Warning:** Erases ALL codes and settings
-
-**Only do this if:**
-- ❌ No app access
-- ❌ No backup key
-- ❌ Other methods failed
-
-**General factory reset process:**
-
-```
-From INTERIOR side:
-
-□ Remove battery cover
-□ Locate reset button
-  - Usually small button inside
-  - May be labeled "Reset" or "Program"
-
-□ Press and HOLD reset button
-  - Hold for 10-20 seconds
-  - Lock will beep or LED will flash
-  - Release when beeps/flashes
-
-□ Wait 30 seconds (lock reinitializes)
-
-□ Lock is now factory default:
-  - All codes erased
-  - All users removed
-  - All settings reset
-  - Unpaired from hub/app
-
-□ Set new master code immediately
-  - Follow manufacturer instructions
-  - Usually: Enter programming mode → Set code
-
-□ Re-pair with hub/app
-
-□ Add back users/codes
-```
-
-**Time:** 10-20 minutes
-
-## Brand-Specific Reset Instructions
-
-### Yale Assure Lock
-
-**Factory reset:**
-```
-1. Remove battery cover (interior)
-2. Press and hold program button (gear icon)
-3. While holding, remove one battery
-4. Wait 10 seconds
-5. Reinsert battery (still holding button)
-6. LED flashes green = Reset complete
-7. Release button
-
-All codes erased. Set new master code in app.
-```
-
-### Schlage Encode
-
-**Factory reset:**
-```
-Option A (from interior):
-1. Remove battery cover
-2. Press and hold program button (behind cover)
-3. Hold for 20 seconds until beeps
-4. Release
-5. Lock resets
-
-Option B (from exterior):
-1. Enter programming code (if you know it)
-2. Press Schlage button + 0 simultaneously
-3. Hold until beeps
-4. Lock resets
-```
-
-### Kwikset SmartCode
-
-**Factory reset:**
-```
-1. Remove battery cover
-2. Press and hold program button
-3. While holding, reinsert batteries
-4. Keep holding for 30 seconds
-5. LED flashes red = Reset complete
-6. Release
-
-Lock is now factory default. Set new master code:
-- Press program button once
-- Enter new master code
-- Press lock button
-- Re-enter master code
-- Press lock button  - beeps = Confirmed
-```
-
-### August Smart Lock
-
-**Factory reset:**
-```
-1. Remove lock from door (or access interior)
-2. Hold down reset button (small hole, use paperclip)
-3. Hold for 10-15 seconds
-4. LED turns red, then cycles colors
-5. Release when LED stops cycling
-
-Lock unpaired. Re-pair with app:
-- App will create new codes
-- No manual master code setting needed
-```
-
-### Z-Wave Locks (General)
-
-**Factory reset (for most Z-Wave locks):**
-```
-Option A: Through hub
-1. Hub → Devices → Lock → Settings
-2. "Remove Device" or "Factory Reset"
-3. Follow prompts
-
-Option B: Z-Wave Exclude
-1. Hub → Add Device → Z-Wave → Exclude
-2. Press lock button (varies by model)
-3. Lock excluded (reset)
-4. Re-pair as new device
-```
-
-## After Factory Reset
-
-### Immediate Steps
-
-```
-□ Set new master code right away
-  - Don't delay (lock may be unsecured)
-  - Choose 6-8 digit code (if supported)
-  - Write down in password manager
-
-□ Test new master code 3 times
-  - Ensure it works before leaving
-
-□ Re-pair with hub/app
-  - Follow pairing instructions for your lock
-  - Test app access
-
-□ Add back family codes
-  - Recreate user codes
-  - Test each code
-
-□ Reconfigure settings
-  - Auto-lock timeout
-  - LED/audio settings
-  - Notifications
-```
-
-### Prevent Future Lockouts
-
-**Document codes securely:**
-```
-☑ Store master code in password manager
-  - 1Password, LastPass, Bitwarden, etc.
-  - Never store in plain text notes
-
-☑ Give backup key to trusted person
-  - Neighbor, family member
-  - Label clearly "Smart Lock Backup"
-
-☑ Set up multiple admin users
-  - Spouse/partner can access app
-  - Don't rely on single account
-
-☑ Enable app backup
-  - Some apps backup codes to cloud
-  - Verify backup working
-
-☑ Take photo of written codes
-  - Store in secure cloud (not phone gallery)
-```
-
-## Emergency Access if Locked Out
-
-**If you're OUTSIDE and forgot code:**
-
-```
-Scenario: Forgot code, no app access, no key
-
-Option 1: Call someone with app access
-  - Family member with admin
-  - They unlock remotely
-  - Requires lock online + powered
-
-Option 2: Use 9V battery emergency
-  - If battery died
-  - Touch 9V to terminals
-  - Enter any valid code (if you remember ANY code)
-
-Option 3: Call locksmith
-  - Can pick physical lock (if equipped)
-  - OR drill lock (damages it)
-  - Cost: $100-250
-
-Option 4: Break in carefully
-  - Window access (if unlocked)
-  - Garage door (if connected)
-  - Last resort only
-```
-
-## Common Questions
-
-**Q: Will factory reset work from outside?**
-
-A: Usually NO. Most locks require interior access for factory reset (security feature). Exception: Some allow reset via app if you have access.
-
-**Q: Can I reset without erasing codes?**
-
-A: No. Factory reset erases everything. That's the security - can't reset without deleting data.
-
-**Q: Will I need to re-pair with hub?**
-
-A: Yes. Factory reset unpairs lock from all networks. You'll need to pair again as if new lock.
-
-**Q: How long does reset take?**
-
-A: Reset itself: 30 seconds. Total time including re-setup: 10-20 minutes.
-
-**Q: Can manufacturer help me recover code?**
-
-A: Usually NO for security reasons. They can't access your codes. Exception: Some cloud-based systems may allow account recovery.
-
-## Prevention Strategy
-
-**Before you forget code again:**
-
-```
-1. ☑ Store in password manager (encrypted)
-2. ☑ Share with trusted person (spouse, etc.)
-3. ☑ Enable app cloud backup
-4. ☑ Keep backup key accessible
-5. ☑ Set up multiple admin users
-6. ☑ Test recovery process now (while you remember code)
-```
-
-## Tools & Resources
-
-🛡️ **[Emergency Backup Evaluator](/calculators/emergency-backup)** - Prevent future lockouts  
-🔒 **[Offline Resilience Scorecard](/calculators/offline-resilience)** - Backup access assessment
-
----
-
-## Related Articles
-
-**Code Management:**
-- [Change Master Code](/articles/guides/change-master-code) - Set new code after reset
-- [PIN Code Not Working](/articles/guides/smart-lock-code-not-working) - Code troubleshooting
-- [Multiple Failed Attempts](/articles/security/multiple-failed-code-attempts) - Security lockout
-
-**Emergency Access:**
-- [Emergency Battery Died](/articles/installation/emergency-battery-died-locked-out) - 9V emergency power
-- [Complete Troubleshooting](/articles/guides/complete-troubleshooting-guide) - All recovery methods
-
-**Security:**
-- [Security Best Practices](/articles/security/smart-lock-security-complete-analysis) - Prevent lockouts
-- [Secure Configuration](/articles/security/secure-smart-lock-best-practices) - Backup setup
-
----
-
-## Summary Checklist
-
-**Forgot master code? Try in order:**
-
-1. ☑️ **Check app for code** (Users → Master Code → View)
-2. ☑️ **Use backup physical key** (if equipped)
-3. ☑️ **Change code via app** (if app accessible)
-4. ☑️ **Factory reset from interior** (last resort)
-5. ☑️ **Set new master code immediately**
-6. ☑️ **Re-pair with hub/app**
-7. ☑️ **Store new code securely** (password manager)
-
-**After recovery:**
-- ✅ Store code in password manager
-- ✅ Give backup key to trusted person
-- ✅ Set up multiple admin users
-- ✅ Test backup access methods NOW
-
-**Pro tip:** RIGHT NOW, before you forget: 1) Open your smart lock app, 2) View your master code, 3) Save it in your password manager, 4) Locate your backup key and put it on your keyring. These 5 minutes now will save you hours of stress later. Don't wait until you're locked out to think about backup access!
-
-## 2026 Field Notes
-
-- Start with credential sync, keypad behavior, and administrator recovery path. That combination still explains most real-world lock failures faster than a blind factory reset.
-- App screens and setup flows now vary more by ecosystem generation than by lock brand alone. Confirm the exact model, companion app, and controller role before following any step-by-step sequence.
-- Guest access workflows now depend heavily on how quickly codes sync, how offline keypads behave, and whether your PMS or channel manager can tolerate temporary cloud outages.
-
-## When to Escalate
-
-- Escalate after repeated motor binding, recurring offline alarms, or failed firmware updates that return after fresh batteries and a verified signal path.
-- For rental and commercial doors, schedule changes during a maintenance window and confirm you still have one physical or offline fallback credential before you reset or re-pair anything.
+- [How to Change Smart Lock Master Code](/articles/guides/change-master-code)
+- [Smart Lock Code Not Working](/articles/guides/smart-lock-code-not-working)
+- [How to Delete or Remove User from Smart Lock](/articles/guides/delete-smart-lock-user)

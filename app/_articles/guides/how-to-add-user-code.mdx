@@ -6,8 +6,8 @@ description: >-
   setup for all lock brands.
 category: guides
 pubDate: 2024-03-01T00:00:00.000Z
-wordCount: 892
-readingTime: 4
+wordCount: 1110
+readingTime: 5
 keywords:
   - add smart lock user
   - create PIN code
@@ -27,304 +27,88 @@ relatedArticles:
   - smart-lock-code-not-working
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## Quick Answer: The Sync-Test Imperative
+## Quick Answer
 
-**User code addition follows universal five-minute procedure across brands: navigate to Users/Codes section in lock app, create new entry with descriptive name and 4-8 digit PIN, configure access schedule (permanent or time-bounded), save configuration, wait 2-5 minutes for cloud-to-lock synchronization, then immediately test code on physical keypad before communicating credentials to intended user.** The test-before-sharing protocol proves mandatory rather than optional: premature code distribution creates lockout scenarios when synchronization failures go undetected until guest arrival, transforming preventable technical issues into emergency access crises.
+To add a new smart lock user code, open the lock app, choose the correct door, add a user or access code, enter a clear name, choose a unique PIN, set the access schedule, save, wait for sync, and test the code on the physical keypad before sharing it.
 
-The synchronization delay—2-5 minutes typical, occasionally extending to 10 minutes for weak connectivity—represents unavoidable cloud architecture latency where app configuration updates must propagate through vendor servers to lock firmware. Users attempting immediate code testing (<30 seconds post-save) invariably encounter "invalid code" responses misinterpreted as configuration errors rather than incomplete synchronization, triggering unnecessary troubleshooting and repeated code recreation that compounds rather than resolves delays.
+The testing step matters. A code can look saved in the app while it is still waiting to sync to the lock. For guests, cleaners, and contractors, do not send the code until you know the keypad accepts it.
 
-## Before You Start
+## Decide What Kind of Access This User Needs
 
-### Requirements Checklist
+Do not give everyone permanent access. A family member or long-term tenant may need an always-active code. A guest, cleaner, contractor, dog walker, or delivery helper usually needs a temporary or recurring schedule.
 
-```☑️ Lock must be online (check app status)
-☑️ You have admin access (not guest user)
-☑️ Know desired PIN code (4-8 digits)
-☑️ Battery level >20% (low battery equals sync issues)
-☑️ Phone connected to internet
-```
-### Choose PIN Code
+Use the narrowest access that still works:
 
-**Good PIN codes:**
-- 4-8 digits  - most locks
-- Not obvious  - 1234, 0000, 1111
-- Not birthday or address
-- Unique per user
+| User type | Better access type | Why |
+|---|---|---|
+| Family or primary resident | Permanent code | Ongoing access is expected |
+| Airbnb or house guest | Temporary code | Expires after the stay |
+| Cleaner | Recurring schedule | Works only on service days |
+| Contractor | One-day temporary code | Ends when the job ends |
+| Emergency contact | Permanent or sealed backup code | Needs availability during failures |
 
-**Avoid:**
-- ❌ Sequential  - 1234, 5678
-- ❌ Repeating  - 1111, 2222
-- ❌ Too short if lock allows longer  - use 6+ digits
-- ❌ Same code for multiple users
+If the lock supports app keys, decide whether the user needs app control or only keypad entry. App users may see status, logs, or settings depending on the role. A PIN is often enough.
 
-## Step-by-Step Guide
+## Pick a Good PIN
 
-### Step 1: Open User Management
+Use a unique code for each person. Shared codes are convenient until you need to know who entered or whose access should be removed. A unique code makes access logs useful and lets you revoke one person without changing everyone else.
 
-```Most apps:
-- Open smart lock app
-- Select your lock (if multiple)
-- Tap "Users" or "Access Codes" or "People"
-- Tap "+ Add" or "Add User" or "Create Code"
-```
-**Common app flows:**
-- **Yale Access:** Tap lock → Keypad Code → Add Code
-- **Schlage Home:** Tap lock → Access Codes → Add Access Code
-- **Kwikset:** Tap lock → Users → Add User
-- **August:** Tap lock → Access → Add Permanent Guest
+Use the longest practical length your lock supports, usually 6 to 8 digits. Avoid `1234`, `0000`, birthdays, street numbers, phone endings, and repeated patterns. For rentals, avoid reusing the same guest code across bookings.
 
-### Step 2: Enter User Details
+If you manage several doors, store codes in a password manager or property-management system. Do not keep them in loose notes or old message threads.
 
-```- Name: Enter user's name
-  - Examples: "John Smith", "Cleaner", "Airbnb Guest 3/15"
-  - Be descriptive (helps identify later)
-  
-- PIN Code: Enter 4-8 digit code
-  - Most locks: 4-6 digits
-  - Some support up to 8 digits
-  - App will show if code too short/long
-  
-- Access Type: Choose permanent or temporary
-  - Permanent: No expiration
-  - Temporary: Set start/end date & time
-```
-### Step 3: Set Schedule (Optional)
+## Add the Code in the App
 
-**Permanent access:**
-```- Select "Always active" or "Permanent"
-- Code never expires
-- Good for: Family, long-term tenants
-```
-**Temporary access:**
-```- Select "Temporary" or "Schedule"
-- Set start date/time
-  - Example: March 15, 2024, 3:00 PM
-  
-- Set end date/time
-  - Example: March 20, 2024, 11:00 AM
-  - ⚠️ Set to END of last day, not START of next day
-  - Use 11:59 PM to avoid confusion
-  
-- Good for: Guests, contractors, one-time access
-```
-**Recurring schedule (advanced):**
-```Some locks support:
-- Days of week (Mon-Fri only)
-- Time windows (9 AM - 5 PM only)
-- Good for: Cleaners, dog walkers
-```
-### Step 4: Save and Sync
+Most apps follow this general pattern:
 
-```- Tap "Save" or "Add" or "Create"
-- App shows "Syncing..." or "Sending to lock"
-- WAIT 2-5 minutes (don't close app)
-  - WiFi locks: 30 seconds
-  - Zigbee/Z-Wave: 1-2 minutes
-  - Z-Wave S2: 2-5 minutes (DSK verification)
-- App shows "Success" or "Synced" checkmark
-```
-**Sync troubleshooting:**
-```If "Sending..." for >5 minutes:
-- Check lock is online
-- Wake up lock (press any button on keypad)
-- Send lock/unlock command (triggers sync)
-- Cancel and retry if still failing
-```
-### Step 5: Test Immediately
+1. Open the smart lock app.
+2. Select the correct lock if you manage more than one.
+3. Open `Users`, `Access`, `Access Codes`, `Keypad Codes`, or `Guests`.
+4. Choose `Add`, `Add user`, or `Create code`.
+5. Enter the user's name and PIN.
+6. Choose permanent, temporary, recurring, or one-time access if available.
+7. Save and wait for the app to confirm the lock has synced.
 
-**Don't assume sync worked - always test:**
+Name users in a way that will still make sense later. "Cleaner - Tue morning" or "Guest - Lee - May 12-15" is better than "Guest 3." For rentals, include the booking or checkout date in the name.
 
-```- Go to lock keypad
-- Enter new PIN code
-- Press # or Enter (if required by your lock)
-- Lock should beep and unlock
+## Set the Schedule
 
-Success: ✅ Lock unlocks
-Failure: ❌ Error beep or no response
-  → Wait 2 more minutes and retry
-  → Check code in app (view it, don't rely on memory)
-  → Delete and re-add if still not working
-```
-## Common Issues & Solutions
+For permanent users, choose always active only when the person should retain access until you manually remove it. For temporary users, set both a start and end time. For recurring users, set the days and hours carefully.
 
-### Issue: Code Not Working After Adding
+Avoid midnight confusion. If a code should work through checkout day, set the end time to 11:59 PM on that day or 12:00 AM on the following day, depending on the app's wording. Setting 12:00 AM on the checkout date can expire the code at the beginning of that day.
 
-**Cause 1: Code not synced yet**
-```Solution:
-- Wait 5 minutes total
-- Press any keypad button to wake lock
-- Try code again
-```
-**Cause 2: Wrong code entered**
-```Solution:
-- Open app → Users → [Name] → View Code
-- Verify you're entering exact code shown
-- Enter slowly (2 seconds between digits)
-```
-**Cause 3: Lock offline when adding**
-```Solution:
-- Check lock status in app
-- If offline: Fix connectivity first
-- Delete code, wait for online, re-add
-```
-### Issue: Can't Add More Users
+Use a reasonable buffer. A guest code can start 1 to 2 hours before check-in. A contractor code can start 15 to 30 minutes before the appointment. Too-tight schedules create unnecessary support calls.
 
-**Cause: User limit reached**
+## Wait for Sync
 
-```Most locks support:
-- Budget locks: 10-20 users
-- Mid-range: 30-50 users
-- Premium: 100-250 users
+Wi-Fi locks may update quickly. Bluetooth, Z-Wave, and Zigbee locks may take longer, especially if the hub is busy or the lock is sleeping. Wait for a clear synced, saved, or success state before testing.
 
-Solution:
-- Delete unused codes first
-- Check manual for your lock's limit
-- Consider upgrading lock if need more
-```
-### Issue: Code Works But Expires Early
+If the app hangs on sending, wake the keypad, bring the phone closer, check the hub, or send a lock/unlock command to force communication. If the lock is offline, fix connectivity before creating the code again.
 
-**Cause: End time misunderstood**
+Do not create the same user repeatedly while waiting. Duplicate entries make later cleanup harder and can hit the lock's code limit.
 
-```Common mistake:
-Set expiration: "March 20, 12:00 AM"
-You think: Midnight END of March 20
-Lock interprets: Midnight START of March 20
-Result: Code expires 24 hours early!
+## Test Before Sharing
 
-Solution:
-- Set expiration to END of day: "March 20, 11:59 PM"
-- OR: Next day: "March 21, 12:00 AM"
-- Always test before giving code to guest
-```
-## Brand-Specific Instructions
+Go to the door and enter the new PIN. Press the final lock, checkmark, or pound button if your model requires it. The lock should unlock cleanly without repeated attempts.
 
-**Yale Assure Lock:**
-```1. Yale Access app → Select lock
-2. Keypad Codes → Add Code
-3. Enter name, code, schedule
-4. Save → Wait 2 min → Test
-```
-**Schlage Encode:**
-```1. Schlage Home app → Select lock
-2. Access Codes → Add Access Code
-3. Name, 4-8 digit code
-4. Select duration
-5. Save → Wait 1-2 min → Test
-```
-**Kwikset SmartCode:**
-```1. Kwikset app → Select lock
-2. Users → Add User
-3. Name, 4-8 digit code
-4. Access type: Permanent/Temporary
-5. Save → Test immediately
-```
-**August Smart Lock:**
-```1. August app → Select lock
-2. Access → Add Permanent Guest (or eKey)
-3. Enter name, optional expiration
-4. Code auto-generated OR custom
-5. Share code with user
-```
-**Z-Wave (SmartThings, Hubitat):**
-```1. Select lock device
-2. User Codes → Add Code
-3. Slot number (1-30), code, name
-4. Save → May take 2-5 minutes (S2 security)
-5. Test code
-```
-## Best Practices
+If the code fails, wait a few minutes and try again. Then verify the code in the app, check whether the schedule has already started, and confirm the lock is online. If it still fails, delete the code and create a fresh one.
 
-### Naming Conventions
+For remote properties, use the app's status and audit log if physical testing is impossible. If the code is for a same-day arrival, create a backup code as well and keep it ready until the first entry succeeds.
 
-**Good names:**
-- "John Smith - Family"
-- "Airbnb Guest - March 15-20"
-- "Cleaner - Recurring Tue/Thu"
-- "Contractor - One-time 3/15"
+## Brand Notes
 
-**Bad names:**
-- "Guest 1"  - non-descriptive
-- "1234"  - confusing
-- Just first name  - multiple Johns?
+Yale apps usually list keypad codes under the lock or user profile. Schlage Home uses access codes. Kwikset uses users and may limit code counts by model. August uses guest access or eKeys, and keypad PINs depend on whether a keypad accessory is installed. Hub-managed Z-Wave and Zigbee locks may require setting a code slot in the hub interface.
 
-### Code Management
+The labels differ, but the same rule applies: create, sync, test, then share.
 
-```☑️ Use unique code per person (don't share)
-☑️ Delete code immediately after use (temp guests)
-☑️ Audit codes quarterly (remove old users)
-☑️ Document codes securely (password manager)
-☑️ Test codes before giving to guests
-```
-### Security Tips
+## After the User No Longer Needs Access
 
-```☑️ Don't reuse codes (after deletion, wait before reusing)
-☑️ Change master code from default
-☑️ Limit who has admin access
-☑️ Enable notifications for new users added
-☑️ Review access logs regularly
-```
-## Special Scenarios
+Adding a code should include a plan for removing it. Temporary codes should expire automatically, but you should still review the list. Permanent codes for former roommates, employees, contractors, and guests should be deleted immediately.
 
-### For Airbnb Hosts
+For rentals and small businesses, schedule a regular access audit. The user list should be short enough that every entry has a clear owner and purpose.
 
-```- Name code with dates: "Guest - Check-in 3/15"
-- Set start time 1 hour before check-in
-  - Buffer for early arrival
-- Set end time 11:59 PM of checkout day
-  - Not 12:00 AM next day (ambiguous)
-- Test code day before guest arrives
-- Auto-generate unique codes per booking
-- Delete immediately after checkout
-```
-### For Office/Business
+## Related Guides
 
-```- Assign codes by department or role
-- Use recurring schedules (Mon-Fri, 9-5)
-- Audit monthly (remove ex-employees)
-- Require code change every 90 days
-- Log all access (compliance)
-```
-### For Family/Roommates
-
-```- Permanent codes (no expiration)
-- Unique code per person
-- Keep master code separate
-- Communicate code changes promptly
-```
-## Related Resources
-
-**User Management:**
-- [Create Temporary Guest Code] - /support/create-temporary-guest-code - Detailed temp code guide
-- [Delete/Remove User] - /support/delete-smart-lock-user - Remove access
-
-**Troubleshooting:**
-- [Code Not Working] - /support/smart-lock-code-not-working - Fix code issues
-- [Complete Troubleshooting Guide] - /guides/complete-troubleshooting-guide - Full diagnostics
-
-**For Airbnb:**
-- [Airbnb Smart Lock Guide] - /use-cases/smart-locks-airbnb-guide - Complete automation
-
----
-
-## Summary: Test-Before-Share Protocol
-
-User code addition represents straightforward administrative task requiring no technical expertise, yet operational reliability demands strict test-before-share discipline preventing distribution of unverified credentials that create lockout scenarios when synchronization failures manifest only upon guest arrival at property. The procedural execution proves trivially simple—navigate app to user management, enter name and PIN, configure schedule, save—but the verification requirement proves absolutely mandatory.
-
-**Synchronization patience** prevents the most common user error: testing code immediately after saving (<30 seconds) before cloud-to-lock synchronization completes, encountering "invalid code" response, misinterpreting as configuration error rather than incomplete sync, then initiating unnecessary troubleshooting or recreation. The 2-5 minute wait (occasionally 10 minutes for weak signal) represents unavoidable cloud architecture latency that users must respect rather than circumvent.
-
-**PIN selection discipline** avoids obvious codes (1234, 0000, birthdates) that compromise access security, instead deploying 6+ digit non-sequential patterns unique per user enabling accountability through access logs. Reusing codes across multiple users eliminates audit capability revealing WHO accessed WHEN—defeating primary smart lock advantage over mechanical keys.
-
-**Temporal configuration precision** for temporary codes demands 11:59 PM expiration on LAST valid day rather than 12:00 AM next day, avoiding timezone and clock synchronization edge cases causing premature expiration creating guest lockouts. This one-minute configuration difference prevents majority of temporary code failures encountered in short-term rental operations.
-
-**Verification testing** before credential distribution represents non-negotiable final step: personally test code on physical keypad, verify successful unlock, confirm access logs record entry with correct user attribution, only then communicate code to intended recipient. This protocol transforms preventable synchronization failures into detected issues resolved before user impact rather than discovered through guest lockout requiring emergency intervention.
-
-## 2026 Field Notes
-
-- Start with credential sync, keypad behavior, and administrator recovery path. That combination still explains most real-world lock failures faster than a blind factory reset.
-- App screens and setup flows now vary more by ecosystem generation than by lock brand alone. Confirm the exact model, companion app, and controller role before following any step-by-step sequence.
-- Guest access workflows now depend heavily on how quickly codes sync, how offline keypads behave, and whether your PMS or channel manager can tolerate temporary cloud outages.
-
-## When to Escalate
-
-- Escalate after repeated motor binding, recurring offline alarms, or failed firmware updates that return after fresh batteries and a verified signal path.
-- For rental and commercial doors, schedule changes during a maintenance window and confirm you still have one physical or offline fallback credential before you reset or re-pair anything.
+- [How to Create Temporary Guest Code](/articles/guides/create-temporary-guest-code)
+- [How to Delete or Remove User from Smart Lock](/articles/guides/delete-smart-lock-user)
+- [Smart Lock Code Not Working](/articles/guides/smart-lock-code-not-working)

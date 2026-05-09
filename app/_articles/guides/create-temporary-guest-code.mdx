@@ -6,8 +6,8 @@ description: >-
   temporary access securely.
 category: guides
 pubDate: 2024-03-02T00:00:00.000Z
-wordCount: 1180
-readingTime: 5
+wordCount: 775
+readingTime: 4
 keywords:
   - temporary guest code
   - time limited PIN
@@ -27,89 +27,49 @@ relatedArticles:
   - smart-locks-airbnb-complete-guide
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## Quick Answer
+## Temporary Codes Need a Clear Window
 
-Create a temporary guest code from the lock app, give it a clear name, set a start time before the guest needs entry, set an end time after the last reasonable access window, save it, and test it at the keypad before the guest arrives. For short-term rentals, make the code active 1 to 2 hours before check-in and expire it at 11:59 PM on checkout day unless your local policy requires a tighter cutoff.
+A temporary smart lock code is useful because it ends without another manual cleanup step. That only works if the start time, end time, timezone, and lock sync are correct. A code that starts too late creates a support call. A code that expires too early can lock out a guest. A code that never expires becomes a permanent credential by accident.
 
-The biggest mistake is setting expiration to midnight on the checkout date. Many systems interpret 12:00 AM as the beginning of that day, which can make a code expire too early. If the guest should have access through March 18, use March 18 at 11:59 PM or March 19 at 12:00 AM.
+Use temporary codes for short-term guests, contractors, pet sitters, neighbors, and service visits. Use recurring schedules for cleaners or regular vendors. Use one-time codes for deliveries if the lock supports them. Avoid giving anyone the master code just because it is faster.
 
-## When Temporary Codes Make Sense
+## Avoid the Midnight Expiration Mistake
 
-Temporary codes are best for guests, cleaners, contractors, pet sitters, and family visits where access should end automatically. They are safer than shared permanent codes because every person or booking gets a unique credential with a defined window.
+Many access problems come from misunderstanding midnight. If a checkout is March 18 and the code ends at March 18, 12:00 AM, some systems treat that as the very beginning of March 18. The guest may lose access before checkout morning.
 
-They are also easier to audit. If "Smith booking March 15-18" unlocks the door, you know which stay or task caused the access event. If everyone uses the same code, the access log is much less useful.
+If the code should work through checkout day, use a clear late-day time such as March 18 at 11:59 PM, or use March 19 at 12:00 AM if the app wording makes that easier to understand. For contractors, a tighter same-day end time is usually better. For cleaners, a recurring window such as Tuesdays from 10:00 AM to 2:00 PM is cleaner than a permanent shared code.
 
-For one-time deliveries or very short visits, use one-time codes if your lock supports them. For recurring service, use a schedule instead of creating a new code every week.
+## Name the Code So It Explains Itself
 
-## Choose the Access Window
+Good names make access logs useful. "Airbnb - Smith - Mar 15-18" or "Plumber - kitchen sink - Mar 15" tells you why the code exists. "Guest 2" does not. If you manage multiple doors, include the unit, door, booking, or task in the name.
 
-Set the start time based on real arrival behavior, not only the written check-in time. A guest with a 3:00 PM check-in may arrive at 2:40 PM. A contractor scheduled at 10:00 AM may reach the door a few minutes early. Starting the code 1 to 2 hours early usually prevents support calls without creating meaningful extra risk.
+Use a random PIN when possible. If you choose a memorable number for guest convenience, do not reuse it across bookings. Reused guest codes weaken the log and make it harder to prove who had access after a complaint or claim.
 
-The end time depends on the user type. Guests often need a buffer for late checkout, forgotten items, or travel confusion. Contractors usually need a tighter same-day window. Cleaners may need recurring access on specific days and hours.
+## Create and Sync the Code
 
-| User type | Practical start | Practical end |
-|---|---|---|
-| Airbnb or vacation guest | 1 to 2 hours before check-in | 11:59 PM on checkout day |
-| Contractor | 15 to 30 minutes before appointment | End of workday |
-| Cleaner | Scheduled service window | Same day, or recurring schedule |
-| Neighbor or pet sitter | Before first expected visit | After final expected visit |
+Most apps place temporary access under users, guests, access codes, or keypad codes. Select the correct lock, create a new guest or code, choose temporary or scheduled access, set the active window, save, and wait for the app to show that the code has reached the lock.
 
-## Create the Code
+That last part is important. On Wi-Fi locks, sync may be quick. On hub-based, Z-Wave, Zigbee, or sleeping battery locks, the app can show a code before the lock has actually received it. If the guest is arriving soon, wake the keypad, check the hub, or send a lock command to confirm the lock is communicating.
 
-Most apps follow the same flow:
+## Test Before You Send It
 
-1. Open the lock app and select the correct door.
-2. Go to `Users`, `Codes`, `Access`, or `Guests`.
-3. Choose `Add user`, `Add code`, or `Guest access`.
-4. Select temporary, scheduled, or guest access.
-5. Enter a descriptive name.
-6. Generate or enter a PIN.
-7. Set the start date and time.
-8. Set the end date and time.
-9. Save and wait for the lock to sync.
+For local properties, test the code at the keypad after the start window begins. For remote properties, check that the app shows the code as synced and review the audit log or device status if physical testing is not possible. If a code fails during testing, delete it and create a fresh one rather than editing the same failing entry repeatedly.
 
-Use names that explain the access later. "Airbnb - Smith - Mar 15-18" is better than "Guest 2." For contractors, include the task: "Plumber - kitchen sink - Mar 15."
+Do not send the code until you know it is active or scheduled correctly. A short delay before sending is better than a guest discovering the problem at the door with luggage in hand.
 
-Random generated PINs are safer than cute custom numbers. If you use a custom code for guest convenience, avoid repeating the same code across bookings.
+## Send Instructions That Prevent Guesswork
 
-## Test Before Sending
+Tell the guest the PIN, active window, timezone, and keypad behavior. Some locks require a checkmark, lock button, or pound key after the digits. Others unlock after the final digit. If the keypad sleeps, explain how to wake it.
 
-Testing is the difference between a smooth self-check-in and a late-night support call. If possible, test the code 12 to 24 hours before arrival. Confirm that the code appears as active or scheduled in the app, then try it on the keypad when the start window has begun.
+Keep the message short and avoid forwarding old code threads. Past access details are security data. For rentals, include a backup contact and ask the guest to report the exact keypad message if access fails. That is more useful than "it doesn't work."
 
-For remote properties, use the lock's status and audit log if you cannot physically test. On hub-based locks, confirm the hub is online and that the code shows as synced, not just saved in the app.
+## Handle Problems Without Creating More Risk
 
-If the test fails, delete the code and create a new one with an immediate start time. Do not keep editing a failing code if the guest is arriving soon; a clean new code is faster and easier to explain.
+If a guest says the code does not work, check time and timezone first. Then check whether the lock is online and whether the code is synced. Confirm the entry format and final button. If you need to issue a replacement, create a new code with a clear name and delete the failed one after the guest is inside.
 
-## Send Clear Instructions
+Keep a backup path for urgent cases: physical key, local manager, owner app access, or emergency code. A temporary code is only as good as the lock's power, keypad, and communication state.
 
-Give the guest the code, the exact active window, the timezone, and the keypad behavior. Some locks require pressing a checkmark, lock button, or pound key after the PIN. Others unlock automatically after the final digit.
-
-A concise message works best:
-
-```text
-Your door code is [CODE].
-It is active from [START DATE/TIME/TIMEZONE] to [END DATE/TIME/TIMEZONE].
-Wake the keypad, enter the code, then press [button if required].
-If it does not unlock, send me a photo of the keypad message or call [number].
-```
-
-Do not send the same message thread to future guests with old codes still visible. Past access details are security data.
-
-## Common Problems
-
-If the guest says the code does not work, first check time. Is the code active yet? Has it expired? Is the timezone correct? Then check lock status. If the lock is offline, a newly created code may not have reached the keypad, although existing local codes may still work.
-
-Next, verify entry format. Guests may include spaces, press the wrong final button, or confuse similar digits. If you suspect confusion, create a new code and send a short video or photo of the keypad instructions.
-
-If a code remains active after checkout, delete it manually and review your settings. Some locks keep expired codes visible but inactive; others require manual cleanup. For rentals, review active codes at least weekly during busy season.
-
-## Security Rules
-
-Use one unique code per guest or job. Do not reuse the same "cleaner" code for unrelated workers unless they are part of the same trusted service. Delete or expire codes as soon as the need ends.
-
-Keep a backup access method. Temporary codes are only useful if the lock has power, the keypad works, and the code has synced. A physical key, owner app access, or emergency contact prevents a small code issue from becoming a lockout.
-
-For short-term rentals, remember that a smart lock does not make an illegal rental legal. Local rules, guest registration, fire safety, and insurance obligations still apply.
+After checkout or job completion, verify the temporary code expired or delete it manually. Some apps keep expired codes visible but inactive; others require cleanup. During busy rental periods, review active codes at least weekly.
 
 ## Related Guides
 

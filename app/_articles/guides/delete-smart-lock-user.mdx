@@ -6,8 +6,8 @@ description: >-
   brands.
 category: guides
 pubDate: 2024-03-09T00:00:00.000Z
-wordCount: 1070
-readingTime: 5
+wordCount: 654
+readingTime: 3
 keywords:
   - delete smart lock user
   - remove access code
@@ -26,75 +26,41 @@ relatedArticles:
   - create-temporary-guest-code
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## Quick Answer
+## Removal Is More Than Deleting a PIN
 
-To delete a smart lock user, open the lock app, go to users or access codes, select the person or code, tap delete or remove, wait for the lock to sync, then test the old code at the keypad. If the user had app access, revoke the app invite as well as the PIN. For urgent security situations, confirm deletion at the door before you assume access is gone.
+A smart lock user may have a keypad code, app key, fingerprint, schedule, hub permission, or access created by a property-management integration. Removing only the visible PIN can leave another path open. Treat user removal as a credential audit, not a housekeeping click.
 
-Removing a user is not just housekeeping. It is the step that turns access control into actual control. Old guest codes, contractor codes, former roommate access, and unused test codes are all quiet security risks.
+Delete access immediately when a guest checks out, a contractor finishes, an employee leaves, a roommate moves out, a phone with app access is lost, or there is any suspected compromise. For ordinary cleanup, review old temporary codes, duplicate users, inactive app invites, and service-provider entries every few months. If you cannot explain why a credential exists, remove it.
 
-## What to Remove
+## Find Every Place the User Has Access
 
-A smart lock user may have more than one credential. They might have a PIN code, an app key, a fingerprint, a schedule, or access through a hub such as SmartThings, Hubitat, Apple Home, Google Home, or Alexa. Deleting only one credential may leave another path open.
+Start in the lock app, but do not stop there if the lock is connected to a hub or platform. Z-Wave and Zigbee locks may be managed from SmartThings, Hubitat, Home Assistant, or another lock-code manager. Apple Home, Google Home, Alexa, or a property-management system may also grant app-level control or recreate codes through automation.
 
-Before you start, look at the user's full access profile. If the person has a keypad code and app access, remove both. If they were added through a property-management system or automation, remove them there too so the system does not recreate the code later.
+Look for the person's PIN, app invite, fingerprint, recurring schedule, guest role, and any group membership. If a cleaner, vendor, or staff member shares a team code, consider replacing the shared credential with named access so future removal is cleaner.
 
-## When to Delete a User
+## Remove and Verify
 
-Delete access immediately when a guest checks out, a contractor finishes the job, an employee leaves, a roommate moves out, a relationship ends, a phone with app access is lost, or there is any suspected compromise.
+In most apps, open the correct lock, go to users, access, codes, guests, or fingerprints, select the person or credential, and choose delete, remove, revoke, or the trash icon. Wait for the app to show that the change has synced to the lock. For keypad-only locks, use the model-specific programming sequence and make sure you are deleting the correct user slot.
 
-Also schedule routine cleanup. Every few months, review old temporary codes, test users, duplicate entries, inactive app invites, and service-provider access. If you cannot explain why a code exists, delete it. A legitimate user can be added again in a few minutes.
+Verification is the important step. Enter the old PIN at the keypad. It should fail. If the user had app access, confirm the lock no longer appears for that account or can no longer be controlled. For former staff, guests, or anyone removed for security reasons, do not assume app deletion worked until the door proves it.
 
-## Delete Through the App
+## If the Old Code Still Works
 
-Most locks use this basic workflow:
+If the removed code still unlocks the door, the change probably did not reach the lock. Wait briefly and test again, then check battery level, hub status, Wi-Fi, and whether the app shows a pending sync. If the door is high-risk, remove the code directly at the keypad if your model supports it.
 
-1. Open the smart lock app and select the correct door.
-2. Go to `Users`, `Access`, `Codes`, or `Guests`.
-3. Select the user, PIN, fingerprint, or app key.
-4. Tap `Delete`, `Remove`, `Revoke`, or the trash icon.
-5. Confirm the deletion.
-6. Wait for the app to show synced or updated.
-7. Test the removed credential at the keypad or app.
+For urgent removals, changing the master or programming code and auditing the full user list may be faster than chasing one stubborn entry. A factory reset should stay as a last resort because it removes settings, schedules, calibration, integrations, and all current users. Use it when administrator access is lost, the lock was inherited with unknown users, or there has been a serious compromise.
 
-Wi-Fi locks may sync within a minute. Z-Wave and Zigbee locks can take longer because changes pass through a hub. Do not delete and walk away from an important door without verification.
+## Keep a Record for Shared Properties
 
-## Delete From the Keypad
+For homes, a clean user list may be enough. For rentals, offices, and managed properties, record when access was removed and why. A short note such as "Cleaner code removed after service contract ended, tested failed at keypad, May 9" can answer questions later.
 
-Some keypad locks can remove codes without the app. This usually requires the master or programming code and a model-specific delete command. Use keypad deletion when the app is unavailable or when you need to remove access while standing at the door.
+Access logs vary by brand. Some show a deletion event; others only show that the user no longer exists. If the removal relates to a dispute, incident, or claim, export logs before making more changes.
 
-The key detail is the user slot. Some locks delete by code; others delete by slot number. If you do not know which slot belongs to the user, check the app, your access record, or the lock manual before clearing the wrong entry.
+## Build Removal Into the Access Process
 
-After keypad deletion, test the removed code. Then update your app or record so the user list stays accurate.
+Every new code should have an expected end date or review date. Temporary access should expire automatically, but still needs review. Permanent access should be limited to people who truly need it. For offices, tie lock access to the same offboarding checklist as email and software accounts. For rentals, review codes after every checkout cycle during busy season.
 
-## Brand Notes
-
-Yale, Schlage, Kwikset, August, and hub-managed locks use different labels, but the logic is the same. Yale usually separates keypad codes from app users. Schlage calls the list access codes. Kwikset may use users and code slots. August often uses guest access or eKeys rather than traditional PINs unless paired with a keypad.
-
-For Z-Wave and Zigbee locks, the hub may be the source of truth. Delete the code in SmartThings, Hubitat, Home Assistant, or the lock-code manager you use. If an automation manages codes, update the automation or integration as well.
-
-## Verify Deletion
-
-Verification is non-negotiable for former staff, guests, and anyone removed for security reasons. Go to the keypad and enter the old code. It should fail. If the user had app access, confirm their phone no longer shows the lock or can no longer unlock it.
-
-Then check the access log. Some apps record a deletion event; others only show that the user no longer exists. For rentals or workplaces, record the time you removed access so you can answer questions later.
-
-## If the Code Still Works
-
-If a deleted code still unlocks the door, do not panic, but do not ignore it. Wait a few minutes and test again. If it still works, the deletion probably did not sync to the lock. Check whether the lock is online, whether the hub is online, and whether the app shows a pending update.
-
-If the situation is urgent, create a new master or programming code if needed, remove the user from the keypad directly, or disable the lock's electronic access until you can confirm the old credential is gone. For high-risk removals, changing the master code and auditing every user is often faster than chasing one stubborn entry.
-
-## Avoid Factory Reset Unless Necessary
-
-A factory reset removes users, but it also removes settings, schedules, integrations, calibration, and sometimes Wi-Fi or hub pairing. Use it only when you lost administrator access, inherited a lock with unknown users, or need a clean start after a serious compromise.
-
-If you reset, set a new master code immediately, re-add only current users, and test backup entry. Do not restore old shared codes just because they are convenient.
-
-## Cleanup Routine
-
-For a home, review users whenever someone moves in or out, a service provider changes, or you change phones. For rentals, review after every checkout cycle and at least weekly during high occupancy. For offices, tie user removal to HR offboarding so physical access ends with system access.
-
-The best access list is short and explainable. Every entry should have an owner, a reason, and an expected end date.
+The best access list is short and explainable. Every active entry should have an owner, a reason, and a current need.
 
 ## Related Guides
 

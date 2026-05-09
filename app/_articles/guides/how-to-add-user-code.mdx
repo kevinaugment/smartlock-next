@@ -1,13 +1,12 @@
 ---
 title: How to Add New User Code to Smart Lock
 description: >-
-  Step-by-step guide to add new PIN codes and users to your smart lock. Set
-  permanent or temporary codes, manage access schedules, and verify successful
-  setup for all lock brands.
+  Add PIN codes and users to a smart lock, choose permanent or temporary access,
+  manage schedules, verify sync, and avoid shared-code security problems.
 category: guides
 pubDate: 2024-03-01T00:00:00.000Z
-wordCount: 1110
-readingTime: 5
+wordCount: 730
+readingTime: 4
 keywords:
   - add smart lock user
   - create PIN code
@@ -27,85 +26,51 @@ relatedArticles:
   - smart-lock-code-not-working
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## Quick Answer
+## Add Access With an End in Mind
 
-To add a new smart lock user code, open the lock app, choose the correct door, add a user or access code, enter a clear name, choose a unique PIN, set the access schedule, save, wait for sync, and test the code on the physical keypad before sharing it.
+Adding a user code is easy. Adding the right kind of access is the part that matters. A family member, tenant, cleaner, contractor, guest, and emergency contact should not all receive the same permanent PIN. Good access management starts by deciding who needs entry, when they need it, and how you will remove it later.
 
-The testing step matters. A code can look saved in the app while it is still waiting to sync to the lock. For guests, cleaners, and contractors, do not send the code until you know the keypad accepts it.
+Use one unique code per person or purpose. Shared codes feel convenient until something goes wrong and the access log cannot tell you who entered. Unique codes also let you remove one person's access without changing everyone else's.
 
-## Decide What Kind of Access This User Needs
+## Choose the Right Access Type
 
-Do not give everyone permanent access. A family member or long-term tenant may need an always-active code. A guest, cleaner, contractor, dog walker, or delivery helper usually needs a temporary or recurring schedule.
+Permanent access fits primary residents, long-term tenants, and trusted administrators. Temporary access fits guests, contractors, and short visits. Recurring schedules fit cleaners, dog walkers, and staff who only need access on certain days or hours. One-time codes are useful for deliveries if your lock supports them.
 
-Use the narrowest access that still works:
+If the lock supports app keys, decide whether the person actually needs app control. Some app roles may show lock status, logs, or settings. A keypad PIN is often enough for guests and vendors, while app access should be reserved for people who need ongoing management or remote control.
 
-| User type | Better access type | Why |
-|---|---|---|
-| Family or primary resident | Permanent code | Ongoing access is expected |
-| Airbnb or house guest | Temporary code | Expires after the stay |
-| Cleaner | Recurring schedule | Works only on service days |
-| Contractor | One-day temporary code | Ends when the job ends |
-| Emergency contact | Permanent or sealed backup code | Needs availability during failures |
+## Pick a Code That Will Not Create Trouble Later
 
-If the lock supports app keys, decide whether the user needs app control or only keypad entry. App users may see status, logs, or settings depending on the role. A PIN is often enough.
+Use the longest practical PIN the lock supports, usually 6 to 8 digits. Avoid repeated digits, birthdays, street numbers, phone endings, and reused guest codes. For managed properties, store codes in a password manager or property-management system rather than old text threads or loose notes.
 
-## Pick a Good PIN
+Name the user clearly. "Cleaner - Tue morning" or "Guest - Lee - May 12-15" is better than "Guest 3." Names that include the purpose or end date make future cleanup much easier.
 
-Use a unique code for each person. Shared codes are convenient until you need to know who entered or whose access should be removed. A unique code makes access logs useful and lets you revoke one person without changing everyone else.
+## Create the User and Wait for Sync
 
-Use the longest practical length your lock supports, usually 6 to 8 digits. Avoid `1234`, `0000`, birthdays, street numbers, phone endings, and repeated patterns. For rentals, avoid reusing the same guest code across bookings.
+Most apps place new users under users, access, access codes, keypad codes, or guests. Select the correct lock, create the user, enter the PIN, choose the schedule, save, and wait for the app to confirm the change reached the lock.
 
-If you manage several doors, store codes in a password manager or property-management system. Do not keep them in loose notes or old message threads.
+Do not confuse "saved in the app" with "active at the door." Battery locks may sleep. Hub-managed locks may queue changes. If the app hangs on sending, wake the keypad, move closer, check the hub, or send a lock command to confirm communication before creating duplicates.
 
-## Add the Code in the App
-
-Most apps follow this general pattern:
-
-1. Open the smart lock app.
-2. Select the correct lock if you manage more than one.
-3. Open `Users`, `Access`, `Access Codes`, `Keypad Codes`, or `Guests`.
-4. Choose `Add`, `Add user`, or `Create code`.
-5. Enter the user's name and PIN.
-6. Choose permanent, temporary, recurring, or one-time access if available.
-7. Save and wait for the app to confirm the lock has synced.
-
-Name users in a way that will still make sense later. "Cleaner - Tue morning" or "Guest - Lee - May 12-15" is better than "Guest 3." For rentals, include the booking or checkout date in the name.
-
-## Set the Schedule
-
-For permanent users, choose always active only when the person should retain access until you manually remove it. For temporary users, set both a start and end time. For recurring users, set the days and hours carefully.
-
-Avoid midnight confusion. If a code should work through checkout day, set the end time to 11:59 PM on that day or 12:00 AM on the following day, depending on the app's wording. Setting 12:00 AM on the checkout date can expire the code at the beginning of that day.
-
-Use a reasonable buffer. A guest code can start 1 to 2 hours before check-in. A contractor code can start 15 to 30 minutes before the appointment. Too-tight schedules create unnecessary support calls.
-
-## Wait for Sync
-
-Wi-Fi locks may update quickly. Bluetooth, Z-Wave, and Zigbee locks may take longer, especially if the hub is busy or the lock is sleeping. Wait for a clear synced, saved, or success state before testing.
-
-If the app hangs on sending, wake the keypad, bring the phone closer, check the hub, or send a lock/unlock command to force communication. If the lock is offline, fix connectivity before creating the code again.
-
-Do not create the same user repeatedly while waiting. Duplicate entries make later cleanup harder and can hit the lock's code limit.
+For keypad-only programming, use the lock's manual for the exact command sequence and record the slot afterward. Some locks delete by slot rather than by code, so documentation prevents future mistakes.
 
 ## Test Before Sharing
 
-Go to the door and enter the new PIN. Press the final lock, checkmark, or pound button if your model requires it. The lock should unlock cleanly without repeated attempts.
+Enter the new PIN at the keypad while another access method is available. Press the final lock, checkmark, or pound button if the model requires one. The lock should unlock cleanly without repeated attempts. If the code fails, confirm the schedule has started, the lock is online, and the PIN was entered exactly.
 
-If the code fails, wait a few minutes and try again. Then verify the code in the app, check whether the schedule has already started, and confirm the lock is online. If it still fails, delete the code and create a fresh one.
+For remote properties, use the app's sync state and audit log if physical testing is impossible. If the code is for a same-day arrival, keep a backup code ready until the first entry succeeds.
 
-For remote properties, use the app's status and audit log if physical testing is impossible. If the code is for a same-day arrival, create a backup code as well and keep it ready until the first entry succeeds.
+Only share the code after it is active or scheduled correctly. Include the access window, timezone, and keypad behavior so the user is not guessing at the door.
 
-## Brand Notes
+## Avoid Common Access Mistakes
 
-Yale apps usually list keypad codes under the lock or user profile. Schlage Home uses access codes. Kwikset uses users and may limit code counts by model. August uses guest access or eKeys, and keypad PINs depend on whether a keypad accessory is installed. Hub-managed Z-Wave and Zigbee locks may require setting a code slot in the hub interface.
+Do not make every user permanent. Do not reuse one contractor or guest code across unrelated people. Do not give the master or programming code to someone who only needs entry. Do not keep failed test codes or duplicate users around after setup.
 
-The labels differ, but the same rule applies: create, sync, test, then share.
+Also watch code limits. Many locks support fewer codes than the app interface suggests, especially through hubs. Duplicate entries and forgotten expired users can fill the lock and prevent a new guest code from syncing when you need it.
 
-## After the User No Longer Needs Access
+## Review and Remove
 
-Adding a code should include a plan for removing it. Temporary codes should expire automatically, but you should still review the list. Permanent codes for former roommates, employees, contractors, and guests should be deleted immediately.
+Adding access should include a removal plan. Temporary codes should expire automatically, but they still deserve review. Permanent codes for former roommates, employees, vendors, and guests should be deleted immediately when the need ends.
 
-For rentals and small businesses, schedule a regular access audit. The user list should be short enough that every entry has a clear owner and purpose.
+For homes, review the list whenever people move in or out. For rentals, review after each checkout cycle. For small offices, tie lock access to the same onboarding and offboarding routine as software accounts. A healthy user list is short enough that every entry has a clear owner and reason.
 
 ## Related Guides
 

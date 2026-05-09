@@ -6,7 +6,7 @@ description: >-
   temporary access securely.
 category: guides
 pubDate: 2024-03-02T00:00:00.000Z
-wordCount: 1086
+wordCount: 1180
 readingTime: 5
 keywords:
   - temporary guest code
@@ -27,457 +27,92 @@ relatedArticles:
   - smart-locks-airbnb-complete-guide
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## Quick Answer: The 11:59 PM Expiration Rule
+## Quick Answer
 
-**Temporary code creation follows standard user addition procedure with critical temporal precision requirement: configure expiration to 11:59 PM of LAST valid access day rather than 12:00 AM of subsequent day, avoiding timezone edge cases and clock synchronization ambiguities that cause premature expiration creating guest lockouts hours before intended cutoff.** This one-minute configuration difference—11:59 PM versus 12:00 AM—prevents majority of temporary code failures encountered in short-term rental operations where guests arrive to find codes mysteriously "expired" despite being within stated access windows.
+Create a temporary guest code from the lock app, give it a clear name, set a start time before the guest needs entry, set an end time after the last reasonable access window, save it, and test it at the keypad before the guest arrives. For short-term rentals, make the code active 1 to 2 hours before check-in and expire it at 11:59 PM on checkout day unless your local policy requires a tighter cutoff.
 
-The start-time buffer strategy (beginning access 1-2 hours pre-check-in) accommodates travel delays, timezone confusion, and early arrivals without security compromise, while generous end-time extension (full day beyond checkout versus precise checkout hour) eliminates lockout anxiety from late departures or forgotten items requiring re-entry. Conservative timing proves operationally superior to tight windows: guest convenience and access reliability justify modest security window extension versus rigid scheduling creating failure modes.
+The biggest mistake is setting expiration to midnight on the checkout date. Many systems interpret 12:00 AM as the beginning of that day, which can make a code expire too early. If the guest should have access through March 18, use March 18 at 11:59 PM or March 19 at 12:00 AM.
 
-**Mandatory pre-arrival testing**—personally verifying code functionality 12-24 hours before guest arrival—transforms potential synchronization failures into detected issues resolvable before user impact, rather than discovering problems through panicked guest calls reporting "code not working" moments after arrival at property.
+## When Temporary Codes Make Sense
 
-## Why Temporary Codes Matter
+Temporary codes are best for guests, cleaners, contractors, pet sitters, and family visits where access should end automatically. They are safer than shared permanent codes because every person or booking gets a unique credential with a defined window.
 
-### Use Cases
+They are also easier to audit. If "Smith booking March 15-18" unlocks the door, you know which stay or task caused the access event. If everyone uses the same code, the access log is much less useful.
 
-**Vacation rentals (Airbnb, VRBO):**
-- Unique code per booking
-- Auto-expires after checkout
-- No key handoff needed
-- Prevents past guests from returning
+For one-time deliveries or very short visits, use one-time codes if your lock supports them. For recurring service, use a schedule instead of creating a new code every week.
 
-**Contractors/Service providers:**
-- One-time access  - plumber, electrician
-- Limited to work hours
-- Expires same day
-- No ongoing access
+## Choose the Access Window
 
-**House guests:**
-- Family visiting for weekend
-- Friends staying while traveling
-- Expires automatically
-- Don't need to remember to delete
+Set the start time based on real arrival behavior, not only the written check-in time. A guest with a 3:00 PM check-in may arrive at 2:40 PM. A contractor scheduled at 10:00 AM may reach the door a few minutes early. Starting the code 1 to 2 hours early usually prevents support calls without creating meaningful extra risk.
 
-**Emergency access:**
-- Pet sitter for vacation
-- Neighbor checking house
-- Pre-defined end date
-- Peace of mind
+The end time depends on the user type. Guests often need a buffer for late checkout, forgotten items, or travel confusion. Contractors usually need a tighter same-day window. Cleaners may need recurring access on specific days and hours.
 
-## Step-by-Step Guide
+| User type | Practical start | Practical end |
+|---|---|---|
+| Airbnb or vacation guest | 1 to 2 hours before check-in | 11:59 PM on checkout day |
+| Contractor | 15 to 30 minutes before appointment | End of workday |
+| Cleaner | Scheduled service window | Same day, or recurring schedule |
+| Neighbor or pet sitter | Before first expected visit | After final expected visit |
 
-### Step 1: Determine Access Window
+## Create the Code
 
-**Calculate dates:**
-```
-Example Airbnb booking:
-Check-in: Friday, March 15, 3:00 PM
-Check-out: Monday, March 18, 11:00 AM
+Most apps follow the same flow:
 
-Code access should be:
-Start: Friday, March 15, 2:00 PM (1 hour early buffer)
-End: Monday, March 18, 11:59 PM (FULL day after checkout)
-  OR: Monday, March 18, 12:00 PM (1 hour after checkout)
+1. Open the lock app and select the correct door.
+2. Go to `Users`, `Codes`, `Access`, or `Guests`.
+3. Choose `Add user`, `Add code`, or `Guest access`.
+4. Select temporary, scheduled, or guest access.
+5. Enter a descriptive name.
+6. Generate or enter a PIN.
+7. Set the start date and time.
+8. Set the end date and time.
+9. Save and wait for the lock to sync.
 
-Why end 11:59 PM not 11:00 AM:
-- Gives buffer for late checkout
-- Avoids timezone confusion
-- Prevents accidental early expiration
-```
+Use names that explain the access later. "Airbnb - Smith - Mar 15-18" is better than "Guest 2." For contractors, include the task: "Plumber - kitchen sink - Mar 15."
 
-**Conservative vs Tight:**
+Random generated PINs are safer than cute custom numbers. If you use a custom code for guest convenience, avoid repeating the same code across bookings.
 
-**Conservative (recommended for guests):**
-```
-Start: 2-3 hours before check-in
-End: Full day of check-out (11:59 PM)
-Pros: ✅ No guest lockouts
-      ✅ Handles delays
-Cons: ⚠️ Slightly longer access window
+## Test Before Sending
+
+Testing is the difference between a smooth self-check-in and a late-night support call. If possible, test the code 12 to 24 hours before arrival. Confirm that the code appears as active or scheduled in the app, then try it on the keypad when the start window has begun.
+
+For remote properties, use the lock's status and audit log if you cannot physically test. On hub-based locks, confirm the hub is online and that the code shows as synced, not just saved in the app.
+
+If the test fails, delete the code and create a new one with an immediate start time. Do not keep editing a failing code if the guest is arriving soon; a clean new code is faster and easier to explain.
+
+## Send Clear Instructions
+
+Give the guest the code, the exact active window, the timezone, and the keypad behavior. Some locks require pressing a checkmark, lock button, or pound key after the PIN. Others unlock automatically after the final digit.
+
+A concise message works best:
+
+```text
+Your door code is [CODE].
+It is active from [START DATE/TIME/TIMEZONE] to [END DATE/TIME/TIMEZONE].
+Wake the keypad, enter the code, then press [button if required].
+If it does not unlock, send me a photo of the keypad message or call [number].
 ```
 
-**Tight (contractors, one-time):**
-```
-Start: Exactly at appointment time
-End: Same day end of business
-Pros: ✅ Minimal access window
-Cons: ⚠️ If they're early, can't enter
-```
+Do not send the same message thread to future guests with old codes still visible. Past access details are security data.
 
-### Step 2: Create Temporary Code
+## Common Problems
 
-```
-□ Open smart lock app
-□ Select lock (if multiple)
-□ Users / Codes / Access
-□ Add User / Add Code
-□ Select "Temporary" or "Guest"
-```
+If the guest says the code does not work, first check time. Is the code active yet? Has it expired? Is the timezone correct? Then check lock status. If the lock is offline, a newly created code may not have reached the keypad, although existing local codes may still work.
 
-### Step 3: Enter Details
+Next, verify entry format. Guests may include spaces, press the wrong final button, or confuse similar digits. If you suspect confusion, create a new code and send a short video or photo of the keypad instructions.
 
-```
-Name:
-□ Descriptive name
-  Examples:
-  - "Airbnb - Smith - 3/15-18"
-  - "Plumber - Kitchen Sink - 3/15"
-  - "Guest - Sarah Weekend - 3/22-24"
-  
-PIN Code:
-□ 4-8 digits (most locks)
-□ Auto-generated OR custom
-  - Auto: More secure (random)
-  - Custom: Easier to remember
-□ Don't reuse recent codes
+If a code remains active after checkout, delete it manually and review your settings. Some locks keep expired codes visible but inactive; others require manual cleanup. For rentals, review active codes at least weekly during busy season.
 
-Access Schedule:
-□ Type: Temporary
-□ Start Date: [Date]
-□ Start Time: [Time] ⚠️ See timing tips below
-□ End Date: [Date]
-□ End Time: [Time] ⚠️ CRITICAL - see below
-```
+## Security Rules
 
-### Step 4: Set Expiration Correctly
+Use one unique code per guest or job. Do not reuse the same "cleaner" code for unrelated workers unless they are part of the same trusted service. Delete or expire codes as soon as the need ends.
 
-**The #1 mistake causing guest lockouts:**
+Keep a backup access method. Temporary codes are only useful if the lock has power, the keypad works, and the code has synced. A physical key, owner app access, or emergency contact prevents a small code issue from becoming a lockout.
 
-```
-WRONG:
-End: March 18, 12:00 AM (midnight)
-Problem: Lock interprets as START of March 18
-Result: Code expires at midnight going INTO March 18
-        Guest locked out for full last day!
+For short-term rentals, remember that a smart lock does not make an illegal rental legal. Local rules, guest registration, fire safety, and insurance obligations still apply.
 
-CORRECT:
-End: March 18, 11:59 PM
-Result: Code valid entire day March 18
-        Expires at end of day
+## Related Guides
 
-ALSO CORRECT:
-End: March 19, 12:00 AM (next day midnight)
-Result: Code valid through March 18
-        Safer buffer
-```
-
-**Best practice:**
-- Checkout day 11:00 AM → Set expiration 11:59 PM same day
-- Gives 12+ hour buffer for delays
-- No guest lockout risk
-
-### Step 5: Save and Sync
-
-```
-□ Tap "Save" or "Create"
-□ App syncs to lock (2-5 minutes)
-  - WiFi: 30 seconds
-  - Zigbee/Z-Wave: 1-2 minutes
-□ Wait for "Success" or "Synced" message
-□ Don't close app during sync
-```
-
-### Step 6: Test BEFORE Guest Arrives
-
-**CRITICAL STEP - Never skip:**
-
-```
-Day before guest arrives:
-□ Go to lock keypad
-□ Enter temporary code
-□ Verify lock unlocks
-□ Check app shows code as "Active"
-□ Test at actual start time if possible
-
-If code doesn't work:
-□ Check start time hasn't begun yet
-□ Wait until start time passes
-□ Try again
-
-If still doesn't work:
-□ Delete code
-□ Re-add with immediate start
-□ Test again
-□ Contact guest with new code if needed
-```
-
-## Common Mistakes & Fixes
-
-### Mistake 1: Expiration Time Confusion
-
-**Problem:**
-```
-Set: "Check-out March 20, 12:00 AM"
-Think: Midnight END of March 20
-Reality: Midnight START of March 20
-Result: Code expires 24 hours early
-```
-
-**Fix:**
-```
-✅ Use 11:59 PM of last valid day
-✅ OR: 12:00 AM of NEXT day
-✅ Add comment in name: "Valid thru 3/20"
-```
-
-### Mistake 2: No Buffer Time
-
-**Problem:**
-```
-Check-in: 3:00 PM
-Code start: 3:00 PM
-Guest arrives: 2:45 PM (15 min early)
-Result: Guest can't enter, calls upset
-```
-
-**Fix:**
-```
-✅ Start code 1-2 hours before check-in
-✅ Communicate: "Code active from 2PM"
-✅ Buffer accommodates traffic, early arrival
-```
-
-### Mistake 3: Timezone Confusion
-
-**Problem:**
-```
-You're in California (PST)
-Guest from New York (EST)
-Set code: 3:00 PM PST
-Guest tries: 3:00 PM EST (12PM PST)
-Result: Code not active yet
-```
-
-**Fix:**
-```
-✅ Specify timezone in communication
-✅ Use guest's local time if possible
-✅ Add buffer (makes timezone less critical)
-✅ Test code yourself before guest's time zone
-```
-
-### Mistake 4: Code Still Active After Checkout
-
-**Problem:**
-```
-Forget to set end date
-Code never expires
-Past guest returns months later
-Enters home unexpectedly
-```
-
-**Fix:**
-```
-✅ ALWAYS set end date
-✅ Double-check expiration before saving
-✅ Review active codes monthly
-✅ Set calendar reminder to verify deletion
-```
-
-## Advanced Features
-
-### Recurring Temporary Access
-
-**Use case:** Cleaner comes every Tuesday for 2 hours
-
-```
-Some locks support:
-□ Days: Tuesday only
-□ Time: 10:00 AM - 12:00 PM
-□ Duration: 4 weeks (then expires)
-□ Auto-renew: Optional
-
-Brands supporting this:
-- Yale Assure Lock 2
-- Schlage Encode Plus
-- August Pro  - via eKey
-```
-
-### One-Time Use Codes
-
-**Use case:** Delivery person needs single entry
-
-```
-Some locks support:
-□ Code works only ONCE
-□ After one unlock, code deletes itself
-□ No expiration date needed
-
-Brands supporting this:
-- August Lock  - via temporary eKey
-- Some Yale models
-- Third-party integrations  - IFTTT
-```
-
-### Notification Alerts
-
-```
-Enable:
-□ "Code created" notification
-□ "Code used" notification
-□ "Code expired" notification
-
-Benefits:
-- Know when guest arrives
-- Know when they leave
-- Verify code working
-```
-
-## Brand-Specific Tips
-
-**Yale Assure Lock:**
-- Supports recurring schedules
-- Can set day-of-week restrictions
-- Auto-deletes expired codes
-
-**Schlage Encode:**
-- Clear temp code UI
-- Supports 1-250 temporary codes
-- Can set future start date
-
-**Kwikset SmartCode:**
-- Temporary codes in "Guest" section
-- Max 30 days advance scheduling
-- Auto-notifications
-
-**August Smart Lock:**
-- Called "eKey" not code
-- Share via text/email
-- Guest gets app access  - no keypad
-- Auto-expires
-
-**Z-Wave (SmartThings, Hubitat):**
-- Set code + schedule separately
-- More complex but flexible
-- Automation options  - notify when used
-
-## Communication Template
-
-**Send to guest:**
-
-```
-Subject: Access Code for [Property Address]
-
-Hi [Guest Name],
-
-Your access code for [Address] is: [CODE]
-
-Valid: [Start Date/Time] to [End Date/Time]
-Timezone: [Your Timezone]
-
-Instructions:
-1. Wake up keypad (press any button)
-2. Enter code: [CODE]
-3. Press # (if required)
-4. Door unlocks
-
-Code will automatically expire after [End Date].
-
-If any issues, text/call: [Your Number]
-
-Check-in: [Time]
-Check-out: [Time]
-
-Enjoy your stay!
-```
-
-## Troubleshooting
-
-### Guest Says Code Doesn't Work
-
-**Check:**
-```
-□ Is current time within access window?
-  - Too early? Wait until start time
-  - Past end time? Code expired
-
-□ Is lock online?
-  - Check app status
-  - If offline, code can't be verified
-
-□ Is guest entering correctly?
-  - No spaces or dashes
-  - Correct order
-  - Press # after (if required)
-
-□ Did code sync successfully?
-  - Check app for "Synced" status
-  - Resend if not synced
-```
-
-**Quick fix:**
-```
-1. Create new code with immediate start
-2. Test yourself
-3. Send new code to guest
-4. Delete old code
-```
-
-## Security Considerations
-
-```
-☑️ Unique code per guest (never reuse)
-☑️ Auto-expire (don't rely on manual deletion)
-☑️ Log access times (verify actual use)
-☑️ Monitor for unusual activity
-☑️ Change master code if compromised
-☑️ Verify guest identity (match booking)
-```
-
-## Related Resources
-
-**User Management:**
-- [How to Add User Code] - /support/how-to-add-user-code - Permanent codes
-- [Delete User Code] - /support/delete-smart-lock-user - Remove access
-
-**For Hosts:**
-- [Airbnb Smart Lock Guide] - /use-cases/smart-locks-airbnb-guide - Complete automation
-- [STR Time Savings Calculator] - /tools/str-automation-time-savings - ROI tool
-
-**Troubleshooting:**
-- [Code Not Working] - /support/smart-lock-code-not-working - Fix issues
-
----
-
-## Summary: Temporal Precision Prevents Access Failures
-
-Temporary code management centers on temporal configuration precision rather than procedural complexity: the mechanics of code creation prove identical to permanent user addition, but start/end time specification demands attention to timezone handling, clock synchronization edge cases, and buffer strategies that differentiate reliable guest access from lockout-prone implementations.
-
-**The 11:59 PM expiration imperative** represents the single most critical configuration detail: setting expiration to 11:59 PM of last valid day rather than 12:00 AM (midnight) of subsequent day avoids timezone conversion ambiguities, daylight saving transitions, and clock synchronization uncertainties that manifest as premature expiration. This seemingly trivial one-minute difference prevents the majority of "code expired early" failures where guests arrive within stated access windows yet find codes mysteriously inactive—the result of midnight boundary conditions evaluated differently by cloud servers versus local lock firmware.
-
-**Conservative buffer strategies** prove operationally superior to tight access windows despite appearing security-compromising: starting codes 1-2 hours pre-check-in accommodates flight delays, traffic, timezone confusion, and early arrivals without requiring panicked host intervention, while extending expiration to end-of-day (11:59 PM) rather than precise checkout time (11:00 AM) eliminates late departure anxiety and forgotten-item re-entry scenarios. The marginal security exposure from extended access windows proves negligible compared to operational friction from rigid timing creating guest frustration and host emergency troubleshooting.
-
-**Pre-arrival testing discipline** transforms theoretical access into verified functionality: personally testing codes 12-24 hours before guest arrival detects synchronization failures, configuration errors, or system outages while resolution time remains available, rather than discovering problems through guest emergency calls moments after property arrival. 
-
-## Tools & Resources
-
-🧮 **[STR ROI Calculator](/calculators/str-roi)** - Calculate guest access automation value  
-👥 **[Credential Capacity Planner](/calculators/credential-planner)** - Plan guest code capacity  
-🔧 **[Protocol Wizard](/calculators/protocol-wizard)** - Choose best protocol for STR
-
----
-
-## Related Articles
-
-**Use Case Guides:**
-- [Airbnb Complete Guide](/articles/use-cases/smart-locks-airbnb-complete-guide) - STR automation strategies
-- [Long-Term Rental Strategy](/articles/use-cases/long-term-rental-strategy) - Contractor access management
-
-**Access Management:**
-- [Share Access Securely](/articles/guides/share-access-securely) - Best practices for sharing
-- [Delete Smart Lock User](/articles/guides/delete-smart-lock-user) - Remove old guest codes
-- [Change Master Code](/articles/guides/change-master-code) - Update administrative codes
-
-**Troubleshooting:**
-- [Complete Troubleshooting Guide](/articles/guides/complete-troubleshooting-guide) - Fix code issues
-- [PIN Code Not Working](/articles/guides/smart-lock-code-not-working) - Code troubleshooting
-
-## 2026 Field Notes
-
-- Start with credential sync, keypad behavior, and administrator recovery path. That combination still explains most real-world lock failures faster than a blind factory reset.
-- App screens and setup flows now vary more by ecosystem generation than by lock brand alone. Confirm the exact model, companion app, and controller role before following any step-by-step sequence.
-- Guest access workflows now depend heavily on how quickly codes sync, how offline keypads behave, and whether your PMS or channel manager can tolerate temporary cloud outages.
-
-## When to Escalate
-
-- Escalate after repeated motor binding, recurring offline alarms, or failed firmware updates that return after fresh batteries and a verified signal path.
-- For rental and commercial doors, schedule changes during a maintenance window and confirm you still have one physical or offline fallback credential before you reset or re-pair anything.
+- [How to Add User Code](/articles/guides/how-to-add-user-code)
+- [How to Delete or Remove User from Smart Lock](/articles/guides/delete-smart-lock-user)
+- [Smart Locks for Airbnb Complete Guide](/articles/use-cases/smart-locks-airbnb-complete-guide)

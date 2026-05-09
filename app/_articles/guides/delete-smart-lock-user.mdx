@@ -6,8 +6,8 @@ description: >-
   brands.
 category: guides
 pubDate: 2024-03-09T00:00:00.000Z
-wordCount: 622
-readingTime: 3
+wordCount: 1070
+readingTime: 5
 keywords:
   - delete smart lock user
   - remove access code
@@ -28,403 +28,76 @@ updatedDate: '2026-05-09T00:00:00.000Z'
 ---
 ## Quick Answer
 
-**To delete user: Open app → Users/Codes → Select user → Delete/Remove → Confirm → Wait 2 minutes for sync → Verify code no longer works on keypad.** Always test deleted code to confirm removal worked. For security, delete immediately after guest leaves or employee departs.
+To delete a smart lock user, open the lock app, go to users or access codes, select the person or code, tap delete or remove, wait for the lock to sync, then test the old code at the keypad. If the user had app access, revoke the app invite as well as the PIN. For urgent security situations, confirm deletion at the door before you assume access is gone.
 
-**Time required:** 2-3 minutes (delete + sync + verify)
+Removing a user is not just housekeeping. It is the step that turns access control into actual control. Old guest codes, contractor codes, former roommate access, and unused test codes are all quiet security risks.
 
-## When to Delete Users
+## What to Remove
 
-### Mandatory Deletion
+A smart lock user may have more than one credential. They might have a PIN code, an app key, a fingerprint, a schedule, or access through a hub such as SmartThings, Hubitat, Apple Home, Google Home, or Alexa. Deleting only one credential may leave another path open.
 
-```
-Delete IMMEDIATELY when:
-☑️ Guest checked out (Airbnb, VRBO)
-☑️ Employee terminated or quit
-☑️ Contractor finished job
-☑️ Relationship ended (ex-partner, ex-roommate)
-☑️ Lost phone with app access
-☑️ Suspected security breach
-```
+Before you start, look at the user's full access profile. If the person has a keypad code and app access, remove both. If they were added through a property-management system or automation, remove them there too so the system does not recreate the code later.
 
-### Routine Cleanup
+## When to Delete a User
 
-```
-Delete quarterly:
-☑️ Temporary codes past expiration (if not auto-deleted)
-☑️ Former service providers (old cleaner, old dog walker)
-☑️ Unused codes (haven't been used in 90+ days)
-☑️ Test codes (from troubleshooting)
-☑️ Duplicate codes (accidentally created twice)
-```
+Delete access immediately when a guest checks out, a contractor finishes the job, an employee leaves, a roommate moves out, a relationship ends, a phone with app access is lost, or there is any suspected compromise.
 
-**Security rule:** If in doubt, delete it. Easy to re-add if needed.
+Also schedule routine cleanup. Every few months, review old temporary codes, test users, duplicate entries, inactive app invites, and service-provider access. If you cannot explain why a code exists, delete it. A legitimate user can be added again in a few minutes.
 
-## Step-by-Step Deletion
+## Delete Through the App
 
-### Method 1: Delete via App (Most Common)
+Most locks use this basic workflow:
 
-```
-□ Open smart lock app
-□ Select your lock (if multiple)
-□ Navigate to Users / Codes / Access
-□ Find user to delete
-  - Scroll through list
-  - OR: Search by name
+1. Open the smart lock app and select the correct door.
+2. Go to `Users`, `Access`, `Codes`, or `Guests`.
+3. Select the user, PIN, fingerprint, or app key.
+4. Tap `Delete`, `Remove`, `Revoke`, or the trash icon.
+5. Confirm the deletion.
+6. Wait for the app to show synced or updated.
+7. Test the removed credential at the keypad or app.
 
-□ Select user
-□ Tap "Delete" or "Remove" or trash icon
-□ Confirm deletion
-  - App may ask "Are you sure?"
-  - Confirm: Yes
+Wi-Fi locks may sync within a minute. Z-Wave and Zigbee locks can take longer because changes pass through a hub. Do not delete and walk away from an important door without verification.
 
-□ Wait 2-5 minutes for sync
-  - WiFi locks: 30-60 seconds
-  - Zigbee/Z-Wave: 1-3 minutes
-  - App shows "Synced" or checkmark
-
-□ Verify deletion (CRITICAL)
-  - Go to keypad
-  - Try deleted code
-  - Should give error beep (not unlock)
-  - If still works: Wait 2 more minutes, try again
-```
+## Delete From the Keypad
 
-**Time:** 2-3 minutes total
-
-### Method 2: Delete from Lock Keypad (Some Models)
+Some keypad locks can remove codes without the app. This usually requires the master or programming code and a model-specific delete command. Use keypad deletion when the app is unavailable or when you need to remove access while standing at the door.
 
-```
-Some locks allow direct deletion without app:
+The key detail is the user slot. Some locks delete by code; others delete by slot number. If you do not know which slot belongs to the user, check the app, your access record, or the lock manual before clearing the wrong entry.
 
-□ Enter programming mode
-  - Usually: Master code + special button
-  - Varies by brand (check manual)
+After keypad deletion, test the removed code. Then update your app or record so the user list stays accurate.
 
-□ Select delete user function
-  - Navigate menu on keypad
-  - Enter user slot number to delete
-
-□ Confirm deletion
-  - Keypad beeps confirmation
-
-□ Exit programming mode
-
-□ Test deleted code
-```
+## Brand Notes
 
-**Brands supporting this:**
-- Schlage  - programming code method
-- Kwikset  - master code + program button
-- Some Yale models
+Yale, Schlage, Kwikset, August, and hub-managed locks use different labels, but the logic is the same. Yale usually separates keypad codes from app users. Schlage calls the list access codes. Kwikset may use users and code slots. August often uses guest access or eKeys rather than traditional PINs unless paired with a keypad.
 
-**When to use:** App not available, emergency deletion needed
+For Z-Wave and Zigbee locks, the hub may be the source of truth. Delete the code in SmartThings, Hubitat, Home Assistant, or the lock-code manager you use. If an automation manages codes, update the automation or integration as well.
 
-### Method 3: Delete All Users (Factory Reset)
+## Verify Deletion
 
-```
-Nuclear option - use only if:
-- Need to delete everyone at once
-- Lost app access entirely
-- Security breach  - delete all, start fresh
+Verification is non-negotiable for former staff, guests, and anyone removed for security reasons. Go to the keypad and enter the old code. It should fail. If the user had app access, confirm their phone no longer shows the lock or can no longer unlock it.
 
-WARNING: Erases ALL codes and settings
+Then check the access log. Some apps record a deletion event; others only show that the user no longer exists. For rentals or workplaces, record the time you removed access so you can answer questions later.
 
-Process varies by brand (see manufacturer manual)
-
-After reset:
-□ Set new master code immediately
-□ Re-add only current/needed users
-□ Update your records
-```
-
-## Brand-Specific Instructions
-
-### Yale Assure Lock
+## If the Code Still Works
 
-```
-Via Yale Access app:
-1. Tap lock → Keypad Codes
-2. Select user to delete
-3. Tap "Delete Code"
-4. Confirm
-5. Code syncs within 1-2 minutes
-
-Verify: Try code on keypad (should fail)
-```
-
-### Schlage Encode
-
-```
-Via Schlage Home app:
-1. Tap lock → Access Codes
-2. Select code to delete
-3. Tap trash icon
-4. Confirm deletion
-5. Wait 1-2 minutes
-
-Verify: Test code (should give error beep)
-```
+If a deleted code still unlocks the door, do not panic, but do not ignore it. Wait a few minutes and test again. If it still works, the deletion probably did not sync to the lock. Check whether the lock is online, whether the hub is online, and whether the app shows a pending update.
 
-### Kwikset SmartCode
+If the situation is urgent, create a new master or programming code if needed, remove the user from the keypad directly, or disable the lock's electronic access until you can confirm the old credential is gone. For high-risk removals, changing the master code and auditing every user is often faster than chasing one stubborn entry.
 
-```
-Via Kwikset app:
-1. Tap lock → Users
-2. Select user
-3. Tap "Remove User"
-4. Confirm
-5. Sync takes 1-3 minutes
-
-Via keypad (no app):
-1. Enter master code + Lock button
-2. Press 2 (delete user)
-3. Enter user code to delete
-4. Press Lock button (confirms)
-```
-
-### August Smart Lock
-
-```
-Via August app:
-1. Tap lock → Access
-2. Select guest/user
-3. Tap "Remove Access"
-4. Confirm
-5. Access revoked immediately
+## Avoid Factory Reset Unless Necessary
 
-Note: August uses eKeys (app access) not PIN codes
-```
+A factory reset removes users, but it also removes settings, schedules, integrations, calibration, and sometimes Wi-Fi or hub pairing. Use it only when you lost administrator access, inherited a lock with unknown users, or need a clean start after a serious compromise.
 
-### Z-Wave (SmartThings, Hubitat)
+If you reset, set a new master code immediately, re-add only current users, and test backup entry. Do not restore old shared codes just because they are convenient.
 
-```
-Via hub interface:
-1. Devices → Select lock
-2. User Codes → List codes
-3. Select code slot
-4. Delete or Clear
-5. Save changes
-6. May take 2-5 minutes (S2 security)
-
-Verify in app and on keypad
-```
+## Cleanup Routine
 
-## Common Issues
+For a home, review users whenever someone moves in or out, a service provider changes, or you change phones. For rentals, review after every checkout cycle and at least weekly during high occupancy. For offices, tie user removal to HR offboarding so physical access ends with system access.
 
-### Issue: Code Still Works After Deletion
+The best access list is short and explainable. Every entry should have an owner, a reason, and an expected end date.
 
-**Cause:** Sync hasn't completed or failed
-
-**Fix:**
-```
-□ Wait 5 minutes total (initial + extra time)
-□ Wake up lock (press any keypad button)
-□ Send lock/unlock command from app (forces sync)
-□ Check lock is online (must be connected to sync)
-□ Try deleting again if still not synced
-```
-
-### Issue: Can't Find User to Delete
-
-**Cause:** User in different section or mislabeled
-
-**Fix:**
-```
-□ Check all sections: Users, Codes, Access, Guests
-□ Look for unnamed codes (generic "User 1")
-□ Sort by date added (find recent)
-□ Check if in "Expired" or "Inactive" section
-```
-
-### Issue: "Cannot Delete" Error
-
-**Cause:** Master code or admin trying to delete self
-
-**Fix:**
-```
-□ Can't delete master code (by design)
-□ Can't delete your own admin access (safety)
-□ Have another admin delete you
-□ OR: Factory reset to remove master
-```
-
-### Issue: Accidental Deletion
-
-**Cause:** Deleted wrong user
-
-**Fix:**
-```
-□ Re-add user immediately (same code if possible)
-□ Check app for "Undo" option (some apps, rarely)
-□ Communicate with user about new code
-□ Document incident (learn from mistake)
-```
-
-## Bulk Deletion
-
-### Delete Multiple Users at Once
-
-**For large cleanups (Airbnb season end, office turnover):**
-
-```
-□ Make list of users to keep (short list easier)
-□ Delete all others one by one
-  - Some apps: Select multiple → Delete
-  - Most: Delete individually
+## Related Guides
 
-□ Verify after batch deletion
-  - Test a few deleted codes
-  - Spot check (don't need to test all 20)
-
-□ Document remaining users
-  - Who has access
-  - What code they have
-  - When added
-```
-
-**Time estimate:** 1 minute per user (including verification)
-
-### Scheduled Deletion (Automated)
-
-**Some systems support auto-deletion:**
-
-```
-Temporary codes:
-☑️ Set expiration date/time
-☑️ Code auto-deletes after expiration
-☑️ No manual deletion needed
-
-Benefits:
-- Never forget to delete guest
-- Reduces security risk
-- Saves time
-
-Make sure auto-delete working:
-□ Check expired codes actually deleted (not just disabled)
-□ Set up deletion notification
-```
-
-## Security Best Practices
-
-### Deletion Protocol
-
-```
-When employee leaves:
-□ Delete code immediately (within 1 hour)
-□ Document deletion (date, time, reason)
-□ Notify security/admin team
-□ Change master code if they knew it
-□ Review access logs for suspicious activity
-
-When guest checks out:
-□ Delete code same day (within 4 hours)
-□ Verify deletion before next guest arrives
-□ Clear code slot for reuse
-
-When relationship ends:
-□ Delete all access (codes + app)
-□ Change master code
-□ Consider physical lock change (if contentious)
-```
-
-### Audit Trail
-
-```
-Monthly review:
-☑️ List all active users
-☑️ Verify each should still have access
-☑️ Check last used date (remove unused 90+ days)
-☑️ Confirm temporary codes have expiration
-☑️ Document review date
-```
-
-**Apps with audit logs:**
-- August: Full access history
-- Yale: Event log with user name
-- Schlage: Recent activity log
-
-## Verification Checklist
-
-**After deleting any user:**
-
-```
-☑️ User removed from app list
-☑️ Code tested and fails on keypad
-☑️ User can't access via app (if they had it)
-☑️ Deletion logged (if app supports)
-☑️ Notification sent (if configured)
-☑️ Documentation updated (who has access)
-```
-
-## Recovery if Delete Wrong User
-
-**If you deleted wrong person:**
-
-```
-1. Don't panic - easy to fix
-
-2. Re-add user immediately
-   □ Use same code if they remember it
-   □ OR: New code, communicate quickly
-
-3. Test new code works
-
-4. Apologize to user for confusion
-
-5. Double-check before deleting next time
-```
-
-## Tools & Resources
-
-👥 **[Credential Capacity Planner](/calculators/credential-planner)** - Check capacity limits  
-🧮 **[STR ROI Calculator](/calculators/str-roi)** - Guest turnover automation value
-
----
-
-## Related Articles
-
-**User Management:**
-- [Create Temporary Guest Code](/articles/guides/create-temporary-guest-code) - Add time-limited users
-- [Share Access Securely](/articles/guides/share-access-securely) - Safe sharing practices
-- [Change Master Code](/articles/guides/change-master-code) - Administrative access
-
-**Security & Compliance:**
-- [Security Complete Analysis](/articles/security/smart-lock-security-complete-analysis) - Access revocation importance
-- [Data Privacy Compliance](/articles/security/data-privacy-compliance-guide) - GDPR erasure rights
-- [Audit Trail Setup](/articles/security/audit-trail-forensic-analysis) - Log user deletion
-
-**Use Cases:**
-- [Airbnb Guide](/articles/use-cases/smart-locks-airbnb-complete-guide) - Guest offboarding
-- [Enterprise Deployment](/articles/use-cases/enterprise-commercial-deployment) - Employee offboarding
-- [Long-Term Rentals](/articles/use-cases/long-term-rental-strategy) - Tenant turnover
-
----
-
-## Summary Checklist
-
-**Delete smart lock user:**
-
-1. ☑️ **Open app → Users/Codes**
-2. ☑️ **Select user to delete**
-3. ☑️ **Tap Delete → Confirm**
-4. ☑️ **Wait 2-5 minutes** (sync time)
-5. ☑️ **Test code on keypad** (should fail)
-6. ☑️ **Document deletion** (who, when, why)
-
-**When to delete:**
-- ✅ Immediately: Guest checkout, employee termination
-- ✅ Same day: Contractor finished, relationship ended
-- ✅ Quarterly: Unused codes, expired temporary codes
-
-**Pro tip:** Set a recurring calendar reminder for quarterly user audit. On the 1st of every 3rd month, review all smart lock users and delete any that shouldn't have access anymore. This 15-minute task prevents the gradual accumulation of security risks from forgotten old codes. Bonus: Take a screenshot of your user list after each audit as documentation!
-
-## 2026 Field Notes
-
-- Start with credential sync, keypad behavior, and administrator recovery path. That combination still explains most real-world lock failures faster than a blind factory reset.
-- App screens and setup flows now vary more by ecosystem generation than by lock brand alone. Confirm the exact model, companion app, and controller role before following any step-by-step sequence.
-- Guest access workflows now depend heavily on how quickly codes sync, how offline keypads behave, and whether your PMS or channel manager can tolerate temporary cloud outages.
-
-## When to Escalate
-
-- Escalate after repeated motor binding, recurring offline alarms, or failed firmware updates that return after fresh batteries and a verified signal path.
-- For rental and commercial doors, schedule changes during a maintenance window and confirm you still have one physical or offline fallback credential before you reset or re-pair anything.
+- [How to Add User Code](/articles/guides/how-to-add-user-code)
+- [How to Create Temporary Guest Code](/articles/guides/create-temporary-guest-code)
+- [How to Change Smart Lock Master Code](/articles/guides/change-master-code)

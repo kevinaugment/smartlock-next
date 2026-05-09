@@ -11,44 +11,7 @@ import { ReadingProgress } from '@/components/articles/ReadingProgress';
 import { SeoPathways } from '@/components/seo/SeoPathways';
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture';
 import TableOfContents from '@/components/TableOfContents';
-import { Calculator } from 'lucide-react';
 import { extractHeadings } from '@/lib/markdown';
-import { getCalculatorTitle, resolveCalculatorRouteSlug } from '@/lib/calculators/slugs';
-
-function getRelatedTools(article: NonNullable<ReturnType<typeof getArticleBySlug>>): string[] {
-  return (article.relatedTools || [])
-    .map(tool => resolveCalculatorRouteSlug(tool))
-    .filter((slug): slug is NonNullable<typeof slug> => !!slug)
-    .filter((slug, i, arr) => arr.indexOf(slug) === i)
-    .slice(0, 3);
-}
-
-function getDefaultTools(article: NonNullable<ReturnType<typeof getArticleBySlug>>): string[] {
-  if (article.slug.includes('homekit') || article.category === 'protocols') return ['protocol-wizard', 'signal-strength', 'battery-life'];
-  if (article.slug.includes('compatibility') || article.slug.includes('install')) return ['compatibility', 'installation-cost', 'door-fit'];
-  if (article.category === 'security') return ['security-compliance', 'cyber-risk', 'pin-strength'];
-  if (article.category === 'use-cases') return ['lock-tco', 'str-roi', 'credential-planner'];
-  return ['compatibility', 'protocol-wizard', 'battery-life'];
-}
-
-function getAnswerChecklist(article: NonNullable<ReturnType<typeof getArticleBySlug>>): string[] {
-  if (article.slug.includes('compatibility')) {
-    return ['Measure door thickness, bore, backset, and lock type before buying.', 'Use the compatibility calculator before drilling or ordering hardware.', 'If the door is mortise, multi-point, metal, or unusually thick, verify model-specific fit.'];
-  }
-  if (article.slug.includes('homekit')) {
-    return ['Confirm Apple Home, Matter, or Thread support before pairing.', 'Keep a HomePod, HomePod mini, or Apple TV online for remote control and automations.', 'If pairing fails, reset proximity, battery level, iOS version, and accessory code first.'];
-  }
-  if (article.category === 'protocols') {
-    return ['Choose the protocol before choosing the lock model.', 'Check hub, range, battery, and ecosystem requirements together.', 'Use product-level protocol fields to avoid buying a lock that needs a bridge you do not own.'];
-  }
-  if (article.category === 'security') {
-    return ['Start with local unlock reliability, credential hygiene, and auditability.', 'Prefer models with clear encryption, ANSI/UL evidence, and backup access.', 'Review guest-code and app-user permissions after every tenant, staff, or family change.'];
-  }
-  if (article.category === 'installation') {
-    return ['Confirm measurements and tools before removing existing hardware.', 'Plan time and cost around drilling, strike-plate work, and hub placement.', 'Test lock/unlock, auto-lock, app status, and backup access before finishing.'];
-  }
-  return ['Use the article to identify the decision, then validate with a calculator or product page.', 'Check the related tools before buying or changing hardware.', 'Follow internal links to compare protocols, products, and installation tradeoffs.'];
-}
 
 function getPathwayTopic(article: NonNullable<ReturnType<typeof getArticleBySlug>>) {
   if (article.slug.includes('homekit')) return 'homekit';
@@ -261,11 +224,7 @@ export default async function ArticlePage({
   }
 
   const categoryInfo = CATEGORIES[article.category];
-  const relatedTools = getRelatedTools(article);
-  const aboveFoldTools = relatedTools.length > 0 ? relatedTools : getDefaultTools(article);
   const pathwayTopic = getPathwayTopic(article);
-  const hasVisibleQuickAnswer = /^## Quick Answer/m.test(content);
-  const answerChecklist = getAnswerChecklist(article);
   const showCompatibilityReport = article.slug === 'door-compatibility-guide';
   const headings = extractHeadings(content);
   const structuredData = getArticleStructuredData(article, categoryInfo.name);
@@ -298,33 +257,6 @@ export default async function ArticlePage({
         <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
           <ArticleHeader article={article} />
         </div>
-
-        <section className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
-          <h2 className="section-title">{hasVisibleQuickAnswer ? 'Answer Summary' : 'Quick Answer'}</h2>
-          <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.75, marginBottom: 'var(--space-lg)' }}>
-            {article.description}
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {answerChecklist.map((item) => (
-              <div key={item} className="card" style={{ background: 'var(--color-bg-alt)' }}>
-                <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>{item}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
-          <h2 className="section-title">Updated, Depth, Sources</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <TrustStat label="Updated" value={article.updatedAt || article.pubDate} detail="Used for freshness-sensitive lock, protocol, and setup guidance." />
-            <TrustStat label="Coverage" value={`${article.wordCount.toLocaleString()} words`} detail={`${article.readingTime} min read with ${article.isPillar ? 'pillar' : 'support'} article depth.`} />
-            <TrustStat label="Source Basis" value="SLockHub dataset" detail="Links route to calculators, protocol guides, and product data where relevant." />
-          </div>
-        </section>
-
-        {aboveFoldTools.length > 0 && (
-          <RelatedToolsPanel tools={aboveFoldTools} />
-        )}
 
         {showCompatibilityReport && (
           <ReportLeadCapture
@@ -399,37 +331,5 @@ export default async function ArticlePage({
         </div>
       </article>
     </div>
-  );
-}
-
-function TrustStat({ label, value, detail }: { label: string; value: string; detail: string }) {
-  return (
-    <div className="card" style={{ background: 'var(--color-bg-alt)' }}>
-      <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xs)' }}>{label}</div>
-      <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>{value}</div>
-      <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>{detail}</div>
-    </div>
-  );
-}
-
-function RelatedToolsPanel({ tools }: { tools: string[] }) {
-  return (
-    <section className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
-      <h2 className="section-title" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
-        <Calculator className="w-5 h-5" style={{ color: 'var(--color-accent)' }} />
-        Related Tools
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {tools.map((slug) => (
-          <Link key={slug} href={`/calculators/${slug}`} className="link-card" prefetch={false}>
-            <h3 className="link-card__title">{getCalculatorTitle(slug)}</h3>
-            <p className="link-card__desc">Use this before buying, drilling, pairing, or changing access settings.</p>
-            <span style={{ color: 'var(--color-accent)', fontSize: '0.875rem', fontWeight: 500, marginTop: 'var(--space-sm)' }}>
-              Open tool →
-            </span>
-          </Link>
-        ))}
-      </div>
-    </section>
   );
 }

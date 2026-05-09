@@ -6,7 +6,7 @@ description: >-
   HomeKit, Alexa, Google Home.
 category: integration
 pubDate: 2024-03-23T00:00:00.000Z
-wordCount: 636
+wordCount: 519
 readingTime: 3
 keywords:
   - smart lock automation
@@ -27,410 +27,48 @@ relatedArticles:
   - improve-auto-lock-reliability
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## 2026 Update Snapshot
-
-- Smart lock interoperability is broader in 2026, but advanced functions still vary by exact firmware, radio path, and vendor cloud policy.
-- Verify whether core actions stay available during internet loss, cloud outages, or controller restarts. That distinction still separates resilient deployments from fragile ones.
-- Before following the steps below, confirm the exact lock model, app generation, firmware version, and whether the lock is controlled locally, through a hub, or through a vendor cloud.
-## Quick Answer
-
-**Create lock automations: Open smart home app → Automations → + New → Choose trigger (leaving home, time, sensor) → Add action (lock door) → Set conditions → Save.** Most useful: Auto-lock after 5 min unlocked, Lock when last person leaves, Unlock when arriving home (with confirmation). Test all automations before relying on them.
-
-**Popular automations:**
-1. 🔴 Auto-lock after timeout (95% use this)
-2. 🟡 Lock when leaving home (70%)
-3. 🟠 Scheduled lock/unlock (40%)
-
-## Essential Automations
-
-### 1. Auto-Lock After Unlocking
-
-**Purpose:** Lock door automatically after being unlocked
-
-**When to use:**
-- Forgot to lock after entering
-- Kids don't lock consistently
-- Package delivery unlocked door
-
-**Setup (varies by platform):**
-
-**HomeKit:**
-```
-1. Home app → Automation → +
-2. "An Accessory is Controlled"
-3. Select lock → "When" → "Unlocked"
-4. Next → Add Action
-5. Select same lock → "Lock"
-6. Time of Day → "After" → "5 minutes"
-7. Name: "Auto-lock Front Door"
-8. Done
-```
-
-**Google Home:**
-```
-1. Google Home app → Automation → +
-2. Starter: Device → [Lock] → Unlocked
-3. Action: Delay → 5 minutes
-4. Then: Device → [Lock] → Lock
-5. Save
-```
-
-**Alexa:**
-```
-1. Alexa app → More → Routines → +
-2. When this happens: Smart Home → [Lock] Unlocked
-3. Wait: 5 minutes
-4. Add action: Smart Home → [Lock] → Lock
-5. Save
-```
-
-**SmartThings:**
-```
-1. Automations → + → Add Routine
-2. If: Device status → [Lock] → Unlocked
-3. Delay: 5 minutes
-4. Then: Control devices → [Lock] → Lock
-5. Save
-```
-
-**Recommended delay:** 3-5 minutes (enough to get inside, not too long)
-
-### 2. Lock When Leaving Home
-
-**Purpose:** Auto-lock when last person leaves
-
-**Setup (geofence):**
-
-**HomeKit:**
-```
-1. Automation → + → "People Leave"
-2. When: "Last Person Leaves"
-3. Location: Current (home)
-4. Time: Anytime
-5. Add Action: Lock → [Lock Name]
-6. Done
-```
-
-**Google Home:**
-```
-1. Automation → +
-2. Starter: Home & Away → Everyone leaves
-3. Action: Device → [Lock] → Lock
-4. Save
-```
-
-**Alexa:**
-```
-Note: Requires Echo with location services
-1. Routines → +
-2. When: Location → You leave home
-3. Add action: [Lock] → Lock
-4. Save
-```
-
-**Requirements:**
-- Phone location "Always" enabled
-- Geofence set up  - home address
-- Works when last person with app leaves
-
-### 3. Unlock When Arriving Home
-
-**Purpose:** Auto-unlock when arriving (with confirmation)
-
-**⚠️ Security consideration:**
-- Most platforms require confirmation
-- Can't auto-unlock without authentication
-- Balances convenience vs security
-
-**Setup:**
-
-**HomeKit:**
-```
-1. Automation → + → "People Arrive"
-2. When: "Anyone Arrives"
-3. OR: "First Person Arrives"
-4. Location: Home
-5. Add Action: Unlock → [Lock]
-6. Important: "Ask Before Running" → ON
-7. Notification appears when arriving
-8. Tap to approve unlock
-```
-
-**Google Home:**
-```
-Requires Hub Max or Nest Hub with Face Match
-1. Home & Away Routines
-2. When: Someone arrives home
-3. Add: Unlock [Lock]
-4. Requires voice confirmation via hub
-```
-
-**Alternative: Proximity unlock in lock app**
-- Many lock apps support direct proximity unlock
-- No smart home platform needed
-- August, Yale, Schlage apps
-
-### 4. Schedule-Based Locking
-
-**Purpose:** Lock/unlock at specific times
-
-**Use cases:**
-- Office: Unlock 9am, lock 6pm
-- Rental: Unlock 3pm check-in, lock 11am check-out
-- Daily routine: Lock 10pm, unlock 6am
-
-**Setup:**
-
-**HomeKit:**
-```
-1. Automation → + → "A Time of Day Occurs"
-2. Time: 10:00 PM
-3. Repeat: Daily OR select days
-4. Add Action: Lock → [Lock]
-5. Done
-
-Repeat for unlock (6:00 AM)
-```
-
-**Google Home/Alexa/SmartThings:**
-```
-Similar process:
-- Trigger: Time of day
-- Days: Select which days
-- Action: Lock or unlock
-```
-
-**Recommendations:**
-- Bedtime lock: 10-11pm
-- Morning unlock: 6-7am  - if desired
-- Don't unlock automatically at night  - security
-
-### 5. Scene-Based Automations
-
-**"Goodnight" scene:**
-```
-Trigger: Say "Goodnight" OR button OR time
-Actions:
-- Lock all doors
-- Turn off lights
-- Lower thermostat
-- Arm security system
-- Close garage door
-```
-
-**"Leaving Home" scene:**
-```
-Trigger: Say "Goodbye" OR geofence
-Actions:
-- Lock all doors
-- Turn off lights/appliances
-- Adjust thermostat  - away mode
-- Arm security
-```
-
-**"Arriving Home" scene:**
-```
-Trigger: Geofence OR say "I'm home"
-Actions:
-- Unlock door  - with confirmation
-- Turn on entry lights
-- Adjust thermostat  - home mode
-- Disarm security
-```
-
-## Advanced Automations
-
-### Conditional Automations
-
-**Only lock if after sunset:**
-```
-Trigger: Unlock
-Condition: After sunset
-Action: Lock after 5 minutes
-
-Why: Don't auto-lock during day when active
-```
-
-**Only unlock if you're home:**
-```
-Trigger: Someone arrives
-Condition: Other family member already home
-Action: Unlock (safe, someone inside)
-```
-
-**Temperature-based:**
-```
-If outside temp < 32°F:
-- Delay auto-lock to 10 min  - cold weather = slower entry
-```
-
-### Multi-Device Automations
-
-**Delivery detected:**
-```
-Trigger: Doorbell motion OR Ring pressed
-Condition: Between 9am-5pm
-Action: Send notification to unlock remotely
-```
-
-**Security integration:**
-```
-Trigger: Security alarm triggered
-Action: Lock all doors (prevent exit)
-```
-
-### Notification Automations
-
-**Lock status alerts:**
-```
-IF: Door unlocked for >30 minutes
-AND: After 10pm OR nobody home
-THEN: Send notification "Front door unlocked!"
-```
-
-## Platform Comparison
-
-| Platform | Auto-lock | Geofence | Schedule | Scenes | Complexity |
-|----------|-----------|----------|----------|--------|------------|
-| **HomeKit** | ✅ Easy | ✅ Native | ✅ Native | ✅ Great | Low |
-| **Google Home** | ✅ Easy | ✅ Native | ✅ Native | ✅ Good | Low |
-| **Alexa** | ✅ Easy | ⚠️ Limited | ✅ Native | ✅ Great | Medium |
-| **SmartThings** | ✅ Easy | ✅ Native | ✅ Native | ✅ Best | Medium |
-| **Home Assistant** | ✅ Advanced | ✅ Advanced | ✅ Advanced | ✅ Unlimited | High |
-
-## Testing Automations
-
-**Before relying on automation:**
-
-```
-□ Test trigger works
-  - Manually trigger condition
-  - Verify automation executes
-
-□ Test action works
-  - Lock/unlock actually happens
-  - Correct device controlled
-
-□ Test timing
-  - Delay works as expected
-  - No premature execution
-
-□ Test conditions
-  - Only runs when supposed to
-  - Doesn't run when shouldn't
-
-□ Test edge cases
-  - What if phone battery dead?
-  - What if internet down?
-  - What if multiple people arriving?
-
-□ Monitor for 1 week
-  - Does it work consistently?
-  - Any false triggers?
-  - Any missed triggers?
-```
-
-**Don't assume it works - verify!**
-
-## Common Mistakes
-
-```
-❌ Auto-unlock without confirmation
-   - Security risk
-   - Most platforms prevent this
-
-❌ Too-short auto-lock delay
-   - 1 minute = Locks before you get inside
-   - Use 3-5 minutes
-
-❌ Forgetting to test
-   - Automation looks good but doesn't work
-   - Test thoroughly before trusting
-
-❌ No backup access method
-   - Automation fails = Locked out
-   - Always have PIN/key backup
-
-❌ Geofence too small
-   - Arrives at door before automation triggers
-   - Use 100-200m radius
-
-❌ Conflicting automations
-   - Auto-lock vs manual unlock battle
-   - Review all automations together
-```
-
-## Troubleshooting
-
-**Automation doesn't trigger:**
-```
-□ Check automation enabled (not paused)
-□ Verify conditions met
-□ Check device online
-□ Check hub online
-□ Review automation logs (if available)
-□ Delete and recreate automation
-```
-
-**Automation triggers randomly:**
-```
-□ Check for conflicting automations
-□ Review trigger conditions
-□ Check for sensor false positives
-□ Adjust geofence size/sensitivity
-```
-
-## Best Practices
-
-```
-☑️ Start simple
-  - One automation at a time
-  - Test thoroughly
-  - Add complexity gradually
-
-☑️ Name descriptively
-  - "Auto-lock Front 5min"
-  - Not "Automation 1"
-
-☑️ Document automations
-  - What, when, why
-  - Review quarterly
-
-☑️ Have backup access
-  - Don't rely only on automation
-  - PIN, key, app always available
-
-☑️ Adjust based on usage
-  - Too frequent? Lengthen delay
-  - Missing triggers? Adjust conditions
-```
-
-## Related Resources
-
-**Setup:**
-- [Platform Integration] - /guides/smart-home-platform-integration - Multi-platform guide
-- [Auto-Unlock Issues] - /support/auto-unlock-not-working - Troubleshoot geofence
-
----
-
-## Summary Checklist
-
-**Set up lock automations:**
-
-**Essential 3:**
-1. ☑️ **Auto-lock after 5 min** (unlock → delay → lock)
-2. ☑️ **Lock when leaving** (geofence → last person → lock)
-3. ☑️ **Unlock when arriving** (geofence → confirmation → unlock)
-
-**Setup process:**
-1. ☑️ Choose platform (HomeKit/Google/Alexa)
-2. ☑️ Create automation (trigger + action)
-3. ☑️ Test thoroughly (1 week monitoring)
-4. ☑️ Adjust as needed (timing, conditions)
-
-**Security:**
-- Always require confirmation for unlock
-- Test backup access methods
-- Don't rely solely on automation
-
-**Pro tip:** Start with JUST auto-lock after 5 minutes. Use it for 2 weeks. Once comfortable, add "lock when leaving." After another 2 weeks, consider "unlock when arriving" (with confirmation). Resist urge to set up 10 automations on day 1 - you'll create conflicts and confusion. Master one automation before adding the next. Automation is powerful but complex - respect that!
+Smart lock automations should remove repetitive work without creating unsafe surprises. Locking a door after it has been left unlocked is usually safe. Unlocking a door automatically based on location, motion, or a doorbell event needs more caution.
+
+Start with simple, reversible automations and test them for several days before relying on them. A smart lock automation is part of your access plan, not a novelty routine.
+
+## Start With Auto-Lock
+
+Auto-lock is the most useful automation for most homes and rentals. Set the lock to secure itself after a reasonable delay when the door has been unlocked. Three to five minutes is often enough for a home entry door, while offices and rentals may need a different delay.
+
+If the lock has a door position sensor, configure auto-lock to run only when the door is closed. Locking while the door is open can extend the deadbolt into empty space and create a jam when someone closes the door.
+
+For door position issues, see [Door Sensor Not Working](/articles/installation/door-sensor-not-working).
+
+## Be Careful With Auto-Unlock
+
+Location-based unlock can be convenient, but it should include safeguards. Phone location can be wrong, delayed, or triggered while you are nearby but not actually at the door. Many platforms require confirmation before unlocking, and that is usually a good thing.
+
+Use auto-unlock only if the lock still requires authentication or confirmation, or if the door is low risk. For exterior doors, rentals, and businesses, a notification with an unlock button is safer than silent automatic unlock.
+
+## Useful Automation Patterns
+
+| Automation | Safer default |
+|---|---|
+| Door left unlocked | Send alert, then auto-lock if door is closed |
+| Last person leaves | Lock door, do not unlock on arrival without confirmation |
+| Night routine | Lock exterior doors at a set time |
+| Guest check-in | Use scheduled PINs, not broad unlock automations |
+| Doorbell press | Notify with camera view and manual unlock option |
+
+The best automations are narrow and predictable. Avoid routines that combine too many triggers, such as motion plus time plus location plus voice, until the simpler flow is proven.
+
+## Platform Setup Notes
+
+Apple Home, Google Home, Alexa, SmartThings, Home Assistant, and vendor apps all use different automation language, but the logic is the same: choose a trigger, add conditions, choose the lock action, and test the result.
+
+For Apple Home and Matter setup, use [HomeKit vs Matter Smart Lock Setup](/articles/protocols/connect-lock-to-homekit). For doorbell-linked workflows, use [Smart Lock and Video Doorbell Integration](/articles/integration/doorbell-smart-lock-integration).
+
+## Test Before Trusting
+
+After creating an automation, test the normal case and the failure case. Does auto-lock run when the door is closed? What happens if the door is open? What happens if the internet is down? Does the platform notify you before unlocking? Does the app show the correct final state?
+
+For rentals and businesses, document the automation and who can change it. Silent changes to lock routines can create support and liability problems.
+
+## Final Recommendation
+
+Automate locking before you automate unlocking. Keep humans in the loop for risky unlock actions. Use keypad codes and backup access for guests and tenants. A good automation should make the lock more predictable, not harder to explain.

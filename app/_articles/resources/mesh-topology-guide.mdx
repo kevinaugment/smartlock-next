@@ -2,14 +2,23 @@
 title: Mesh Topology Explained
 description: How your smart lock talks to your hub through other devices.
 category: resources
-pubDate: 2024-05-20
+pubDate: 2024-05-20T00:00:00.000Z
 slug: mesh-topology-guide
 hero_image: /images/articles/mesh-topology.jpg
 author: SmartLockHub Team
-keywords: [mesh network, zigbee router, end device, z-wave repeater, smart lock connectivity]
-tags: [glossary, decision-guide]
+keywords:
+  - mesh network
+  - zigbee router
+  - end device
+  - z-wave repeater
+  - smart lock connectivity
+tags:
+  - glossary
+  - decision-guide
+updatedDate: '2026-05-09T00:00:00.000Z'
+wordCount: 190
+readingTime: 1
 ---
-
 ## Routers vs End Devices
 
 In a mesh network (Zigbee/Z-Wave/Thread), devices have two roles:
@@ -19,3 +28,15 @@ In a mesh network (Zigbee/Z-Wave/Thread), devices have two roles:
 ### Why it matters for Locks
 *   **Placement**: Your lock needs a *Router* nearby (within 20ft), not necessarily the Hub.
 *   **Healing**: If you move a lamp, the lock might lose connection until the network "heals".
+
+## 2026 Planning Notes
+
+Published range, battery, and interoperability numbers are planning inputs only. Walls, radio congestion, border routers, and firmware policy still change the field result materially.
+
+Treat local radio health, border-router or hub placement, and fallback behavior during internet loss as first-class design inputs, not afterthoughts.
+
+## How to Use This Reference
+
+1. Confirm the exact door type, lock family, controller path, and operating environment you are designing for.
+2. Eliminate options that fail the mechanical, compliance, offline-access, or lifecycle-cost requirements that matter most for this deployment.
+3. Validate the final choice against the current manufacturer documentation and a test on the real door whenever the consequence of failure is high.

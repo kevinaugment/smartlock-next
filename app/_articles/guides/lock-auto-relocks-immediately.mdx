@@ -1,30 +1,31 @@
 ---
-title: "Lock Auto-Relocks Immediately After Unlock - Stop Instant Relock"
-description: "Fix smart lock that relocks immediately after unlocking. Disable auto-lock temporarily, adjust timeout, fix sensor issues, and stop annoying instant relock behavior."
+title: Lock Auto-Relocks Immediately After Unlock - Stop Instant Relock
+description: >-
+  Fix smart lock that relocks immediately after unlocking. Disable auto-lock
+  temporarily, adjust timeout, fix sensor issues, and stop annoying instant
+  relock behavior.
 category: guides
-pubDate: 2024-04-16
-wordCount: 600
-readingTime: 3
+pubDate: 2024-04-16T00:00:00.000Z
+wordCount: 952
+readingTime: 4
 keywords:
-  - "auto relock"
-  - "instant relock"
-  - "locks immediately"
-  - "won't stay unlocked"
-  - "auto lock problem"
+  - auto relock
+  - instant relock
+  - locks immediately
+  - won't stay unlocked
+  - auto lock problem
 tags:
-  - "auto-lock"
-  - "troubleshooting"
-  - "automation"
+  - auto-lock
+  - troubleshooting
+  - automation
 isPillar: false
 isSupport: true
 featured: false
 relatedArticles:
-  - "improve-auto-lock-reliability"
-  - "set-up-lock-automations"
-
+  - improve-auto-lock-reliability
+  - set-up-lock-automations
+updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-
-
 ## Quick Answer: The Auto-Lock Timeout Cascade Problem
 
 **Immediate auto-relock failures stem from timeout configuration issues (60%), automation rule conflicts (25%), or door sensor state misreporting (10%), collectively creating situation where lock's auto-lock timer expires before user completes entry, triggering premature relock blocking doorway or requiring repeated unlock cycles.** These failures reflect automation priority conflicts where multiple concurrent rules (platform-level automations, lock-native auto-lock, sensor-triggered rules) race to shortest timeout, creating user-hostile 30-second relock windows incompatible with real-world entry scenarios involving packages, children, or mobility limitations requiring 2-5 minute entry windows.
@@ -307,3 +308,13 @@ Immediate auto-relock troubleshooting demands systematic priority-ordered approa
 
 **Automation conflict diagnosis complexity**: Modern smart home ecosystems create multi-layer automation architecture where rules exist simultaneously in lock firmware (native auto-lock), smart home platform (Google/Alexa/HomeKit automations), and hub software (SmartThings/Hubitat rules), each independently evaluating unlock events and triggering relock commands. This distributed architecture creates race conditions where shortest-timeout rule wins, often unintended consequence of forgotten platform automation created months prior. Systematic resolution: disable ALL auto-lock mechanisms across all layers, verify no-relock behavior, incrementally enable single rule confirming isolation before adding additional automations.
 
+## 2026 Field Notes
+
+- Start with firmware state, local wireless health, and cloud sync status. That combination still explains most real-world lock failures faster than a blind factory reset.
+- App screens and setup flows now vary more by ecosystem generation than by lock brand alone. Confirm the exact model, companion app, and controller role before following any step-by-step sequence.
+- Before following the steps below, confirm the exact lock model, app generation, firmware version, and whether the lock is controlled locally, through a hub, or through a vendor cloud.
+
+## When to Escalate
+
+- Escalate after repeated motor binding, recurring offline alarms, or failed firmware updates that return after fresh batteries and a verified signal path.
+- For rental and commercial doors, schedule changes during a maintenance window and confirm you still have one physical or offline fallback credential before you reset or re-pair anything.

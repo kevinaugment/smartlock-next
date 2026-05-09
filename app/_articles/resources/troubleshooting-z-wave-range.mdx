@@ -1,15 +1,27 @@
 ---
-title: "Z-Wave Range Troubleshooting: Fixing Offline Locks"
-description: "Is your smart lock showing 'Offline'? We explain Z-Wave Mesh, the 4-Hop Limit, and why you need a Repeater (and where to put it)."
+title: 'Z-Wave Range Troubleshooting: Fixing Offline Locks'
+description: >-
+  Is your smart lock showing 'Offline'? We explain Z-Wave Mesh, the 4-Hop Limit,
+  and why you need a Repeater (and where to put it).
 category: resources
-pubDate: 2024-05-20
+pubDate: 2024-05-20T00:00:00.000Z
 slug: troubleshooting-z-wave-range
 hero_image: /images/articles/zwave-mesh.jpg
 author: SmartLockHub Team
-keywords: [z-wave range extender, smart lock offline fix, z-wave mesh network healing, repeaters for smart locks, interference troubleshooting, 908 mhz frequency]
-tags: [how-to, troubleshooting]
+keywords:
+  - z-wave range extender
+  - smart lock offline fix
+  - z-wave mesh network healing
+  - repeaters for smart locks
+  - interference troubleshooting
+  - 908 mhz frequency
+tags:
+  - how-to
+  - troubleshooting
+updatedDate: '2026-05-09T00:00:00.000Z'
+wordCount: 468
+readingTime: 2
 ---
-
 ## Executive Summary
 
 Z-Wave does not work like Wi-Fi. It is a **Mesh Network**.
@@ -59,3 +71,15 @@ It tries to send the status update ("I locked!") at 100% power, fails, retries, 
 ## Related Tools
 *   **[Protocol Specs](/articles/resources/smart-home-protocol-specs-table)**: Comparing Z-Wave to Zigbee range.
 *   **[Battery Life Calculator](/calculators/battery-life)**: Estimate impact of signal strength.
+
+## 2026 Planning Notes
+
+Published range, battery, and interoperability numbers are planning inputs only. Walls, radio congestion, border routers, and firmware policy still change the field result materially.
+
+Confirm the exact radio path and controller role before you buy: Matter support does not guarantee the same lock features across Thread, Wi-Fi, HomeKit, Alexa, Google Home, or SmartThings.
+
+## How to Use This Reference
+
+1. Confirm the exact door type, lock family, controller path, and operating environment you are designing for.
+2. Eliminate options that fail the mechanical, compliance, offline-access, or lifecycle-cost requirements that matter most for this deployment.
+3. Validate the final choice against the current manufacturer documentation and a test on the real door whenever the consequence of failure is high.

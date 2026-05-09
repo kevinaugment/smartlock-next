@@ -6,6 +6,9 @@ interface ArticleHeaderProps {
 }
 
 export function ArticleHeader({ article }: ArticleHeaderProps) {
+  const freshnessDate = article.updatedAt || article.pubDate;
+  const showPublishedDate = article.updatedAt && article.updatedAt !== article.pubDate;
+
   return (
     <header className="mb-12">
       {/* Category & Badges */}
@@ -43,14 +46,28 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
       >
         <div className="flex items-center gap-2">
           <Calendar className="w-4 h-4" />
-          <time dateTime={article.pubDate}>
-            {new Date(article.pubDate).toLocaleDateString('en-US', {
+          <span>{showPublishedDate ? 'Updated' : 'Published'}</span>
+          <time dateTime={freshnessDate}>
+            {new Date(freshnessDate).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
             })}
           </time>
         </div>
+
+        {showPublishedDate && (
+          <div className="flex items-center gap-2">
+            <span>Published</span>
+            <time dateTime={article.pubDate}>
+              {new Date(article.pubDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+          </div>
+        )}
 
         <div className="flex items-center gap-2">
           <Clock className="w-4 h-4" />

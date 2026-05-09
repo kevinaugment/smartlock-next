@@ -1,15 +1,29 @@
 ---
-title: "Understanding Quiescent Current: The Vampire That Kills Batteries"
-description: "Why 'doing nothing' is the hardest job for a smart lock. We explain Standby Leakage, Vampire Draw (µA), and why your batteries drain even if you never open the door."
+title: 'Understanding Quiescent Current: The Vampire That Kills Batteries'
+description: >-
+  Why 'doing nothing' is the hardest job for a smart lock. We explain Standby
+  Leakage, Vampire Draw (µA), and why your batteries drain even if you never
+  open the door.
 category: resources
-pubDate: 2024-05-20
+pubDate: 2024-05-20T00:00:00.000Z
 slug: what-is-quiescent-current
 hero_image: /images/articles/circuit-board.jpg
 author: SmartLockHub Team
-keywords: [quiescent current, smart lock battery drain, standby power, vampire draw, electronics leakage, battery life calculation, microamps]
-tags: [glossary, decision-guide]
+keywords:
+  - quiescent current
+  - smart lock battery drain
+  - standby power
+  - vampire draw
+  - electronics leakage
+  - battery life calculation
+  - microamps
+tags:
+  - glossary
+  - decision-guide
+updatedDate: '2026-05-09T00:00:00.000Z'
+wordCount: 711
+readingTime: 3
 ---
-
 ## Executive Summary
 
 If you put a smart lock on a shelf and never touch it, the batteries will still die. Why?
@@ -81,3 +95,15 @@ Motor Torque. A smart lock needs to physically turn a deadbolt. That requires 6 
 
 ### What is the ideal Quiescent Current for a Smart Lock?
 **< 50 µA**. Anything under 50 is excellent. Anything over 100 means the firmware is sloppy or the hardware is cheap.
+
+## 2026 Planning Notes
+
+Use this page to narrow choices and frame the discussion, then verify the exact lock model, door prep, and deployment workflow that will be used in the field.
+
+Before ordering hardware, check the door condition, strike alignment, battery type recommendation, and whether the lock expects a local hub or bridge for its “smart” features.
+
+## How to Use This Reference
+
+1. Confirm the exact door type, lock family, controller path, and operating environment you are designing for.
+2. Eliminate options that fail the mechanical, compliance, offline-access, or lifecycle-cost requirements that matter most for this deployment.
+3. Validate the final choice against the current manufacturer documentation and a test on the real door whenever the consequence of failure is high.

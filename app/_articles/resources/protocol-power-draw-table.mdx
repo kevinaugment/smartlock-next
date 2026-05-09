@@ -1,15 +1,27 @@
 ---
-title: "IoT Protocol Power Draw: Why Your Smart Lock Batteries Die So Fast"
-description: "Why does Wi-Fi kill batteries in 3 months while Zigbee lasts 18? We break down the physics of TX/RX currents, Connection Overhead, and the 'Sleep Ratio'."
+title: 'IoT Protocol Power Draw: Why Your Smart Lock Batteries Die So Fast'
+description: >-
+  Why does Wi-Fi kill batteries in 3 months while Zigbee lasts 18? We break down
+  the physics of TX/RX currents, Connection Overhead, and the 'Sleep Ratio'.
 category: resources
-pubDate: 2024-05-20
+pubDate: 2024-05-20T00:00:00.000Z
 slug: protocol-power-draw-table
 hero_image: /images/articles/battery-power.jpg
 author: SmartLockHub Team
-keywords: [iot power consumption, smart lock battery life, zigbee vs wifi power, zwave active current, esp32 power draw, nrf52 current consumption]
-tags: [data-table, standard]
+keywords:
+  - iot power consumption
+  - smart lock battery life
+  - zigbee vs wifi power
+  - zwave active current
+  - esp32 power draw
+  - nrf52 current consumption
+tags:
+  - data-table
+  - standard
+updatedDate: '2026-05-09T00:00:00.000Z'
+wordCount: 712
+readingTime: 3
 ---
-
 ## Executive Summary
 
 Battery life is the #1 complaint in smart lock reviews. While users blame "cheap batteries," the physics dictates that the **Protocol Choice** determines 80% of longevity.
@@ -77,3 +89,15 @@ Yes. Thread uses the same low-power radio silicon (802.15.4) as Zigbee. A Matter
 
 ### Can I use Rechargeable Lithium (1.5V) batteries?
 Yes, but be careful. Active "Buck Converter" Li-ion batteries output a flat 1.5V until they die constantly. The lock will report "100%" battery for 6 months and then "0%" and die instantly, stranding you outside.
+
+## 2026 Planning Notes
+
+Published range, battery, and interoperability numbers are planning inputs only. Walls, radio congestion, border routers, and firmware policy still change the field result materially.
+
+Before ordering hardware, check the door condition, strike alignment, battery type recommendation, and whether the lock expects a local hub or bridge for its “smart” features.
+
+## How to Use This Reference
+
+1. Confirm the exact door type, lock family, controller path, and operating environment you are designing for.
+2. Eliminate options that fail the mechanical, compliance, offline-access, or lifecycle-cost requirements that matter most for this deployment.
+3. Validate the final choice against the current manufacturer documentation and a test on the real door whenever the consequence of failure is high.

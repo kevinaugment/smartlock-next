@@ -1,15 +1,29 @@
 ---
-title: "Smart Home Protocol Specs: The Ultimate Technical Cheat Sheet (2026)"
-description: "Direct technical comparison of Z-Wave 800, Zigbee 3.0, Thread, and Wi-Fi 6. We compare frequency, bandwidth, max nodes, security encryption, and mesh capabilities."
+title: 'Smart Home Protocol Specs: The Ultimate Technical Cheat Sheet (2026)'
+description: >-
+  Direct technical comparison of Z-Wave 800, Zigbee 3.0, Thread, and Wi-Fi 6. We
+  compare frequency, bandwidth, max nodes, security encryption, and mesh
+  capabilities.
 category: resources
-pubDate: 2024-05-20
+pubDate: 2024-05-20T00:00:00.000Z
 slug: smart-home-protocol-specs-table
 hero_image: /images/articles/protocol-specs.jpg
 author: SmartLockHub Team
-keywords: [smart home protocols, zwave 800 vs zigbee 3.0, thread matter protocol details, iot mesh network comparison, aes-128 encryption, smart lock security standards, wifi 6 iot]
-tags: [data-table, standard]
+keywords:
+  - smart home protocols
+  - zwave 800 vs zigbee 3.0
+  - thread matter protocol details
+  - iot mesh network comparison
+  - aes-128 encryption
+  - smart lock security standards
+  - wifi 6 iot
+tags:
+  - data-table
+  - standard
+updatedDate: '2026-05-09T00:00:00.000Z'
+wordCount: 748
+readingTime: 3
 ---
-
 ## Executive Summary
 
 Marketing fluff says "Seamless Connectivity." Engineers need to know Frequency, Max Hops, and Encryption standards.
@@ -82,3 +96,15 @@ Not directly. They use the same radio hardware (802.15.4) but different software
 
 ### Does Wi-Fi 6 improve smart locks?
 Yes. Wi-Fi 6 introduces **TWT (Target Wake Time)**. It allows the router to tell the lock "Go to sleep for exactly 4 hours, then wake up." This could potentially double Wi-Fi lock battery life in the future.
+
+## 2026 Planning Notes
+
+Published range, battery, and interoperability numbers are planning inputs only. Walls, radio congestion, border routers, and firmware policy still change the field result materially.
+
+Confirm the exact radio path and controller role before you buy: Matter support does not guarantee the same lock features across Thread, Wi-Fi, HomeKit, Alexa, Google Home, or SmartThings.
+
+## How to Use This Reference
+
+1. Confirm the exact door type, lock family, controller path, and operating environment you are designing for.
+2. Eliminate options that fail the mechanical, compliance, offline-access, or lifecycle-cost requirements that matter most for this deployment.
+3. Validate the final choice against the current manufacturer documentation and a test on the real door whenever the consequence of failure is high.

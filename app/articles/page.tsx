@@ -192,7 +192,8 @@ export default function ArticlesPage() {
                       >
                         <span className="flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
-                          {new Date(article.pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          {article.updatedAt ? 'Updated ' : 'Published '}
+                          {new Date(article.updatedAt || article.pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </span>
                         <span
                           className="font-medium group-hover:gap-2 flex items-center gap-1 transition-all"

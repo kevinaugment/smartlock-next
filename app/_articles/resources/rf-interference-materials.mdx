@@ -1,15 +1,28 @@
 ---
-title: "RF Interference Materials: The 'Silent Killers' of Smart Home Signals"
-description: "Why does your lock fail when the bathroom door closes? A physics-based guide to material attenuation (dB Loss) for 2.4GHz vs 900MHz signals. Stucco, Mirrors, and Metal explained."
+title: 'RF Interference Materials: The ''Silent Killers'' of Smart Home Signals'
+description: >-
+  Why does your lock fail when the bathroom door closes? A physics-based guide
+  to material attenuation (dB Loss) for 2.4GHz vs 900MHz signals. Stucco,
+  Mirrors, and Metal explained.
 category: resources
-pubDate: 2024-05-20
+pubDate: 2024-05-20T00:00:00.000Z
 slug: rf-interference-materials
 hero_image: /images/articles/interference.jpg
 author: SmartLockHub Team
-keywords: [rf attenuation table, signal loss by material, stucco interference, faraday cage homes, 900mhz vs 2.4ghz penetration, smart lock range]
-tags: [data-table, standard]
+keywords:
+  - rf attenuation table
+  - signal loss by material
+  - stucco interference
+  - faraday cage homes
+  - 900mhz vs 2.4ghz penetration
+  - smart lock range
+tags:
+  - data-table
+  - standard
+updatedDate: '2026-05-09T00:00:00.000Z'
+wordCount: 797
+readingTime: 3
 ---
-
 ## Executive Summary
 
 "Line of Sight" is a myth. Your smart lock receiver is buried inside a metal door, behind a wood frame, often blocked by a stucco wall.
@@ -88,3 +101,15 @@ No. 5GHz has terrible penetration. It is stopped by a single wood door. Almost a
 
 ### Can I wrap my hub in foil to aim the signal?
 No. Antennas are tuned. Wrapping them in foil detunes the VSWR (Voltage Standing Wave Ratio), potentially burning out the radio transmitter amplifier. Buy a better antenna, don't use foil.
+
+## 2026 Planning Notes
+
+Published range, battery, and interoperability numbers are planning inputs only. Walls, radio congestion, border routers, and firmware policy still change the field result materially.
+
+Treat local radio health, border-router or hub placement, and fallback behavior during internet loss as first-class design inputs, not afterthoughts.
+
+## How to Use This Reference
+
+1. Confirm the exact door type, lock family, controller path, and operating environment you are designing for.
+2. Eliminate options that fail the mechanical, compliance, offline-access, or lifecycle-cost requirements that matter most for this deployment.
+3. Validate the final choice against the current manufacturer documentation and a test on the real door whenever the consequence of failure is high.

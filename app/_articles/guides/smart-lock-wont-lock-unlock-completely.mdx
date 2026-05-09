@@ -1,30 +1,31 @@
 ---
-title: "Smart Lock Won't Lock or Unlock Completely - Partial Extension Fix"
-description: "Fix smart lock that doesn't fully extend or retract deadbolt. Troubleshoot partial locking, incomplete throw, motor issues, and restore full lock/unlock operation."
+title: Smart Lock Won't Lock or Unlock Completely - Partial Extension Fix
+description: >-
+  Fix smart lock that doesn't fully extend or retract deadbolt. Troubleshoot
+  partial locking, incomplete throw, motor issues, and restore full lock/unlock
+  operation.
 category: guides
-pubDate: 2024-03-31
-wordCount: 750
-readingTime: 4
+pubDate: 2024-03-31T00:00:00.000Z
+wordCount: 1568
+readingTime: 7
 keywords:
-  - "won't lock completely"
-  - "partial lock"
-  - "deadbolt doesn't extend"
-  - "incomplete unlock"
-  - "lock halfway"
+  - won't lock completely
+  - partial lock
+  - deadbolt doesn't extend
+  - incomplete unlock
+  - lock halfway
 tags:
-  - "mechanical"
-  - "motor"
-  - "troubleshooting"
+  - mechanical
+  - motor
+  - troubleshooting
 isPillar: false
 isSupport: true
 featured: false
 relatedArticles:
-  - "door-alignment-guide"
-  - "lock-motor-noise-troubleshooting"
-
+  - door-alignment-guide
+  - lock-motor-noise-troubleshooting
+updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-
-
 ## Quick Answer: The Incomplete Motor Travel Problem
 
 **Incomplete lock/unlock cycles occur when motor fails completing full deadbolt extension/retraction due to mechanical obstruction exceeding motor torque budget (40%), position-sensing calibration drift causing premature stop command (30%), or battery voltage insufficiency reducing available motor power below threshold required overcoming friction (20%).** These partial-travel failures manifest as deadbolt extending 80-95% of full throw (1/8-1/4 inch short of complete extension) creating vulnerable security state where door appears locked yet deadbolt engagement insufficient resisting forced entry, or incomplete retraction preventing door opening requiring manual override frustrating smart lock convenience value proposition.
@@ -291,3 +292,14 @@ Incomplete cycle resolution demands restoring favorable torque balance where mot
 **Calibration drift technical explanation**: Motor position sensing implements step counting (stepper motor: 60-200 steps per revolution, 3-5 revolutions full deadbolt travel = 180-1000 counted steps) where controller tracks "locked" position (step 0) and "unlocked" position (step 200) commanding motor run until target step reached. Calibration drift occurs when step counter diverges from actual position: obstruction causing motor skip steps (commanded 5 steps yet shaft rotated only 3 due to momentary stall), manual override rotating shaft without step counting (thumb turn moves deadbolt yet controller unaware), or encoder wear creating miscounts. This accumulated error manifests as controller believing deadbolt fully extended (step count = 200) yet actual position only 90% (180 steps), commanding premature stop. Recalibration resets zero reference by driving motor to hard mechanical stops (fully retracted, fully extended) relearning actual step counts eliminating accumulated error.
 
 **The 95%-completion symptom diagnostic significance**: Failure at 90-95% completion (deadbolt visibly extended yet final 1/8-1/4 inch unachieved) almost exclusively indicates external obstruction (strike contact) rather than internal failure, as internal issues (motor, calibration, battery) manifest randomly across travel range not consistently at endpoint. This endpoint-specific failure reflects geometric reality: only at full extension does deadbolt contact strike plate, earlier in travel deadbolt travels through air resistance-free. Conversely, mid-cycle failure (stopping at 40-60% travel) indicates internal issue (calibration commanding premature stop, battery voltage dropping below minimum, motor mechanical failure) as strike contact impossible mid-travel.
+
+## 2026 Field Notes
+
+- Start with firmware state, local wireless health, and cloud sync status. That combination still explains most real-world lock failures faster than a blind factory reset.
+- App screens and setup flows now vary more by ecosystem generation than by lock brand alone. Confirm the exact model, companion app, and controller role before following any step-by-step sequence.
+- Before following the steps below, confirm the exact lock model, app generation, firmware version, and whether the lock is controlled locally, through a hub, or through a vendor cloud.
+
+## When to Escalate
+
+- Escalate after repeated motor binding, recurring offline alarms, or failed firmware updates that return after fresh batteries and a verified signal path.
+- For rental and commercial doors, schedule changes during a maintenance window and confirm you still have one physical or offline fallback credential before you reset or re-pair anything.

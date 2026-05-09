@@ -108,9 +108,9 @@ export default function CategoryPage({
 
   const articles = getArticlesByCategory(params.category);
 
-  // 按发布日期排序（最新的在前）
+  // 按最近更新时间排序（没有 updatedAt 时回退到 pubDate）
   const sortedArticles = [...articles].sort((a, b) =>
-    new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
+    new Date(b.updatedAt || b.pubDate).getTime() - new Date(a.updatedAt || a.pubDate).getTime()
   );
   const pillarArticles = sortedArticles.filter(article => article.isPillar);
   const supportArticles = sortedArticles.filter(article => article.isSupport);
@@ -224,7 +224,10 @@ export default function CategoryPage({
                     </h2>
                     <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)' }} className="line-clamp-2">{article.description}</p>
                     <div className="flex items-center gap-4" style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>
-                      <span>{new Date(article.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                      <span>
+                        {article.updatedAt ? 'Updated ' : 'Published '}
+                        {new Date(article.updatedAt || article.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                      </span>
                       <span>• {article.readingTime} min read</span>
                       <span>• {article.wordCount.toLocaleString()} words</span>
                       <span className="ml-auto group-hover:translate-x-1 transition-transform" style={{ color: 'var(--color-accent)' }}>

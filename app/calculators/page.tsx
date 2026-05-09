@@ -391,7 +391,7 @@ export default function CalculatorsPage() {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {priorityCalculators.map((item) => (
-                <Link key={item.slug} href={`/calculators/${item.slug}`} className="link-card">
+                <Link key={item.slug} href={`/calculators/${item.slug}`} className="link-card" prefetch={false}>
                   <h3 className="link-card__title">{item.title}</h3>
                   <p className="link-card__desc">{item.description}</p>
                   <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: 'var(--space-sm)' }}>{item.proof}</p>
@@ -410,7 +410,7 @@ export default function CalculatorsPage() {
                     {path.steps.map((step, index) => (
                       <li key={step.href} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
                         <span className="badge badge-accent">{index + 1}</span>
-                        <Link href={step.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }}>{step.label}</Link>
+                        <Link href={step.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }} prefetch={false}>{step.label}</Link>
                       </li>
                     ))}
                   </ol>
@@ -453,8 +453,8 @@ export default function CalculatorsPage() {
               Continue with guide hubs for protocol choice, installation fit, battery life, and access security.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/articles" className="btn btn-primary btn-lg">Browse Articles</Link>
-              <Link href="/" className="btn btn-secondary btn-lg">Back to Home</Link>
+              <Link href="/articles" className="btn btn-primary btn-lg" prefetch={false}>Browse Articles</Link>
+              <Link href="/" className="btn btn-secondary btn-lg" prefetch={false}>Back to Home</Link>
             </div>
           </div>
         </div>

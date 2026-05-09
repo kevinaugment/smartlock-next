@@ -170,7 +170,7 @@ export default function Header() {
       <div className="container-main">
         <div className="flex items-center justify-between" style={{ height: 'var(--header-height)' }}>
           {/* Logo */}
-          <Link href="/" className="site-brand group">
+          <Link href="/" className="site-brand group" prefetch={false}>
             <Lock className="site-brand__icon" />
             <span className="site-brand__name">SLockHub</span>
           </Link>
@@ -188,7 +188,7 @@ export default function Header() {
               <div className="mega-menu">
                 <div className="mega-menu__grid mega-menu__grid--3">
                   {knowledgeBaseItems.map(item => (
-                    <Link key={item.href} href={item.href} className="mega-menu__link">
+                    <Link key={item.href} href={item.href} className="mega-menu__link" prefetch={false}>
                       <item.icon className="mega-menu__link-icon" />
                       <div>
                         <div>{item.name}</div>
@@ -198,7 +198,7 @@ export default function Header() {
                   ))}
                 </div>
                 <div className="mega-menu__cta">
-                  <Link href="/articles" className="mega-menu__cta-link">Browse All Articles →</Link>
+                  <Link href="/articles" className="mega-menu__cta-link" prefetch={false}>Browse All Articles →</Link>
                 </div>
               </div>
             </div>
@@ -215,7 +215,7 @@ export default function Header() {
                     <div key={group.title} className="mega-menu__group">
                       <div className="mega-menu__group-title">{group.title}</div>
                       {group.items.map(item => (
-                        <Link key={item.href} href={item.href} className="mega-menu__link">
+                        <Link key={item.href} href={item.href} className="mega-menu__link" prefetch={false}>
                           <item.icon className="mega-menu__link-icon" />
                           {item.name}
                         </Link>
@@ -224,13 +224,13 @@ export default function Header() {
                   ))}
                 </div>
                 <div className="mega-menu__cta">
-                  <Link href="/calculators" className="mega-menu__cta-link">View All 32 Calculators →</Link>
+                  <Link href="/calculators" className="mega-menu__cta-link" prefetch={false}>View All 32 Calculators →</Link>
                 </div>
               </div>
             </div>
 
             {/* ----- Compare (direct link) ----- */}
-            <Link href="/compare" className="nav-link">Compare</Link>
+            <Link href="/compare" className="nav-link" prefetch={false}>Compare</Link>
 
             {/* ----- Resources ----- */}
             <div className="mega-nav__item" data-menu-key="res" data-menu-open={activeDesktopMenu === 'res'} {...desktopMenuHandlers('res')}>
@@ -241,7 +241,7 @@ export default function Header() {
               <div className="mega-menu mega-menu--sm">
                 <div className="mega-menu__grid mega-menu__grid--1">
                   {resourceItems.map(item => (
-                    <Link key={item.href} href={item.href} className="mega-menu__link">
+                    <Link key={item.href} href={item.href} className="mega-menu__link" prefetch={false}>
                       <div>
                         <div>{item.name}</div>
                         <div className="mega-menu__link-desc">{item.desc}</div>
@@ -250,16 +250,16 @@ export default function Header() {
                   ))}
                 </div>
                 <div className="mega-menu__cta">
-                  <Link href="/resources" className="mega-menu__cta-link">Browse All Resources →</Link>
+                  <Link href="/resources" className="mega-menu__cta-link" prefetch={false}>Browse All Resources →</Link>
                 </div>
               </div>
             </div>
 
             {/* ----- Brands (direct link) ----- */}
-            <Link href="/brands" className="nav-link">Brands</Link>
+            <Link href="/brands" className="nav-link" prefetch={false}>Brands</Link>
           </nav>
 
-          <Link href="/calculators" className="hidden md:inline-flex header-action header-action--button">
+          <Link href="/calculators" className="hidden md:inline-flex header-action header-action--button" prefetch={false}>
             Tools index
           </Link>
 
@@ -302,11 +302,11 @@ export default function Header() {
                 {mobileAccordion === 'kb' && (
                   <div className="mobile-nav__panel">
                     {knowledgeBaseItems.map(item => (
-                      <Link key={item.href} href={item.href} className="mobile-nav__link" onClick={closeMobile}>
+                      <Link key={item.href} href={item.href} className="mobile-nav__link" onClick={closeMobile} prefetch={false}>
                         {item.name}
                       </Link>
                     ))}
-                    <Link href="/articles" className="mobile-nav__view-all" onClick={closeMobile}>
+                    <Link href="/articles" className="mobile-nav__view-all" onClick={closeMobile} prefetch={false}>
                       Browse All Articles →
                     </Link>
                   </div>
@@ -329,13 +329,13 @@ export default function Header() {
                       <div key={group.title}>
                         <div className="mobile-nav__group-title">{group.title}</div>
                         {group.items.map(item => (
-                          <Link key={item.href} href={item.href} className="mobile-nav__link" onClick={closeMobile}>
+                          <Link key={item.href} href={item.href} className="mobile-nav__link" onClick={closeMobile} prefetch={false}>
                             {item.name}
                           </Link>
                         ))}
                       </div>
                     ))}
-                    <Link href="/calculators" className="mobile-nav__view-all" onClick={closeMobile}>
+                    <Link href="/calculators" className="mobile-nav__view-all" onClick={closeMobile} prefetch={false}>
                       View All 32 Calculators →
                     </Link>
                   </div>
@@ -343,7 +343,7 @@ export default function Header() {
               </div>
 
               {/* Compare direct link */}
-              <Link href="/compare" className="mobile-nav__trigger" style={{ fontWeight: 600 }} onClick={closeMobile}>
+              <Link href="/compare" className="mobile-nav__trigger" style={{ fontWeight: 600 }} onClick={closeMobile} prefetch={false}>
                 Compare
               </Link>
 
@@ -360,11 +360,11 @@ export default function Header() {
                 {mobileAccordion === 'res' && (
                   <div className="mobile-nav__panel">
                     {resourceItems.map(item => (
-                      <Link key={item.href} href={item.href} className="mobile-nav__link" onClick={closeMobile}>
+                      <Link key={item.href} href={item.href} className="mobile-nav__link" onClick={closeMobile} prefetch={false}>
                         {item.name}
                       </Link>
                     ))}
-                    <Link href="/resources" className="mobile-nav__view-all" onClick={closeMobile}>
+                    <Link href="/resources" className="mobile-nav__view-all" onClick={closeMobile} prefetch={false}>
                       Browse All Resources →
                     </Link>
                   </div>
@@ -372,7 +372,7 @@ export default function Header() {
               </div>
 
               {/* Brands direct link */}
-              <Link href="/brands" className="mobile-nav__trigger" style={{ fontWeight: 600 }} onClick={closeMobile}>
+              <Link href="/brands" className="mobile-nav__trigger" style={{ fontWeight: 600 }} onClick={closeMobile} prefetch={false}>
                 Brands
               </Link>
             </nav>

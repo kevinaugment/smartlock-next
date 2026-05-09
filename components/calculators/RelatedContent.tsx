@@ -34,6 +34,7 @@ export default function RelatedContent({ slug }: { slug: string }) {
                                 key={article.slug}
                                 href={`/articles/${article.category}/${article.slug}`}
                                 className="link-card"
+                                prefetch={false}
                             >
                                 <h3 className="link-card__title">{article.title}</h3>
                                 <span style={{ color: 'var(--color-accent)', fontSize: '0.875rem', fontWeight: 500, marginTop: 'var(--space-sm)' }}>
@@ -58,6 +59,7 @@ export default function RelatedContent({ slug }: { slug: string }) {
                                 key={calc.slug}
                                 href={`/calculators/${calc.slug}`}
                                 className="link-card"
+                                prefetch={false}
                             >
                                 <h3 className="link-card__title">{calc.title}</h3>
                                 <span style={{ color: 'var(--color-accent)', fontSize: '0.875rem', fontWeight: 500, marginTop: 'var(--space-sm)' }}>

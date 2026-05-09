@@ -283,11 +283,11 @@ export default async function ArticlePage({
         <TableOfContents headings={headings} variant="mobile" />
         {/* 面包屑导航 */}
         <nav className="breadcrumb" style={{ marginBottom: 'var(--space-lg)' }}>
-          <Link href="/articles" className="">
+          <Link href="/articles" className="" prefetch={false}>
             Articles
           </Link>
           <span className="breadcrumb__separator">›</span>
-          <Link href={`/articles/${article.category}`} className="">
+          <Link href={`/articles/${article.category}`} className="" prefetch={false}>
             {categoryInfo.name}
           </Link>
           <span className="breadcrumb__separator">›</span>
@@ -374,6 +374,7 @@ export default async function ArticlePage({
                   key={related.slug}
                   href={`/articles/${related.category}/${related.slug}`}
                   className="link-card"
+                  prefetch={false}
                 >
                   <h3 className="link-card__title line-clamp-2">
                     {related.title}
@@ -392,7 +393,7 @@ export default async function ArticlePage({
 
         {/* 返回链接 */}
         <div style={{ marginTop: 'var(--space-3xl)', paddingTop: 'var(--space-xl)', borderTop: '1px solid var(--color-border)' }}>
-          <Link href={`/articles/${article.category}`} className="back-link">
+          <Link href={`/articles/${article.category}`} className="back-link" prefetch={false}>
             ← Back to {categoryInfo.name}
           </Link>
         </div>
@@ -420,7 +421,7 @@ function RelatedToolsPanel({ tools }: { tools: string[] }) {
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {tools.map((slug) => (
-          <Link key={slug} href={`/calculators/${slug}`} className="link-card">
+          <Link key={slug} href={`/calculators/${slug}`} className="link-card" prefetch={false}>
             <h3 className="link-card__title">{getCalculatorTitle(slug)}</h3>
             <p className="link-card__desc">Use this before buying, drilling, pairing, or changing access settings.</p>
             <span style={{ color: 'var(--color-accent)', fontSize: '0.875rem', fontWeight: 500, marginTop: 'var(--space-sm)' }}>

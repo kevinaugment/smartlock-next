@@ -293,6 +293,7 @@ export default function CalculatorDiscovery({ calculators, categories }: Calcula
                                         key={calculator!.slug}
                                         href={`/calculators/${calculator!.slug}`}
                                         className="wizard-result-card"
+                                        prefetch={false}
                                     >
                                         <div className="wizard-result-card__icon">{calculator!.icon}</div>
                                         <div className="wizard-result-card__body">
@@ -374,6 +375,7 @@ export default function CalculatorDiscovery({ calculators, categories }: Calcula
                             key={calculator.slug}
                             href={`/calculators/${calculator.slug}`}
                             className="calc-card"
+                            prefetch={false}
                         >
                             <div className="calc-card__header">
                                 <div className="calc-card__icon">{calculator.icon}</div>

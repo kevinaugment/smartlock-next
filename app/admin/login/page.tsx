@@ -48,7 +48,7 @@ export default function LoginPage() {
       <div className="max-w-md w-full">
         {/* Logo & Title */}
         <div className="text-center" style={{ marginBottom: 'var(--space-xl)' }}>
-          <Link href="/" className="inline-block">
+          <Link href="/" className="inline-block" prefetch={false}>
             <h1 style={{ fontSize: '2.25rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>
               SLockHub.com
             </h1>
@@ -132,7 +132,7 @@ export default function LoginPage() {
 
         {/* Back to Home */}
         <div className="text-center" style={{ marginTop: 'var(--space-lg)' }}>
-          <Link href="/" className="back-link">
+          <Link href="/" className="back-link" prefetch={false}>
             ← Back to Home
           </Link>
         </div>

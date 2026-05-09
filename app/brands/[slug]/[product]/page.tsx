@@ -255,11 +255,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 />
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-2" style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xl)' }}>
-                    <Link href="/" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }}>Home</Link>
+                    <Link href="/" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }} prefetch={false}>Home</Link>
                     <span>/</span>
-                    <Link href="/brands" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }}>Brands</Link>
+                    <Link href="/brands" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }} prefetch={false}>Brands</Link>
                     <span>/</span>
-                    <Link href={`/brands/${product.brand_slug}`} style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }}>{product.brand_name}</Link>
+                    <Link href={`/brands/${product.brand_slug}`} style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }} prefetch={false}>{product.brand_name}</Link>
                     <span>/</span>
                     <span style={{ color: 'var(--color-text-primary)', fontWeight: 500 }}>{product.name}</span>
                 </nav>
@@ -423,7 +423,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                             href={`/brands/${sibling.brand_slug}/${sibling.slug}`}
                                             className="card"
                                             style={{ textDecoration: 'none', display: 'block', margin: 0 }}
-                                        >
+                                         prefetch={false}>
                                             <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xs)' }}>
                                                 Same-brand alternative
                                             </div>
@@ -447,21 +447,21 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                         <div className="content-card">
                             <h2 className="section-title">Protocols, Brands, Tools</h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <Link href={getProtocolHref(product)} className="link-card">
+                                <Link href={getProtocolHref(product)} className="link-card" prefetch={false}>
                                     <h3 className="link-card__title">{product.protocol.toUpperCase()} Protocol Guide</h3>
                                     <p className="link-card__desc">Check hub, range, and ecosystem tradeoffs before buying.</p>
                                 </Link>
-                                <Link href={compareLink.href} className="link-card">
+                                <Link href={compareLink.href} className="link-card" prefetch={false}>
                                     <h3 className="link-card__title">{compareLink.label}</h3>
                                     <p className="link-card__desc">See how this brand compares with a major smart lock alternative.</p>
                                 </Link>
                                 {(bestPageLinks[0] ? (
-                                    <Link href={bestPageLinks[0].href} className="link-card">
+                                    <Link href={bestPageLinks[0].href} className="link-card" prefetch={false}>
                                         <h3 className="link-card__title">{bestPageLinks[0].label}</h3>
                                         <p className="link-card__desc">Find ranked alternatives with matching buyer intent.</p>
                                     </Link>
                                 ) : (
-                                    <Link href="/best/smart-locks-2026" className="link-card">
+                                    <Link href="/best/smart-locks-2026" className="link-card" prefetch={false}>
                                         <h3 className="link-card__title">Best Smart Locks 2026</h3>
                                         <p className="link-card__desc">Compare this model against broader ranked picks.</p>
                                     </Link>
@@ -492,10 +492,10 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                 </a>
                             )}
                             <div className="grid grid-cols-1 gap-2" style={{ marginTop: 'var(--space-sm)' }}>
-                                <Link href="/calculators/compatibility" className="btn btn-secondary">
+                                <Link href="/calculators/compatibility" className="btn btn-secondary" prefetch={false}>
                                     Check Door Fit
                                 </Link>
-                                <Link href={compareLink.href} className="btn btn-ghost">
+                                <Link href={compareLink.href} className="btn btn-ghost" prefetch={false}>
                                     Compare Alternatives
                                 </Link>
                             </div>
@@ -544,13 +544,13 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                         <div className="content-card">
                             <h3 style={{ fontWeight: 600, marginBottom: 'var(--space-md)', fontSize: '1rem' }}>Try Our Calculators</h3>
                             <div className="space-y-2">
-                                <Link href="/calculators/battery-life" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center' }}>
+                                <Link href="/calculators/battery-life" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center' }} prefetch={false}>
                                     Battery Life Calculator
                                 </Link>
-                                <Link href="/calculators/lock-tco" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center' }}>
+                                <Link href="/calculators/lock-tco" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center' }} prefetch={false}>
                                     Total Cost of Ownership
                                 </Link>
-                                <Link href="/calculators/compatibility" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center' }}>
+                                <Link href="/calculators/compatibility" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center' }} prefetch={false}>
                                     Door Compatibility
                                 </Link>
                             </div>
@@ -567,11 +567,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                 Check Price
                             </a>
                         ) : (
-                            <Link href={compareLink.href} className="btn btn-primary">
+                            <Link href={compareLink.href} className="btn btn-primary" prefetch={false}>
                                 Compare
                             </Link>
                         )}
-                        <Link href="/calculators/compatibility" className="btn btn-secondary">Door Fit</Link>
+                        <Link href="/calculators/compatibility" className="btn btn-secondary" prefetch={false}>Door Fit</Link>
                     </div>
                 </div>
             </div>

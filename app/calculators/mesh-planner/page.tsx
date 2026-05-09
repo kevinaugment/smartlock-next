@@ -74,8 +74,8 @@ export default function MeshPlannerPage() {
           <div className="mb-8">
             <nav className="flex text-sm">
               <ol className="inline-flex items-center space-x-1">
-                <li><Link href="/" style={{ color: "var(--color-text-muted)" }}>Home</Link></li>
-                <li><span className="breadcrumb__separator">/</span><Link href="/calculators" style={{ color: "var(--color-text-muted)" }}>Calculators</Link></li>
+                <li><Link href="/" style={{ color: "var(--color-text-muted)" }} prefetch={false}>Home</Link></li>
+                <li><span className="breadcrumb__separator">/</span><Link href="/calculators" style={{ color: "var(--color-text-muted)" }} prefetch={false}>Calculators</Link></li>
                 <li><span className="breadcrumb__separator">/</span><span className="breadcrumb__current">Mesh Planner</span></li>
               </ol>
             </nav>
@@ -390,17 +390,17 @@ export default function MeshPlannerPage() {
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">Signal, Protocol, Battery</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Link href="/calculators/signal-strength" className="link-card">
+              <Link href="/calculators/signal-strength" className="link-card" prefetch={false}>
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><Signal className="w-8 h-8" /></div>
                 <h3 className="link-card__title">Signal Strength</h3>
                 <p className="link-card__desc">Calculate RSSI/path loss for your environment</p>
               </Link>
-              <Link href="/calculators/protocol-wizard" className="link-card">
+              <Link href="/calculators/protocol-wizard" className="link-card" prefetch={false}>
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><Wand2 className="w-8 h-8" /></div>
                 <h3 className="link-card__title">Protocol Wizard</h3>
                 <p className="link-card__desc">Choose Zigbee vs Z-Wave vs Thread</p>
               </Link>
-              <Link href="/calculators/battery-life" className="link-card">
+              <Link href="/calculators/battery-life" className="link-card" prefetch={false}>
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><Battery className="w-8 h-8" /></div>
                 <h3 className="link-card__title">Battery Life</h3>
                 <p className="link-card__desc">Mesh activity impact on lock batteries</p>

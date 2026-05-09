@@ -131,7 +131,7 @@ export default function DoorFitChecker() {
     return (
         <div className="page-bg">
             <div className="container-main section">
-                <Link href="/calculators" className="back-link">← Back to Calculators</Link>
+                <Link href="/calculators" className="back-link" prefetch={false}>← Back to Calculators</Link>
 
                 {/* Header */}
                 <div className="page-header">
@@ -443,15 +443,15 @@ export default function DoorFitChecker() {
                 <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
                     <h2 className="text-2xl font-bold mb-6">Related Tools</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <Link href="/calculators/compatibility" className="link-card">
+                        <Link href="/calculators/compatibility" className="link-card" prefetch={false}>
                             <h3 className="link-card__title">Door Compatibility</h3>
                             <p className="link-card__desc">Check ANSI/BHMA standard compliance</p>
                         </Link>
-                        <Link href="/calculators/installation-cost" className="link-card">
+                        <Link href="/calculators/installation-cost" className="link-card" prefetch={false}>
                             <h3 className="link-card__title">Installation Cost</h3>
                             <p className="link-card__desc">Estimate total installation expenses</p>
                         </Link>
-                        <Link href="/calculators/lock-compare" className="link-card">
+                        <Link href="/calculators/lock-compare" className="link-card" prefetch={false}>
                             <h3 className="link-card__title">Lock Comparison</h3>
                             <p className="link-card__desc">Side-by-side model comparison</p>
                         </Link>
@@ -459,7 +459,7 @@ export default function DoorFitChecker() {
                 </div>
 
                 <div className="max-w-7xl mx-auto mt-8 mb-12">
-                    <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>
+                    <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>
                         ← Back to All Calculators
                     </Link>
                 </div>

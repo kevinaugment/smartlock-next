@@ -235,9 +235,9 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
             <div className="container-main section">
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-2" style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xl)' }}>
-                    <Link href="/" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }}>Home</Link>
+                    <Link href="/" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }} prefetch={false}>Home</Link>
                     <span>/</span>
-                    <Link href="/brands" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }}>Brands</Link>
+                    <Link href="/brands" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }} prefetch={false}>Brands</Link>
                     <span>/</span>
                     <span style={{ color: 'var(--color-text-primary)', fontWeight: 500 }}>{pageData.title}</span>
                 </nav>
@@ -306,7 +306,7 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                                     <Link
                                         href={`/brands/${product.brand_slug}/${product.slug}`}
                                         style={{ textDecoration: 'none' }}
-                                    >
+                                     prefetch={false}>
                                         <h2 style={{
                                             fontSize: '1.25rem',
                                             fontWeight: 700,
@@ -342,7 +342,7 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                                         <Link
                                             href={`/brands/${product.brand_slug}/${product.slug}`}
                                             style={{ fontSize: '0.8rem', color: 'var(--color-accent)', fontWeight: 600, textDecoration: 'none' }}
-                                        >
+                                         prefetch={false}>
                                             Full Review →
                                         </Link>
                                     </div>
@@ -380,7 +380,7 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                                                 <tr key={product.slug}>
                                                     <td>#{index + 1}</td>
                                                     <td>
-                                                        <Link href={`/brands/${product.brand_slug}/${product.slug}`} style={{ color: 'var(--color-text-primary)', textDecoration: 'none', fontWeight: 600 }}>
+                                                        <Link href={`/brands/${product.brand_slug}/${product.slug}`} style={{ color: 'var(--color-text-primary)', textDecoration: 'none', fontWeight: 600 }} prefetch={false}>
                                                             {product.brand_name} {product.name}
                                                         </Link>
                                                     </td>
@@ -401,7 +401,7 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                                             href={`/brands/${product.brand_slug}/${product.slug}`}
                                             className="comparison-card"
                                             style={{ textDecoration: 'none' }}
-                                        >
+                                         prefetch={false}>
                                             <div className="comparison-card__eyebrow">#{index + 1} · {product.brand_name}</div>
                                             <div className="comparison-card__title">{product.name}</div>
                                             <div className="comparison-card__rows">
@@ -486,7 +486,7 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                                             textDecoration: 'none',
                                             fontWeight: 500,
                                         }}
-                                    >
+                                     prefetch={false}>
                                         {cat.label} →
                                     </Link>
                                 ))}
@@ -497,10 +497,10 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                         <div className="content-card">
                             <h3 style={{ fontWeight: 600, marginBottom: 'var(--space-md)', fontSize: '1rem' }}>Calculate Your Needs</h3>
                             <div className="space-y-2">
-                                <Link href="/calculators/battery-life" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center', fontSize: '0.875rem' }}>
+                                <Link href="/calculators/battery-life" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center', fontSize: '0.875rem' }} prefetch={false}>
                                     Battery Life Calculator
                                 </Link>
-                                <Link href="/calculators/lock-tco" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center', fontSize: '0.875rem' }}>
+                                <Link href="/calculators/lock-tco" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center', fontSize: '0.875rem' }} prefetch={false}>
                                     Total Cost Calculator
                                 </Link>
                             </div>
@@ -550,8 +550,8 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
 
                 <div className="mobile-action-bar">
                     <div className="mobile-action-bar__inner">
-                        <Link href="/calculators/lock-tco" className="btn btn-primary">Calculate TCO</Link>
-                        <Link href="/compare" className="btn btn-secondary">Compare Brands</Link>
+                        <Link href="/calculators/lock-tco" className="btn btn-primary" prefetch={false}>Calculate TCO</Link>
+                        <Link href="/compare" className="btn btn-secondary" prefetch={false}>Compare Brands</Link>
                     </div>
                 </div>
 

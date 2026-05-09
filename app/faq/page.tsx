@@ -162,7 +162,7 @@ export default function FAQ() {
                               href={item.link.href}
                               className="inline-flex items-center gap-1 text-sm font-medium"
                               style={{ color: 'var(--color-accent)' }}
-                            >
+                             prefetch={false}>
                               {item.link.text} →
                             </Link>
                           )}
@@ -184,8 +184,8 @@ export default function FAQ() {
               Move from quick answers to setup guides, protocol comparisons, and planning tools.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/articles" className="btn btn-primary btn-lg">Browse Articles</Link>
-              <Link href="/calculators" className="btn btn-secondary btn-lg">Try Calculators</Link>
+              <Link href="/articles" className="btn btn-primary btn-lg" prefetch={false}>Browse Articles</Link>
+              <Link href="/calculators" className="btn btn-secondary btn-lg" prefetch={false}>Try Calculators</Link>
             </div>
           </div>
         </div>

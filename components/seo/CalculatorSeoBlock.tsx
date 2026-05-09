@@ -108,7 +108,7 @@ export function CalculatorSeoBlock({
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {links.map((link) => (
-            <Link key={link.href} href={link.href} className="link-card">
+            <Link key={link.href} href={link.href} className="link-card" prefetch={false}>
               <h4 className="link-card__title">{link.title}</h4>
               <p className="link-card__desc">{link.description}</p>
               <span style={{ display: 'inline-block', marginTop: 'var(--space-sm)', color: 'var(--color-accent)', fontSize: '0.875rem', fontWeight: 600 }}>

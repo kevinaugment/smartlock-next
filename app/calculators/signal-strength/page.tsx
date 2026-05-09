@@ -103,9 +103,9 @@ export default function SignalStrengthPage() {
       <div className="page-bg">
         <div className="container-main section">
           <nav className="breadcrumb" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
+            <Link href="/" prefetch={false}>Home</Link>
             <span className="breadcrumb__separator">/</span>
-            <Link href="/calculators">Calculators</Link>
+            <Link href="/calculators" prefetch={false}>Calculators</Link>
             <span className="breadcrumb__separator">/</span>
             <span className="breadcrumb__current">Signal Strength Calculator</span>
           </nav>
@@ -522,17 +522,17 @@ export default function SignalStrengthPage() {
           <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
             <h2 className="section-title">Signal, Battery, Protocol</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Link href="/calculators/battery-life" className="link-card">
+              <Link href="/calculators/battery-life" className="link-card" prefetch={false}>
                 <div style={{ color: 'var(--color-accent)', marginBottom: 'var(--space-sm)' }}><Battery className="w-8 h-8" /></div>
                 <h3 className="link-card__title">Battery Life Calculator</h3>
                 <p className="link-card__desc">Weak signal increases power consumption by 30-50% due to retries</p>
               </Link>
-              <Link href="/articles/protocols" className="link-card">
+              <Link href="/articles/protocols" className="link-card" prefetch={false}>
                 <div style={{ color: 'var(--color-accent)', marginBottom: 'var(--space-sm)' }}><Radio className="w-8 h-8" /></div>
                 <h3 className="link-card__title">Protocol Comparison</h3>
                 <p className="link-card__desc">Deep dive into 908MHz vs 2.4GHz frequency bands</p>
               </Link>
-              <Link href="/calculators" className="link-card">
+              <Link href="/calculators" className="link-card" prefetch={false}>
                 <div style={{ color: 'var(--color-accent)', marginBottom: 'var(--space-sm)' }}><Wrench className="w-8 h-8" /></div>
                 <h3 className="link-card__title">All Calculators</h3>
                 <p className="link-card__desc">Explore TCO, installation cost, and compatibility tools</p>

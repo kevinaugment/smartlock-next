@@ -50,11 +50,11 @@ export default function Sitemap() {
             <div className="content-card">
               <h2 className="section-title">Main Pages</h2>
               <ul className="space-y-3">
-                <li><Link href="/" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>Home</Link></li>
-                <li><Link href="/about" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>About</Link></li>
-                <li><Link href="/contact" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>Contact</Link></li>
-                <li><Link href="/privacy" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>Privacy Policy</Link></li>
-                <li><Link href="/terms" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>Terms of Service</Link></li>
+                <li><Link href="/" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>Home</Link></li>
+                <li><Link href="/about" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>About</Link></li>
+                <li><Link href="/contact" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>Contact</Link></li>
+                <li><Link href="/privacy" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>Privacy Policy</Link></li>
+                <li><Link href="/terms" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>Terms of Service</Link></li>
               </ul>
             </div>
 
@@ -62,10 +62,10 @@ export default function Sitemap() {
             <div className="content-card">
               <h2 className="section-title">Smart Lock Guides</h2>
               <ul className="space-y-3">
-                <li><Link href="/articles" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>All Articles (49+)</Link></li>
+                <li><Link href="/articles" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>All Articles (49+)</Link></li>
                 {categories.map(cat => (
                   <li key={cat.slug}>
-                    <Link href={`/articles/${cat.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 500 }}>
+                    <Link href={`/articles/${cat.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>
                       {cat.name}
                     </Link>
                   </li>
@@ -78,13 +78,13 @@ export default function Sitemap() {
               <h2 className="section-title">Planning Calculators</h2>
               <div className="grid md:grid-cols-3 gap-4">
                 {calculators.map((calc) => (
-                  <Link key={calc.slug} href={`/calculators/${calc.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 500 }}>
+                  <Link key={calc.slug} href={`/calculators/${calc.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>
                     • {calc.name}
                   </Link>
                 ))}
               </div>
               <div style={{ marginTop: 'var(--space-md)' }}>
-                <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
+                <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 600 }} prefetch={false}>
                   View All Calculators →
                 </Link>
               </div>
@@ -94,7 +94,7 @@ export default function Sitemap() {
             <div className="content-card">
               <h2 className="section-title">Admin Portal</h2>
               <ul className="space-y-3">
-                <li><Link href="/admin/login" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>Admin Login</Link></li>
+                <li><Link href="/admin/login" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>Admin Login</Link></li>
                 <li style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
                   (Dashboard and management pages require authentication)
                 </li>
@@ -105,7 +105,7 @@ export default function Sitemap() {
             <div className="content-card">
               <h2 className="section-title">API Endpoints</h2>
               <ul className="space-y-3">
-                <li><Link href="/api/categories" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>/api/categories</Link></li>
+                <li><Link href="/api/categories" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>/api/categories</Link></li>
                 <li>
                   <span style={{ color: 'var(--color-text-muted)', fontWeight: 500 }}>/api/auth/login</span>
                   <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginLeft: 'var(--space-sm)' }}>(POST only)</span>
@@ -122,8 +122,8 @@ export default function Sitemap() {
               Jump to article hubs, calculators, or support contact paths.
             </p>
             <div className="grid-actions">
-              <Link href="/articles" className="btn btn-primary">Browse Articles</Link>
-              <Link href="/contact" className="btn btn-secondary">Contact Us</Link>
+              <Link href="/articles" className="btn btn-primary" prefetch={false}>Browse Articles</Link>
+              <Link href="/contact" className="btn btn-secondary" prefetch={false}>Contact Us</Link>
             </div>
           </div>
         </div>

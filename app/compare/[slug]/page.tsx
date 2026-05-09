@@ -426,9 +426,9 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
             <div className="container-main section">
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-2" style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xl)' }}>
-                    <Link href="/" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }}>Home</Link>
+                    <Link href="/" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }} prefetch={false}>Home</Link>
                     <span>/</span>
-                    <Link href="/compare" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }}>Compare</Link>
+                    <Link href="/compare" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }} prefetch={false}>Compare</Link>
                     <span>/</span>
                     <span style={{ color: 'var(--color-text-primary)', fontWeight: 500 }}>
                         {brand1.name} vs {brand2.name}
@@ -681,8 +681,8 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
 
                 <div className="mobile-action-bar">
                     <div className="mobile-action-bar__inner">
-                        <Link href="/compare" className="btn btn-primary">More Comparisons</Link>
-                        <Link href="/calculators/protocol-wizard" className="btn btn-secondary">Choose Protocol</Link>
+                        <Link href="/compare" className="btn btn-primary" prefetch={false}>More Comparisons</Link>
+                        <Link href="/calculators/protocol-wizard" className="btn btn-secondary" prefetch={false}>Choose Protocol</Link>
                     </div>
                 </div>
 
@@ -732,10 +732,10 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
                         Explore protocol comparisons and smart lock tools
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link href="/compare" className="btn btn-primary btn-lg">
+                        <Link href="/compare" className="btn btn-primary btn-lg" prefetch={false}>
                             Protocol Comparison <ArrowRight className="w-5 h-5" />
                         </Link>
-                        <Link href="/brands" className="btn btn-secondary btn-lg">
+                        <Link href="/brands" className="btn btn-secondary btn-lg" prefetch={false}>
                             Browse All Brands
                         </Link>
                     </div>
@@ -755,7 +755,7 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
 function BrandCard({ brand, productCount, avgRating }: { brand: Brand; productCount: number; avgRating: number }) {
     return (
         <div className="card">
-            <Link href={`/brands/${brand.slug}`} style={{ textDecoration: 'none' }}>
+            <Link href={`/brands/${brand.slug}`} style={{ textDecoration: 'none' }} prefetch={false}>
                 <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-sm)' }}>
                     {brand.name}
                 </h2>
@@ -839,7 +839,7 @@ function BestModelCard({ brand, product }: { brand: Brand; product: ProductWithB
     }
 
     return (
-        <Link href={`/brands/${product.brand_slug}/${product.slug}`} className="card" style={{ display: 'block', textDecoration: 'none' }}>
+        <Link href={`/brands/${product.brand_slug}/${product.slug}`} className="card" style={{ display: 'block', textDecoration: 'none' }} prefetch={false}>
             <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xs)' }}>
                 Best current {brand.name} model
             </div>
@@ -912,7 +912,7 @@ function ProductList({ brand, products }: { brand: Brand; products: ProductWithB
                         href={`/brands/${product.brand_slug}/${product.slug}`}
                         className="card"
                         style={{ display: 'block', textDecoration: 'none', padding: 'var(--space-md)' }}
-                    >
+                     prefetch={false}>
                         <div style={{ fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '4px' }}>
                             {product.name}
                         </div>
@@ -937,7 +937,7 @@ function ProductList({ brand, products }: { brand: Brand; products: ProductWithB
                     <Link
                         href={`/brands/${brand.slug}`}
                         style={{ display: 'block', textAlign: 'center', padding: 'var(--space-sm)', fontSize: '0.875rem', color: 'var(--color-accent)', fontWeight: 500, textDecoration: 'none' }}
-                    >
+                     prefetch={false}>
                         View all {products.length} products →
                     </Link>
                 )}

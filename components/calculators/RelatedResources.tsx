@@ -70,7 +70,7 @@ export function RelatedResources({ calculatorSlug }: RelatedResourcesProps) {
         <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
             <div className="flex items-center justify-between mb-6">
                 <h2 className="section-title mb-0">Related Guides and Tables</h2>
-                <Link href="/resources" className="text-sm font-medium text-accent hover:underline flex items-center gap-1">
+                <Link href="/resources" className="text-sm font-medium text-accent hover:underline flex items-center gap-1" prefetch={false}>
                     View all resources <ArrowRight className="w-4 h-4" />
                 </Link>
             </div>
@@ -81,7 +81,7 @@ export function RelatedResources({ calculatorSlug }: RelatedResourcesProps) {
                     const desc = article.custom_description || article.description
 
                     return (
-                        <Link key={article.id} href={`/articles/${article.category_slug}/${article.slug}`} className="card card-hover group block p-6 h-full transition-all hover:-translate-y-1">
+                        <Link key={article.id} href={`/articles/${article.category_slug}/${article.slug}`} className="card card-hover group block p-6 h-full transition-all hover:-translate-y-1" prefetch={false}>
                             <div className="flex items-start gap-4">
                                 <div style={{ color: 'var(--color-accent)' }} className="shrink-0 pt-1">
                                     {getIcon(article.tags)}

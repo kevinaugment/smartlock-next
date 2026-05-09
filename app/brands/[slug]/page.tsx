@@ -239,9 +239,9 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
             <div className="container-main section">
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-2" style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xl)' }}>
-                    <Link href="/" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }}>Home</Link>
+                    <Link href="/" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }} prefetch={false}>Home</Link>
                     <span>/</span>
-                    <Link href="/brands" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }}>Brands</Link>
+                    <Link href="/brands" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }} prefetch={false}>Brands</Link>
                     <span>/</span>
                     <span style={{ color: 'var(--color-text-primary)', fontWeight: 500 }}>{brand.name}</span>
                 </nav>
@@ -319,7 +319,7 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                                             <td>{supported ? 'Supported' : 'Not listed'}</td>
                                             <td>{count > 0 ? `${count} matching model${count === 1 ? '' : 's'}` : 'No matching product field yet'}</td>
                                             <td>
-                                                <Link href={`/protocols/${item.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
+                                                <Link href={`/protocols/${item.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 600 }} prefetch={false}>
                                                     View {item.label} guide
                                                 </Link>
                                             </td>
@@ -340,7 +340,7 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                                     key={product.slug}
                                     href={`/brands/${brand.slug}/${product.slug}`}
                                     className="link-card"
-                                >
+                                 prefetch={false}>
                                     <h3 className="link-card__title">{product.name}</h3>
                                     <p className="link-card__desc">
                                         {product.protocol.toUpperCase()}{product.supports_matter ? ' · Matter' : ''}{product.battery_life_months ? ` · ${product.battery_life_months} mo battery` : ''}{product.ansi_grade ? ` · Grade ${product.ansi_grade}` : ''}
@@ -373,13 +373,13 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                     <h2 className="section-title">Alternatives, Tools, Comparisons</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {compareLinks.map(link => (
-                            <Link key={link.href} href={link.href} className="link-card">
+                            <Link key={link.href} href={link.href} className="link-card" prefetch={false}>
                                 <h3 className="link-card__title">{link.label}</h3>
                                 <p className="link-card__desc">Compare protocol coverage, price bands, access features, and battery evidence.</p>
                             </Link>
                         ))}
                         {bestLinks.map(link => (
-                            <Link key={link.href} href={link.href} className="link-card">
+                            <Link key={link.href} href={link.href} className="link-card" prefetch={false}>
                                 <h3 className="link-card__title">{link.label}</h3>
                                 <p className="link-card__desc">Move from brand research to ranked models with methodology and spec tables.</p>
                             </Link>
@@ -410,7 +410,7 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                                     href={`/brands/${brand.slug}/${product.slug}`}
                                     className="card card-hover"
                                     style={{ padding: 'var(--space-lg)', textDecoration: 'none', color: 'inherit' }}
-                                >
+                                 prefetch={false}>
                                     <h4 style={{ fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-sm)', fontSize: '1rem' }}>
                                         {product.name}
                                     </h4>
@@ -454,13 +454,13 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                         Use our calculators to estimate battery life, total cost of ownership, and more for {brand.name} smart locks.
                     </p>
                     <div className="grid-actions">
-                        <Link href="/calculators/battery-life" className="btn btn-primary btn-lg">
+                        <Link href="/calculators/battery-life" className="btn btn-primary btn-lg" prefetch={false}>
                             Battery Life Calculator
                         </Link>
-                        <Link href="/calculators/lock-tco" className="btn btn-secondary btn-lg">
+                        <Link href="/calculators/lock-tco" className="btn btn-secondary btn-lg" prefetch={false}>
                             Cost Calculator
                         </Link>
-                        <Link href="/calculators/protocol-wizard" className="btn btn-secondary btn-lg">
+                        <Link href="/calculators/protocol-wizard" className="btn btn-secondary btn-lg" prefetch={false}>
                             Protocol Wizard
                         </Link>
                     </div>

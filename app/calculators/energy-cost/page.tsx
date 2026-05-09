@@ -118,7 +118,7 @@ export default function EnergyCostCalculator() {
     return (
         <div className="page-bg">
             <div className="container-main section">
-                <Link href="/calculators" className="back-link">← Back to Calculators</Link>
+                <Link href="/calculators" className="back-link" prefetch={false}>← Back to Calculators</Link>
 
                 <div className="page-header">
                     <div className="page-header__icon"><Zap className="w-14 h-14" /></div>
@@ -341,15 +341,15 @@ export default function EnergyCostCalculator() {
                 <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
                     <h2 className="text-2xl font-bold mb-6">Related Tools</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <Link href="/calculators/battery-life" className="link-card">
+                        <Link href="/calculators/battery-life" className="link-card" prefetch={false}>
                             <h3 className="link-card__title">Battery Life Calculator</h3>
                             <p className="link-card__desc">Estimate how long batteries will last</p>
                         </Link>
-                        <Link href="/calculators/poe-power" className="link-card">
+                        <Link href="/calculators/poe-power" className="link-card" prefetch={false}>
                             <h3 className="link-card__title">PoE Power Budget</h3>
                             <p className="link-card__desc">Plan PoE switch capacity</p>
                         </Link>
-                        <Link href="/calculators/lock-tco" className="link-card">
+                        <Link href="/calculators/lock-tco" className="link-card" prefetch={false}>
                             <h3 className="link-card__title">TCO Calculator</h3>
                             <p className="link-card__desc">Total cost of ownership analysis</p>
                         </Link>
@@ -357,7 +357,7 @@ export default function EnergyCostCalculator() {
                 </div>
 
                 <div className="max-w-7xl mx-auto mt-8 mb-12">
-                    <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>← Back to All Calculators</Link>
+                    <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>← Back to All Calculators</Link>
                 </div>
             </div>
         </div>

@@ -177,7 +177,7 @@ export default function TCOCalculator() {
     <div className="page-bg">
       <div className="container-main section">
         <div className="mb-8">
-          <Link href="/calculators" style={{ color: "var(--color-accent)", fontSize: "0.875rem" }}>
+          <Link href="/calculators" style={{ color: "var(--color-accent)", fontSize: "0.875rem" }} prefetch={false}>
             ← Back to Calculators
           </Link>
         </div>
@@ -717,15 +717,15 @@ export default function TCOCalculator() {
         <div className="max-w-7xl mx-auto mt-8">
           <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-md)" }}>Cost, Battery, Protocol</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Link href="/articles/protocols" className="link-card">
+            <Link href="/articles/protocols" className="link-card" prefetch={false}>
               <h4 className="link-card__title">Protocol Comparison</h4>
               <p className="link-card__desc">Compare all protocols</p>
             </Link>
-            <Link href="/calculators/battery-life" className="link-card">
+            <Link href="/calculators/battery-life" className="link-card" prefetch={false}>
               <h4 className="link-card__title">Battery Life Calculator</h4>
               <p className="link-card__desc">Detailed battery analysis</p>
             </Link>
-            <Link href="/calculators" className="link-card">
+            <Link href="/calculators" className="link-card" prefetch={false}>
               <h4 className="link-card__title">All Calculators</h4>
               <p className="link-card__desc">More planning tools</p>
             </Link>

@@ -74,8 +74,8 @@ export default function CredentialPlannerPage() {
           <div className="mb-8">
             <nav className="flex text-sm">
               <ol className="inline-flex items-center space-x-1">
-                <li><Link href="/" style={{ color: "var(--color-text-muted)" }}>Home</Link></li>
-                <li><span className="breadcrumb__separator">/</span><Link href="/calculators" style={{ color: "var(--color-text-muted)" }}>Calculators</Link></li>
+                <li><Link href="/" style={{ color: "var(--color-text-muted)" }} prefetch={false}>Home</Link></li>
+                <li><span className="breadcrumb__separator">/</span><Link href="/calculators" style={{ color: "var(--color-text-muted)" }} prefetch={false}>Calculators</Link></li>
                 <li><span className="breadcrumb__separator">/</span><span className="breadcrumb__current">Credential Planner</span></li>
               </ol>
             </nav>
@@ -419,17 +419,17 @@ export default function CredentialPlannerPage() {
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">Credentials, Protocol, Battery</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Link href="/calculators/protocol-wizard" className="link-card">
+              <Link href="/calculators/protocol-wizard" className="link-card" prefetch={false}>
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><Wand2 className="w-8 h-8" /></div>
                 <h3 className="link-card__title">Protocol Wizard</h3>
                 <p className="link-card__desc">Choose access control protocol (Zigbee, Z-Wave, BLE)</p>
               </Link>
-              <Link href="/calculators/battery-life" className="link-card">
+              <Link href="/calculators/battery-life" className="link-card" prefetch={false}>
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><Battery className="w-8 h-8" /></div>
                 <h3 className="link-card__title">Battery Life</h3>
                 <p className="link-card__desc">High user count impact on battery</p>
               </Link>
-              <Link href="/calculators/lock-tco" className="link-card">
+              <Link href="/calculators/lock-tco" className="link-card" prefetch={false}>
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><DollarSign className="w-8 h-8" /></div>
                 <h3 className="link-card__title">TCO Calculator</h3>
                 <p className="link-card__desc">Total cost including credential management</p>

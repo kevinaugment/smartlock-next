@@ -80,7 +80,7 @@ export default function ReferenceTablesPage() {
             <div className="container-main section">
                 {/* Breadcrumb */}
                 <nav className="breadcrumb">
-                    <Link href="/resources">Resources</Link>
+                    <Link href="/resources" prefetch={false}>Resources</Link>
                     <span className="breadcrumb__separator">/</span>
                     <span className="breadcrumb__current">Reference Tables</span>
                 </nav>
@@ -495,8 +495,8 @@ export default function ReferenceTablesPage() {
                             Use our interactive calculators and decision tools to find the perfect smart lock
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Link href="/calculators/protocol-wizard" className="btn btn-primary btn-lg">Protocol Wizard</Link>
-                            <Link href="/resources" className="btn btn-secondary btn-lg">
+                            <Link href="/calculators/protocol-wizard" className="btn btn-primary btn-lg" prefetch={false}>Protocol Wizard</Link>
+                            <Link href="/resources" className="btn btn-secondary btn-lg" prefetch={false}>
                                 <ArrowLeft className="w-4 h-4" /> All Resources
                             </Link>
                         </div>

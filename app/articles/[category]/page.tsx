@@ -143,7 +143,7 @@ export default function CategoryPage({
         <div className="container-main section">
           <div className="max-w-4xl mx-auto">
             <div style={{ marginBottom: 'var(--space-xl)' }}>
-              <Link href="/articles" className="back-link">
+              <Link href="/articles" className="back-link" prefetch={false}>
                 ← Back to All Articles
               </Link>
             </div>
@@ -171,7 +171,7 @@ export default function CategoryPage({
                 <h2 className="section-title">Best Articles to Read First</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {featuredArticles.map(article => (
-                    <Link key={article.slug} href={`/articles/${params.category}/${article.slug}`} className="link-card">
+                    <Link key={article.slug} href={`/articles/${params.category}/${article.slug}`} className="link-card" prefetch={false}>
                       <div className="flex items-center gap-2" style={{ marginBottom: 'var(--space-sm)' }}>
                         {article.isPillar && <span className="badge badge-featured">Pillar</span>}
                         {article.featured && <span className="badge badge-accent">Featured</span>}
@@ -188,7 +188,7 @@ export default function CategoryPage({
               <h2 className="section-title">Related Tools</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {tools.map(tool => (
-                  <Link key={tool.href} href={tool.href} className="link-card">
+                  <Link key={tool.href} href={tool.href} className="link-card" prefetch={false}>
                     <h3 className="link-card__title">{tool.title}</h3>
                     <p className="link-card__desc">{tool.description}</p>
                     <span style={{ display: 'inline-block', marginTop: 'var(--space-sm)', color: 'var(--color-accent)', fontSize: '0.875rem', fontWeight: 600 }}>
@@ -210,7 +210,7 @@ export default function CategoryPage({
                     key={article.slug}
                     href={`/articles/${params.category}/${article.slug}`}
                     className="link-card group"
-                  >
+                   prefetch={false}>
                     <div className="flex items-center gap-3" style={{ marginBottom: 'var(--space-sm)' }}>
                       {article.isPillar && (
                         <span className="badge badge-featured">Pillar</span>

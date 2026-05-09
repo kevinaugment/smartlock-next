@@ -166,17 +166,17 @@ export default function Resources() {
               <div className="card">
                 <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>Terms and definitions</h3>
                 <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)' }}>Start with definitions, protocol basics, and physical door anatomy before comparing products.</p>
-                <Link href="/resources/glossary" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Open glossary</Link>
+                <Link href="/resources/glossary" style={{ color: 'var(--color-accent)', fontWeight: 600 }} prefetch={false}>Open glossary</Link>
               </div>
               <div className="card">
                 <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>Measurements and specs</h3>
                 <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)' }}>Use diagrams and reference tables to confirm door prep, security grades, protocol tradeoffs, and battery expectations.</p>
-                <Link href="/resources/reference-tables" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Open reference tables</Link>
+                <Link href="/resources/reference-tables" style={{ color: 'var(--color-accent)', fontWeight: 600 }} prefetch={false}>Open reference tables</Link>
               </div>
               <div className="card">
                 <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>Signal and cost tools</h3>
                 <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)' }}>After research, route directly into signal, compatibility, battery, and TCO tools.</p>
-                <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Open calculators</Link>
+                <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 600 }} prefetch={false}>Open calculators</Link>
               </div>
             </div>
           </section>
@@ -186,7 +186,7 @@ export default function Resources() {
             <h2 className="section-title">Specs, Terms, Buying Guides</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {professionalResources.map(item => (
-                <Link key={item.title} href={item.href} className="icon-card">
+                <Link key={item.title} href={item.href} className="icon-card" prefetch={false}>
                   <div className="flex items-center justify-between mb-3">
                     <span className="icon-card__icon">{item.icon}</span>
                     <span className="badge badge-accent">{item.badge}</span>
@@ -237,7 +237,7 @@ export default function Resources() {
             <h2 className="section-title">Signal, Battery, TCO Tools</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {tools.map(tool => (
-                <Link key={tool.name} href={tool.url} className="link-card">
+                <Link key={tool.name} href={tool.url} className="link-card" prefetch={false}>
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="link-card__title text-xl">{tool.name}</h3>
                     <span className="badge badge-accent">{tool.category}</span>
@@ -258,15 +258,15 @@ export default function Resources() {
               Smart lock articles for installation, protocol choice, security, rentals, and troubleshooting
             </p>
             <div className="grid md:grid-cols-3 gap-4 text-left">
-              <Link href="/articles/protocols" className="link-card bg-white/10 border-0 text-color-inverse hover:bg-white/20">
+              <Link href="/articles/protocols" className="link-card bg-white/10 border-0 text-color-inverse hover:bg-white/20" prefetch={false}>
                 <div className="font-semibold mb-1">Protocols</div>
                 <div className="text-sm opacity-80">Z-Wave, Zigbee, Thread, Matter</div>
               </Link>
-              <Link href="/articles/security" className="link-card bg-white/10 border-0 text-color-inverse hover:bg-white/20">
+              <Link href="/articles/security" className="link-card bg-white/10 border-0 text-color-inverse hover:bg-white/20" prefetch={false}>
                 <div className="font-semibold mb-1">Security</div>
                 <div className="text-sm opacity-80">Encryption, vulnerabilities, best practices</div>
               </Link>
-              <Link href="/articles/installation" className="link-card bg-white/10 border-0 text-color-inverse hover:bg-white/20">
+              <Link href="/articles/installation" className="link-card bg-white/10 border-0 text-color-inverse hover:bg-white/20" prefetch={false}>
                 <div className="font-semibold mb-1">Installation</div>
                 <div className="text-sm opacity-80">Setup guides and battery tips</div>
               </Link>

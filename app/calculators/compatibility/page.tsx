@@ -99,8 +99,8 @@ export default function CompatibilityPage() {
           <div className="mb-8">
             <nav className="flex text-sm">
               <ol className="inline-flex items-center space-x-1">
-                <li><Link href="/" style={{ color: "var(--color-text-muted)" }}>Home</Link></li>
-                <li><span className="breadcrumb__separator">/</span><Link href="/calculators" style={{ color: "var(--color-text-muted)" }}>Calculators</Link></li>
+                <li><Link href="/" style={{ color: "var(--color-text-muted)" }} prefetch={false}>Home</Link></li>
+                <li><span className="breadcrumb__separator">/</span><Link href="/calculators" style={{ color: "var(--color-text-muted)" }} prefetch={false}>Calculators</Link></li>
                 <li><span className="breadcrumb__separator">/</span><span className="breadcrumb__current">Compatibility Checker</span></li>
               </ol>
             </nav>
@@ -363,17 +363,17 @@ export default function CompatibilityPage() {
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">Door Fit, Cost, Signal</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Link href="/calculators/installation-cost" className="link-card">
+              <Link href="/calculators/installation-cost" className="link-card" prefetch={false}>
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><DollarSign className="w-8 h-8" /></div>
                 <h3 className="link-card__title">Installation Cost</h3>
                 <p className="link-card__desc">Calculate costs if modifications needed</p>
               </Link>
-              <Link href="/calculators/signal-strength" className="link-card">
+              <Link href="/calculators/signal-strength" className="link-card" prefetch={false}>
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><Signal className="w-8 h-8" /></div>
                 <h3 className="link-card__title">Signal Strength</h3>
                 <p className="link-card__desc">Metal doors affect RF signal penetration</p>
               </Link>
-              <Link href="/calculators" className="link-card">
+              <Link href="/calculators" className="link-card" prefetch={false}>
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><Wrench className="w-8 h-8" /></div>
                 <h3 className="link-card__title">All Calculators</h3>
                 <p className="link-card__desc">TCO, battery life, and more tools</p>

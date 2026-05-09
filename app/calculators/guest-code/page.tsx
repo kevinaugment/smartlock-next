@@ -142,7 +142,7 @@ export default function GuestCodeCapacityPlanner() {
     return (
         <div className="page-bg">
             <div className="container-main section">
-                <Link href="/calculators" className="back-link">← Back</Link>
+                <Link href="/calculators" className="back-link" prefetch={false}>← Back</Link>
 
                 <div className="page-header">
                     <div className="page-header__icon"><KeyRound className="w-14 h-14" /></div>
@@ -321,7 +321,7 @@ export default function GuestCodeCapacityPlanner() {
                 />
 
                 <div className="max-w-6xl mx-auto mt-8 mb-12">
-                    <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>← Back to All Calculators</Link>
+                    <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>← Back to All Calculators</Link>
                 </div>
             </div>
         </div>

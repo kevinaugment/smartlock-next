@@ -75,13 +75,13 @@ export default function HomePage() {
                 Practical calculators, protocol references, brand data, and installation checks for access control decisions.
               </p>
               <div className="grid-actions home-hero__actions">
-                <Link href="/calculators" className="btn btn-primary btn-lg">
+                <Link href="/calculators" className="btn btn-primary btn-lg" prefetch={false}>
                   <Calculator className="w-5 h-5" /> Open Calculators
                 </Link>
-                <Link href="/brands" className="btn btn-secondary btn-lg">
+                <Link href="/brands" className="btn btn-secondary btn-lg" prefetch={false}>
                   <Lock className="w-5 h-5" /> Browse Brand Data
                 </Link>
-                <Link href="/articles" className="btn btn-ghost btn-lg">
+                <Link href="/articles" className="btn btn-ghost btn-lg" prefetch={false}>
                   <BookOpen className="w-5 h-5" /> Read Guides
                 </Link>
               </div>
@@ -90,7 +90,7 @@ export default function HomePage() {
             <aside className="home-hero__panel" aria-label="Primary checks">
               <div className="tool-eyebrow">Deployment checks</div>
               {decisionHubs.map((item) => (
-                <Link key={item.href} href={item.href} className="home-check-row">
+                <Link key={item.href} href={item.href} className="home-check-row" prefetch={false}>
                   <span>{item.title}</span>
                   <small>{item.description}</small>
                 </Link>
@@ -123,7 +123,7 @@ export default function HomePage() {
           <h2 className="section-title section-title--center">Fit, Protocol, Cost</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
             {decisionHubs.map((item) => (
-              <Link key={item.href} href={item.href} className="link-card">
+              <Link key={item.href} href={item.href} className="link-card" prefetch={false}>
                 <h3 className="link-card__title">{item.title}</h3>
                 <p className="link-card__desc">{item.description}</p>
               </Link>
@@ -142,7 +142,7 @@ export default function HomePage() {
                 key={category.slug}
                 href={`/articles/${category.slug}`}
                 className="icon-card"
-              >
+               prefetch={false}>
                 <div className="icon-card__icon">{category.icon}</div>
                 <h3 className="icon-card__title text-lg">{category.name}</h3>
                 <p className="icon-card__desc">{category.description}</p>
@@ -150,7 +150,7 @@ export default function HomePage() {
             ))}
           </div>
           <div className="text-center mt-10">
-            <Link href="/articles" className="btn btn-ghost">
+            <Link href="/articles" className="btn btn-ghost" prefetch={false}>
               View All Articles
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -170,7 +170,7 @@ export default function HomePage() {
                 key={calc.slug}
                 href={`/calculators/${calc.slug}`}
                 className="icon-card icon-card--horizontal group"
-              >
+               prefetch={false}>
                 <div className="icon-card__icon">{calc.icon}</div>
                 <div className="flex-1">
                   <h3 className="icon-card__title">{calc.name}</h3>
@@ -183,7 +183,7 @@ export default function HomePage() {
             ))}
           </div>
           <div className="text-center mt-10">
-            <Link href="/calculators" className="btn btn-ghost">
+            <Link href="/calculators" className="btn btn-ghost" prefetch={false}>
               View All 32 Calculators
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

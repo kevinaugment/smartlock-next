@@ -133,9 +133,9 @@ export default function BatteryLifePage() {
         <div className="container-main section">
           {/* Breadcrumb */}
           <nav className="breadcrumb" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
+            <Link href="/" prefetch={false}>Home</Link>
             <span className="breadcrumb__separator">/</span>
-            <Link href="/calculators">Calculators</Link>
+            <Link href="/calculators" prefetch={false}>Calculators</Link>
             <span className="breadcrumb__separator">/</span>
             <span className="breadcrumb__current">Battery Life Calculator</span>
           </nav>
@@ -493,21 +493,21 @@ export default function BatteryLifePage() {
           <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
             <h2 className="section-title">More Tools</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Link href="/calculators/lock-tco" className="link-card">
+              <Link href="/calculators/lock-tco" className="link-card" prefetch={false}>
                 <div style={{ color: 'var(--color-accent)', marginBottom: 'var(--space-sm)' }}><DollarSign className="w-8 h-8" /></div>
                 <h3 className="link-card__title">TCO Calculator</h3>
                 <p className="link-card__desc">
                   Calculate total 5-year cost including batteries, hubs, and subscriptions
                 </p>
               </Link>
-              <Link href="/articles/protocols" className="link-card">
+              <Link href="/articles/protocols" className="link-card" prefetch={false}>
                 <div style={{ color: 'var(--color-accent)', marginBottom: 'var(--space-sm)' }}><Radio className="w-8 h-8" /></div>
                 <h3 className="link-card__title">Protocol Comparison</h3>
                 <p className="link-card__desc">
                   Deep dive into Wi-Fi, Zigbee, Z-Wave, and Thread protocols
                 </p>
               </Link>
-              <Link href="/calculators" className="link-card">
+              <Link href="/calculators" className="link-card" prefetch={false}>
                 <div style={{ color: 'var(--color-accent)', marginBottom: 'var(--space-sm)' }}><Wrench className="w-8 h-8" /></div>
                 <h3 className="link-card__title">All Calculators</h3>
                 <p className="link-card__desc">

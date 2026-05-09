@@ -42,7 +42,7 @@ export function BeTechRecommendation() {
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-secondary"
-          >
+           prefetch={false}>
             Visit official website
           </Link>
         </div>

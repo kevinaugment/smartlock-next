@@ -187,7 +187,7 @@ export default function ComparePage() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {popularComparisons.map((item) => (
-              <Link key={item.href} href={item.href} className="link-card">
+              <Link key={item.href} href={item.href} className="link-card" prefetch={false}>
                 <h3 className="link-card__title">{item.title}</h3>
                 <p className="link-card__desc">{item.detail}</p>
               </Link>
@@ -205,7 +205,7 @@ export default function ComparePage() {
                   {path.links.map((link, index) => (
                     <li key={link.href} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
                       <span className="badge badge-accent">{index + 1}</span>
-                      <Link href={link.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }}>{link.label}</Link>
+                      <Link href={link.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }} prefetch={false}>{link.label}</Link>
                     </li>
                   ))}
                 </ol>
@@ -325,10 +325,10 @@ export default function ComparePage() {
             Try our Protocol Selection Wizard for a personalized recommendation
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/calculators/protocol-wizard" className="btn btn-primary btn-lg">
+            <Link href="/calculators/protocol-wizard" className="btn btn-primary btn-lg" prefetch={false}>
               Try Protocol Wizard <ArrowRight className="w-5 h-5" />
             </Link>
-            <Link href="/articles/protocols" className="btn btn-secondary btn-lg">
+            <Link href="/articles/protocols" className="btn btn-secondary btn-lg" prefetch={false}>
               Read Protocol Guides
             </Link>
           </div>

@@ -132,7 +132,7 @@ export default async function Brands() {
                   {path.links.map((link, index) => (
                     <li key={link.href} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
                       <span className="badge badge-accent">{index + 1}</span>
-                      <Link href={link.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }}>{link.label}</Link>
+                      <Link href={link.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }} prefetch={false}>{link.label}</Link>
                     </li>
                   ))}
                 </ol>
@@ -146,7 +146,7 @@ export default async function Brands() {
             <h2 className="section-title">Largest Brand Catalogs</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {topBrands.map((brand) => (
-                <Link key={brand.slug} href={`/brands/${brand.slug}`} className="link-card">
+                <Link key={brand.slug} href={`/brands/${brand.slug}`} className="link-card" prefetch={false}>
                   <h3 className="link-card__title">{brand.name}</h3>
                   <p className="link-card__desc">{brand.product_count} products indexed. Protocols: {getProtocols(brand).join(', ') || 'Not specified'}.</p>
                 </Link>
@@ -160,7 +160,7 @@ export default async function Brands() {
             <h2 className="section-title">Wi-Fi, Matter, Z-Wave Brands</h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {protocolStats.map((stat) => (
-                <Link key={stat.label} href={stat.href} className="link-card">
+                <Link key={stat.label} href={stat.href} className="link-card" prefetch={false}>
                   <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>{stat.count}</div>
                   <h3 className="link-card__title">{stat.label} brands</h3>
                   <p className="link-card__desc">Review protocol tradeoffs and compatible locks.</p>
@@ -199,7 +199,7 @@ export default async function Brands() {
                 href={`/brands/${brand.slug}`}
                 className="card card-hover"
                 style={{ padding: 0, overflow: 'hidden', textDecoration: 'none', color: 'inherit' }}
-              >
+               prefetch={false}>
                 <div style={{ background: 'var(--color-bg-dark)', padding: 'var(--space-xl)', color: 'var(--color-text-inverse)' }}>
                   <div className="flex items-center justify-between mb-3">
                     <div>
@@ -293,13 +293,13 @@ export default async function Brands() {
             Use our interactive tools to find the perfect smart lock for your needs
           </p>
           <div className="grid-actions">
-            <Link href="/calculators/protocol-wizard" className="btn btn-primary btn-lg">
+            <Link href="/calculators/protocol-wizard" className="btn btn-primary btn-lg" prefetch={false}>
               Protocol Wizard
             </Link>
-            <Link href="/calculators/lock-tco" className="btn btn-secondary btn-lg">
+            <Link href="/calculators/lock-tco" className="btn btn-secondary btn-lg" prefetch={false}>
               Cost Calculator
             </Link>
-            <Link href="/compare" className="btn btn-secondary btn-lg">
+            <Link href="/compare" className="btn btn-secondary btn-lg" prefetch={false}>
               Compare Protocols
             </Link>
           </div>

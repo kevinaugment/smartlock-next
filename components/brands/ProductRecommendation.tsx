@@ -84,7 +84,7 @@ export default function ProductRecommendation({
                             textDecoration: 'none',
                             color: 'inherit',
                         }}
-                    >
+                     prefetch={false}>
                         <div className="flex items-start justify-between">
                             <div>
                                 <div style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)' }}>{p.brand_name}</div>
@@ -128,7 +128,7 @@ export default function ProductRecommendation({
                     fontWeight: 600,
                     textDecoration: 'none',
                 }}
-            >
+             prefetch={false}>
                 View All {protocol.toUpperCase()} Locks →
             </Link>
         </div>

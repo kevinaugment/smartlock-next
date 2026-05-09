@@ -139,8 +139,8 @@ export default function AboutPage() {
             Use calculators and guide hubs for the first decision pass.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/articles" className="btn btn-primary btn-lg">Browse Articles</Link>
-            <Link href="/calculators" className="btn btn-secondary btn-lg">Try Calculators</Link>
+            <Link href="/articles" className="btn btn-primary btn-lg" prefetch={false}>Browse Articles</Link>
+            <Link href="/calculators" className="btn btn-secondary btn-lg" prefetch={false}>Try Calculators</Link>
           </div>
         </div>
       </div>

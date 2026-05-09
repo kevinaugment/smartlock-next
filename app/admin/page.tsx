@@ -62,7 +62,7 @@ export default function AdminDashboard() {
         <div className="container-main py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/" className="text-xl font-bold text-color-primary flex items-center gap-2">
+              <Link href="/" className="text-xl font-bold text-color-primary flex items-center gap-2" prefetch={false}>
                 <Lock className="w-6 h-6 inline" /> SLockHub.com
               </Link>
               <span className="badge badge-accent">Admin</span>
@@ -115,7 +115,7 @@ export default function AdminDashboard() {
               key={action.href}
               href={action.href}
               className="link-card group"
-            >
+             prefetch={false}>
               <div className="flex items-center justify-between mb-4">
                 <span className="text-color-accent"><action.icon className="w-10 h-10" /></span>
                 <span className="text-color-accent opacity-0 group-hover:opacity-100 transition-opacity">→</span>
@@ -128,7 +128,7 @@ export default function AdminDashboard() {
           <Link
             href="/articles"
             className="link-card group"
-          >
+           prefetch={false}>
             <div className="flex items-center justify-between mb-4">
               <span className="text-color-success"><Globe className="w-10 h-10" /></span>
               <span className="text-color-success opacity-0 group-hover:opacity-100 transition-opacity">→</span>

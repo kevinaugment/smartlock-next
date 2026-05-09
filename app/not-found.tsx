@@ -16,10 +16,10 @@ export default function NotFound() {
             The page you&apos;re looking for doesn&apos;t exist or has been moved.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Link href="/" className="btn btn-primary btn-lg">
+            <Link href="/" className="btn btn-primary btn-lg" prefetch={false}>
               <Home className="w-5 h-5" /> Go Home
             </Link>
-            <Link href="/articles" className="btn btn-secondary btn-lg">
+            <Link href="/articles" className="btn btn-secondary btn-lg" prefetch={false}>
               <BookOpen className="w-5 h-5" /> Browse Articles
             </Link>
           </div>
@@ -38,7 +38,7 @@ export default function NotFound() {
                   key={link.href}
                   href={link.href}
                   className="flex items-center gap-2 text-sm font-medium hover:text-cyan-600 transition-colors text-color-secondary py-2"
-                >
+                 prefetch={false}>
                   <span className="text-color-accent">→</span>
                   {link.label}
                 </Link>

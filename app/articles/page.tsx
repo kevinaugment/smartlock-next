@@ -92,7 +92,7 @@ export default function ArticlesPage() {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {startHereLinks.map((item) => (
-                <Link key={item.href} href={item.href} className="link-card">
+                <Link key={item.href} href={item.href} className="link-card" prefetch={false}>
                   <h3 className="link-card__title">{item.title}</h3>
                   <p className="link-card__desc">{item.description}</p>
                 </Link>
@@ -104,7 +104,7 @@ export default function ArticlesPage() {
             <h2 className="section-title">Calculators, Products, Protocols</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {articlePathways.map((item) => (
-                <Link key={item.href} href={item.href} className="link-card">
+                <Link key={item.href} href={item.href} className="link-card" prefetch={false}>
                   <h3 className="link-card__title">{item.title}</h3>
                   <p className="link-card__desc">{item.description}</p>
                 </Link>
@@ -121,7 +121,7 @@ export default function ArticlesPage() {
                   key={category.slug}
                   href={`/articles/${category.slug}`}
                   className="group icon-card"
-                >
+                 prefetch={false}>
                   <h3
                     className="text-lg font-bold mb-2 group-hover:text-[var(--color-accent)] transition-colors"
                     style={{ color: 'var(--color-text-primary)' }}
@@ -164,7 +164,7 @@ export default function ArticlesPage() {
                     href={`/articles/${article.category}/${article.slug}`}
                     className="group card card-hover overflow-hidden"
                     style={{ padding: 0 }}
-                  >
+                   prefetch={false}>
                     <div style={{ padding: 'var(--space-xl)' }}>
                       <div className="flex items-center gap-2 mb-4">
                         <span className="badge badge-accent">
@@ -211,7 +211,7 @@ export default function ArticlesPage() {
 
           {/* Back to Home */}
           <div className="text-center mt-12">
-            <Link href="/" className="btn btn-ghost">
+            <Link href="/" className="btn btn-ghost" prefetch={false}>
               ← Back to Home
             </Link>
           </div>

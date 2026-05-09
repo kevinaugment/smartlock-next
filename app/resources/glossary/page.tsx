@@ -301,7 +301,7 @@ export default function GlossaryPage() {
             <div className="container-main section">
                 {/* Breadcrumb */}
                 <nav className="breadcrumb">
-                    <Link href="/resources">Resources</Link>
+                    <Link href="/resources" prefetch={false}>Resources</Link>
                     <span className="breadcrumb__separator">/</span>
                     <span className="breadcrumb__current">Glossary</span>
                 </nav>
@@ -467,8 +467,8 @@ export default function GlossaryPage() {
                             Use calculators for door fit, signal range, battery life, cost, and protocol planning.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Link href="/calculators" className="btn btn-primary btn-lg">Try Calculators</Link>
-                            <Link href="/resources" className="btn btn-secondary btn-lg">
+                            <Link href="/calculators" className="btn btn-primary btn-lg" prefetch={false}>Try Calculators</Link>
+                            <Link href="/resources" className="btn btn-secondary btn-lg" prefetch={false}>
                                 <ArrowLeft className="w-4 h-4" /> All Resources
                             </Link>
                         </div>

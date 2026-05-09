@@ -154,7 +154,7 @@ export default function NoiseLevelEstimator() {
     return (
         <div className="page-bg">
             <div className="container-main section">
-                <Link href="/calculators" className="back-link">← Back to Calculators</Link>
+                <Link href="/calculators" className="back-link" prefetch={false}>← Back to Calculators</Link>
 
                 <div className="page-header">
                     <div className="page-header__icon"><Volume2 className="w-14 h-14" /></div>
@@ -387,15 +387,15 @@ export default function NoiseLevelEstimator() {
                 <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
                     <h2 className="text-2xl font-bold mb-6">Related Tools</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <Link href="/calculators/lock-compare" className="link-card">
+                        <Link href="/calculators/lock-compare" className="link-card" prefetch={false}>
                             <h3 className="link-card__title">Lock Comparison</h3>
                             <p className="link-card__desc">Compare lock specs side-by-side</p>
                         </Link>
-                        <Link href="/calculators/hotel-roi" className="link-card">
+                        <Link href="/calculators/hotel-roi" className="link-card" prefetch={false}>
                             <h3 className="link-card__title">Hotel ROI</h3>
                             <p className="link-card__desc">Calculate hospitality ROI</p>
                         </Link>
-                        <Link href="/calculators/compatibility" className="link-card">
+                        <Link href="/calculators/compatibility" className="link-card" prefetch={false}>
                             <h3 className="link-card__title">Compatibility Check</h3>
                             <p className="link-card__desc">Verify lock & door compatibility</p>
                         </Link>
@@ -403,7 +403,7 @@ export default function NoiseLevelEstimator() {
                 </div>
 
                 <div className="max-w-7xl mx-auto mt-8 mb-12">
-                    <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>← Back to All Calculators</Link>
+                    <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>← Back to All Calculators</Link>
                 </div>
             </div>
         </div>

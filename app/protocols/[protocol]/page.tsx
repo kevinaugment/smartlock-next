@@ -387,9 +387,9 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
             <div className="container-main section">
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-2" style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xl)' }}>
-                    <Link href="/" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }}>Home</Link>
+                    <Link href="/" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }} prefetch={false}>Home</Link>
                     <span>/</span>
-                    <Link href="/protocols" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }}>Protocols</Link>
+                    <Link href="/protocols" style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }} prefetch={false}>Protocols</Link>
                     <span>/</span>
                     <span style={{ color: 'var(--color-text-primary)', fontWeight: 500 }}>{proto.name}</span>
                 </nav>
@@ -478,7 +478,7 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                                     <td>{proto.batteryImpact}</td>
                                     <td>{proto.hubRequired ? 'Hub or bridge' : 'Direct or controller-led'}</td>
                                     <td>
-                                        <Link href={bestPageLink.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
+                                        <Link href={bestPageLink.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }} prefetch={false}>
                                             {bestPageLink.label}
                                         </Link>
                                     </td>
@@ -490,7 +490,7 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                                         <td>{item.batteryImpact}</td>
                                         <td>{item.hub}</td>
                                         <td>
-                                            <Link href={`/protocols/${item.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
+                                            <Link href={`/protocols/${item.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 600 }} prefetch={false}>
                                                 View guide
                                             </Link>
                                         </td>
@@ -531,7 +531,7 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                                         <span className="comparison-card__value">{item.hub}</span>
                                     </div>
                                 </div>
-                                <Link href={item.href} style={{ color: 'var(--color-accent)', fontWeight: 600, marginTop: 'var(--space-sm)' }}>
+                                <Link href={item.href} style={{ color: 'var(--color-accent)', fontWeight: 600, marginTop: 'var(--space-sm)' }} prefetch={false}>
                                     {item.label}
                                 </Link>
                             </div>
@@ -541,8 +541,8 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
 
                 <div className="mobile-action-bar">
                     <div className="mobile-action-bar__inner">
-                        <Link href="/calculators/protocol-wizard" className="btn btn-primary">Protocol Wizard</Link>
-                        <Link href="/calculators/rf-coverage" className="btn btn-secondary">RF Coverage</Link>
+                        <Link href="/calculators/protocol-wizard" className="btn btn-primary" prefetch={false}>Protocol Wizard</Link>
+                        <Link href="/calculators/rf-coverage" className="btn btn-secondary" prefetch={false}>RF Coverage</Link>
                     </div>
                 </div>
 
@@ -592,21 +592,21 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                 <section style={{ marginBottom: 'var(--space-3xl)' }}>
                     <div className="flex items-center justify-between gap-4" style={{ marginBottom: 'var(--space-lg)' }}>
                         <h2 className="section-title" style={{ marginBottom: 0 }}>Best Next Steps for {proto.name}</h2>
-                        <Link href={bestPageLink.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
+                        <Link href={bestPageLink.href} style={{ color: 'var(--color-accent)', fontWeight: 600 }} prefetch={false}>
                             {bestPageLink.label}
                         </Link>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <Link href={bestPageLink.href} className="link-card">
+                        <Link href={bestPageLink.href} className="link-card" prefetch={false}>
                             <h3 className="link-card__title">{bestPageLink.label}</h3>
                             <p className="link-card__desc">Move from protocol research into an actual product shortlist for this transport path.</p>
                         </Link>
-                        <Link href="/brands" className="link-card">
+                        <Link href="/brands" className="link-card" prefetch={false}>
                             <h3 className="link-card__title">Browse All Brands</h3>
                             <p className="link-card__desc">Compare lock ecosystems, app behavior, and door-format coverage before narrowing to one protocol.</p>
                         </Link>
                         {readingList.slice(0, 2).map((item) => (
-                            <Link key={item.href} href={item.href} className="link-card">
+                            <Link key={item.href} href={item.href} className="link-card" prefetch={false}>
                                 <h3 className="link-card__title">{item.title}</h3>
                                 <p className="link-card__desc">{item.description}</p>
                             </Link>
@@ -630,7 +630,7 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                     <h2 className="section-title">Signal, Battery, Protocol Tools</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {planningLinks.map(link => (
-                            <Link key={link.href} href={link.href} className="link-card">
+                            <Link key={link.href} href={link.href} className="link-card" prefetch={false}>
                                 <h3 className="link-card__title">{link.label}</h3>
                                 <p className="link-card__desc">{link.detail}</p>
                             </Link>
@@ -643,7 +643,7 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                         <h2 className="section-title">Deeper Reading</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             {readingList.map((item) => (
-                                <Link key={item.href} href={item.href} className="link-card">
+                                <Link key={item.href} href={item.href} className="link-card" prefetch={false}>
                                     <h3 className="link-card__title">{item.title}</h3>
                                     <p className="link-card__desc">{item.description}</p>
                                 </Link>
@@ -676,10 +676,10 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                         Use our calculators to plan your smart lock installation
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link href="/calculators/protocol-wizard" className="btn btn-primary btn-lg">
+                        <Link href="/calculators/protocol-wizard" className="btn btn-primary btn-lg" prefetch={false}>
                             Protocol Wizard <ArrowRight className="w-5 h-5" />
                         </Link>
-                        <Link href="/calculators/rf-coverage" className="btn btn-secondary btn-lg">
+                        <Link href="/calculators/rf-coverage" className="btn btn-secondary btn-lg" prefetch={false}>
                             RF Coverage Calculator
                         </Link>
                     </div>

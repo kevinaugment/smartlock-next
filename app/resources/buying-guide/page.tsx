@@ -362,7 +362,7 @@ function InteractiveFlowchart({
                 {/* Answer: link to tool */}
                 {isAnswer && currentNode.link && (
                     <div className="ml-16 mt-6 flex flex-wrap gap-3">
-                        <Link href={currentNode.link} className="btn btn-primary">
+                        <Link href={currentNode.link} className="btn btn-primary" prefetch={false}>
                             Explore This Option →
                         </Link>
                         <button
@@ -451,7 +451,7 @@ export default function BuyingGuidePage() {
             <div className="container-main section">
                 {/* Breadcrumb */}
                 <nav className="breadcrumb">
-                    <Link href="/resources">Resources</Link>
+                    <Link href="/resources" prefetch={false}>Resources</Link>
                     <span className="breadcrumb__separator">/</span>
                     <span className="breadcrumb__current">Buying Guide</span>
                 </nav>
@@ -504,8 +504,8 @@ export default function BuyingGuidePage() {
                             Compare brands, model specs, protocols, door fit, and price before shortlisting a lock.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Link href="/brands" className="btn btn-primary btn-lg">Browse Brands</Link>
-                            <Link href="/resources" className="btn btn-secondary btn-lg">
+                            <Link href="/brands" className="btn btn-primary btn-lg" prefetch={false}>Browse Brands</Link>
+                            <Link href="/resources" className="btn btn-secondary btn-lg" prefetch={false}>
                                 <ArrowLeft className="w-4 h-4" /> All Resources
                             </Link>
                         </div>

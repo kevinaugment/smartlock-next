@@ -64,7 +64,7 @@ export default function ArticlesManagement() {
         <div className="container mx-auto" style={{ padding: 'var(--space-md)' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/admin" style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
+              <Link href="/admin" style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)' }} prefetch={false}>
                 SLockHub.com
               </Link>
               <span className="badge badge-accent">Articles</span>
@@ -86,7 +86,7 @@ export default function ArticlesManagement() {
       <div className="container mx-auto" style={{ padding: 'var(--space-xl) var(--space-md)' }}>
         {/* Breadcrumb */}
         <div style={{ marginBottom: 'var(--space-lg)' }}>
-          <Link href="/admin" className="back-link">
+          <Link href="/admin" className="back-link" prefetch={false}>
             ← Back to Dashboard
           </Link>
         </div>
@@ -100,7 +100,7 @@ export default function ArticlesManagement() {
           <Link
             href="/admin/articles/new"
             className="btn btn-primary"
-          >
+           prefetch={false}>
             + New Article
           </Link>
         </div>
@@ -192,14 +192,14 @@ export default function ArticlesManagement() {
                           href={`/articles/${category?.slug}/${article.slug}`}
                           target="_blank"
                           style={{ padding: 'var(--space-xs) var(--space-sm)', fontSize: '0.875rem', color: 'var(--color-accent)', fontWeight: 500 }}
-                        >
+                         prefetch={false}>
                           View
                         </Link>
                         <Link
                           href={`/admin/articles/${article.id}/edit`}
                           className="badge badge-accent"
                           style={{ cursor: 'pointer' }}
-                        >
+                         prefetch={false}>
                           Edit
                         </Link>
                         <button

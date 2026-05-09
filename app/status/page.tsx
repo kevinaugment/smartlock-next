@@ -115,7 +115,7 @@ export default async function StatusPage() {
           </div>
 
           <div style={{ textAlign: 'center', marginTop: 'var(--space-xl)' }}>
-            <Link href="/" className="back-link">
+            <Link href="/" className="back-link" prefetch={false}>
               ← Back to Home
             </Link>
           </div>

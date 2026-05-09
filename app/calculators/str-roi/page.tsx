@@ -74,8 +74,8 @@ export default function STRROIPage() {
           <div className="mb-8">
             <nav className="flex text-sm">
               <ol className="inline-flex items-center space-x-1">
-                <li><Link href="/" style={{ color: "var(--color-text-muted)" }}>Home</Link></li>
-                <li><span className="breadcrumb__separator">/</span><Link href="/calculators" style={{ color: "var(--color-text-muted)" }}>Calculators</Link></li>
+                <li><Link href="/" style={{ color: "var(--color-text-muted)" }} prefetch={false}>Home</Link></li>
+                <li><span className="breadcrumb__separator">/</span><Link href="/calculators" style={{ color: "var(--color-text-muted)" }} prefetch={false}>Calculators</Link></li>
                 <li><span className="breadcrumb__separator">/</span><span className="breadcrumb__current">STR ROI Calculator</span></li>
               </ol>
             </nav>
@@ -345,17 +345,17 @@ export default function STRROIPage() {
           <div className="max-w-7xl mx-auto mt-12">
             <h2 className="section-title">ROI, TCO, Battery</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Link href="/calculators/lock-tco" className="link-card">
+              <Link href="/calculators/lock-tco" className="link-card" prefetch={false}>
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><DollarSign className="w-8 h-8" /></div>
                 <h3 className="link-card__title">TCO Calculator</h3>
                 <p className="link-card__desc">5-year total cost for STR portfolio</p>
               </Link>
-              <Link href="/calculators/battery-life" className="link-card">
+              <Link href="/calculators/battery-life" className="link-card" prefetch={false}>
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><Battery className="w-8 h-8" /></div>
                 <h3 className="link-card__title">Battery Life</h3>
                 <p className="link-card__desc">Replacement costs for high-turnover properties</p>
               </Link>
-              <Link href="/calculators/installation-cost" className="link-card">
+              <Link href="/calculators/installation-cost" className="link-card" prefetch={false}>
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><Wrench className="w-8 h-8" /></div>
                 <h3 className="link-card__title">Installation Cost</h3>
                 <p className="link-card__desc">Bulk installation pricing for portfolios</p>

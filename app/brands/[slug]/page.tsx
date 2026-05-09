@@ -15,8 +15,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const brand = await BrandModel.getBySlug(slug)
     if (!brand) return { title: 'Brand Not Found' }
 
-    const title = brand.meta_title || `${brand.name} Smart Locks — SLockHub.com`
-    const description = brand.meta_description || brand.description || ''
+    const protocols = getProtocols(brand)
+    const protocolText = protocols.length > 0 ? protocols.join(', ') : 'Wi-Fi, Matter, Z-Wave, Zigbee, Thread, and Bluetooth'
+    const title = brand.meta_title || `${brand.name} Smart Locks | Protocols, Products & Use Cases`
+    const description = brand.meta_description || `Compare ${brand.name} smart locks by protocol support, product depth, price tier, door fit, battery expectations, and best use case. Protocols: ${protocolText}.`
     const canonical = `/brands/${slug}`
 
     return {
@@ -296,7 +298,7 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                 </section>
 
                 <section style={{ marginBottom: 'var(--space-3xl)' }}>
-                    <h2 className="section-title">Protocol Support Matrix</h2>
+                    <h2 className="section-title">Wi-Fi, Matter, Z-Wave Support</h2>
                     <div className="card overflow-hidden p-0">
                         <table className="data-table">
                             <thead>
@@ -353,7 +355,7 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                 )}
 
                 <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
-                    <h2 className="section-title">Use-Case Fit</h2>
+                    <h2 className="section-title">Home, Rental, Commercial Fit</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {useCaseFit.map(item => (
                             <div key={item.label} className="card" style={{ background: 'var(--color-bg-alt)' }}>
@@ -368,7 +370,7 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                 </section>
 
                 <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
-                    <h2 className="section-title">Alternatives and Buying Paths</h2>
+                    <h2 className="section-title">Alternatives, Tools, Comparisons</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {compareLinks.map(link => (
                             <Link key={link.href} href={link.href} className="link-card">
@@ -387,7 +389,7 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
 
                 {/* Product Series */}
                 <h2 className="section-title" style={{ marginBottom: 'var(--space-xl)' }}>
-                    {brand.name} Product Lines ({allProducts.length} products)
+                    {brand.name} Lines, Protocols, Prices
                 </h2>
 
                 {brand.series.map(series => (
@@ -447,7 +449,7 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
 
                 {/* CTA to calculators */}
                 <div className="cta-section">
-                    <h2 className="cta-section__title" style={{ fontSize: '1.5rem' }}>Calculate with {brand.name} Products</h2>
+                    <h2 className="cta-section__title" style={{ fontSize: '1.5rem' }}>Fit, Battery, Cost Tools</h2>
                     <p style={{ opacity: 0.9, marginBottom: 'var(--space-lg)' }}>
                         Use our calculators to estimate battery life, total cost of ownership, and more for {brand.name} smart locks.
                     </p>

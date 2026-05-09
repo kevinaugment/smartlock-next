@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Door Measurement Fit Checker - SLockHub.com',
-    description: 'Check if your door dimensions are compatible with smart lock installation. Verify backset, thickness, bore hole size, and edge prep requirements.',
+    title: 'Door Measurement Fit Checker | Backset, Bore, Thickness & Prep',
+    description: 'Check smart lock door fit by backset, bore hole, door thickness, edge prep, material, and installation requirements.',
     canonical: '/calculators/door-fit',
 })
 
@@ -19,7 +19,7 @@ export default function DoorFitLayout({ children }: { children: React.ReactNode 
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Check if your door dimensions are compatible with smart lock installation. Verify backset, thickness, bore hole size, and edge prep requirements.',
+                description: 'Check smart lock door fit by backset, bore hole, thickness, edge prep, material, and installation requirements.',
                 softwareVersion: '1.0',
                 datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },

@@ -218,7 +218,7 @@ const lockTypeFlow: FlowNode[] = [
         id: 'ans-mortise',
         type: 'answer',
         text: '🏆 Smart Mortise Lock',
-        subtext: 'Heavy-duty commercial-grade. Installed in mortise pocket within door edge. Fire-rated options available. Requires professional installation. $300-800+.',
+        subtext: 'Heavy-duty commercial-grade. Installed in mortise pocket within door edge. Fire-rated options available. Requires locksmith or installer setup. $300-800+.',
         link: '/calculators/installation-cost',
     },
     {
@@ -471,7 +471,7 @@ export default function BuyingGuidePage() {
 
                     {/* Protocol Overview Diagram */}
                     <section>
-                        <h2 className="section-title">Protocol Landscape — At a Glance</h2>
+                        <h2 className="section-title">Protocol Range, Battery, Hubs</h2>
                         <div className="card" style={{ padding: 'var(--space-lg)', overflow: 'auto' }}>
                             <ProtocolOverviewSVG />
                         </div>
@@ -479,7 +479,7 @@ export default function BuyingGuidePage() {
 
                     {/* Interactive: Protocol Selection */}
                     <section>
-                        <h2 className="section-title">🔌 Protocol Selection Wizard</h2>
+                        <h2 className="section-title">Protocol Selection Wizard</h2>
                         <p className="mb-6 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
                             Answer 2-3 questions to find the ideal wireless protocol for your smart lock setup.
                         </p>
@@ -488,7 +488,7 @@ export default function BuyingGuidePage() {
 
                     {/* Interactive: Lock Type Selection */}
                     <section>
-                        <h2 className="section-title">🔒 Lock Type Selection Wizard</h2>
+                        <h2 className="section-title">Lock Type Selection Wizard</h2>
                         <p className="mb-6 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
                             Find the right lock form factor based on your door type, security needs, and installation preferences.
                         </p>
@@ -499,9 +499,9 @@ export default function BuyingGuidePage() {
                 {/* CTA Section */}
                 <div className="max-w-4xl mx-auto mt-16">
                     <div className="cta-section">
-                        <h2 className="cta-section__title">Ready to Compare Specific Models?</h2>
+                        <h2 className="cta-section__title">Brands, Models, Comparisons</h2>
                         <p className="cta-section__subtitle">
-                            Browse our brand guides and model comparisons for detailed specs and reviews
+                            Compare brands, model specs, protocols, door fit, and price before shortlisting a lock.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Link href="/brands" className="btn btn-primary btn-lg">Browse Brands</Link>

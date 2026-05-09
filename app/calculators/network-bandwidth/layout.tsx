@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Network Bandwidth Calculator - SLockHub.com',
-    description: 'Calculate network bandwidth requirements for smart lock deployments. Plan your infrastructure for reliable cloud-connected access control.',
+    title: 'Smart Lock Network Bandwidth Calculator | Wi-Fi, Cloud & Fleet Data',
+    description: 'Estimate smart lock network bandwidth by Wi-Fi locks, cloud sync, access events, firmware updates, video integrations, and fleet size.',
     canonical: '/calculators/network-bandwidth',
 })
 
@@ -19,7 +19,7 @@ export default function NetworkBandwidthLayout({ children }: { children: React.R
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Calculate network bandwidth requirements for smart lock deployments.',
+                description: 'Estimate smart lock network bandwidth by Wi-Fi locks, cloud sync, access events, updates, and fleet size.',
             }} />
             <JsonLd data={{
                 '@context': 'https://schema.org',

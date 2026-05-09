@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { DollarSign, Lightbulb, AlertTriangle } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
 
 interface TCOInputs {
@@ -90,6 +92,29 @@ function adjustForUsage(dailyUsage: number): number {
 }
 
 export default function TCOCalculator() {
+  const faqs = [
+    {
+      question: 'What is included in smart lock TCO?',
+      answer: 'Smart lock TCO includes hardware, installation labor, hubs or gateways, batteries, subscriptions, cloud platform fees, maintenance, warranty gaps, and expected replacement costs over the selected ownership period.',
+    },
+    {
+      question: 'How much do smart locks cost over 5 years?',
+      answer: 'A typical 5-year cost ranges from a few hundred dollars for one residential door to thousands of dollars for multi-door commercial deployments. Door count, subscriptions, installation, and battery burden usually drive the spread.',
+    },
+    {
+      question: 'Do subscriptions matter more than hardware?',
+      answer: 'Subscriptions can exceed hardware cost when fees are charged per door or per user for several years. For fleets, model subscription cost before choosing the cheapest lock hardware.',
+    },
+    {
+      question: 'Which protocol has the lowest lifetime cost?',
+      answer: 'Zigbee, Z-Wave, Thread, and Bluetooth often have lower operating cost than Wi-Fi because battery replacement is less frequent. Wi-Fi can still be economical for one or two doors when avoiding a hub matters.',
+    },
+    {
+      question: 'How often should smart locks be replaced?',
+      answer: 'Most smart locks should be budgeted on a 5- to 7-year lifecycle for active deployments. High-traffic commercial, hotel, and rental properties should model earlier replacement and spares.',
+    },
+  ]
+
   const [inputs, setInputs] = useState<TCOInputs>({
     lockPrice: 200,
     doorCount: 3,
@@ -165,6 +190,20 @@ export default function TCOCalculator() {
           <p className="page-header__subtitle">
             Calculate total cost of ownership for your smart lock deployment over time
           </p>
+        </div>
+
+        <div className="max-w-4xl mx-auto">
+          <CalculatorAnswerBlock
+            title="How do you calculate smart lock TCO?"
+            answer="Smart lock TCO is calculated by adding the upfront hardware and installation cost to recurring batteries, hubs, software subscriptions, maintenance, warranty gaps, and replacement risk across the ownership period. For property managers and IT teams, the most important inputs are door count, protocol, subscription model, and expected lifecycle."
+          >
+            <div className="card">
+              <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xs)' }}>Featured snippet formula</div>
+              <code style={{ color: 'var(--color-text-primary)', overflowWrap: 'anywhere' }}>
+                5-year TCO = hardware + installation + hubs + subscriptions + batteries + maintenance + replacements
+              </code>
+            </div>
+          </CalculatorAnswerBlock>
         </div>
 
         <div className="calculator-shell">
@@ -670,9 +709,13 @@ export default function TCOCalculator() {
 
         <RelatedResources calculatorSlug="lock-tco-calculator" />
 
-        {/* Related Resources */}
+        <div className="max-w-7xl mx-auto">
+          <CalculatorFaqBlock faqs={faqs} />
+        </div>
+
+        {/* Cost, Battery, Protocol */}
         <div className="max-w-7xl mx-auto mt-8">
-          <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-md)" }}>Related Resources</h3>
+          <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--color-text-primary)", marginBottom: "var(--space-md)" }}>Cost, Battery, Protocol</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Link href="/articles/protocols" className="link-card">
               <h4 className="link-card__title">Protocol Comparison</h4>

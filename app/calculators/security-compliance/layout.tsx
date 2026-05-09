@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Security Compliance Checker - SLockHub.com',
-    description: 'Verify your smart lock deployment meets security compliance requirements. Check ADA, fire code, NFPA, and building code standards.',
+    title: 'Smart Lock Security Compliance Checker | ANSI, UL, ADA & Audit',
+    description: 'Check smart lock security compliance by ANSI/BHMA grade, UL requirements, ADA access, audit logs, PIN policy, encryption, and backup access.',
     canonical: '/calculators/security-compliance',
 })
 
@@ -19,7 +19,7 @@ export default function SecurityComplianceLayout({ children }: { children: React
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Verify your smart lock deployment meets security compliance requirements.',
+                description: 'Check smart lock security compliance by ANSI/BHMA grade, UL, ADA, audit logs, PIN policy, and encryption.',
             }} />
             <JsonLd data={{
                 '@context': 'https://schema.org',

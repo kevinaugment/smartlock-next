@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Hotel & Hospitality ROI Calculator - SLockHub.com',
-    description: 'Calculate return on investment for hotel smart lock installations. Analyze labor savings, key card elimination, guest experience improvements, and payback period.',
+    title: 'Hotel Smart Lock ROI Calculator | Keycard, Labor & Payback',
+    description: 'Calculate hotel smart lock ROI from keycard savings, front desk labor, lockout reduction, mobile check-in, capex, and payback.',
     canonical: '/calculators/hotel-roi',
 })
 
@@ -19,7 +19,7 @@ export default function HotelROILayout({ children }: { children: React.ReactNode
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Calculate return on investment for hotel smart lock installations. Analyze labor savings, key card elimination, guest experience improvements, and payback period.',
+                description: 'Calculate hotel smart lock ROI from keycard savings, front desk labor, lockout reduction, mobile check-in, capex, and payback.',
                 softwareVersion: '1.0',
                 datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },

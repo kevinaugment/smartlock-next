@@ -6,6 +6,8 @@ import { Shield, AlertTriangle, Check, X, Info, FileText } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface ComplianceResult {
     score: number
@@ -18,6 +20,29 @@ interface ComplianceResult {
 }
 
 export default function PrivacyComplianceEvaluator() {
+    const faqs = [
+        {
+            question: 'Are smart lock access logs personal data?',
+            answer: 'Smart lock access logs can be personal data when they identify who entered, when they entered, where they entered, or which credential was used. Treat employee, tenant, guest, and contractor logs as regulated data until counsel confirms otherwise.',
+        },
+        {
+            question: 'Does GDPR apply to rental locks?',
+            answer: 'GDPR can apply when a rental or hospitality operator processes access data for people in the EU. The relevant duties depend on location, controller role, lawful basis, retention, vendor processing, and user rights.',
+        },
+        {
+            question: 'Are fingerprints biometric data?',
+            answer: 'Fingerprints are biometric data when used to identify or authenticate a person. Biometric smart locks can trigger stricter consent, storage, retention, and vendor-review requirements.',
+        },
+        {
+            question: 'How long should access logs be retained?',
+            answer: 'Retain access logs only as long as needed for security, operations, legal, or insurance purposes. Many rental and hospitality workflows should avoid indefinite retention unless there is a documented reason.',
+        },
+        {
+            question: 'What should a smart lock privacy policy include?',
+            answer: 'A smart lock privacy policy should explain collected data, purpose, retention, sharing, storage location, security controls, user rights, biometric handling, and how guests, tenants, or employees can request information.',
+        },
+    ]
+
     const [collectsBiometric, setCollectsBiometric] = useState(false)
     const [biometricType, setBiometricType] = useState<'fingerprint' | 'face' | 'voice' | 'none'>('none')
     const [cloudStorage, setCloudStorage] = useState<'us' | 'eu' | 'china' | 'local' | 'unknown'>('us')
@@ -173,6 +198,20 @@ export default function PrivacyComplianceEvaluator() {
                     <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)' }}>
                         Assess GDPR, CCPA, and biometric privacy compliance for your smart lock system
                     </p>
+                </div>
+
+                <div className="max-w-4xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="Are smart lock access logs personal data?"
+                        answer="Smart lock access logs are often personal data because they can identify a person, location, access time, credential, and behavior pattern. For GDPR, CCPA/CPRA, BIPA, and workplace privacy reviews, treat access logs, biometric templates, mobile app identifiers, and audit trails as sensitive operational data that needs retention limits and access controls."
+                    >
+                        <div className="card">
+                            <strong style={{ color: 'var(--color-text-primary)' }}>Compliance note:</strong>
+                            <p style={{ color: 'var(--color-text-secondary)', marginTop: 'var(--space-xs)', lineHeight: 1.6 }}>
+                                This tool is an educational triage aid, not legal advice. Use the score to identify questions for privacy counsel, vendor review, and internal policy updates.
+                            </p>
+                        </div>
+                    </CalculatorAnswerBlock>
                 </div>
 
                 <div className="max-w-4xl mx-auto" style={{ marginBottom: 'var(--space-3xl)' }}>
@@ -405,6 +444,10 @@ export default function PrivacyComplianceEvaluator() {
                 />
 
                 <RelatedResources calculatorSlug="privacy-data-compliance-evaluator" />
+
+                <div className="max-w-7xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
 
                 <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
                     <h2 className="text-2xl font-bold mb-6">Related Tools</h2>

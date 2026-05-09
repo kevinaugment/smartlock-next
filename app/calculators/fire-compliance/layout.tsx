@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Fire Code Compliance Checker - SLockHub.com',
-    description: 'Check if your smart lock installation meets fire code and NFPA requirements. Verify egress, ADA, and emergency exit compliance.',
+    title: 'Fire Code Compliance Checker | NFPA, ADA, Egress & Smart Locks',
+    description: 'Check smart lock fire-code fit by NFPA, ADA, emergency egress, fire doors, fail-safe behavior, and commercial installation risk.',
     canonical: '/calculators/fire-compliance',
 })
 
@@ -19,7 +19,7 @@ export default function FireComplianceLayout({ children }: { children: React.Rea
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Check if your smart lock installation meets fire code and NFPA requirements.',
+                description: 'Check smart lock fire-code fit by NFPA, ADA, egress, fire doors, and commercial installation risk.',
             }} />
             <JsonLd data={{
                 '@context': 'https://schema.org',

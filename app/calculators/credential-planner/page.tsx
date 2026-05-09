@@ -10,6 +10,8 @@ import {
 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 export const metadata: Metadata = buildSeoMetadata({
     title: 'Smart Lock Credential Capacity Planner | PIN/RFID/NFC Management Calculator',
@@ -19,6 +21,29 @@ export const metadata: Metadata = buildSeoMetadata({
 })
 
 export default function CredentialPlannerPage() {
+  const faqs = [
+    {
+      question: 'How many codes should each property support?',
+      answer: 'Each property should support current residents or staff, administrators, vendors, guests, emergency users, and a growth buffer. For managed properties, plan at least 15% to 25% extra credential capacity so turnover and temporary access do not block new users.',
+    },
+    {
+      question: 'When should credentials expire?',
+      answer: 'Guest, vendor, contractor, and temporary staff credentials should expire automatically at the end of the approved access window. Permanent staff and resident credentials should be revoked immediately when access is no longer authorized.',
+    },
+    {
+      question: 'How many admin users are safe?',
+      answer: 'Admin access should be limited to the smallest practical group, usually property leadership, IT, security, or trusted operations staff. Each admin should have a unique login, MFA where available, and documented authority to issue or revoke credentials.',
+    },
+    {
+      question: 'Should staff use shared codes?',
+      answer: 'Shared staff codes should be avoided because they make revocation and incident review difficult. Give each staff member or vendor a unique credential with role-based permissions and remove it when their access no longer applies.',
+    },
+    {
+      question: 'How do I plan card vs PIN access?',
+      answer: 'Use PINs for low-friction temporary access and RFID, NFC, mobile, or biometric credentials when identity assurance and faster entry matter. Many commercial deployments combine cards or mobile credentials for staff with expiring PINs for visitors and contractors.',
+    },
+  ]
+
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -62,9 +87,16 @@ export default function CredentialPlannerPage() {
             <p className="page-header__subtitle">Calculate optimal credential allocation for employees, contractors, guests across PIN, RFID, NFC, biometric systems</p>
           </div>
 
+          <div className="max-w-7xl mx-auto">
+            <CalculatorAnswerBlock
+              title="How do you plan smart lock credentials?"
+              answer="Smart lock credential planning maps every person and access method to the lock or platform limits: PINs, RFID cards, NFC/mobile credentials, biometrics, schedules, groups, administrators, and temporary users. The goal is to prevent capacity exhaustion while keeping every credential unique, revocable, and tied to the right access window."
+            />
+          </div>
+
           <div className="max-w-4xl mx-auto mb-12">
             <div className="callout callout-info">
-              <h2 className="callout-title">Why Credential Planning Matters</h2>
+              <h2 className="callout-title">Users, PINs, RFID Slots</h2>
               <p >
                 <strong>Capacity exhaustion:</strong> 30% of deployments exceed lock capacity within 12 months (growth underestimated). <strong>Management overhead:</strong> 5-10% monthly turnover = 60-120 credential changes/year per 100 users. <strong>Security risk:</strong> Reusing deleted codes without proper rotation violates NIST SP 800-63B. <strong>Optimal planning:</strong> 20% buffer + turnover tracking prevents credential failures. Data: NIST Digital Identity Guidelines, Allegion Access Control Study 2026.
               </p>
@@ -379,10 +411,13 @@ export default function CredentialPlannerPage() {
 
 
           <RelatedResources calculatorSlug="credential-capacity-planner" />
+          <div className="max-w-7xl mx-auto">
+            <CalculatorFaqBlock faqs={faqs} />
+          </div>
 
-          {/* Related Resources */}
+          {/* Credentials, Protocol, Battery */}
           <div className="max-w-7xl mx-auto mt-12">
-            <h2 className="section-title">Related Calculators</h2>
+            <h2 className="section-title">Credentials, Protocol, Battery</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Link href="/calculators/protocol-wizard" className="link-card">
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><Wand2 className="w-8 h-8" /></div>

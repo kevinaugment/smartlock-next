@@ -6,6 +6,8 @@ import { ShieldCheck, AlertTriangle, Check, Lightbulb } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface Inputs {
     application: string
@@ -30,6 +32,29 @@ const gradeRequirements: Record<string, { label: string; minScore: number; manda
 }
 
 export default function SecurityComplianceChecker() {
+    const faqs = [
+        {
+            question: 'What smart lock security features are required?',
+            answer: 'Most security reviews look for appropriate ANSI/BHMA grade, automatic relock, tamper detection, encrypted communication, administrative controls, and audit logs. Commercial, healthcare, government, and multifamily deployments usually need stricter documentation than a single residential door.',
+        },
+        {
+            question: 'Is ANSI Grade 1 necessary?',
+            answer: 'ANSI Grade 1 is usually reserved for heavy commercial or high-traffic doors. Residential and light commercial doors may be adequately served by Grade 2 or Grade 3 hardware, but the right grade depends on traffic, threat model, insurance requirements, and local policy.',
+        },
+        {
+            question: 'Do smart locks need audit logs?',
+            answer: 'Audit logs are strongly recommended for commercial, hospitality, healthcare, and managed rental use because they show who accessed a door and when. They also support incident review, credential cleanup, and compliance documentation.',
+        },
+        {
+            question: 'What encryption should access systems use?',
+            answer: 'Modern smart lock systems should use encrypted communication between the lock, hub, mobile app, and cloud service. Look for documented encryption, secure credential storage, signed firmware updates, and access controls for administrator accounts.',
+        },
+        {
+            question: 'How often should codes be rotated?',
+            answer: 'Codes should be changed when a user leaves, a guest stay ends, a code is shared, or compromise is suspected. Routine forced rotation is less important than unique credentials, automatic expiration, lockout thresholds, and complete removal of old access.',
+        },
+    ]
+
     const [inputs, setInputs] = useState<Inputs>({
         application: 'residential',
         grade: 'ansi-3',
@@ -129,6 +154,13 @@ export default function SecurityComplianceChecker() {
                     <p className="page-header__subtitle">
                         Evaluate ANSI/BHMA grade compliance, UL 437, and EN 12209 requirements
                     </p>
+                </div>
+
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="What does a smart lock security compliance checker review?"
+                        answer="A smart lock security compliance checker compares the lock configuration against the security controls that matter in managed deployments: hardware grade, tamper resistance, audit logs, encryption, relock behavior, emergency override, and administrative access. It does not replace a formal certification review, but it helps property managers, IT teams, and consultants identify obvious gaps before procurement or rollout."
+                    />
                 </div>
 
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -328,6 +360,9 @@ export default function SecurityComplianceChecker() {
 
                 <ToolRating toolSlug="security-compliance" />
                 <RelatedResources calculatorSlug="security-compliance" />
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
                 <BeTechCalculatorRecommendation
                     description="Be-Tech locks meet ANSI Grade 1 and Grade 2 standards with UL-listed models available. Features include AES-256 encryption, anti-tamper alerts, and full electronic audit trails."
                     badge="ANSI Certified"

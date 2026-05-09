@@ -283,7 +283,7 @@ export default function GlossaryPage() {
         '@context': 'https://schema.org',
         '@type': 'DefinedTermSet',
         name: 'Smart Lock Glossary',
-        description: 'Comprehensive glossary of smart lock industry terminology, standards, and technology.',
+        description: 'Smart lock glossary terms for protocols, grades, door hardware, batteries, credentials, security, and installation.',
         hasDefinedTerm: glossaryTerms.map(t => ({
             '@type': 'DefinedTerm',
             name: t.term,
@@ -313,7 +313,7 @@ export default function GlossaryPage() {
                     </div>
                     <h1 className="page-header__title">Smart Lock Glossary</h1>
                     <p className="page-header__subtitle">
-                        {glossaryTerms.length}+ industry terms explained with professional diagrams
+                        {glossaryTerms.length}+ industry terms explained with diagrams
                     </p>
                 </div>
 
@@ -462,9 +462,9 @@ export default function GlossaryPage() {
                 {/* CTA Section */}
                 <div className="max-w-4xl mx-auto mt-16">
                     <div className="cta-section">
-                        <h2 className="cta-section__title">Put Your Knowledge to Work</h2>
+                        <h2 className="cta-section__title">Terms, Tools, Guides</h2>
                         <p className="cta-section__subtitle">
-                            Use our professional calculators to plan your smart lock deployment
+                            Use calculators for door fit, signal range, battery life, cost, and protocol planning.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Link href="/calculators" className="btn btn-primary btn-lg">Try Calculators</Link>

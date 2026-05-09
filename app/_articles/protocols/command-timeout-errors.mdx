@@ -19,8 +19,8 @@ isPillar: false
 isSupport: true
 featured: false
 relatedArticles:
-  - "smart-lock-response-slow"
-  - "smart-lock-no-response"
+  - "smart-lock-keeps-going-offline"
+  - "connect-lock-to-homekit"
   - "improve-connection-stability"
 
 ---
@@ -397,4 +397,3 @@ Command timeout resolution demands understanding cumulative latency architecture
 **The physical verification imperative**: Timeout error indicates "no confirmation received" not "command definitively failed", creating 40-60% probability command succeeded yet return-path packet lost (outbound delivery succeeded, lock operated, status broadcast dropped). This ambiguity demands physical verification before retry: check door's actual locked/unlocked state preventing duplicate operations (re-locking locked door stresses motor, re-unlocking unlocked door wastes battery). Users instinctively retry immediately post-timeout (assuming failure) yet optimal response: walk to door, verify state, retry only if genuinely failed.
 
 **Timeout threshold configurability limitations**: Most consumer platforms hard-code timeout (manufacturer app: 15-20 seconds, cloud platforms: 20-30 seconds) preventing user adjustment despite diverse deployment scenarios (large home requiring 25-second budget versus apartment needing only 8 seconds). Enterprise platforms (Home Assistant, Hubitat) exposing timeout configuration enable environment-specific tuning: increase to 45 seconds accommodating long mesh routes and slow locks accepting delayed feedback, or decrease to 8 seconds in strong-signal deployments prioritizing rapid failure detection. This configurability proves critical for marginal deployments where default timeout creates 20-40% false-negative rate (successful commands timing out) resolvable through 50% threshold increase.
-

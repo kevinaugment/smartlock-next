@@ -1,3 +1,5 @@
+import type { CalculatorRouteSlug } from './slugs'
+
 /**
  * 计算器 ↔ 内容 交叉链接映射
  * 每个计算器关联 2-3 篇文章 + 1-2 个相关计算器
@@ -8,23 +10,23 @@ export interface CalculatorLinks {
     calculators: Array<{ slug: string; title: string }>
 }
 
-export const calculatorLinksMap: Record<string, CalculatorLinks> = {
+export const calculatorLinksMap: Record<CalculatorRouteSlug, CalculatorLinks> = {
     'lock-tco': {
         articles: [
+            { slug: 'rental-property-smart-locks', category: 'use-cases', title: 'Rental Property Smart Locks Hub' },
             { slug: 'cloud-vs-local-cost', category: 'resources', title: 'Cloud vs Local Cost Analysis' },
-            { slug: 'enterprise-commercial-deployment', category: 'use-cases', title: 'Enterprise Deployment Guide' },
-            { slug: 'smart-lock-battery-life-guide', category: 'installation', title: 'Battery Life Guide' },
+            { slug: 'kwikset-vs-defiant-smart-locks', category: 'resources', title: 'Kwikset vs Defiant Budget Comparison' },
         ],
         calculators: [
-            { slug: 'battery-life', title: 'Battery Life Calculator' },
+            { slug: 'battery-life', title: 'Battery Runtime Calculator' },
             { slug: 'subscription-compare', title: 'Subscription Comparison' },
         ],
     },
     'battery-life': {
         articles: [
+            { slug: 'smart-lock-battery-life-by-brand', category: 'installation', title: 'Battery Life by Brand' },
             { slug: 'smart-lock-battery-life-guide', category: 'installation', title: 'Battery Life Guide' },
-            { slug: 'how-to-change-smart-lock-battery', category: 'installation', title: 'How to Change Battery' },
-            { slug: 'emergency-battery-died-locked-out', category: 'installation', title: 'Emergency: Battery Died' },
+            { slug: 'best-smart-locks-for-airbnb-hosts', category: 'use-cases', title: 'Airbnb Battery Planning' },
         ],
         calculators: [
             { slug: 'lock-tco', title: 'TCO Calculator' },
@@ -33,31 +35,31 @@ export const calculatorLinksMap: Record<string, CalculatorLinks> = {
     },
     'protocol-wizard': {
         articles: [
+            { slug: 'matter-vs-homekit-vs-zwave-smart-locks', category: 'protocols', title: 'Matter vs HomeKit vs Z-Wave' },
+            { slug: 'apple-home-key-smart-locks-guide', category: 'protocols', title: 'Apple Home Key Guide' },
             { slug: 'smart-lock-protocols-overview', category: 'protocols', title: 'Protocol Overview' },
-            { slug: 'zigbee-vs-zwave-comparison', category: 'protocols', title: 'Zigbee vs Z-Wave Comparison' },
-            { slug: 'improve-connection-stability', category: 'protocols', title: 'Connection Stability Guide' },
         ],
         calculators: [
-            { slug: 'signal-strength', title: 'Signal Strength Calculator' },
+            { slug: 'signal-strength', title: 'RSSI Signal Strength Calculator' },
             { slug: 'mesh-planner', title: 'Mesh Network Planner' },
         ],
     },
     'signal-strength': {
         articles: [
+            { slug: 'best-z-wave-smart-locks-hubs-apartments', category: 'protocols', title: 'Z-Wave Lock Planning' },
             { slug: 'improve-connection-stability', category: 'protocols', title: 'Connection Stability Guide' },
             { slug: 'smart-lock-keeps-going-offline', category: 'protocols', title: 'Troubleshoot Offline Issues' },
-            { slug: 'smart-lock-protocols-overview', category: 'protocols', title: 'Protocol Overview' },
         ],
         calculators: [
-            { slug: 'rf-coverage', title: 'RF Coverage Planner' },
-            { slug: 'ble-range', title: 'BLE Range Calculator' },
+            { slug: 'rf-coverage', title: 'Building RF Coverage Planner' },
+            { slug: 'ble-range', title: 'Bluetooth Range Estimator' },
         ],
     },
     'str-roi': {
         articles: [
+            { slug: 'best-smart-locks-for-airbnb-hosts', category: 'use-cases', title: 'Best Smart Locks for Airbnb Hosts' },
+            { slug: 'airbnb-smart-lock-integration-schlage-yale-august', category: 'integration', title: 'Airbnb Smart Lock Integration' },
             { slug: 'smart-locks-airbnb-complete-guide', category: 'use-cases', title: 'Airbnb Complete Guide' },
-            { slug: 'long-term-rental-strategy', category: 'use-cases', title: 'Rental Strategy Guide' },
-            { slug: 'create-temporary-guest-code', category: 'guides', title: 'Guest Code Setup' },
         ],
         calculators: [
             { slug: 'guest-code', title: 'Guest Code Capacity Planner' },
@@ -71,7 +73,7 @@ export const calculatorLinksMap: Record<string, CalculatorLinks> = {
             { slug: 'calibrate-smart-lock', category: 'installation', title: 'Calibration Guide' },
         ],
         calculators: [
-            { slug: 'compatibility', title: 'Compatibility Checker' },
+            { slug: 'door-fit', title: 'Door Measurement Checker' },
             { slug: 'installation-time', title: 'Installation Time Estimator' },
         ],
     },
@@ -82,32 +84,35 @@ export const calculatorLinksMap: Record<string, CalculatorLinks> = {
             { slug: 'smart-lock-setup-checklist', category: 'installation', title: 'Setup Checklist' },
         ],
         calculators: [
+            { slug: 'door-fit', title: 'Door Measurement Checker' },
             { slug: 'installation-cost', title: 'Installation Cost Calculator' },
-            { slug: 'lock-compare', title: 'Lock Comparison Tool' },
         ],
     },
     'mesh-planner': {
         articles: [
+            { slug: 'best-z-wave-smart-locks-hubs-apartments', category: 'protocols', title: 'Z-Wave Lock Planning' },
+            { slug: 'matter-vs-homekit-vs-zwave-smart-locks', category: 'protocols', title: 'Matter vs HomeKit vs Z-Wave' },
             { slug: 'smart-lock-protocols-overview', category: 'protocols', title: 'Protocol Overview' },
-            { slug: 'zigbee-vs-zwave-comparison', category: 'protocols', title: 'Zigbee vs Z-Wave Comparison' },
         ],
         calculators: [
-            { slug: 'rf-coverage', title: 'RF Coverage Planner' },
-            { slug: 'signal-strength', title: 'Signal Strength Calculator' },
+            { slug: 'rf-coverage', title: 'Building RF Coverage Planner' },
+            { slug: 'signal-strength', title: 'RSSI Signal Strength Calculator' },
         ],
     },
     'rf-coverage': {
         articles: [
+            { slug: 'best-z-wave-smart-locks-hubs-apartments', category: 'protocols', title: 'Z-Wave Lock Planning' },
             { slug: 'improve-connection-stability', category: 'protocols', title: 'Connection Stability Guide' },
             { slug: 'smart-lock-keeps-going-offline', category: 'protocols', title: 'Troubleshoot Offline Issues' },
         ],
         calculators: [
-            { slug: 'signal-strength', title: 'Signal Strength Calculator' },
-            { slug: 'mesh-planner', title: 'Mesh Network Planner' },
+            { slug: 'signal-strength', title: 'RSSI Signal Strength Calculator' },
+            { slug: 'mesh-planner', title: 'Repeater Placement Planner' },
         ],
     },
     'fleet-planner': {
         articles: [
+            { slug: 'multifamily-smart-locks-resident-staff-access', category: 'use-cases', title: 'Multifamily Smart Locks' },
             { slug: 'enterprise-commercial-deployment', category: 'use-cases', title: 'Enterprise Deployment Guide' },
             { slug: 'enterprise-system-integration', category: 'integration', title: 'Enterprise Integration' },
         ],
@@ -118,9 +123,9 @@ export const calculatorLinksMap: Record<string, CalculatorLinks> = {
     },
     'credential-planner': {
         articles: [
+            { slug: 'rental-property-smart-locks', category: 'use-cases', title: 'Rental Property Smart Locks Hub' },
             { slug: 'how-to-add-user-code', category: 'guides', title: 'Add User Code Guide' },
             { slug: 'share-access-securely', category: 'guides', title: 'Share Access Securely' },
-            { slug: 'delete-smart-lock-user', category: 'guides', title: 'Delete User Guide' },
         ],
         calculators: [
             { slug: 'guest-code', title: 'Guest Code Planner' },
@@ -134,12 +139,13 @@ export const calculatorLinksMap: Record<string, CalculatorLinks> = {
         ],
         calculators: [
             { slug: 'installation-cost', title: 'Installation Cost Calculator' },
-            { slug: 'compatibility', title: 'Compatibility Checker' },
+            { slug: 'compatibility', title: 'Full Door Compatibility Checker' },
         ],
     },
     'subscription-compare': {
         articles: [
             { slug: 'cloud-vs-local-cost', category: 'resources', title: 'Cloud vs Local Cost Analysis' },
+            { slug: 'smart-lock-saas-value', category: 'resources', title: 'Smart Lock SaaS Value Metrics' },
             { slug: 'local-vs-cloud-architecture', category: 'integration', title: 'Local vs Cloud Architecture' },
         ],
         calculators: [
@@ -162,12 +168,13 @@ export const calculatorLinksMap: Record<string, CalculatorLinks> = {
             { slug: 'disaster-recovery-business-continuity', category: 'guides', title: 'Disaster Recovery Planning' },
         ],
         calculators: [
-            { slug: 'battery-life', title: 'Battery Life Calculator' },
+            { slug: 'battery-life', title: 'Battery Runtime Calculator' },
             { slug: 'offline-resilience', title: 'Offline Resilience Planner' },
         ],
     },
     'access-capacity': {
         articles: [
+            { slug: 'multifamily-smart-locks-resident-staff-access', category: 'use-cases', title: 'Multifamily Smart Locks' },
             { slug: 'enterprise-commercial-deployment', category: 'use-cases', title: 'Enterprise Deployment Guide' },
             { slug: 'how-to-add-user-code', category: 'guides', title: 'Add User Code Guide' },
         ],
@@ -178,9 +185,9 @@ export const calculatorLinksMap: Record<string, CalculatorLinks> = {
     },
     'security-compliance': {
         articles: [
+            { slug: 'smart-lock-compliance-hub', category: 'security', title: 'Smart Lock Compliance Hub' },
+            { slug: 'smart-lock-insurance-liability-landlords-airbnb', category: 'security', title: 'Insurance & Liability Guide' },
             { slug: 'data-privacy-compliance-guide', category: 'security', title: 'Data Privacy & Compliance' },
-            { slug: 'smart-lock-security-complete-analysis', category: 'security', title: 'Security Complete Analysis' },
-            { slug: 'audit-trail-forensic-analysis', category: 'security', title: 'Audit Trail Analysis' },
         ],
         calculators: [
             { slug: 'fire-compliance', title: 'Fire Code Compliance Checker' },
@@ -188,8 +195,9 @@ export const calculatorLinksMap: Record<string, CalculatorLinks> = {
     },
     'lock-compare': {
         articles: [
+            { slug: 'schlage-vs-yale-smart-locks', category: 'resources', title: 'Schlage vs Yale Comparison' },
+            { slug: 'kwikset-vs-defiant-smart-locks', category: 'resources', title: 'Kwikset vs Defiant Comparison' },
             { slug: 'smart-lock-protocols-overview', category: 'protocols', title: 'Protocol Overview' },
-            { slug: 'door-compatibility-guide', category: 'guides', title: 'Door Compatibility Guide' },
         ],
         calculators: [
             { slug: 'lock-tco', title: 'TCO Calculator' },
@@ -212,11 +220,12 @@ export const calculatorLinksMap: Record<string, CalculatorLinks> = {
         ],
         calculators: [
             { slug: 'mesh-planner', title: 'Mesh Network Planner' },
-            { slug: 'poe-power', title: 'PoE Power Budget Calculator' },
+            { slug: 'poe-power', title: 'Hardwired PoE Power Budget' },
         ],
     },
     'poe-power': {
         articles: [
+            { slug: 'hotel-smart-lock-roi-mobile-keys-vs-keycards', category: 'use-cases', title: 'Hotel Smart Lock ROI' },
             { slug: 'enterprise-system-integration', category: 'integration', title: 'Enterprise Integration' },
             { slug: 'enterprise-commercial-deployment', category: 'use-cases', title: 'Enterprise Deployment Guide' },
         ],
@@ -227,8 +236,9 @@ export const calculatorLinksMap: Record<string, CalculatorLinks> = {
     },
     'fire-compliance': {
         articles: [
-            { slug: 'data-privacy-compliance-guide', category: 'security', title: 'Data Privacy & Compliance' },
-            { slug: 'enterprise-commercial-deployment', category: 'use-cases', title: 'Enterprise Deployment Guide' },
+            { slug: 'smart-lock-compliance-hub', category: 'security', title: 'Smart Lock Compliance Hub' },
+            { slug: 'california-vacation-rental-smart-lock-compliance', category: 'use-cases', title: 'California Vacation Rental Compliance' },
+            { slug: 'smart-lock-insurance-liability-landlords-airbnb', category: 'security', title: 'Insurance & Liability Guide' },
         ],
         calculators: [
             { slug: 'security-compliance', title: 'Security Compliance Checker' },
@@ -236,9 +246,9 @@ export const calculatorLinksMap: Record<string, CalculatorLinks> = {
     },
     'guest-code': {
         articles: [
+            { slug: 'best-smart-locks-for-airbnb-hosts', category: 'use-cases', title: 'Best Smart Locks for Airbnb Hosts' },
+            { slug: 'airbnb-smart-lock-integration-schlage-yale-august', category: 'integration', title: 'Airbnb Smart Lock Integration' },
             { slug: 'create-temporary-guest-code', category: 'guides', title: 'Guest Code Setup' },
-            { slug: 'smart-locks-airbnb-complete-guide', category: 'use-cases', title: 'Airbnb Complete Guide' },
-            { slug: 'multiple-failed-code-attempts', category: 'security', title: 'Failed Code Attempts' },
         ],
         calculators: [
             { slug: 'str-roi', title: 'STR ROI Calculator' },
@@ -251,8 +261,96 @@ export const calculatorLinksMap: Record<string, CalculatorLinks> = {
             { slug: 'improve-connection-stability', category: 'protocols', title: 'Connection Stability Guide' },
         ],
         calculators: [
-            { slug: 'signal-strength', title: 'Signal Strength Calculator' },
-            { slug: 'rf-coverage', title: 'RF Coverage Planner' },
+            { slug: 'signal-strength', title: 'RSSI Signal Strength Calculator' },
+            { slug: 'rf-coverage', title: 'Building RF Coverage Planner' },
+        ],
+    },
+    'hotel-roi': {
+        articles: [
+            { slug: 'hotel-smart-lock-roi-mobile-keys-vs-keycards', category: 'use-cases', title: 'Hotel Mobile Key ROI Guide' },
+            { slug: 'enterprise-commercial-deployment', category: 'use-cases', title: 'Enterprise Deployment Guide' },
+            { slug: 'enterprise-system-integration', category: 'integration', title: 'Enterprise Integration' },
+        ],
+        calculators: [
+            { slug: 'fleet-planner', title: 'Fleet Planner' },
+            { slug: 'access-capacity', title: 'Access Capacity Calculator' },
+        ],
+    },
+    'door-fit': {
+        articles: [
+            { slug: 'door-compatibility-guide', category: 'guides', title: 'Door Compatibility Guide' },
+            { slug: 'standard-door-dimensions-table', category: 'resources', title: 'Standard Door Dimensions' },
+            { slug: 'hidden-installation-costs', category: 'resources', title: 'Hidden Installation Costs' },
+        ],
+        calculators: [
+            { slug: 'compatibility', title: 'Full Door Compatibility Checker' },
+            { slug: 'installation-cost', title: 'Installation Cost Calculator' },
+        ],
+    },
+    'retrofit-advisor': {
+        articles: [
+            { slug: 'renter-friendly-smart-locks-no-drill-apartments', category: 'use-cases', title: 'Renter-Friendly Smart Locks' },
+            { slug: 'rental-property-smart-locks', category: 'use-cases', title: 'Rental Property Smart Locks Hub' },
+            { slug: 'door-compatibility-guide', category: 'guides', title: 'Door Compatibility Guide' },
+        ],
+        calculators: [
+            { slug: 'door-fit', title: 'Door Measurement Checker' },
+            { slug: 'installation-cost', title: 'Installation Cost Calculator' },
+        ],
+    },
+    'privacy-compliance': {
+        articles: [
+            { slug: 'data-privacy-compliance-guide', category: 'security', title: 'Data Privacy & Compliance' },
+            { slug: 'privacy-policy-template', category: 'resources', title: 'Privacy Policy Template' },
+            { slug: 'smart-lock-compliance-hub', category: 'security', title: 'Smart Lock Compliance Hub' },
+        ],
+        calculators: [
+            { slug: 'cyber-risk', title: 'Cyber Risk Scorecard' },
+            { slug: 'credential-planner', title: 'Credential Planner' },
+        ],
+    },
+    'cyber-risk': {
+        articles: [
+            { slug: 'smart-lock-security-complete-analysis', category: 'security', title: 'Smart Lock Security Analysis' },
+            { slug: 'secure-smart-lock-best-practices', category: 'security', title: 'Security Best Practices' },
+            { slug: 'encryption-standards-guide', category: 'resources', title: 'Encryption Standards Guide' },
+        ],
+        calculators: [
+            { slug: 'security-compliance', title: 'Security Compliance Checker' },
+            { slug: 'pin-strength', title: 'PIN Strength Checker' },
+        ],
+    },
+    'pin-strength': {
+        articles: [
+            { slug: 'secure-smart-lock-best-practices', category: 'security', title: 'Security Best Practices' },
+            { slug: 'multiple-failed-code-attempts', category: 'security', title: 'Failed Code Attempts' },
+            { slug: 'smart-lock-code-not-working', category: 'guides', title: 'Smart Lock Code Troubleshooting' },
+        ],
+        calculators: [
+            { slug: 'guest-code', title: 'Guest Code Planner' },
+            { slug: 'credential-planner', title: 'Credential Planner' },
+        ],
+    },
+    'energy-cost': {
+        articles: [
+            { slug: 'protocol-power-draw-table', category: 'resources', title: 'Protocol Power Draw Table' },
+            { slug: 'what-is-quiescent-current', category: 'resources', title: 'Quiescent Current Explained' },
+            { slug: 'wire-gauge-calculator-steps', category: 'resources', title: 'Wire Gauge Planning Steps' },
+        ],
+        calculators: [
+            { slug: 'battery-life', title: 'Battery Runtime Calculator' },
+            { slug: 'poe-power', title: 'Hardwired PoE Power Budget' },
+        ],
+    },
+    'noise-level': {
+        articles: [
+            { slug: 'lock-motor-noise-troubleshooting', category: 'guides', title: 'Lock Motor Noise Troubleshooting' },
+            { slug: 'door-alignment-guide', category: 'resources', title: 'Door Alignment Guide' },
+            { slug: 'hotel-smart-lock-roi-mobile-keys-vs-keycards', category: 'use-cases', title: 'Hotel Smart Lock ROI' },
+        ],
+        calculators: [
+            { slug: 'lock-compare', title: 'Lock Comparison Tool' },
+            { slug: 'compatibility', title: 'Full Door Compatibility Checker' },
         ],
     },
 }

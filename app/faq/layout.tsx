@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 export const metadata: Metadata = {
-    title: 'FAQ - SLockHub.com',
-    description: 'Frequently asked questions about smart lock systems — protocols, battery life, security, installation, and more.',
+    title: 'Smart Lock FAQ | Battery, Security, Installation | SLockHub',
+    description: 'Find direct answers about smart lock batteries, security, protocols, installation fit, app setup, and troubleshooting.',
     alternates: { canonical: '/faq' },
 }
 

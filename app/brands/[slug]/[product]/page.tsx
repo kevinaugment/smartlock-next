@@ -43,8 +43,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const product = await getProductDetail(productSlug)
     if (!product) return { title: 'Product Not Found' }
 
-    const title = product.meta_title || `${product.name} — SLockHub.com`
-    const description = product.meta_description || product.description || ''
+    const title = product.meta_title || `${product.name} Smart Lock | Specs, Protocol & Door Fit`
+    const description = product.meta_description || product.description || `Review ${product.name} smart lock specs, protocol support, battery expectations, access features, installation requirements, and related buying paths.`
 
     return {
         title,
@@ -303,7 +303,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                         </div>
 
                         <div className="content-card">
-                            <h2 className="section-title">Should You Choose This Model?</h2>
+                            <h2 className="section-title">Buy, Skip, Compare</h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <SpecItem label="Choose it when" value={getQuickVerdict(product)} />
                                 <SpecItem label="Skip it when" value={getSkipIfVerdict(product)} />
@@ -333,7 +333,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
                         {/* Connectivity Specs */}
                         <div className="content-card">
-                            <h2 className="section-title">Connectivity</h2>
+                            <h2 className="section-title">Protocol and Connectivity</h2>
                             <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-md)' }}>
                                 {getProtocolReliabilityVerdict(product)}
                             </p>
@@ -349,7 +349,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
                         {/* Battery & Power */}
                         <div className="content-card">
-                            <h2 className="section-title">Battery & Power</h2>
+                            <h2 className="section-title">Battery and Power</h2>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                 {product.battery_type && <SpecItem label="Battery Type" value={product.battery_type} />}
                                 {product.battery_count && <SpecItem label="Battery Count" value={`${product.battery_count}×`} />}
@@ -361,7 +361,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
                         {/* Security */}
                         <div className="content-card">
-                            <h2 className="section-title">Security</h2>
+                            <h2 className="section-title">Security and Access</h2>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                 {product.ansi_grade && <SpecItem label="ANSI/BHMA Grade" value={`Grade ${product.ansi_grade}`} />}
                                 <SpecItem label="UL Listed" value={product.ul_listed ? 'Yes ✓' : 'No'} />
@@ -371,7 +371,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
                         {/* Features */}
                         <div className="content-card">
-                            <h2 className="section-title">Features</h2>
+                            <h2 className="section-title">Key Features</h2>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 <FeatureItem label="Fingerprint" enabled={product.has_fingerprint} />
                                 <FeatureItem label="Keypad" enabled={product.has_keypad} />
@@ -401,7 +401,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                         {/* Installation */}
                         {(product.door_thickness_min_mm || product.bore_diameter_mm) && (
                             <div className="content-card">
-                                <h2 className="section-title">Installation Requirements</h2>
+                                <h2 className="section-title">Door Fit Requirements</h2>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                     {product.door_thickness_min_mm && product.door_thickness_max_mm && (
                                         <SpecItem label="Door Thickness" value={`${product.door_thickness_min_mm}–${product.door_thickness_max_mm} mm`} />
@@ -445,7 +445,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                         )}
 
                         <div className="content-card">
-                            <h2 className="section-title">Related Buying Paths</h2>
+                            <h2 className="section-title">Protocols, Brands, Tools</h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <Link href={getProtocolHref(product)} className="link-card">
                                     <h3 className="link-card__title">{product.protocol.toUpperCase()} Protocol Guide</h3>

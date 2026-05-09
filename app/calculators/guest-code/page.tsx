@@ -6,6 +6,8 @@ import { KeyRound, AlertTriangle, Lightbulb, Check } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface Inputs {
     brand: string
@@ -30,6 +32,29 @@ const brandCodeLimits: Record<string, { maxCodes: number; maxLength: number; sup
 }
 
 export default function GuestCodeCapacityPlanner() {
+    const faqs = [
+        {
+            question: 'How long should guest codes last?',
+            answer: 'Guest codes should normally activate shortly before arrival and expire shortly after checkout. Short windows reduce code sharing and stale access, while still giving guests enough time for late arrivals, cleaning delays, and support issues.',
+        },
+        {
+            question: 'Should Airbnb codes be unique?',
+            answer: 'Yes. Each Airbnb or short-term rental reservation should receive a unique code when the lock and booking workflow support it. Unique codes make checkout expiration, incident review, and guest support much easier than shared permanent codes.',
+        },
+        {
+            question: 'Can I reuse door codes?',
+            answer: 'Reusing door codes increases risk because previous guests, contractors, or staff may still know them. If reuse is unavoidable, use longer codes, rotate them frequently, and avoid patterns connected to the property address or booking dates.',
+        },
+        {
+            question: 'What is a safe checkout code policy?',
+            answer: 'A safe checkout policy expires the guest code after the checkout buffer, keeps cleaner and owner codes separate, removes unused codes, and logs exceptions. Hosts with many turnovers should automate code creation through a PMS or lock management platform.',
+        },
+        {
+            question: 'How do I prevent code sharing?',
+            answer: 'Use unique expiring codes, avoid shared staff codes, monitor access logs, keep code windows narrow, and change credentials after incidents. For higher-risk properties, combine PINs with mobile credentials, identity checks, or staffed verification.',
+        },
+    ]
+
     const [inputs, setInputs] = useState<Inputs>({
         brand: 'generic',
         guestsPerWeek: 5,
@@ -125,6 +150,13 @@ export default function GuestCodeCapacityPlanner() {
                     <p className="page-header__subtitle">
                         Plan guest code storage, rotation schedules, and collision risk for your smart locks
                     </p>
+                </div>
+
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="How should rental operators plan guest smart lock codes?"
+                        answer="Guest code planning starts with turnover volume, code length, code expiration, lock storage limits, and whether each reservation gets a unique PIN. Airbnb hosts, property managers, and hospitality teams should keep permanent owner and staff codes separate from temporary guest codes, maintain spare capacity, and avoid reusing codes across stays."
+                    />
                 </div>
 
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -280,6 +312,9 @@ export default function GuestCodeCapacityPlanner() {
 
                 <ToolRating toolSlug="guest-code" />
                 <RelatedResources calculatorSlug="guest-code" />
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
                 <BeTechCalculatorRecommendation
                     description="Be-Tech locks support up to 500 PIN codes with time-limited scheduling and one-time use options — ideal for high-turnover short-term rental operations."
                     badge="500 Codes"

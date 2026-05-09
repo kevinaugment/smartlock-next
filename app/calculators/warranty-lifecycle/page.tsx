@@ -6,6 +6,8 @@ import { Timer, AlertTriangle, Lightbulb, Check } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface Inputs {
     brand: string
@@ -31,6 +33,29 @@ const brandLifespan: Record<string, { baseLifeYears: number; failureRate: number
 }
 
 export default function WarrantyLifecycleCalculator() {
+    const faqs = [
+        {
+            question: 'How long do smart locks last?',
+            answer: 'Many smart locks last about 6 to 10 years depending on brand, duty cycle, weather exposure, maintenance, battery leakage, firmware support, and mechanical wear. Commercial-grade hardware may last longer under proper service.',
+        },
+        {
+            question: 'What voids a smart lock warranty?',
+            answer: 'Warranty coverage may be voided by improper installation, unsupported door modifications, water ingress beyond the rating, battery leakage, unauthorized repairs, incompatible accessories, or use outside the stated operating environment.',
+        },
+        {
+            question: 'When should fleets replace locks?',
+            answer: 'Fleets should plan replacement before failure rates rise, warranty coverage ends, firmware support stops, or parts become unavailable. High-traffic and exterior doors should be reviewed sooner than low-use interior doors.',
+        },
+        {
+            question: 'How do batteries affect lifecycle cost?',
+            answer: 'Batteries affect lifecycle cost through replacement cells, labor, leakage risk, emergency lockouts, and user support. Low-power protocols and proactive battery replacement reduce both operating cost and premature hardware damage.',
+        },
+        {
+            question: 'What spare parts should be budgeted?',
+            answer: 'Budget for batteries, strike plates, latches, screws, key cylinders, reader modules, covers, weather gaskets, hubs, and a small number of complete spare locks for rapid replacement.',
+        },
+    ]
+
     const [inputs, setInputs] = useState<Inputs>({
         brand: 'generic',
         dailyUsage: 10,
@@ -109,6 +134,13 @@ export default function WarrantyLifecycleCalculator() {
                     <p className="page-header__subtitle">
                         Predict product lifespan, warranty coverage gaps, and replacement costs
                     </p>
+                </div>
+
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="How long do smart locks last?"
+                        answer="Smart locks commonly last 6 to 10 years, but lifespan depends on duty cycle, weather exposure, battery maintenance, door alignment, firmware support, and hardware grade. Fleet owners should model warranty coverage separately from expected life because a lock can keep working after warranty expiration while still carrying higher failure and replacement risk."
+                    />
                 </div>
 
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -276,6 +308,9 @@ export default function WarrantyLifecycleCalculator() {
 
                 <ToolRating toolSlug="warranty-lifecycle" />
                 <RelatedResources calculatorSlug="warranty-lifecycle" />
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
                 <BeTechCalculatorRecommendation
                     description="Be-Tech smart locks are engineered for 10+ year lifespans with industry-low 2% annual failure rates and 3-year standard warranty coverage."
                     badge="Long Lifecycle"

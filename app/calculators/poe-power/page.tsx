@@ -6,6 +6,8 @@ import { Zap, AlertTriangle, Lightbulb, Check } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface Inputs {
     lockCount: number
@@ -41,6 +43,29 @@ const additionalDevicePower: Record<string, { watts: number; label: string }> = 
 }
 
 export default function PoEPowerBudgetCalculator() {
+    const faqs = [
+        {
+            question: 'What wire gauge do I need for electric locks?',
+            answer: 'Wire gauge depends on current draw, voltage, cable length, and acceptable voltage drop. Longer runs and higher-current strikes, maglocks, readers, or panels may need thicker wire or distributed power supplies.',
+        },
+        {
+            question: 'How much voltage drop is acceptable?',
+            answer: 'Many access control designs try to keep voltage drop within a small margin so the lock still receives its required operating voltage at peak draw. Always compare calculated drop against the manufacturer input range.',
+        },
+        {
+            question: 'Is 12V or 24V better?',
+            answer: '24V systems usually tolerate longer cable runs with less voltage drop for the same power, while 12V hardware is common and simple. The best choice depends on the lock, power supply, panel, cable length, and code requirements.',
+        },
+        {
+            question: 'Can PoE power a door lock?',
+            answer: 'PoE can power some access control devices when the lock, controller, reader, and switch budget fit within the PoE class. Higher-draw hardware may need PoE+, PoE++, a local power supply, or a separate access control power system.',
+        },
+        {
+            question: 'How far can I run access control cable?',
+            answer: 'Ethernet PoE runs are typically limited to 100 meters, but voltage drop, heat, and device draw can reduce practical headroom. Long access control runs should be checked for both data distance and delivered power.',
+        },
+    ]
+
     const [inputs, setInputs] = useState<Inputs>({
         lockCount: 10,
         poeStandard: 'af',
@@ -154,6 +179,13 @@ export default function PoEPowerBudgetCalculator() {
                     <p className="page-header__subtitle">
                         Plan Power over Ethernet budgets for hardwired commercial smart lock installations
                     </p>
+                </div>
+
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="Can PoE power a smart lock or access control door?"
+                        answer="PoE can power some smart lock and access control doors when the lock draw, reader, intercom, camera, cable loss, per-port class, and total switch budget all fit with headroom. For commercial doors, calculate both per-port power and total switch budget, then leave expansion capacity for future readers, sensors, or cameras."
+                    />
                 </div>
 
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -314,6 +346,9 @@ export default function PoEPowerBudgetCalculator() {
 
                 <ToolRating toolSlug="poe-power" />
                 <RelatedResources calculatorSlug="poe-power" />
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
                 <BeTechCalculatorRecommendation
                     description="Be-Tech hardwired smart locks draw only 5-8W, maximizing PoE switch capacity. Compatible with standard 802.3af PoE — no expensive PoE+ required."
                     badge="Low Power"

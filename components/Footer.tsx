@@ -21,7 +21,7 @@ export default function Footer() {
 
         <div className="footer__grid">
           <div>
-            <h3 className="footer__heading">Knowledge Base</h3>
+            <h3 className="footer__heading">Smart Lock Guides</h3>
             <ul className="space-y-2 text-sm">
               <li><Link href="/articles/protocols">Protocols</Link></li>
               <li><Link href="/articles/security">Security</Link></li>

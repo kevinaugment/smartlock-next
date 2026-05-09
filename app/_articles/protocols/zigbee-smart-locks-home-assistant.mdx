@@ -1,0 +1,69 @@
+---
+title: 'Zigbee Smart Locks for Home Assistant: Hubs, Pairing, Security, and Battery'
+description: 'Plan Zigbee smart locks with Home Assistant, including coordinators, Zigbee2MQTT, ZHA, pairing, repeaters, security, battery life, and troubleshooting.'
+category: protocols
+pubDate: 2026-05-09T00:00:00.000Z
+updatedDate: 2026-05-09T00:00:00.000Z
+wordCount: 525
+readingTime: 5
+keywords:
+  - zigbee smart lock home assistant
+  - Home Assistant Zigbee lock
+  - Zigbee2MQTT smart lock
+  - ZHA door lock
+tags:
+  - zigbee
+  - home-assistant
+  - pairing
+  - automation
+isPillar: false
+isSupport: true
+featured: true
+---
+
+## Quick Answer
+
+Zigbee smart locks can work well with Home Assistant when the coordinator, integration, repeaters, and lock model are chosen together. Start by confirming whether the exact lock is supported by ZHA or Zigbee2MQTT, then plan repeaters before pairing the lock.
+
+Use the [Protocol Selection Wizard](/calculators/protocol-wizard) if you are still comparing Zigbee, Z-Wave, Thread, or Wi-Fi.
+
+## Home Assistant Zigbee Setup Options
+
+| Option | Best for | Watch-out |
+|---|---|---|
+| ZHA | Simpler native Home Assistant setup | Device support varies by lock model |
+| Zigbee2MQTT | Broader device visibility and control | More moving parts to maintain |
+| Dedicated hub bridge | Buyers who want vendor app fallback | May expose fewer controls to Home Assistant |
+| Matter bridge path | Mixed ecosystem households | Feature mapping may be limited |
+
+## Coordinator and Repeater Planning
+
+A lock is usually a sleepy battery device, not a repeater. Put a powered Zigbee repeater between the coordinator and the door before pairing, especially if the door is exterior, metal, or far from the hub.
+
+Good repeater candidates are powered plugs or modules known to route well. Avoid assuming every bulb or inexpensive device is a stable router for lock traffic.
+
+## Pairing Checklist
+
+1. Update Home Assistant and the Zigbee integration.
+2. Confirm exact lock support in ZHA or Zigbee2MQTT.
+3. Place the coordinator away from USB 3.0 noise and Wi-Fi routers.
+4. Add powered repeaters before pairing the lock.
+5. Pair the lock in its installed location if possible.
+6. Test lock, unlock, battery, jammed status, and code management.
+7. Document the recovery process before using it on a rental or exterior door.
+
+## Security and Access Controls
+
+Do not expose Home Assistant directly to the internet just to control a lock. Use strong account security, proper remote access, backups, and separate guest-code workflows. For rentals, avoid giving guests app access when a temporary PIN code is safer.
+
+## Battery and Reliability
+
+Zigbee can deliver strong battery life, but poor mesh quality still causes retries, missed status, and battery drain. Use the [Signal Strength Calculator](/calculators/signal-strength) and [Mesh Network Planner](/calculators/mesh-planner) to check the physical route.
+
+## Internal Links
+
+- [Zigbee vs Z-Wave Smart Locks](/articles/protocols/zigbee-vs-zwave-comparison)
+- [Thread vs Zigbee Smart Locks](/articles/protocols/thread-vs-zigbee-smart-locks)
+- [Smart Lock Pairing Guide](/articles/guides/smart-lock-pairing-complete-guide)
+- [Signal Strength Calculator](/calculators/signal-strength)
+- [Mesh Network Planner](/calculators/mesh-planner)

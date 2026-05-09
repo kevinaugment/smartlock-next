@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy - SLockHub.com',
-  description: 'SLockHub.com privacy policy — how we collect, use, and protect your information.',
+  title: 'Privacy Policy | Calculator Data, Cookies & Analytics | SLockHub',
+  description: 'Read how SLockHub handles calculator inputs, cookies, analytics, data security, third-party services, and privacy rights.',
   alternates: { canonical: '/privacy' },
 }
 

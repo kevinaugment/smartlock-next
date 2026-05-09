@@ -11,25 +11,50 @@ import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { SeoPathways } from '@/components/seo/SeoPathways'
 import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Door Compatibility Checker | ANSI A156.2 Standards',
-  description: 'Verify smart lock compatibility using ANSI/BHMA A156.2 standards. Check door thickness (35-57mm), backset (60/70mm), material, and bore holes. Instant compatibility score.',
+  title: 'Smart Lock Door Compatibility Checker - See If Your Door Fits',
+  description: 'Check door thickness, backset, bore size, material, and installation risk before buying a smart lock.',
   keywords: 'smart lock compatibility, door thickness, backset measurement, ANSI A156.2, bore hole size, door compatibility checker',
   alternates: { canonical: '/calculators/compatibility' },
   openGraph: {
-    title: 'Smart Lock Door Compatibility Checker',
+    title: 'Smart Lock Door Compatibility Checker - See If Your Door Fits',
     description: 'Check door thickness, backset, bore size, material, and installation risk before buying a smart lock.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Smart Lock Door Compatibility Checker',
+    title: 'Smart Lock Door Compatibility Checker - See If Your Door Fits',
     description: 'Verify physical smart lock fit before purchase using ANSI/BHMA door-prep standards.',
   },
 }
 
 export default function CompatibilityPage() {
+  const faqs = [
+    {
+      question: 'Will a smart lock fit my door?',
+      answer: 'A smart lock will fit only if the door thickness, backset, bore hole, latch bore, material, handing, and lock type match the product requirements. Retrofit locks may fit some doors that cannot accept a full replacement.',
+    },
+    {
+      question: 'What backset do I need?',
+      answer: 'Most U.S. residential doors use either a 60mm or 70mm backset. Measure from the door edge to the center of the bore hole and confirm the smart lock latch supports that distance.',
+    },
+    {
+      question: 'Can smart locks work on mortise locks?',
+      answer: 'Some smart locks support mortise doors, but standard deadbolt smart locks usually do not. Mortise doors often need a compatible mortise smart lock, access control hardware, or professional modification.',
+    },
+    {
+      question: 'Are smart locks renter-friendly?',
+      answer: 'Retrofit smart locks are often more renter-friendly because they keep the exterior key cylinder and reduce permanent changes. Renters should still check lease terms and avoid drilling without approval.',
+    },
+    {
+      question: 'What measurements should I take first?',
+      answer: 'Measure door thickness, backset, main bore diameter, latch bore, edge plate, strike alignment, and available interior clearance. Also note material, fire rating, glass, and whether the current lock is deadbolt, lever, knob, or mortise.',
+    },
+  ]
+
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -85,6 +110,13 @@ export default function CompatibilityPage() {
             <div className="page-header__icon"><Search className="w-14 h-14" /></div>
             <h1 className="page-header__title">Smart Lock Door Compatibility Checker</h1>
             <p className="page-header__subtitle">Verify compatibility using ANSI/BHMA A156.2 industry standards</p>
+          </div>
+
+          <div className="max-w-7xl mx-auto">
+            <CalculatorAnswerBlock
+              title="Will a smart lock fit my door?"
+              answer="A smart lock fits when the door thickness, backset, bore hole, latch bore, material, and lock type match the manufacturer specifications. Standard deadbolt replacements usually need a common 54mm bore and 60mm or 70mm backset, while retrofit locks may work when you need to keep the existing exterior hardware."
+            />
           </div>
 
           <div className="max-w-4xl mx-auto mb-12">
@@ -323,10 +355,13 @@ export default function CompatibilityPage() {
 
 
           <RelatedResources calculatorSlug="door-lock-compatibility-checker" />
+          <div className="max-w-7xl mx-auto">
+            <CalculatorFaqBlock faqs={faqs} />
+          </div>
 
-          {/* Related Resources */}
+          {/* Door Fit, Cost, Signal */}
           <div className="max-w-7xl mx-auto mt-12">
-            <h2 className="section-title">Related Resources</h2>
+            <h2 className="section-title">Door Fit, Cost, Signal</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Link href="/calculators/installation-cost" className="link-card">
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><DollarSign className="w-8 h-8" /></div>

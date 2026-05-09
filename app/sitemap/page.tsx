@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Sitemap - SLockHub.com',
-  description: 'Complete sitemap of SLockHub.com — browse all articles, calculators, guides, and tools.',
+  title: 'SLockHub Sitemap | Guides, Calculators, Resources',
+  description: 'Map SLockHub pages for smart lock guides, calculators, brand data, protocol comparisons, buying resources, and site links.',
   alternates: { canonical: '/sitemap' },
 }
 
@@ -60,7 +60,7 @@ export default function Sitemap() {
 
             {/* Articles */}
             <div className="content-card">
-              <h2 className="section-title">Knowledge Base</h2>
+              <h2 className="section-title">Smart Lock Guides</h2>
               <ul className="space-y-3">
                 <li><Link href="/articles" style={{ color: 'var(--color-accent)', fontWeight: 500 }}>All Articles (49+)</Link></li>
                 {categories.map(cat => (
@@ -75,7 +75,7 @@ export default function Sitemap() {
 
             {/* Calculators */}
             <div className="content-card md:col-span-2">
-              <h2 className="section-title">Interactive Calculators (15)</h2>
+              <h2 className="section-title">Planning Calculators</h2>
               <div className="grid md:grid-cols-3 gap-4">
                 {calculators.map((calc) => (
                   <Link key={calc.slug} href={`/calculators/${calc.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 500 }}>
@@ -116,10 +116,10 @@ export default function Sitemap() {
 
           <div className="info-box" style={{ marginTop: 'var(--space-3xl)', textAlign: 'center' }}>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-sm)' }}>
-              Can&apos;t Find What You&apos;re Looking For?
+              Guides, Tools, Contact
             </h3>
             <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)' }}>
-              Use our search or browse by category
+              Jump to article hubs, calculators, or support contact paths.
             </p>
             <div className="grid-actions">
               <Link href="/articles" className="btn btn-primary">Browse Articles</Link>

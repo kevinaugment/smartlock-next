@@ -6,6 +6,8 @@ import { Zap, DollarSign, Leaf, Info, Sun } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 const PROTOCOL_POWER: Record<string, { active: number; standby: number; label: string }> = {
     'ble': { active: 0.1, standby: 0.01, label: 'Bluetooth Low Energy' },
@@ -16,6 +18,29 @@ const PROTOCOL_POWER: Record<string, { active: number; standby: number; label: s
 }
 
 export default function EnergyCostCalculator() {
+    const faqs = [
+        {
+            question: 'How much electricity does an electric lock use?',
+            answer: 'Electric lock energy use depends on standby draw, active motor or strike time, access frequency, hubs, and whether the lock is battery, PoE, or hardwired. Small per-lock usage can still matter across large fleets.',
+        },
+        {
+            question: 'Are maglocks expensive to run?',
+            answer: 'Maglocks can cost more to operate because many are energized continuously while locked. Their true cost depends on wattage, duty cycle, electricity rate, power supply efficiency, and whether fail-safe operation is required.',
+        },
+        {
+            question: 'What affects access control energy cost?',
+            answer: 'The main factors are protocol standby draw, lock motor time, electric strike or maglock duty cycle, hub power, PoE switch losses, battery replacement cost, local electricity rate, and total door count.',
+        },
+        {
+            question: 'Do fail-safe locks use more power?',
+            answer: 'Often yes. Some fail-safe devices consume power to remain locked and release when power is lost. Fail-secure devices may draw power only during unlock, but egress and fire code requirements decide what is allowed.',
+        },
+        {
+            question: 'How do I reduce lock power cost?',
+            answer: 'Use low-power protocols, reduce unnecessary Wi-Fi activity, tune auto-lock behavior, maintain door alignment, choose efficient hubs, schedule firmware updates, and compare battery replacement cost against PoE or hardwired operation.',
+        },
+    ]
+
     const [lockCount, setLockCount] = useState(10)
     const [powerSource, setPowerSource] = useState<'battery' | 'poe' | 'hardwired'>('battery')
     const [protocol, setProtocol] = useState('wifi')
@@ -101,6 +126,13 @@ export default function EnergyCostCalculator() {
                     <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)' }}>
                         Calculate the ongoing energy cost of your smart lock deployment
                     </p>
+                </div>
+
+                <div className="max-w-7xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="How do you estimate smart lock energy cost?"
+                        answer="Smart lock energy cost is the annual cost of lock standby power, active motor time, hubs, PoE or hardwired power, and battery replacements. Battery locks often cost more in replacement labor and cells than in electricity, while hardwired strikes and maglocks should be checked for continuous draw and duty cycle."
+                    />
                 </div>
 
                 <div className="max-w-4xl mx-auto" style={{ marginBottom: 'var(--space-3xl)' }}>
@@ -302,6 +334,9 @@ export default function EnergyCostCalculator() {
                 />
 
                 <RelatedResources calculatorSlug="energy-cost-calculator" />
+                <div className="max-w-7xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
 
                 <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
                     <h2 className="text-2xl font-bold mb-6">Related Tools</h2>

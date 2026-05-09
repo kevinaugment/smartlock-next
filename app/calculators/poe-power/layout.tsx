@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'PoE Power Budget Calculator - SLockHub.com',
-    description: 'Calculate Power over Ethernet budget for smart lock and access control installations. Plan PoE switch capacity and power allocation.',
+    title: 'PoE Smart Lock Power Budget Calculator - Size Switches, Runs & Wattage',
+    description: 'Size PoE switch capacity, port class, cable runs, device wattage, and expansion headroom for smart lock and access control doors.',
     canonical: '/calculators/poe-power',
 })
 
@@ -19,7 +19,7 @@ export default function PoePowerLayout({ children }: { children: React.ReactNode
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Calculate Power over Ethernet budget for smart lock and access control installations.',
+                description: 'Calculate PoE power budget by switch capacity, port class, cable loss, device draw, and expansion headroom.',
             }} />
             <JsonLd data={{
                 '@context': 'https://schema.org',

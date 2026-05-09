@@ -9,27 +9,52 @@ import {
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { SeoPathways } from '@/components/seo/SeoPathways'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Installation Cost Calculator (2026) | Labor + Hardware Estimate',
-  description: 'Estimate smart lock installation cost by door count, lock type, labor tier, wiring, and modifications. Compare DIY, handyman, locksmith, and electrician rates for 2026.',
+  description: 'Estimate smart lock installation cost by door count, labor, wiring, drilling, adapters, and hardware before booking a locksmith.',
   keywords: 'smart lock installation cost, locksmith rates 2026, installation price calculator, handyman rates, smart lock labor cost',
   alternates: { canonical: '/calculators/installation-cost' },
   openGraph: {
     title: 'Smart Lock Installation Cost Calculator (2026)',
-    description: 'Estimate hardware, labor, wiring, and door modification costs before installing a smart lock.',
+    description: 'Estimate smart lock installation cost by door count, labor, wiring, drilling, adapters, and hardware.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Smart Lock Installation Cost Calculator (2026)',
-    description: 'Estimate smart lock installation cost by door count, labor tier, wiring, and modifications.',
+    description: 'Estimate smart lock installation cost by door count, labor, wiring, drilling, adapters, and hardware.',
   },
 }
 
 export default function InstallationCostPage() {
+  const faqs = [
+    {
+      question: 'How much does smart lock installation cost?',
+      answer: 'A typical smart lock installation costs about $350 to $600 per door when hardware and standard labor are included. Fresh drilling, wiring, mortise correction, travel fees, or commercial hardware can push the total higher.',
+    },
+    {
+      question: 'Is a locksmith required?',
+      answer: 'A locksmith is not required for every smart lock, but professional installation is safer when the door needs drilling, strike alignment, commercial hardware, or warranty-sensitive work.',
+    },
+    {
+      question: 'What increases installation labor?',
+      answer: 'Labor increases when the backset is non-standard, the bore hole is missing or misaligned, the strike plate needs adjustment, wiring is required, or the door material is metal, glass, or fire-rated.',
+    },
+    {
+      question: 'How much does wiring add?',
+      answer: 'Wiring can add several labor hours plus cable, power supply, conduit, and finishing costs. Hardwired locks should usually be estimated separately from simple battery-powered deadbolt replacements.',
+    },
+    {
+      question: 'Is DIY installation safe for rentals?',
+      answer: 'DIY can work for simple residential deadbolt replacements, but rental and commercial properties should confirm lease rules, fire egress, accessibility, insurance requirements, and local code before installing.',
+    },
+  ]
+
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -55,7 +80,7 @@ export default function InstallationCostPage() {
     '@type': 'WebPage',
     name: 'Smart Lock Installation Cost Calculator',
     url: 'https://www.slockhub.com/calculators/installation-cost',
-    description: 'Estimate smart lock installation cost by door count, lock type, labor tier, wiring, and modifications.',
+    description: 'Estimate smart lock installation cost by door count, labor, wiring, drilling, adapters, and hardware.',
     isPartOf: {
       '@type': 'WebSite',
       name: 'SLockHub.com',
@@ -85,6 +110,47 @@ export default function InstallationCostPage() {
             <div className="page-header__icon"><DollarSign className="w-14 h-14" /></div>
             <h1 className="page-header__title">Smart Lock Installation Cost Calculator</h1>
             <p className="page-header__subtitle">Estimate hardware, labor, wiring, and door modification costs before booking a locksmith or buying a lock</p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <CalculatorAnswerBlock
+              title="How much does smart lock installation cost?"
+              answer="Smart lock installation usually costs $350 to $600 per door when a standard residential lock and professional labor are included. The estimate changes quickly when the door needs drilling, strike alignment, wiring, adapter kits, commercial-grade hardware, or after-hours locksmith service."
+            >
+              <div className="data-table-wrap">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Install type</th>
+                      <th>Typical labor cost</th>
+                      <th>Best fit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>DIY</td>
+                      <td>$0 labor</td>
+                      <td>Prepared residential deadbolt doors</td>
+                    </tr>
+                    <tr>
+                      <td>Handyman</td>
+                      <td>$125-200</td>
+                      <td>Standard replacement without wiring</td>
+                    </tr>
+                    <tr>
+                      <td>Locksmith</td>
+                      <td>$150-250</td>
+                      <td>Fit, alignment, warranty, and lock expertise</td>
+                    </tr>
+                    <tr>
+                      <td>Electrician</td>
+                      <td>$300+</td>
+                      <td>PoE, electric strikes, or hardwired access control</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </CalculatorAnswerBlock>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12">
@@ -293,9 +359,13 @@ export default function InstallationCostPage() {
           
           <RelatedResources calculatorSlug="installation-cost-estimator" />
 
-{/* Related Resources */}
+          <div className="max-w-7xl mx-auto">
+            <CalculatorFaqBlock faqs={faqs} />
+          </div>
+
+{/* Cost, TCO, Fit Tools */}
           <div className="max-w-7xl mx-auto mt-12">
-            <h2 className="section-title">Related Resources</h2>
+            <h2 className="section-title">Cost, TCO, Fit Tools</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Link href="/calculators/lock-tco" className="link-card">
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><DollarSign className="w-8 h-8" /></div>

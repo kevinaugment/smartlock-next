@@ -5,20 +5,20 @@ import { CATEGORIES } from '@/lib/articles/types';
 import { BookOpen, Clock, Calendar } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Knowledge Base | Guides, Protocols, Security & Installation',
-  description: 'Browse smart lock guides by protocol, security, installation, compatibility, troubleshooting, and use case. Start with high-demand decision guides and related calculators.',
+  title: 'Smart Lock Guides | Protocol, Security, Installation & Troubleshooting',
+  description: 'Find smart lock guides for door compatibility, protocols, security, installation, troubleshooting, access codes, rentals, and integrations.',
   alternates: { canonical: '/articles' },
   openGraph: {
-    title: 'Smart Lock Knowledge Base',
-    description: 'Guides for smart lock protocols, security, compatibility, installation, and product decisions.',
+    title: 'Smart Lock Guides',
+    description: 'Guides for smart lock compatibility, protocols, security, installation, troubleshooting, and product decisions.',
     siteName: 'SLockHub.com',
     type: 'website',
     url: 'https://www.slockhub.com/articles',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Smart Lock Knowledge Base',
-    description: 'Start with the highest-value smart lock guides, then use calculators and comparison pages to validate decisions.',
+    title: 'Smart Lock Guides',
+    description: 'Start with smart lock compatibility, protocol, security, installation, and troubleshooting guides.',
   },
 }
 
@@ -54,8 +54,8 @@ export default function ArticlesPage() {
   const collectionSchema = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'Smart Lock Knowledge Base',
-    description: 'Comprehensive smart lock guides, tutorials, and documentation covering protocols, security, installation, troubleshooting, and real-world applications.',
+    name: 'Smart Lock Guides',
+    description: 'Smart lock guides for protocol choice, installation, troubleshooting, security, rental access, integrations, and reference tables.',
     url: 'https://www.slockhub.com/articles',
     mainEntity: {
       '@type': 'ItemList',
@@ -79,14 +79,14 @@ export default function ArticlesPage() {
             <div className="page-header__icon">
               <BookOpen className="w-10 h-10" />
             </div>
-            <h1 className="page-header__title">Knowledge Base</h1>
+            <h1 className="page-header__title">Smart Lock Guides</h1>
             <p className="page-header__subtitle">
               Comprehensive guides, tutorials, and documentation for smart lock systems
             </p>
           </div>
 
           <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
-            <h2 className="section-title">Start With High-Intent Guides</h2>
+            <h2 className="section-title">Best Articles to Read First</h2>
             <p style={{ color: 'var(--color-text-secondary)', maxWidth: '52rem', lineHeight: 1.7, marginBottom: 'var(--space-xl)' }}>
               These articles connect the biggest organic opportunities to calculators, best pages, protocol pages, and product decisions.
             </p>
@@ -101,7 +101,7 @@ export default function ArticlesPage() {
           </section>
 
           <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
-            <h2 className="section-title">Research to Decision Path</h2>
+            <h2 className="section-title">Calculators, Products, Protocols</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {articlePathways.map((item) => (
                 <Link key={item.href} href={item.href} className="link-card">
@@ -114,7 +114,7 @@ export default function ArticlesPage() {
 
           {/* Categories */}
           <div className="mb-16">
-            <h2 className="section-title">Browse by Category</h2>
+            <h2 className="section-title">Topics and Use Cases</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {categories.map((category) => (
                 <Link
@@ -148,7 +148,7 @@ export default function ArticlesPage() {
           {/* Articles Grid */}
           <div>
             <div className="flex items-center justify-between mb-8">
-              <h2 className="section-title" style={{ marginBottom: 0 }}>Latest Articles</h2>
+              <h2 className="section-title" style={{ marginBottom: 0 }}>New Smart Lock Guides</h2>
               <span className="text-sm" style={{ color: 'var(--color-text-muted)' }}>{articles.length} articles</span>
             </div>
             {articles.length === 0 ? (

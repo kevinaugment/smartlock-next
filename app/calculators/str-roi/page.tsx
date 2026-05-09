@@ -10,15 +10,40 @@ import {
 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 export const metadata: Metadata = buildSeoMetadata({
     title: 'Airbnb Smart Lock ROI Calculator | Short-Term Rental Investment Analysis',
-    description: 'Calculate smart lock ROI for Airbnb/VRBO rentals. Analyze labor savings, lockout costs, rekeying expenses using 2026 STR industry data from AirDNA & Mashvisor.',
+    description: 'Calculate Airbnb smart lock ROI from self-check-in savings, lockout costs, rekeying, batteries, subscriptions, and payback period.',
     canonical: '/calculators/str-roi',
     keywords: 'Airbnb smart lock ROI, VRBO rental calculator, STR investment, vacation rental smart lock, property manager calculator, short-term rental ROI',
 })
 
 export default function STRROIPage() {
+  const faqs = [
+    {
+      question: 'Do smart locks pay for themselves on Airbnb?',
+      answer: 'Smart locks often pay for themselves on active Airbnb or VRBO properties when they reduce key handoffs, lockouts, rekeying, and guest support. Payback depends on booking volume, labor cost, lock price, and software fees.',
+    },
+    {
+      question: 'How much does self check-in save?',
+      answer: 'Self check-in saves the time normally spent coordinating arrivals, late check-ins, key pickup, and emergency access. For high-turnover hosts, the saved labor can become the largest ROI driver.',
+    },
+    {
+      question: 'Do smart locks reduce lockouts?',
+      answer: 'Smart locks reduce many lockouts by using temporary PINs, remote code changes, and backup access workflows. They do not eliminate every access incident, so hosts should keep a documented backup plan.',
+    },
+    {
+      question: 'Should each rental have a keypad?',
+      answer: 'A keypad is usually the safest default for short-term rentals because guests can enter without installing an app. App access can be offered as a secondary convenience, not the only access method.',
+    },
+    {
+      question: 'What payback period is realistic?',
+      answer: 'Active short-term rentals often target a payback period under 12 months. Properties with frequent turnovers, remote hosts, or repeated lockouts can justify a shorter payback target.',
+    },
+  ]
+
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -36,7 +61,7 @@ export default function STRROIPage() {
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'Web',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-    description: 'Calculate ROI for smart locks in Airbnb/VRBO rentals including labor savings, lockout prevention, and guest experience improvements'
+    description: 'Calculate Airbnb smart lock ROI from self-check-in savings, lockout costs, rekeying, batteries, subscriptions, and payback period.'
   }
 
   return (
@@ -58,8 +83,22 @@ export default function STRROIPage() {
 
           <div className="page-header">
             <div className="page-header__icon"><Home className="w-14 h-14" /></div>
-            <h1 className="page-header__title">Short-Term Rental Smart Lock ROI Calculator</h1>
+            <h1 className="page-header__title">Airbnb Smart Lock ROI Calculator</h1>
             <p className="page-header__subtitle">Calculate labor savings, lockout costs, and payback period for your Airbnb/VRBO smart lock investment</p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <CalculatorAnswerBlock
+              title="Do smart locks pay for themselves on Airbnb?"
+              answer="Smart locks can pay for themselves on Airbnb when avoided key handoffs, fewer lockouts, reduced rekeying, and faster guest access exceed the hardware, installation, battery, and software costs. The strongest ROI usually appears on remote or high-turnover rentals where every guest arrival otherwise creates manual work."
+            >
+              <div className="card">
+                <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xs)' }}>ROI formula</div>
+                <code style={{ color: 'var(--color-text-primary)', overflowWrap: 'anywhere' }}>
+                  ROI = (annual labor savings + avoided lockouts + avoided rekeying - annual operating cost) / upfront cost
+                </code>
+              </div>
+            </CalculatorAnswerBlock>
           </div>
 
           <div className="max-w-4xl mx-auto mb-12">
@@ -298,9 +337,13 @@ export default function STRROIPage() {
 
           <RelatedResources calculatorSlug="short-term-rental-roi-calculator" />
 
-          {/* Related Resources */}
+          <div className="max-w-7xl mx-auto">
+            <CalculatorFaqBlock faqs={faqs} />
+          </div>
+
+          {/* ROI, TCO, Battery */}
           <div className="max-w-7xl mx-auto mt-12">
-            <h2 className="section-title">Related Calculators</h2>
+            <h2 className="section-title">ROI, TCO, Battery</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Link href="/calculators/lock-tco" className="link-card">
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><DollarSign className="w-8 h-8" /></div>

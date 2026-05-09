@@ -6,8 +6,33 @@ import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechR
 import { Timer } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 export default function InstallationTime() {
+  const faqs = [
+    {
+      question: 'How long does smart lock installation take?',
+      answer: 'A straightforward residential smart deadbolt installation often takes 30 to 60 minutes per door. Commercial doors, wiring, metal doors, inspections, access logistics, and setup testing can add significant time.',
+    },
+    {
+      question: 'What slows down installation?',
+      answer: 'Common delays include non-standard bore holes, poor door alignment, thick or metal doors, missing templates, wiring, weak Wi-Fi or hub placement, app setup issues, elevator access, and post-install inspections.',
+    },
+    {
+      question: 'How many doors can a technician install per day?',
+      answer: 'An experienced technician may install several standard prepped doors per day, but the number drops with wiring, drilling, commercial access control, multi-site travel, or detailed credential setup.',
+    },
+    {
+      question: 'How long does wiring take?',
+      answer: 'Wiring can add 30 minutes or more per door for simple runs and much longer for access panels, PoE, electric strikes, maglocks, fire alarm interfaces, or concealed conduit in commercial buildings.',
+    },
+    {
+      question: 'How should property managers schedule installs?',
+      answer: 'Property managers should group similar doors, confirm measurements first, stage hardware, plan tenant access windows, reserve elevator or maintenance access, and leave time for testing, credential setup, and rework.',
+    },
+  ]
+
   const [doorCount, setDoorCount] = useState(10)
   const [doorType, setDoorType] = useState('standard')
   const [wireRequired, setWireRequired] = useState(false)
@@ -69,6 +94,13 @@ export default function InstallationTime() {
           <div className="page-header__icon"><Timer className="w-14 h-14" /></div>
           <h1 className="text-4xl font-bold mb-4">Installation Time Estimator</h1>
           <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Estimate technician hours and labor cost</p>
+        </div>
+
+        <div className="max-w-6xl mx-auto">
+          <CalculatorAnswerBlock
+            title="How long does smart lock installation take?"
+            answer="A standard smart lock install often takes 30 to 60 minutes per prepared door, but fleet work should include setup, testing, credential provisioning, travel between doors, and documentation. Wiring, drilling, metal doors, high-rise access, inspections, and unfamiliar hardware can push each door beyond an hour."
+          />
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -204,6 +236,9 @@ export default function InstallationTime() {
       <ToolRating toolSlug="installation-time" />
 
       <RelatedResources calculatorSlug="installation-time-estimator" />
+      <div className="max-w-6xl mx-auto">
+        <CalculatorFaqBlock faqs={faqs} />
+      </div>
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

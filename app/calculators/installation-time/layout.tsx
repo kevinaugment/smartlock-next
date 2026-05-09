@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Installation Time Estimator - SLockHub.com',
-    description: 'Estimate smart lock installation time and labor costs. Factor in door type, wiring requirements, technician count, and labor rates for accurate project planning.',
+    title: 'Smart Lock Installation Time Estimator | Labor, Doors & Wiring',
+    description: 'Estimate smart lock installation time by door type, drilling, wiring, retrofit difficulty, technician count, crew days, and labor cost.',
     canonical: '/calculators/installation-time',
 })
 
@@ -19,7 +19,7 @@ export default function InstallationTimeLayout({ children }: { children: React.R
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Estimate smart lock installation time and labor costs. Factor in door type, wiring requirements, technician count, and labor rates for accurate project planning.',
+                description: 'Estimate smart lock installation time by door type, drilling, wiring, retrofit difficulty, technician count, and labor cost.',
                 softwareVersion: '1.0',
                 datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },

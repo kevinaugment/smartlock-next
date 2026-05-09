@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Guest Code Capacity Planner - SLockHub.com',
-    description: 'Plan guest code capacity for your smart lock system. Calculate how many unique codes you need for Airbnb, rental properties, and commercial access.',
+    title: 'Guest Code Capacity Planner | Airbnb, Rental & Visitor PINs',
+    description: 'Plan smart lock guest code capacity, PIN rotation, collision risk, expiration schedules, Airbnb access, rental properties, and visitor workflows.',
     canonical: '/calculators/guest-code',
 })
 
@@ -19,7 +19,7 @@ export default function GuestCodeLayout({ children }: { children: React.ReactNod
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Plan guest code capacity for your smart lock system.',
+                description: 'Plan smart lock guest code capacity, PIN rotation, collision risk, expiration schedules, and rental access.',
             }} />
             <JsonLd data={{
                 '@context': 'https://schema.org',

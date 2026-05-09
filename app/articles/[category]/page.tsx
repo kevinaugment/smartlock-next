@@ -72,7 +72,7 @@ export async function generateMetadata({
   if (!categoryInfo) {
     return { title: 'Category Not Found' };
   }
-  const title = `${categoryInfo.name} - SLockHub.com`;
+  const title = `${categoryInfo.name} | Smart Lock Articles, Tools & Tables`;
   const description = categoryInfo.description;
   const canonical = `/articles/${params.category}`;
 
@@ -121,7 +121,7 @@ export default function CategoryPage({
   const collectionSchema = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: `${category.name} - SLockHub.com`,
+    name: `${category.name} | Smart Lock Guides | SLockHub`,
     description: category.description,
     url: `https://www.slockhub.com/articles/${params.category}`,
     mainEntity: {
@@ -155,7 +155,7 @@ export default function CategoryPage({
             </div>
 
             <section className="content-card" style={{ marginBottom: 'var(--space-2xl)' }}>
-              <h2 className="section-title">Start Here</h2>
+                <h2 className="section-title">Topic, Tools, Articles</h2>
               <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.75, marginBottom: 'var(--space-lg)' }}>
                 {getCategoryVerdict(params.category, sortedArticles.length)}
               </p>

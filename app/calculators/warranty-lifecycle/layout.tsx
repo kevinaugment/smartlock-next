@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Warranty & Lifecycle Calculator - SLockHub.com',
-    description: 'Calculate smart lock warranty coverage and lifecycle costs. Plan replacement schedules and compare warranty options across brands.',
+    title: 'Smart Lock Warranty & Lifecycle Calculator | Replacement Cost Tool',
+    description: 'Calculate smart lock warranty coverage, expected lifespan, replacement timing, lifecycle cost, failure risk, and brand support tradeoffs.',
     canonical: '/calculators/warranty-lifecycle',
 })
 
@@ -19,7 +19,7 @@ export default function WarrantyLifecycleLayout({ children }: { children: React.
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Calculate smart lock warranty coverage and lifecycle costs.',
+                description: 'Calculate smart lock warranty coverage, lifespan, replacement timing, lifecycle cost, and failure risk.',
             }} />
             <JsonLd data={{
                 '@context': 'https://schema.org',

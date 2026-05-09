@@ -6,6 +6,8 @@ import { Building2, DollarSign, TrendingUp, Users, CreditCard, Info } from 'luci
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface HotelROIResult {
     totalInvestment: number
@@ -25,6 +27,29 @@ interface HotelROIResult {
 }
 
 export default function HotelROI() {
+    const faqs = [
+        {
+            question: 'How much do hotels save with smart locks?',
+            answer: 'Hotel savings usually come from lower keycard replacement, fewer front desk interventions, reduced lockout handling, mobile check-in efficiency, and lower maintenance. The total depends on room count, occupancy, labor rates, and software fees.',
+        },
+        {
+            question: 'Are mobile keys worth it?',
+            answer: 'Mobile keys are most valuable when they reduce front desk volume and fit the hotel PMS workflow. They are usually more compelling for larger properties than for small inns with low check-in volume.',
+        },
+        {
+            question: 'What is the cost of replacing keycards?',
+            answer: 'Keycard cost includes the physical card, encoding, staff time, and waste from lost or demagnetized cards. The calculator models this as a recurring operating cost tied to occupancy and replacement rate.',
+        },
+        {
+            question: 'How do smart locks affect front desk labor?',
+            answer: 'Smart locks can reduce repetitive front desk tasks such as issuing replacement cards, resolving lockouts, and processing mobile check-ins. They rarely remove staffing needs entirely, but they can shift labor toward higher-value guest service.',
+        },
+        {
+            question: 'What payback period should hotels expect?',
+            answer: 'Hotels should compare payback against their capital planning window. A strong project often pays back within 12 to 36 months, but low occupancy, high software fees, or expensive retrofits can extend that timeline.',
+        },
+    ]
+
     const [roomCount, setRoomCount] = useState(100)
     const [avgOccupancy, setAvgOccupancy] = useState(70) // percent
     const [currentSystem, setCurrentSystem] = useState<'magnetic' | 'rfid' | 'mechanical' | 'mixed'>('magnetic')
@@ -105,10 +130,24 @@ export default function HotelROI() {
 
                 <div className="page-header">
                     <div className="page-header__icon"><Building2 className="w-14 h-14" /></div>
-                    <h1 className="text-4xl font-bold mb-4">Hotel & Hospitality ROI Calculator</h1>
+                    <h1 className="text-4xl font-bold mb-4">Hotel Smart Lock ROI Calculator</h1>
                     <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)' }}>
                         Calculate the return on investment for smart lock deployment in hotels and hospitality properties
                     </p>
+                </div>
+
+                <div className="max-w-4xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="How do hotels calculate smart lock ROI?"
+                        answer="Hotels calculate smart lock ROI by comparing deployment cost against annual savings from keycard replacement, front desk labor reduction, lockout handling, maintenance, energy integrations, and mobile check-in. The most reliable model separates one-time capex from recurring software fees and per-room annual savings."
+                    >
+                        <div className="card">
+                            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xs)' }}>Payback formula</div>
+                            <code style={{ color: 'var(--color-text-primary)', overflowWrap: 'anywhere' }}>
+                                Hotel payback = deployment cost / annual savings from keycards, labor, lockouts, and mobile check-in
+                            </code>
+                        </div>
+                    </CalculatorAnswerBlock>
                 </div>
 
                 <div className="max-w-4xl mx-auto" style={{ marginBottom: 'var(--space-3xl)' }}>
@@ -384,6 +423,10 @@ export default function HotelROI() {
                 />
 
                 <RelatedResources calculatorSlug="hotel-hospitality-roi-calculator" />
+
+                <div className="max-w-7xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
 
                 <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
                     <h2 className="text-2xl font-bold mb-6">Related Tools</h2>

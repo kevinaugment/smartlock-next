@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Noise Level Estimator - SLockHub.com',
-    description: 'Estimate smart lock motor noise levels in decibels. Compare lock mechanisms, assess nighttime disturbance risk, and find quieter alternatives for bedrooms and offices.',
+    title: 'Smart Lock Noise Level Estimator | Motor dB, Bedrooms & Offices',
+    description: 'Estimate smart lock motor noise in decibels by lock type, door condition, room use, nighttime disturbance risk, and quieter alternatives.',
     canonical: '/calculators/noise-level',
 })
 
@@ -19,7 +19,7 @@ export default function NoiseLevelLayout({ children }: { children: React.ReactNo
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Estimate smart lock motor noise levels in decibels. Compare lock mechanisms, assess nighttime disturbance risk, and find quieter alternatives.',
+                description: 'Estimate smart lock motor noise by lock type, door condition, room use, nighttime risk, and quieter alternatives.',
                 softwareVersion: '1.0',
                 datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { BookOpen, ArrowRight, Table, FileText, ShieldCheck, Signpost } from 'lucide-react'
+import { resolveCalculatorDataSlug } from '@/lib/calculators/slugs'
 
 interface Article {
     id: number
@@ -25,8 +26,14 @@ export function RelatedResources({ calculatorSlug }: RelatedResourcesProps) {
 
     useEffect(() => {
         async function fetchArticles() {
+            const dataSlug = resolveCalculatorDataSlug(calculatorSlug)
+            if (!dataSlug) {
+                setLoading(false)
+                return
+            }
+
             try {
-                const response = await fetch(`/api/related-articles?slug=${calculatorSlug}`)
+                const response = await fetch(`/api/related-articles?slug=${dataSlug}`)
                 if (response.ok) {
                     const rawData = await response.json()
                     const data = rawData.map((article: any) => ({
@@ -62,7 +69,7 @@ export function RelatedResources({ calculatorSlug }: RelatedResourcesProps) {
     return (
         <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
             <div className="flex items-center justify-between mb-6">
-                <h2 className="section-title mb-0">Related Resources</h2>
+                <h2 className="section-title mb-0">Related Guides and Tables</h2>
                 <Link href="/resources" className="text-sm font-medium text-accent hover:underline flex items-center gap-1">
                     View all resources <ArrowRight className="w-4 h-4" />
                 </Link>

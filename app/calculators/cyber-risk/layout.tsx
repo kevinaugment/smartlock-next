@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Cyber Risk Scorecard - SLockHub.com',
-    description: 'Evaluate the digital attack surface of your smart lock deployment across authentication, encryption, firmware, network, and physical security categories.',
+    title: 'Smart Lock Cyber Risk Scorecard | Auth, Encryption & Firmware',
+    description: 'Score smart lock cyber risk across authentication, encryption, firmware updates, network exposure, cloud access, and physical security.',
     canonical: '/calculators/cyber-risk',
 })
 
@@ -19,7 +19,7 @@ export default function CyberRiskLayout({ children }: { children: React.ReactNod
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Evaluate the digital attack surface of your smart lock deployment across authentication, encryption, firmware, network, and physical security categories.',
+                description: 'Score smart lock cyber risk across authentication, encryption, firmware, network, cloud, and physical security.',
                 softwareVersion: '1.0',
                 datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },

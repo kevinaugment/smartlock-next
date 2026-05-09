@@ -3,6 +3,7 @@
  */
 
 import { query, queryOne, execute } from '@/lib/db'
+import { resolveCalculatorDataSlug } from '@/lib/calculators/slugs'
 
 // ============================================
 // 用户模型
@@ -196,7 +197,7 @@ export const CalculatorModel = {
   },
 
   async getRelatedArticlesBySlug(slug: string): Promise<Article[]> {
-    const calculator = await this.getBySlug(slug)
+    const calculator = await this.getBySlug(resolveCalculatorDataSlug(slug) ?? slug)
     if (!calculator) return []
     return await this.getRelatedArticles(calculator.id)
   },
@@ -323,4 +324,3 @@ export const ToolRatingModel = {
     return (result?.cnt || 0) > 0
   },
 }
-

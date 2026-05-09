@@ -11,8 +11,8 @@ import type { ReactNode } from 'react'
 import CalculatorDiscovery from '@/components/CalculatorDiscovery'
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Calculators | Cost, Compatibility, Signal & Battery Tools',
-  description: 'Choose the right smart lock calculator for door compatibility, installation cost, signal strength, battery life, protocol selection, TCO, security, and fleet planning.',
+  title: 'Smart Lock Calculators | Cost, Door Fit, Battery, Signal & Security',
+  description: 'Use smart lock calculators for installation cost, door compatibility, signal strength, battery life, protocol selection, TCO, security, and fleet planning.',
   alternates: { canonical: '/calculators' },
   openGraph: {
     title: 'Smart Lock Calculators',
@@ -385,7 +385,7 @@ export default function CalculatorsPage() {
           </div>
 
           <section className="tool-section" style={{ marginBottom: 'var(--space-3xl)' }}>
-            <h2 className="section-title">Start With the Highest-Value Checks</h2>
+            <h2 className="section-title">Cost, Fit, Signal Checks</h2>
             <p style={{ color: 'var(--color-text-secondary)', maxWidth: '52rem', marginBottom: 'var(--space-xl)', lineHeight: 1.7 }}>
               Use these calculators before comparing models. They answer the questions that most often change the final smart lock choice: door fit, installation cost, signal reliability, battery maintenance, and protocol lock-in.
             </p>
@@ -401,7 +401,7 @@ export default function CalculatorsPage() {
           </section>
 
           <section className="tool-section" style={{ marginBottom: 'var(--space-3xl)' }}>
-            <h2 className="section-title">Choose a Planning Path</h2>
+            <h2 className="section-title">Home, Fleet, Range Paths</h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {decisionPaths.map((path) => (
                 <div key={path.title} className="planning-path">
@@ -424,7 +424,7 @@ export default function CalculatorsPage() {
 
           {/* Features Section */}
           <div className="content-card mb-16">
-            <h2 className="section-title section-title--center">Why Use Our Calculators?</h2>
+            <h2 className="section-title section-title--center">Cost, Fit, Signal Tools</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 { icon: <Zap className="w-7 h-7" />, title: 'Instant Results', desc: 'Get immediate calculations without waiting' },
@@ -448,9 +448,9 @@ export default function CalculatorsPage() {
 
           {/* CTA Section */}
           <div className="cta-section">
-            <h2 className="cta-section__title">Need More Information?</h2>
+            <h2 className="cta-section__title">Guides, Tools, Comparisons</h2>
             <p className="cta-section__subtitle">
-              Explore our comprehensive knowledge base for detailed guides and articles about smart lock systems
+              Continue with guide hubs for protocol choice, installation fit, battery life, and access security.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/articles" className="btn btn-primary btn-lg">Browse Articles</Link>

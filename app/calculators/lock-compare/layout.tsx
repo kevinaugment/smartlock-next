@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Smart Lock Comparison Tool - SLockHub.com',
-    description: 'Compare smart lock models side by side. Evaluate price, protocol, battery life, security grade, and features to find the best smart lock for your needs.',
+    title: 'Smart Lock Comparison Tool | Price, Protocol, Battery & Features',
+    description: 'Compare smart lock models side by side by price, protocol, battery life, security grade, door fit, access features, and best use case.',
     canonical: '/calculators/lock-compare',
 })
 
@@ -19,7 +19,7 @@ export default function LockCompareLayout({ children }: { children: React.ReactN
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Compare smart lock models side by side. Evaluate price, protocol, battery life, security grade, and features.',
+                description: 'Compare smart lock models by price, protocol, battery life, security grade, door fit, and access features.',
             }} />
             <JsonLd data={{
                 '@context': 'https://schema.org',

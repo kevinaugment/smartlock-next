@@ -143,10 +143,10 @@ export default function Header() {
           {/* ============ Desktop Mega Navigation ============ */}
           <nav className="hidden md:flex mega-nav" aria-label="Main navigation">
 
-            {/* ----- Knowledge Base ----- */}
+            {/* ----- Smart Lock Guides ----- */}
             <div className="mega-nav__item" {...desktopMenuHandlers('kb')}>
               <button className="mega-nav__trigger" aria-expanded={activeDesktopMenu === 'kb'} aria-haspopup="true">
-                Knowledge Base
+                Smart Lock Guides
                 <ChevronDown className="mega-nav__chevron" />
               </button>
               <div className="mega-menu">
@@ -253,14 +253,14 @@ export default function Header() {
           <div id="mobile-navigation" className="md:hidden mobile-nav-panel" style={{ borderTop: '1px solid var(--color-border)' }}>
             <nav className="flex flex-col" aria-label="Mobile navigation">
 
-              {/* Knowledge Base accordion */}
+              {/* Smart Lock Guides accordion */}
               <div className="mobile-nav__section">
                 <button
                   className="mobile-nav__trigger"
                   aria-expanded={mobileAccordion === 'kb'}
                   onClick={() => toggleAccordion('kb')}
                 >
-                  Knowledge Base
+                  Smart Lock Guides
                   <ChevronDown className="mobile-nav__chevron" />
                 </button>
                 {mobileAccordion === 'kb' && (

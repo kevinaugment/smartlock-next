@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'BLE Range & Proximity Calculator - SLockHub.com',
-    description: 'Calculate Bluetooth Low Energy range and signal coverage for smart lock installations. Plan BLE proximity zones and optimize placement.',
+    title: 'BLE Range Calculator | Smart Lock Proximity, RSSI & Signal Coverage',
+    description: 'Estimate Bluetooth smart lock range by RSSI, distance, obstacles, transmit power, and proximity-unlock reliability before installation.',
     canonical: '/calculators/ble-range',
 })
 
@@ -19,7 +19,7 @@ export default function BleRangeLayout({ children }: { children: React.ReactNode
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Calculate Bluetooth Low Energy range and signal coverage for smart lock installations.',
+                description: 'Estimate Bluetooth smart lock range, RSSI, obstacles, and proximity-unlock reliability.',
             }} />
             <JsonLd data={{
                 '@context': 'https://schema.org',

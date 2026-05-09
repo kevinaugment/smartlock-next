@@ -5,8 +5,8 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Compare Hub | Brand vs Brand & Protocol Comparisons',
-  description: 'Compare smart lock brands and protocols. Start with high-demand brand matchups, then validate protocol, battery, range, installation, and ownership cost.',
+  title: 'Smart Lock Comparisons | Brands, Protocols, Battery & Cost',
+  description: 'Compare smart lock brands, protocols, battery life, range, installation fit, security, and ownership cost before choosing a model.',
   alternates: { canonical: '/compare' },
   openGraph: {
     title: 'Smart Lock Compare Hub',
@@ -102,6 +102,10 @@ const protocolColors = {
 const popularComparisons = [
   { href: '/compare/nuki-vs-tedee', title: 'Nuki vs Tedee', detail: 'High-click benchmark pair with strong European smart lock intent.' },
   { href: '/compare/schlage-vs-weiser', title: 'Schlage vs Weiser', detail: 'High-impression North American brand comparison with low CTR opportunity.' },
+  { href: '/compare/schlage-vs-yale', title: 'Schlage vs Yale', detail: 'Premium keypad and rental-property comparison for buyers choosing a standard platform.' },
+  { href: '/compare/yale-vs-august', title: 'Yale vs August', detail: 'Retrofit, Wi-Fi, HomeKit, and guest-code tradeoffs for homeowners and hosts.' },
+  { href: '/compare/aqara-vs-yale', title: 'Aqara vs Yale', detail: 'Matter, Apple Home, fingerprint, and ecosystem comparison for smart-home buyers.' },
+  { href: '/compare/kwikset-vs-schlage', title: 'Kwikset vs Schlage', detail: 'Mainstream US deadbolt comparison for price, security grade, re-keying, and door fit.' },
   { href: '/compare/kwikset-vs-defiant', title: 'Kwikset vs Defiant', detail: 'Budget and hardware-store comparison for replacement buyers.' },
   { href: '/compare/schlage-vs-defiant', title: 'Schlage vs Defiant', detail: 'Page-1/2 GSC visibility with zero-click improvement opportunity.' },
 ]
@@ -170,14 +174,14 @@ export default function ComparePage() {
           <div className="page-header__icon">
             <GitCompareArrows className="w-10 h-10" />
           </div>
-          <h1 className="page-header__title">Protocol Comparison</h1>
+          <h1 className="page-header__title">Smart Lock Comparisons</h1>
           <p className="page-header__subtitle">
             Compare smart lock communication protocols side-by-side to find the best fit for your needs
           </p>
         </div>
 
         <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
-          <h2 className="section-title">Start With High-Demand Comparisons</h2>
+          <h2 className="section-title">Best Brand Comparisons</h2>
           <p style={{ color: 'var(--color-text-secondary)', maxWidth: '52rem', lineHeight: 1.7, marginBottom: 'var(--space-xl)' }}>
             These brand matchups already show visible Google Search Console demand. Use them as commercial comparison entry points, then validate protocol, door fit, signal, battery life, and ownership cost.
           </p>
@@ -192,7 +196,7 @@ export default function ComparePage() {
         </section>
 
         <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
-          <h2 className="section-title">Choose the Right Comparison Path</h2>
+          <h2 className="section-title">Brands, Protocols, Door Fit</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {comparePaths.map((path) => (
               <div key={path.title} className="card">
@@ -212,7 +216,7 @@ export default function ComparePage() {
 
         {/* Quick Decision Guide */}
         <div className="mb-16">
-          <h2 className="section-title section-title--center">Quick Decision Guide</h2>
+          <h2 className="section-title section-title--center">Battery, Setup, Reliability</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {[
               { q: 'Best Battery Life', a: 'Zigbee — up to 18 months', protocol: 'zigbee' as const },
@@ -237,7 +241,7 @@ export default function ComparePage() {
 
         {/* Comparison Table */}
         <div className="mb-16">
-          <h2 className="section-title">Detailed Comparison</h2>
+          <h2 className="section-title">Protocol Comparison Table</h2>
           <div className="card overflow-hidden p-0">
             <div className="overflow-x-auto">
               <table className="data-table">
@@ -316,7 +320,7 @@ export default function ComparePage() {
 
         {/* CTA */}
         <div className="cta-section">
-          <h2 className="cta-section__title">Need Help Deciding?</h2>
+          <h2 className="cta-section__title">Fit, Signal, Cost Tools</h2>
           <p className="cta-section__subtitle">
             Try our Protocol Selection Wizard for a personalized recommendation
           </p>

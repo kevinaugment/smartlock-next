@@ -6,8 +6,8 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'About - SLockHub.com',
-  description: 'Learn about SLockHub.com — your comprehensive resource for smart lock knowledge, tools, and expert guidance.',
+  title: 'About SLockHub | Smart Lock Guides, Tools & Product Research',
+  description: 'Use SLockHub to compare smart lock door fit, protocols, battery life, cost, security risk, and product data.',
   alternates: { canonical: '/about' },
 }
 
@@ -23,31 +23,29 @@ export default function AboutPage() {
           </div>
           <h1 className="page-header__title">About SLockHub.com</h1>
           <p className="page-header__subtitle">
-            Your comprehensive resource for smart lock knowledge, tools, and expert guidance
+            Smart lock fit, protocol, cost, and security research tools
           </p>
         </div>
 
         {/* Mission */}
         <div className="max-w-4xl mx-auto mb-16">
           <div className="card-elevated" style={{ padding: 'var(--space-2xl)' }}>
-            <h2 className="section-title section-title--center">Our Mission</h2>
+          <h2 className="section-title section-title--center">Buyers, Installers, Operators</h2>
             <p className="text-center" style={{ color: 'var(--color-text-secondary)', fontSize: '1.125rem', lineHeight: '1.75' }}>
-              We aim to empower property managers, security professionals, and homeowners with the knowledge and tools
-              they need to make confident decisions about smart lock systems. Through comprehensive guides,
-              interactive calculators, and transparent protocol comparisons, we are dedicated to simplifying the complex
-              world of smart lock technology.
+              SLockHub helps property managers, installers, security teams, and homeowners compare door fit,
+              protocols, battery life, signal range, cost, and access risk before choosing a smart lock.
             </p>
           </div>
         </div>
 
-        {/* What We Offer */}
+        {/* Guides, Tools, Comparisons */}
         <div className="mb-16">
-          <h2 className="section-title section-title--center">What We Offer</h2>
+          <h2 className="section-title section-title--center">Guides, Tools, Comparisons</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl">
             {[
               {
                 icon: <BookOpen className="w-8 h-8" />,
-                title: 'Knowledge Base',
+                title: 'Smart Lock Guides',
                 desc: '70+ in-depth articles covering protocols, security, installation, troubleshooting, and real-world applications'
               },
               {
@@ -91,7 +89,7 @@ export default function AboutPage() {
 
         {/* Topics We Cover */}
         <div className="mb-16">
-          <h2 className="section-title section-title--center">Topics We Cover</h2>
+          <h2 className="section-title section-title--center">Protocols, Security, Installation</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
             {[
               { icon: <Wifi className="w-5 h-5" />, label: 'Wireless Protocols' },
@@ -114,7 +112,7 @@ export default function AboutPage() {
 
         {/* Technology Stack */}
         <div className="mb-16">
-          <h2 className="section-title section-title--center">Built with Modern Technology</h2>
+          <h2 className="section-title section-title--center">Data, Calculators, References</h2>
           <div className="max-w-4xl mx-auto">
             <div className="card" style={{ padding: 'var(--space-xl)' }}>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -136,9 +134,9 @@ export default function AboutPage() {
 
         {/* CTA */}
         <div className="cta-section">
-          <h2 className="cta-section__title">Ready to Explore?</h2>
+          <h2 className="cta-section__title">Door Fit, Cost, Signal</h2>
           <p className="cta-section__subtitle">
-            Dive into our knowledge base or try our calculators
+            Use calculators and guide hubs for the first decision pass.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/articles" className="btn btn-primary btn-lg">Browse Articles</Link>

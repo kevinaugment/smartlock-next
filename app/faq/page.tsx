@@ -179,9 +179,9 @@ export default function FAQ() {
         {/* CTA */}
         <div className="max-w-4xl mx-auto mt-16">
           <div className="cta-section">
-            <h2 className="cta-section__title">Still Have Questions?</h2>
+            <h2 className="cta-section__title">FAQ, Guides, Calculators</h2>
             <p className="cta-section__subtitle">
-              Explore our knowledge base for detailed guides and documentation
+              Move from quick answers to setup guides, protocol comparisons, and planning tools.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/articles" className="btn btn-primary btn-lg">Browse Articles</Link>

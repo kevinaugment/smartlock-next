@@ -3,8 +3,8 @@ import type { Metadata } from 'next'
 import { Ruler, ArrowLeft } from 'lucide-react'
 
 export const metadata: Metadata = {
-    title: 'Smart Lock Installation Diagrams — Door Prep & Component Guides | SLockHub',
-    description: 'Professional SVG installation diagrams for smart locks: door anatomy, lock components, wiring, measurement guides, and step-by-step installation flows.',
+    title: 'Smart Lock Installation Diagrams | Door Prep, Wiring & Measurements',
+    description: 'Use smart lock diagrams for door anatomy, bore size, backset, strike plate alignment, wiring, measurements, and installation checks.',
     alternates: { canonical: '/resources/installation-guides' },
 }
 
@@ -412,7 +412,7 @@ export default function InstallationGuidesPage() {
                     <div className="page-header__icon">
                         <Ruler className="w-10 h-10" />
                     </div>
-                    <h1 className="page-header__title">Installation Diagrams</h1>
+                    <h1 className="page-header__title">Smart Lock Installation Diagrams</h1>
                     <p className="page-header__subtitle">
                         Professional SVG diagrams for door preparation, lock components, wiring, and step-by-step installation
                     </p>
@@ -486,7 +486,7 @@ export default function InstallationGuidesPage() {
                 {/* CTA Section */}
                 <div className="max-w-5xl mx-auto mt-8">
                     <div className="cta-section">
-                        <h2 className="cta-section__title">Ready to Plan Your Installation?</h2>
+                        <h2 className="cta-section__title">Fit, Cost, Install Tools</h2>
                         <p className="cta-section__subtitle">
                             Use our calculators to estimate time, cost, and compatibility
                         </p>

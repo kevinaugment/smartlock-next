@@ -6,12 +6,12 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Resources — Professional Guides, Tables & Diagrams | SLockHub',
-  description: 'Professional smart lock resources: glossary of 45+ terms, protocol comparison tables, SVG installation diagrams, and interactive buying guide flowcharts.',
+  title: 'Smart Lock Resources | Glossary, Tables, Diagrams & Buying Guide',
+  description: 'Use smart lock glossary terms, protocol tables, door measurement diagrams, installation references, and buying guide flowcharts.',
   alternates: { canonical: '/resources' },
   openGraph: {
     title: 'Smart Lock Resources',
-    description: 'Glossaries, tables, diagrams, buying guides, and planning tools for smart lock decisions.',
+    description: 'Glossary terms, protocol tables, diagrams, buying guides, and planning tools for smart lock decisions.',
     type: 'website',
     url: 'https://www.slockhub.com/resources',
   },
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 const professionalResources = [
   {
     title: 'Glossary',
-    description: '45+ industry terms with professional SVG diagrams. Searchable by category.',
+    description: '45+ industry terms with SVG diagrams. Searchable by category.',
     href: '/resources/glossary',
     icon: <BookOpen className="w-8 h-8" />,
     badge: '45+ terms',
@@ -125,7 +125,7 @@ export default function Resources() {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Smart Lock Resources',
-    description: 'Professional reference resources, diagrams, tables, and buying guides for smart lock research.',
+    description: 'Smart lock glossary terms, diagrams, reference tables, buying guides, and calculator paths.',
     url: 'https://www.slockhub.com/resources',
     mainEntity: {
       '@type': 'ItemList',
@@ -154,36 +154,36 @@ export default function Resources() {
         <div className="container-main section">
         <div className="max-w-6xl mx-auto">
           <div className="page-header">
-            <h1 className="page-header__title">Resources</h1>
+            <h1 className="page-header__title">Smart Lock Resources</h1>
             <p className="page-header__subtitle">
-              Professional guides, reference tables, SVG diagrams, and decision tools for smart lock experts
+              Glossary terms, reference tables, diagrams, and buying tools for smart lock decisions
             </p>
           </div>
 
           <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
-            <h2 className="section-title">Use Resources by Decision Stage</h2>
+            <h2 className="section-title">Glossary, Tables, Diagrams</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="card">
-                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>Learn the terminology</h3>
+                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>Terms and definitions</h3>
                 <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)' }}>Start with definitions, protocol basics, and physical door anatomy before comparing products.</p>
                 <Link href="/resources/glossary" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Open glossary</Link>
               </div>
               <div className="card">
-                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>Validate measurements and specs</h3>
+                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>Measurements and specs</h3>
                 <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)' }}>Use diagrams and reference tables to confirm door prep, security grades, protocol tradeoffs, and battery expectations.</p>
                 <Link href="/resources/reference-tables" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Open reference tables</Link>
               </div>
               <div className="card">
-                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>Move into calculators</h3>
+                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>Signal and cost tools</h3>
                 <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)' }}>After research, route directly into signal, compatibility, battery, and TCO tools.</p>
                 <Link href="/calculators" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Open calculators</Link>
               </div>
             </div>
           </section>
 
-          {/* Professional Resources */}
+          {/* Specs, Terms, Buying Guides */}
           <div className="mb-24">
-            <h2 className="section-title">Professional Resources</h2>
+            <h2 className="section-title">Specs, Terms, Buying Guides</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {professionalResources.map(item => (
                 <Link key={item.title} href={item.href} className="icon-card">
@@ -203,7 +203,7 @@ export default function Resources() {
 
           {/* External Resources */}
           <div className="mb-24">
-            <h2 className="section-title">External References</h2>
+            <h2 className="section-title">Standards, Security, Certification</h2>
             <div className="grid md:grid-cols-2 gap-8">
               {sections.map(section => (
                 <div key={section.title} className="content-card">
@@ -232,9 +232,9 @@ export default function Resources() {
             </div>
           </div>
 
-          {/* Our Tools */}
+          {/* Signal, Battery, TCO Tools */}
           <div className="mb-24">
-            <h2 className="section-title">Our Tools</h2>
+            <h2 className="section-title">Signal, Battery, TCO Tools</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {tools.map(tool => (
                 <Link key={tool.name} href={tool.url} className="link-card">
@@ -251,11 +251,11 @@ export default function Resources() {
             </div>
           </div>
 
-          {/* Knowledge Base */}
+          {/* Guides, Tools, Comparisons */}
           <div className="cta-section mb-16">
-            <h2 className="cta-section__title">Our Knowledge Base</h2>
+            <h2 className="cta-section__title">Guides, Tools, Comparisons</h2>
             <p className="cta-section__subtitle">
-              49+ comprehensive articles covering all aspects of smart lock technology
+              Smart lock articles for installation, protocol choice, security, rentals, and troubleshooting
             </p>
             <div className="grid md:grid-cols-3 gap-4 text-left">
               <Link href="/articles/protocols" className="link-card bg-white/10 border-0 text-color-inverse hover:bg-white/20">

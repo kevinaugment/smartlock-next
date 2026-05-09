@@ -1,13 +1,17 @@
 import Link from 'next/link'
 import { BookOpen, Calculator } from 'lucide-react'
 import { calculatorLinksMap } from '@/lib/calculators/calculator-links'
+import { resolveCalculatorRouteSlug } from '@/lib/calculators/slugs'
 
 /**
  * 计算器页面底部的推荐阅读和相关工具
  * 服务端组件 —— 通过 calculatorLinksMap 查找当前计算器的关联内容
  */
 export default function RelatedContent({ slug }: { slug: string }) {
-    const links = calculatorLinksMap[slug]
+    const routeSlug = resolveCalculatorRouteSlug(slug)
+    if (!routeSlug) return null
+
+    const links = calculatorLinksMap[routeSlug]
     if (!links) return null
 
     const hasArticles = links.articles.length > 0
@@ -22,7 +26,7 @@ export default function RelatedContent({ slug }: { slug: string }) {
                 <div style={{ marginBottom: hasCalculators ? 'var(--space-2xl)' : 0 }}>
                     <h2 className="section-title" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
                         <BookOpen className="w-5 h-5" style={{ color: 'var(--color-accent)' }} />
-                        Recommended Reading
+                        Best Articles to Read First
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {links.articles.map((article) => (
@@ -41,7 +45,7 @@ export default function RelatedContent({ slug }: { slug: string }) {
                 </div>
             )}
 
-            {/* Related Calculators */}
+            {/* Related Tools */}
             {hasCalculators && (
                 <div>
                     <h2 className="section-title" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>

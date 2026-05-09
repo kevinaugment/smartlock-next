@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Privacy & Data Compliance Evaluator - SLockHub.com',
-    description: 'Assess smart lock privacy compliance with GDPR, CCPA, and biometric data laws. Evaluate data collection practices, storage policies, and user consent mechanisms.',
+    title: 'Smart Lock Privacy Compliance Evaluator | GDPR, CCPA & Biometrics',
+    description: 'Assess smart lock privacy risk by GDPR, CCPA, biometric data, access logs, retention policy, consent, cloud storage, and user rights.',
     canonical: '/calculators/privacy-compliance',
 })
 
@@ -19,7 +19,7 @@ export default function PrivacyComplianceLayout({ children }: { children: React.
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Assess smart lock privacy compliance with GDPR, CCPA, and biometric data laws. Evaluate data collection practices, storage policies, and user consent mechanisms.',
+                description: 'Assess smart lock privacy risk by GDPR, CCPA, biometrics, access logs, retention, consent, and cloud storage.',
                 softwareVersion: '1.0',
                 datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },

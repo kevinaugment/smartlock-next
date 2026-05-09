@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Offline Resilience Scorecard - SLockHub.com',
-    description: 'Evaluate how well your smart lock system works during outages. Score your setup across protocol choice, local hub, backup power, physical keys, and cloud dependency.',
+    title: 'Offline Resilience Scorecard | Smart Lock Outage, Hub & Backup',
+    description: 'Score smart lock offline resilience by protocol, local hub, cloud dependency, backup power, physical keys, Bluetooth access, and outage behavior.',
     canonical: '/calculators/offline-resilience',
 })
 
@@ -19,7 +19,7 @@ export default function OfflineResilienceLayout({ children }: { children: React.
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Evaluate how well your smart lock system works during outages. Score your setup across protocol choice, local hub, backup power, physical keys, and cloud dependency.',
+                description: 'Score smart lock offline resilience by protocol, local hub, cloud dependency, backup power, keys, and outage behavior.',
                 softwareVersion: '1.0',
                 datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },

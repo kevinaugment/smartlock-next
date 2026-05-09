@@ -6,8 +6,33 @@ import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechR
 import { Building2, Wrench, DollarSign, BarChart3 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 export default function FleetPlanner() {
+  const faqs = [
+    {
+      question: 'How many locks should I deploy first?',
+      answer: 'Start with enough locks to validate installation, connectivity, credential workflows, maintenance load, and user support before committing the whole portfolio. A pilot should include the hardest door types, not only the easiest installs.',
+    },
+    {
+      question: 'How do I phase a smart lock rollout?',
+      answer: 'Phase rollouts by property, door type, protocol, or operational risk. Most teams start with a pilot, fix standards, then roll out by quarter or by natural replacement cycle.',
+    },
+    {
+      question: 'What staffing is needed?',
+      answer: 'Staffing depends on door count, installation complexity, credential migration, resident or guest communication, training, and support volume. External property managers add training and governance work.',
+    },
+    {
+      question: 'How many spare locks should I keep?',
+      answer: 'Keep spares for high-traffic, revenue-critical, or remote properties. A small fleet may only need one spare; larger portfolios should budget spares by failure rate, lead time, and door criticality.',
+    },
+    {
+      question: 'How do I manage multi-property access?',
+      answer: 'Use consistent protocols, naming conventions, admin roles, audit policies, credential rotation, and support playbooks. Fragmented protocols and apps create training cost and operational risk.',
+    },
+  ]
+
   const [properties, setProperties] = useState(10)
   const [avgLocksPerProperty, setAvgLocksPerProperty] = useState(3)
   const [currentProtocols, setCurrentProtocols] = useState<string[]>(['zigbee', 'wifi'])
@@ -79,8 +104,22 @@ export default function FleetPlanner() {
 
         <div className="page-header">
           <div className="page-header__icon"><Building2 className="w-14 h-14" /></div>
-          <h1 className="text-4xl font-bold mb-4">Multi-Property Fleet Planner</h1>
+          <h1 className="text-4xl font-bold mb-4">Smart Lock Fleet Deployment Planner</h1>
           <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Analyze protocol fragmentation across your property portfolio</p>
+        </div>
+
+        <div className="max-w-4xl mx-auto">
+          <CalculatorAnswerBlock
+            title="How do you plan a multi-property smart lock rollout?"
+            answer="Plan a multi-property smart lock rollout by calculating total lock count, existing protocol fragmentation, lock age, property type, training needs, regional cost, and rollout strategy. The safest rollout starts with a representative pilot, then standardizes protocol, admin roles, credential policy, spare inventory, and support playbooks before scaling."
+          >
+            <div className="card">
+              <strong style={{ color: 'var(--color-text-primary)' }}>Rollout sequence:</strong>
+              <p style={{ color: 'var(--color-text-secondary)', marginTop: 'var(--space-xs)', lineHeight: 1.6 }}>
+                Pilot hard doors, standardize the protocol, document credential policy, train property managers, then deploy by quarter or replacement cycle.
+              </p>
+            </div>
+          </CalculatorAnswerBlock>
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -224,6 +263,10 @@ export default function FleetPlanner() {
       <ToolRating toolSlug="fleet-planner" />
 
       <RelatedResources calculatorSlug="multi-property-fleet-planner" />
+
+      <div className="max-w-7xl mx-auto">
+        <CalculatorFaqBlock faqs={faqs} />
+      </div>
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

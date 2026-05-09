@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Retrofit vs Replace Advisor - SLockHub.com',
-    description: 'Determine whether to retrofit your existing door hardware or replace it entirely for smart lock installation. Compare costs, compatibility, and long-term value.',
+    title: 'Retrofit vs Replace Advisor | Smart Lock Door Hardware Decision',
+    description: 'Decide whether to retrofit existing door hardware or replace it with a full smart lock by cost, renter limits, features, fit, and long-term value.',
     canonical: '/calculators/retrofit-advisor',
 })
 
@@ -19,7 +19,7 @@ export default function RetrofitAdvisorLayout({ children }: { children: React.Re
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Determine whether to retrofit your existing door hardware or replace it entirely for smart lock installation. Compare costs, compatibility, and long-term value.',
+                description: 'Decide whether to retrofit existing door hardware or replace it by cost, renter limits, features, fit, and long-term value.',
                 softwareVersion: '1.0',
                 datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },

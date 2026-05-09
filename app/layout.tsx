@@ -1,34 +1,14 @@
 import type { Metadata } from 'next'
-import { Inter, Space_Mono } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import CookieConsent from '@/components/CookieConsent'
 import AnalyticsScripts from '@/components/AnalyticsScripts'
 
-const bodyFont = Inter({
-  subsets: ['latin'],
-  variable: '--font-body',
-  display: 'swap',
-})
-
-const displayFont = Inter({
-  subsets: ['latin'],
-  variable: '--font-display',
-  display: 'swap',
-})
-
-const spaceMono = Space_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  display: 'swap',
-  weight: ['400', '700'],
-})
-
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.slockhub.com'),
-  title: 'SLockHub.com - Expert Guides & Tools',
-  description: 'Comprehensive smart lock guides covering protocols, security, installation, troubleshooting, and real-world applications.',
+  title: 'Smart Lock Guides, Calculators & Comparisons | SLockHub',
+  description: 'Choose smart locks by door fit, protocol, battery life, security, installation cost, and ownership risk with guides and calculators.',
   icons: {
     icon: '/favicon.svg',
     apple: '/apple-touch-icon.png',
@@ -37,8 +17,8 @@ export const metadata: Metadata = {
     google: 'ufD-o1efiS1g65sNe5he54krbkOMVTmA3iOZtUlcFOw',
   },
   openGraph: {
-    title: 'SLockHub.com - Expert Guides & Tools',
-    description: 'Comprehensive smart lock guides covering protocols, security, installation, troubleshooting, and real-world applications.',
+    title: 'Smart Lock Guides, Calculators & Comparisons | SLockHub',
+    description: 'Choose smart locks by door fit, protocol, battery life, security, installation cost, and ownership risk.',
     siteName: 'SLockHub.com',
     type: 'website',
     url: 'https://www.slockhub.com',
@@ -53,8 +33,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SLockHub.com - Expert Guides & Tools',
-    description: 'Comprehensive smart lock guides covering protocols, security, installation, troubleshooting, and real-world applications.',
+    title: 'Smart Lock Guides, Calculators & Comparisons | SLockHub',
+    description: 'Compare smart lock fit, protocols, battery life, security, installation cost, and ownership risk.',
   },
   robots: {
     index: true,
@@ -71,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${displayFont.variable} ${bodyFont.variable} ${spaceMono.variable}`}>
+    <html lang="en">
       <body className="flex flex-col min-h-screen">
         <a href="#main-content" className="skip-link">
           Skip to main content

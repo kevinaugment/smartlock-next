@@ -19,8 +19,8 @@ isPillar: false
 isSupport: true
 featured: false
 relatedArticles:
-  - "smart-lock-jammed-wont-turn"
-  - "smart-lock-making-noise"
+  - "door-alignment-guide"
+  - "lock-motor-noise-troubleshooting"
 
 ---
 
@@ -291,4 +291,3 @@ Incomplete cycle resolution demands restoring favorable torque balance where mot
 **Calibration drift technical explanation**: Motor position sensing implements step counting (stepper motor: 60-200 steps per revolution, 3-5 revolutions full deadbolt travel = 180-1000 counted steps) where controller tracks "locked" position (step 0) and "unlocked" position (step 200) commanding motor run until target step reached. Calibration drift occurs when step counter diverges from actual position: obstruction causing motor skip steps (commanded 5 steps yet shaft rotated only 3 due to momentary stall), manual override rotating shaft without step counting (thumb turn moves deadbolt yet controller unaware), or encoder wear creating miscounts. This accumulated error manifests as controller believing deadbolt fully extended (step count = 200) yet actual position only 90% (180 steps), commanding premature stop. Recalibration resets zero reference by driving motor to hard mechanical stops (fully retracted, fully extended) relearning actual step counts eliminating accumulated error.
 
 **The 95%-completion symptom diagnostic significance**: Failure at 90-95% completion (deadbolt visibly extended yet final 1/8-1/4 inch unachieved) almost exclusively indicates external obstruction (strike contact) rather than internal failure, as internal issues (motor, calibration, battery) manifest randomly across travel range not consistently at endpoint. This endpoint-specific failure reflects geometric reality: only at full extension does deadbolt contact strike plate, earlier in travel deadbolt travels through air resistance-free. Conversely, mid-cycle failure (stopping at 40-60% travel) indicates internal issue (calibration commanding premature stop, battery voltage dropping below minimum, motor mechanical failure) as strike contact impossible mid-travel.
-

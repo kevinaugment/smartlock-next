@@ -6,8 +6,33 @@ import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechR
 import { Scale, Cloud, Home, Check, X } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 export default function SubscriptionCompare() {
+  const faqs = [
+    {
+      question: 'Are smart lock subscriptions worth it?',
+      answer: 'Smart lock subscriptions can be worth it when they include remote management, audit logs, support, integrations, OTA updates, and multi-site administration. They are less attractive when the monthly fee only duplicates features a local system can provide.',
+    },
+    {
+      question: 'What features require monthly fees?',
+      answer: 'Monthly fees often cover cloud remote access, guest automation, advanced audit logs, multi-user management, API integrations, alerts, support, and firmware services. Basic local keypad or Bluetooth use may not require a subscription.',
+    },
+    {
+      question: 'Is local control cheaper long term?',
+      answer: 'Local control can be cheaper over a multi-year horizon when upfront hardware and maintenance cost less than recurring per-door SaaS fees. The tradeoff is usually more local responsibility for hosting, updates, backups, and support.',
+    },
+    {
+      question: 'What are hidden SaaS costs?',
+      answer: 'Hidden SaaS costs can include annual price increases, per-door minimums, per-user fees, integration charges, support tiers, cellular backup, data export, cancellation friction, and migration costs if you switch platforms later.',
+    },
+    {
+      question: 'How do subscriptions affect TCO?',
+      answer: 'Subscriptions convert part of smart lock ownership from upfront CapEx to recurring OpEx. Over five years, even a small per-door monthly fee can exceed hardware cost across large fleets, so it should be modeled inside TCO.',
+    },
+  ]
+
   const [doors, setDoors] = useState(10)
   const [monthlyFeePerDoor, setMonthlyFeePerDoor] = useState(5)
   const [localSystemCost, setLocalSystemCost] = useState(5000)
@@ -79,6 +104,13 @@ export default function SubscriptionCompare() {
           <div className="page-header__icon"><Scale className="w-14 h-14" /></div>
           <h1 className="text-4xl font-bold mb-4">Subscription vs Purchase Comparison</h1>
           <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Compare long-term costs of cloud subscription vs local solution</p>
+        </div>
+
+        <div className="max-w-6xl mx-auto">
+          <CalculatorAnswerBlock
+            title="Are smart lock subscriptions worth it?"
+            answer="Smart lock subscriptions are worth it when cloud management, integrations, support, audit logs, and remote operations save more money than the recurring per-door fee. For small deployments, local control may be cheaper. For multi-site operators, the subscription can be justified when it reduces admin labor, lockouts, and support overhead."
+          />
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -227,6 +259,9 @@ export default function SubscriptionCompare() {
       <ToolRating toolSlug="subscription-compare" />
 
       <RelatedResources calculatorSlug="subscription-vs-purchase-calculator" />
+      <div className="max-w-6xl mx-auto">
+        <CalculatorFaqBlock faqs={faqs} />
+      </div>
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

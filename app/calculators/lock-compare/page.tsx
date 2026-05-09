@@ -6,6 +6,8 @@ import { GitCompare, Check, X } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface LockModel {
     id: string
@@ -81,6 +83,29 @@ const lockDatabase: LockModel[] = [
 ]
 
 export default function LockComparisonTool() {
+    const faqs = [
+        {
+            question: 'How do I compare smart locks?',
+            answer: 'Compare smart locks by physical fit, security grade, protocol, battery life, user capacity, unlock methods, app quality, subscription requirements, weather rating, warranty, and the use case you are buying for.',
+        },
+        {
+            question: 'Which features matter most?',
+            answer: 'The most important features are reliable lock operation, compatible door fit, secure credential management, strong battery life, a protocol that works in your building, emergency backup, and manageable admin controls.',
+        },
+        {
+            question: 'Is price or protocol more important?',
+            answer: 'Protocol is often more important than a small price difference because it affects battery life, range, hub needs, offline behavior, and platform compatibility. Price should be compared after the lock fits the door and deployment model.',
+        },
+        {
+            question: 'What lock is best for rentals?',
+            answer: 'Rental locks usually need keypad access, unique expiring guest codes, physical backup, strong battery life, simple cleaning-team access, and integration with booking or property management workflows.',
+        },
+        {
+            question: 'How should enterprises shortlist locks?',
+            answer: 'Enterprises should shortlist by standards, protocol architecture, fleet management, audit logs, credential capacity, support model, installation compatibility, privacy controls, and total lifecycle cost rather than single-device price.',
+        },
+    ]
+
     const [selected, setSelected] = useState<string[]>(['yale-assure-2', 'schlage-encode-plus'])
 
     const toggleLock = (id: string) => {
@@ -106,6 +131,13 @@ export default function LockComparisonTool() {
                     <p className="page-header__subtitle">
                         Select 2-4 smart lock models for side-by-side comparison
                     </p>
+                </div>
+
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="How should you compare smart locks?"
+                        answer="Compare smart locks in this order: door compatibility, security grade, protocol, battery life, unlock methods, user capacity, app and admin controls, subscription cost, weather rating, warranty, and emergency backup. This prevents a low sticker price from hiding installation, network, battery, or management problems."
+                    />
                 </div>
 
                 {/* Lock Selection */}
@@ -242,6 +274,9 @@ export default function LockComparisonTool() {
 
                 <ToolRating toolSlug="lock-compare" />
                 <RelatedResources calculatorSlug="lock-compare" />
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
                 <BeTechCalculatorRecommendation
                     description="Be-Tech K3S offers the widest protocol support (Wi-Fi, Bluetooth, Zigbee, Z-Wave) with ANSI Grade 1 certification at a competitive price point — ideal for both residential and commercial deployments."
                     badge="Best Value"

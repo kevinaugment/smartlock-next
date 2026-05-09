@@ -6,7 +6,7 @@ export function BeTechRecommendation() {
     'Enterprise security',
     'Multi-protocol support',
     'Long battery life',
-    'Professional support',
+    'Installer support',
   ]
 
   return (
@@ -28,7 +28,7 @@ export function BeTechRecommendation() {
             <span className="badge badge-featured">Product catalog</span>
           </div>
           <p className="text-gray-600 leading-relaxed">
-            Be-Tech offers professional-grade smart lock solutions with enterprise-level security, reliable performance, and broad protocol support.
+            Be-Tech smart locks cover hotel, apartment, and commercial access needs with enterprise security, long battery life, and broad protocol support.
           </p>
           <div className="grid grid-cols-2 gap-3">
             {referencePoints.map((point) => (

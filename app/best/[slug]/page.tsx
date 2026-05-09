@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { getTopNPageData } from '@/lib/services/brand-service'
 import { TopNPageModel } from '@/lib/db/brand-models'
 import { SeoPathways } from '@/components/seo/SeoPathways'
+import { getBestPageSeoProfile } from '@/lib/seo/best-page-seo'
 
 export const dynamic = 'force-dynamic'
 export const dynamicParams = true
@@ -21,6 +22,9 @@ function getSelectionMethodology(pageTitle: string, productCount: number): strin
 }
 
 function getIntentSignals(slug: string): Array<{ label: string; detail: string }> {
+    const profile = getBestPageSeoProfile(slug)
+    if (profile?.intentSignals) return profile.intentSignals
+
     if (slug.includes('homekit')) {
         return [
             { label: 'Ecosystem fit', detail: 'Prioritize locks with Matter, Thread, Wi-Fi, or app ecosystems that can support Apple Home access paths.' },
@@ -118,8 +122,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const page = await TopNPageModel.getBySlug(slug)
     if (!page) return { title: 'Not Found' }
 
-    const title = page.meta_title || `${page.h1_title || page.title} (${CURRENT_YEAR}) | SLockHub`
-    const description = page.meta_description || page.intro_text || `Compare the best ${page.title.toLowerCase()} with ranked picks, key specs, battery life, protocol support, and direct review links.`
+    const profile = getBestPageSeoProfile(slug)
+    const title = profile?.title || page.meta_title || `${page.h1_title || page.title} | Ranked Picks, Specs & Fit ${CURRENT_YEAR}`
+    const description = profile?.description || page.meta_description || page.intro_text || `Compare the best ${page.title.toLowerCase()} by protocol support, battery life, door fit, security grade, price, and buying use case.`
 
     return {
         title,
@@ -157,7 +162,8 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
     if (!pageData) notFound()
 
     const topProducts = pageData.products.slice(0, 3)
-    const methodology = getSelectionMethodology(pageData.title, pageData.products.length)
+    const seoProfile = getBestPageSeoProfile(slug)
+    const methodology = seoProfile?.methodology || getSelectionMethodology(pageData.title, pageData.products.length)
     const decisionTree = getDecisionTree(pageData.products)
     const intentSignals = getIntentSignals(slug)
     const protocolCount = new Set(pageData.products.flatMap((product) => [product.protocol, product.secondary_protocol].filter(Boolean))).size
@@ -175,8 +181,8 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                         {
                             '@context': 'https://schema.org',
                             '@type': 'WebPage',
-                            name: pageData.h1_title || pageData.title,
-                            description: pageData.intro_text || '',
+                            name: seoProfile?.h1 || pageData.h1_title || pageData.title,
+                            description: seoProfile?.intro || pageData.intro_text || '',
                             url: pageUrl,
                             isPartOf: {
                                 '@type': 'WebSite',
@@ -196,8 +202,8 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                         ...(pageData.products.length > 0 ? [{
                             '@context': 'https://schema.org',
                             '@type': 'ItemList',
-                            name: pageData.h1_title || pageData.title,
-                            description: pageData.intro_text || '',
+                            name: seoProfile?.h1 || pageData.h1_title || pageData.title,
+                            description: seoProfile?.intro || pageData.intro_text || '',
                             numberOfItems: pageData.products.length,
                             itemListElement: pageData.products.map((product, i) => ({
                                 '@type': 'ListItem',
@@ -238,10 +244,10 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
 
                 {/* Header */}
                 <div className="page-header" style={{ marginBottom: 'var(--space-2xl)' }}>
-                    <h1 className="page-header__title">{pageData.h1_title || pageData.title}</h1>
-                    {pageData.intro_text && (
+                    <h1 className="page-header__title">{seoProfile?.h1 || pageData.h1_title || pageData.title}</h1>
+                    {(seoProfile?.intro || pageData.intro_text) && (
                         <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, maxWidth: '800px', fontSize: '1.05rem' }}>
-                            {pageData.intro_text}
+                            {seoProfile?.intro || pageData.intro_text}
                         </p>
                     )}
                 </div>
@@ -253,7 +259,7 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                 </div>
 
                 <div className="content-card" style={{ marginBottom: 'var(--space-2xl)' }}>
-                    <h2 className="section-title">How This List Was Selected</h2>
+                    <h2 className="section-title">Fit, Protocol, Battery Criteria</h2>
                     <div className="space-y-3">
                         {methodology.map((item) => (
                             <p key={item} style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
@@ -352,7 +358,7 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
 
                         {pageData.products.length > 0 && (
                             <div className="content-card">
-                                <h2 className="section-title">Full Comparison Matrix</h2>
+                                <h2 className="section-title">Specs, Price, Battery Table</h2>
                                 <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-md)' }}>
                                     Missing-data note: {getMissingDataNote(pageData.products)}
                                 </p>

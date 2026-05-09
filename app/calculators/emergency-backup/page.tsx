@@ -6,8 +6,33 @@ import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechR
 import { ShieldAlert, Check, AlertTriangle, Lightbulb } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 export default function EmergencyBackup() {
+  const faqs = [
+    {
+      question: 'What happens when smart lock batteries die?',
+      answer: 'When smart lock batteries die, keypad, app, wireless, and motor functions may stop. Recovery depends on the model: physical key, 9V terminal, USB emergency power, external battery contacts, or a locksmith may be needed.',
+    },
+    {
+      question: 'Do all locks have emergency power?',
+      answer: 'No. Some locks include 9V terminals, USB emergency power, or removable battery access from outside, but others rely on a mechanical key or interior battery access. Verify backup access before installing on a critical door.',
+    },
+    {
+      question: 'Is a physical key still needed?',
+      answer: 'A physical key is still the simplest final fallback for many smart locks, especially rentals and remote properties. If a key is not available, the backup plan should include emergency power, local support, and documented locksmith access.',
+    },
+    {
+      question: 'What is fail-safe vs fail-secure?',
+      answer: 'Fail-safe hardware unlocks when power is lost, often for life-safety egress. Fail-secure hardware stays locked when power is lost, often for security. The correct mode depends on door function, code requirements, and emergency procedures.',
+    },
+    {
+      question: 'How often should backup access be tested?',
+      answer: 'Backup access should be tested after installation, after battery replacement, after firmware changes, and on a regular schedule. Rental and commercial operators should test before high-occupancy periods or critical events.',
+    },
+  ]
+
   const [hasPhysicalKey, setHasPhysicalKey] = useState(true)
   const [hasBackupPIN, setHasBackupPIN] = useState(true)
   const [hasMobileApp, setHasMobileApp] = useState(true)
@@ -139,6 +164,13 @@ export default function EmergencyBackup() {
           <div className="page-header__icon"><ShieldAlert className="w-14 h-14" /></div>
           <h1 className="text-4xl font-bold mb-4">Emergency Backup Evaluator</h1>
           <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Evaluate your emergency unlock backup plan</p>
+        </div>
+
+        <div className="max-w-6xl mx-auto">
+          <CalculatorAnswerBlock
+            title="What backup access should every smart lock have?"
+            answer="Every smart lock should have at least one fallback that does not depend on the phone app, cloud service, or live internet connection. Common backup methods include a physical key, emergency battery terminals, USB or 9V power, offline PINs, Bluetooth access, a trusted local contact, and a documented locksmith procedure."
+          />
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -333,6 +365,9 @@ export default function EmergencyBackup() {
       <ToolRating toolSlug="emergency-backup" />
 
       <RelatedResources calculatorSlug="emergency-backup-evaluator" />
+      <div className="max-w-6xl mx-auto">
+        <CalculatorFaqBlock faqs={faqs} />
+      </div>
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

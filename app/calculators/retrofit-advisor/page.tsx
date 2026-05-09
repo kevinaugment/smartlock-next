@@ -6,6 +6,8 @@ import { GitCompare, DollarSign, Clock, Check, ArrowRight, Info } from 'lucide-r
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface ComparisonResult {
     retrofitCost: number
@@ -23,6 +25,29 @@ interface ComparisonResult {
 }
 
 export default function RetrofitAdvisor() {
+    const faqs = [
+        {
+            question: 'Should I retrofit or replace my lock?',
+            answer: 'Retrofit when the existing deadbolt works well, you want lower cost, or you need a renter-friendly option. Replace when the hardware is worn, you need keypad or biometric features, or the current lock type has poor retrofit support.',
+        },
+        {
+            question: 'Are retrofit locks secure?',
+            answer: 'Retrofit locks can be secure when the existing deadbolt, strike, door alignment, and cylinder are in good condition. They do not fix weak mechanical hardware, so inspect the current lock before relying on the retrofit module.',
+        },
+        {
+            question: 'Which option is best for renters?',
+            answer: 'Retrofit locks are usually best for renters because they often keep the exterior key cylinder and avoid visible permanent changes. Renters should still confirm lease rules and preserve the original hardware.',
+        },
+        {
+            question: 'When is full replacement better?',
+            answer: 'Full replacement is better when the old lock is damaged, you want an integrated keypad, fingerprint access, weatherproof exterior hardware, new warranty coverage, or a commercial-grade lock body.',
+        },
+        {
+            question: 'Does retrofit affect resale or inspections?',
+            answer: 'A reversible retrofit usually has less effect than drilling or replacing hardware. Full replacements can affect inspections when fire-rated, rental, HOA, or commercial egress requirements apply.',
+        },
+    ]
+
     const [existingLock, setExistingLock] = useState<'deadbolt' | 'knob' | 'mortise' | 'lever'>('deadbolt')
     const [lockCondition, setLockCondition] = useState<'good' | 'fair' | 'poor'>('good')
     const [desiredFeatures, setDesiredFeatures] = useState({
@@ -148,6 +173,13 @@ export default function RetrofitAdvisor() {
                     <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)' }}>
                         Should you retrofit your existing lock or buy a full smart lock replacement?
                     </p>
+                </div>
+
+                <div className="max-w-7xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="Should you retrofit or replace a smart lock?"
+                        answer="Retrofit is usually best when the existing deadbolt is mechanically sound, the door fit is standard, and you want a lower-cost or renter-friendly upgrade. Full replacement is better when you need an exterior keypad, fingerprint access, weather-rated hardware, a new warranty, or the old lock has alignment or security problems."
+                    />
                 </div>
 
                 {/* Key Insight */}
@@ -465,6 +497,9 @@ export default function RetrofitAdvisor() {
                 />
 
                 <RelatedResources calculatorSlug="retrofit-vs-replace-advisor" />
+                <div className="max-w-7xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
 
                 <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
                     <h2 className="text-2xl font-bold mb-6">Related Tools</h2>

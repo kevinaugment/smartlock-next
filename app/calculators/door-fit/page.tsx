@@ -6,6 +6,8 @@ import { DoorOpen, Ruler, Check, X, AlertTriangle, Info } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface LockProfile {
     name: string
@@ -43,6 +45,29 @@ const MATERIALS = [
 ]
 
 export default function DoorFitChecker() {
+    const faqs = [
+        {
+            question: 'What door thickness works with smart locks?',
+            answer: 'Many residential smart locks fit doors around 35mm to 57mm thick, but the exact range varies by model. Extra-thick, very thin, commercial, or specialty doors may need extension kits or different hardware.',
+        },
+        {
+            question: 'What is a standard bore hole?',
+            answer: 'A common bored deadbolt hole is about 54mm or 2-1/8 inches. Smaller holes may need drilling, while larger or damaged holes may need adapter plates or a different lock body.',
+        },
+        {
+            question: 'What is backset?',
+            answer: 'Backset is the distance from the door edge to the center of the lock bore. The most common backsets are 60mm and 70mm, and the latch must match or adjust to that measurement.',
+        },
+        {
+            question: 'Do metal doors need special locks?',
+            answer: 'Metal doors can support many smart locks, but drilling is harder, RF signal can be weaker, and fire-rated assemblies may have restrictions. Confirm both mechanical fit and code impact before modifying metal doors.',
+        },
+        {
+            question: 'When do I need an adapter kit?',
+            answer: 'You may need an adapter kit for extra-thick doors, non-standard bore sizes, unusual backsets, damaged holes, decorative trim conflicts, or lock models with extension hardware requirements.',
+        },
+    ]
+
     const [thickness, setThickness] = useState(44) // mm, default 1-3/4"
     const [backset, setBackset] = useState(70) // mm, default 2-3/4"
     const [boreDiameter, setBoreDiameter] = useState(54) // mm, default 2-1/8"
@@ -115,6 +140,13 @@ export default function DoorFitChecker() {
                     <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)' }}>
                         Enter your door dimensions to find compatible smart lock models
                     </p>
+                </div>
+
+                <div className="max-w-7xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="What measurements do you need before buying a smart lock?"
+                        answer="Before buying a smart lock, measure door thickness, backset, main bore diameter, latch bore, edge bore, strike alignment, and interior clearance. Also identify the door material and current lock type. One non-standard dimension can require drilling, adapter hardware, or a different smart lock model."
+                    />
                 </div>
 
                 {/* Key Insight */}
@@ -403,6 +435,9 @@ export default function DoorFitChecker() {
                 />
 
                 <RelatedResources calculatorSlug="door-measurement-fit-checker" />
+                <div className="max-w-7xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
 
                 {/* Related Tools */}
                 <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>

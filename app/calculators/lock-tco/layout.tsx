@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Smart Lock TCO Calculator - SLockHub.com',
-    description: 'Calculate total cost of ownership for smart lock deployments. Compare hardware, battery, subscription, and installation costs across protocols over time.',
+    title: 'Smart Lock TCO Calculator | Hardware, Battery, Subscription & Labor',
+    description: 'Calculate 5-year smart lock TCO by hardware, installation, batteries, hubs, subscriptions, maintenance, and protocol choice.',
     canonical: '/calculators/lock-tco',
 })
 
@@ -19,7 +19,7 @@ export default function LockTCOLayout({ children }: { children: React.ReactNode 
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Calculate total cost of ownership for smart lock deployments. Compare hardware, battery, subscription, and installation costs across protocols over time.',
+                description: 'Calculate 5-year smart lock TCO by hardware, installation, batteries, hubs, subscriptions, maintenance, and protocol choice.',
                 softwareVersion: '1.0',
                 datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },

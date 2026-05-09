@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service - SLockHub.com',
-  description: 'Terms of Service for SLockHub.com. Read about acceptable use, content, and liability.',
+  title: 'Terms of Service | Smart Lock Guides and Calculators | SLockHub',
+  description: 'Read SLockHub terms for using smart lock articles, calculators, reference content, external links, warranties, and liability limits.',
   alternates: { canonical: '/terms' },
 }
 

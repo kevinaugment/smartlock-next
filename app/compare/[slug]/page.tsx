@@ -6,6 +6,7 @@ import { CheckCircle, ArrowRight, GitCompareArrows, Shield, Wifi, Battery, Dolla
 import { BrandModel, ProductModel, type Brand, type ProductWithBrand } from '@/lib/db/brand-models'
 import { SeoPathways } from '@/components/seo/SeoPathways'
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
+import { getComparisonSeoProfile } from '@/lib/seo/comparison-page-seo'
 
 export const dynamic = 'force-dynamic'
 export const dynamicParams = true
@@ -72,13 +73,12 @@ async function getComparisonData(slug: string): Promise<ComparisonData | null> {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params
     const data = await getComparisonData(slug)
-    if (!data) return { title: 'Smart Lock Comparison — SLockHub.com' }
+    if (!data) return { title: 'Smart Lock Comparison | Price, Protocol, Battery | SLockHub' }
 
     const { brand1, brand2, products1, products2 } = data
-    const price1 = getPriceRange(products1)
-    const price2 = getPriceRange(products2)
-    const title = `${brand1.name} vs ${brand2.name} Smart Locks (${CURRENT_YEAR}) | SLockHub`
-    const description = `Compare ${brand1.name} vs ${brand2.name} smart locks by price (${price1} vs ${price2}), protocol support, battery life, security features, and best-fit use case.`
+    const profile = getComparisonSeoProfile(brand1, brand2, products1, products2)
+    const title = profile.title
+    const description = profile.description
 
     return {
         title,
@@ -230,6 +230,11 @@ function getBrandCaveats(brand: Brand, products: ProductWithBrand[]): string[] {
     return caveats.slice(0, 3)
 }
 
+function getPairSeoAngle(brand1: Brand, brand2: Brand, products1: ProductWithBrand[], products2: ProductWithBrand[]): string {
+    const profile = getComparisonSeoProfile(brand1, brand2, products1, products2)
+    return profile.angle
+}
+
 function pickWinner<T extends number | null>(
     brand1: Brand,
     brand2: Brand,
@@ -247,21 +252,8 @@ function getPairVerdict(
     products1: ProductWithBrand[],
     products2: ProductWithBrand[]
 ): string {
-    const ratingWinner = getBetterRatedBrand(brand1, brand2, products1, products2)
-    const priceWinner = getLowerPricedBrand(brand1, brand2, products1, products2)
-    const batteryWinner = pickWinner(brand1, brand2, getAverageBatteryMonths(products1), getAverageBatteryMonths(products2))
-    const protocolWinner = pickWinner(brand1, brand2, getProtocols(products1).length + getMatterCount(products1), getProtocols(products2).length + getMatterCount(products2))
-
-    if (ratingWinner && ratingWinner === protocolWinner) {
-        return `${ratingWinner.name} is the stronger default pick when you want broader smart-home coverage and higher average model ratings.`
-    }
-    if (priceWinner && priceWinner === batteryWinner) {
-        return `${priceWinner.name} is the value-led pick here, with a lower entry price and stronger average battery-life data.`
-    }
-    if (ratingWinner && priceWinner && ratingWinner !== priceWinner) {
-        return `${ratingWinner.name} leads on average rating, while ${priceWinner.name} is easier to shortlist on price. Choose based on whether confidence or budget matters more.`
-    }
-    return `${brand1.name} and ${brand2.name} are close enough that the best choice depends on protocol fit, door requirements, and the specific model you shortlist.`
+    const profile = getComparisonSeoProfile(brand1, brand2, products1, products2)
+    return profile.verdict
 }
 
 // ============================================
@@ -282,6 +274,7 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
     const sharedProtocols = getSharedProtocols(products1, products2)
     const bestModel1 = getBestModel(products1)
     const bestModel2 = getBestModel(products2)
+    const seoProfile = getComparisonSeoProfile(brand1, brand2, products1, products2)
     const pageUrl = `https://www.slockhub.com/compare/${slug}`
     const winnerCards = [
         {
@@ -370,6 +363,11 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
 
     // FAQ data
     const faqs = [
+        seoProfile.faq,
+        {
+            question: `${brand1.name} vs ${brand2.name}: which is better?`,
+            answer: getPairSeoAngle(brand1, brand2, products1, products2),
+        },
         {
             question: `Is ${brand1.name} or ${brand2.name} better for home security?`,
             answer: `Both ${brand1.name} and ${brand2.name} offer quality smart locks. ${brand1.name} targets the ${brand1.target_market || 'general'} market while ${brand2.name} focuses on ${brand2.target_market || 'general'}. Your best choice depends on your specific needs for protocol compatibility, budget, and security features.`,
@@ -446,7 +444,7 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
                         {brand1.name} vs {brand2.name}
                     </h1>
                     <p className="page-header__subtitle">
-                        Compare price ranges, protocols, battery life, security features, and use-case fit before choosing a smart lock brand.
+                        {seoProfile.subtitle}
                     </p>
                 </div>
 
@@ -454,6 +452,9 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
                     <h2 className="section-title">Quick Verdict</h2>
                     <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-lg)' }}>
                         {getPairVerdict(brand1, brand2, products1, products2)}
+                    </p>
+                    <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-lg)' }}>
+                        {getPairSeoAngle(brand1, brand2, products1, products2)}
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <VerdictItem
@@ -475,7 +476,7 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
                 </div>
 
                 <div style={{ marginBottom: 'var(--space-3xl)' }}>
-                    <h2 className="section-title">Winner Cards by Use Case</h2>
+                    <h2 className="section-title">Home, Rental, Commercial Winners</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                         {winnerCards.map((card) => (
                             <WinnerCard
@@ -495,7 +496,7 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
                 </div>
 
                 <div style={{ marginBottom: 'var(--space-3xl)' }}>
-                    <h2 className="section-title">Best Model From Each Brand</h2>
+                    <h2 className="section-title">Best Models Compared</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <BestModelCard brand={brand1} product={bestModel1} />
                         <BestModelCard brand={brand2} product={bestModel2} />
@@ -548,7 +549,7 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
 
                 {/* Comparison Table */}
                 <div style={{ marginBottom: 'var(--space-3xl)' }}>
-                    <h2 className="section-title">Side-by-Side Comparison</h2>
+                    <h2 className="section-title">Price, Protocol, Battery Table</h2>
                     <div className="card overflow-hidden p-0 comparison-table-desktop">
                         <div className="data-table-wrap">
                             <table className="data-table">
@@ -603,7 +604,7 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
 
                 {/* Recommendation */}
                 <div className="card" style={{ marginBottom: 'var(--space-3xl)', background: 'var(--color-bg-alt)' }}>
-                    <h2 className="section-title">Which Should You Choose?</h2>
+                    <h2 className="section-title">Buy, Skip, Shortlist</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <h3 style={{ fontWeight: 600, marginBottom: 'var(--space-sm)', fontSize: '1.05rem', color: 'var(--color-text-primary)' }}>
@@ -647,7 +648,7 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
                 </div>
 
                 <div className="card" style={{ marginBottom: 'var(--space-3xl)' }}>
-                    <h2 className="section-title">How We Compare These Brands</h2>
+                    <h2 className="section-title">Price, Protocol, Product Depth</h2>
                     <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-md)' }}>
                         This page scores the active product catalog for each brand, not just one flagship lock. The comparison weighs average rating, price range, protocol coverage, Matter availability, battery-life data, access methods, and door-security specifications where those fields are available.
                     </p>
@@ -687,7 +688,7 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" style={{ marginBottom: 'var(--space-3xl)' }}>
                     <div className="card">
-                        <h2 className="section-title">Shared Compatibility</h2>
+                        <h2 className="section-title">Shared Door Compatibility</h2>
                         <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-md)' }}>
                             {sharedProtocols.length > 0
                                 ? `${brand1.name} and ${brand2.name} both have catalog coverage for ${sharedProtocols.join(', ')}. That makes same-hub shortlisting easier, but each model still needs a door-fit check.`
@@ -699,7 +700,7 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
                         </div>
                     </div>
                     <div className="card">
-                        <h2 className="section-title">When to Skip Each Brand</h2>
+                        <h2 className="section-title">When to Skip</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <CaveatList brand={brand1} caveats={getBrandCaveats(brand1, products1)} />
                             <CaveatList brand={brand2} caveats={getBrandCaveats(brand2, products2)} />
@@ -726,7 +727,7 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
 
                 {/* Related Comparisons CTA */}
                 <div className="cta-section">
-                    <h2 className="cta-section__title">More Comparisons</h2>
+                    <h2 className="cta-section__title">More Brand Comparisons</h2>
                     <p className="cta-section__subtitle">
                         Explore protocol comparisons and smart lock tools
                     </p>

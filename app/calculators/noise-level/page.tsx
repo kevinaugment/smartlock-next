@@ -6,6 +6,8 @@ import { Volume2, VolumeX, Info, Moon, Building, Home } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface NoiseProfile {
     label: string
@@ -54,6 +56,29 @@ const NOISE_COMPARISONS = [
 ]
 
 export default function NoiseLevelEstimator() {
+    const faqs = [
+        {
+            question: 'How loud is a smart lock motor?',
+            answer: 'A smart lock motor can range from quiet background noise to clearly noticeable mechanical sound depending on motor type, bolt friction, speed mode, door alignment, and distance from the listener.',
+        },
+        {
+            question: 'Which locks are quietest?',
+            answer: 'Locks with brushless motors, quiet or night modes, smooth bolt travel, good door alignment, and magnetic or well-damped mechanisms are usually quieter than solenoid, fast motor, or poorly aligned deadbolt designs.',
+        },
+        {
+            question: 'Does door alignment increase noise?',
+            answer: 'Yes. A misaligned door or strike makes the motor work harder and can add scraping, clicking, or repeated retry sounds. Fixing alignment often reduces noise and improves battery life.',
+        },
+        {
+            question: 'Are smart locks too loud for apartments?',
+            answer: 'Some smart locks can be too noticeable for bedrooms, shared walls, or late-night apartment entries. Quiet mode, better alignment, thicker doors, and lower-noise motor designs help reduce disturbance.',
+        },
+        {
+            question: 'How can motor noise be reduced?',
+            answer: 'Reduce smart lock noise by aligning the strike, lubricating approved mechanical parts, enabling quiet mode, avoiding forced bolt travel, choosing brushless motors, and placing the lock away from sleep-sensitive rooms when possible.',
+        },
+    ]
+
     const [motorType, setMotorType] = useState('dc-brushless')
     const [mechanismType, setMechanismType] = useState('deadbolt')
     const [speedMode, setSpeedMode] = useState('fast')
@@ -139,12 +164,19 @@ export default function NoiseLevelEstimator() {
                     </p>
                 </div>
 
+                <div className="max-w-7xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="How loud is a smart lock?"
+                        answer="Smart lock noise depends on motor type, lock mechanism, bolt friction, speed mode, door thickness, room ambient noise, and listener distance. A quiet lock should be judged against the room where it operates: a level acceptable in a retail corridor may be disruptive near a bedroom, hotel room, or apartment shared wall."
+                    />
+                </div>
+
                 <div className="max-w-4xl mx-auto" style={{ marginBottom: 'var(--space-3xl)' }}>
                     <div className="callout callout-info">
                         <div className="flex items-start gap-3">
                             <VolumeX className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--color-accent)' }} />
                             <div>
-                                <h2 className="font-bold mb-1" style={{ fontSize: '1rem' }}>Why Noise Matters</h2>
+                                <h2 className="font-bold mb-1" style={{ fontSize: '1rem' }}>Motor, Mechanism, Room</h2>
                                 <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>
                                     A smart lock that&apos;s too loud can disturb sleeping guests in hotels, wake family members at night,
                                     or create uncomfortable noise in quiet office environments. This is the <strong>only tool on the web</strong> that
@@ -348,6 +380,9 @@ export default function NoiseLevelEstimator() {
                 />
 
                 <RelatedResources calculatorSlug="noise-level-estimator" />
+                <div className="max-w-7xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
 
                 <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
                     <h2 className="text-2xl font-bold mb-6">Related Tools</h2>

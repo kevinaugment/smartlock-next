@@ -10,6 +10,8 @@ import {
 } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 export const metadata: Metadata = buildSeoMetadata({
     title: 'Mesh Network Planner | Zigbee/Z-Wave Repeater Calculator for Smart Locks',
@@ -19,6 +21,29 @@ export const metadata: Metadata = buildSeoMetadata({
 })
 
 export default function MeshPlannerPage() {
+  const faqs = [
+    {
+      question: 'How many Zigbee repeaters do I need?',
+      answer: 'Zigbee repeater needs depend on lock count, floor plan, wall loss, hub location, and whether powered devices can route traffic. A practical design gives every important lock at least one strong path and ideally a second alternate path.',
+    },
+    {
+      question: 'Where should Z-Wave repeaters go?',
+      answer: 'Place Z-Wave repeaters between the hub and weak locks, near corridors or transition points rather than behind metal doors or inside utility rooms. Confirm with network repair tools and RSSI or route diagnostics after installation.',
+    },
+    {
+      question: 'Do battery devices repeat mesh signals?',
+      answer: 'Usually no. Battery-powered smart locks normally sleep to save power and do not act as mesh routers. Powered plugs, switches, dedicated repeaters, border routers, or hardwired devices are typically used to extend the mesh.',
+    },
+    {
+      question: 'How many hops are acceptable?',
+      answer: 'Fewer hops are better for latency and reliability. Z-Wave networks often have stricter hop limits than Zigbee or Thread. Critical doors should avoid long routes and should have redundant paths where possible.',
+    },
+    {
+      question: 'Does Thread need border routers?',
+      answer: 'Thread networks need at least one border router to connect the local Thread mesh to IP networks and Matter controllers. Larger buildings may need multiple border routers for coverage, redundancy, and floor-to-floor reliability.',
+    },
+  ]
+
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -62,9 +87,16 @@ export default function MeshPlannerPage() {
             <p className="page-header__subtitle">Calculate optimal repeater nodes for Zigbee, Z-Wave, Thread deployments using IEEE propagation models</p>
           </div>
 
+          <div className="max-w-7xl mx-auto">
+            <CalculatorAnswerBlock
+              title="When do smart lock mesh networks need repeaters?"
+              answer="Smart lock mesh networks need repeaters when battery locks cannot maintain a strong route to the hub, when walls or floors reduce RSSI, or when a building needs redundant paths for reliability. Powered devices usually repeat; battery locks usually do not. Plan the mesh by door location, not just by total device count."
+            />
+          </div>
+
           <div className="max-w-4xl mx-auto mb-12">
             <div className="callout callout-info">
-              <h2 className="callout-title">Why Mesh Planning Matters</h2>
+              <h2 className="callout-title">Repeaters, Floors, Signal</h2>
               <p >
                 <strong>Under-deployment:</strong> 30-40% signal failures in 10+ lock systems. <strong>Over-deployment:</strong> 2× unnecessary cost. <strong>Optimal mesh:</strong> 20% redundancy buffer prevents dead zones while minimizing nodes. Range varies 3×: Zigbee 30m vs Z-Wave 40m (908MHz). Wall materials cause 1-2.5× attenuation (ITU-R P.2040-1 data). Professional mesh design = 99.5% uptime vs 85-90% ad-hoc.
               </p>
@@ -350,10 +382,13 @@ export default function MeshPlannerPage() {
 
 
           <RelatedResources calculatorSlug="mesh-node-planner" />
+          <div className="max-w-7xl mx-auto">
+            <CalculatorFaqBlock faqs={faqs} />
+          </div>
 
-          {/* Related Resources */}
+          {/* Signal, Protocol, Battery */}
           <div className="max-w-7xl mx-auto mt-12">
-            <h2 className="section-title">Related Calculators</h2>
+            <h2 className="section-title">Signal, Protocol, Battery</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Link href="/calculators/signal-strength" className="link-card">
                 <div style={{ color: "var(--color-accent)", marginBottom: "var(--space-sm)" }}><Signal className="w-8 h-8" /></div>

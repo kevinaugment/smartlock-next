@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Emergency Backup Evaluator - SLockHub.com',
-    description: 'Evaluate your smart lock emergency backup plan. Score your backup readiness across physical keys, PIN codes, mobile app, remote access, and Bluetooth fallback.',
+    title: 'Emergency Backup Evaluator | Keys, PINs, App & Bluetooth Fallback',
+    description: 'Score smart lock emergency access by backup keys, PIN codes, mobile app access, remote unlock, Bluetooth fallback, and outage readiness.',
     canonical: '/calculators/emergency-backup',
 })
 
@@ -19,7 +19,7 @@ export default function EmergencyBackupLayout({ children }: { children: React.Re
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Evaluate your smart lock emergency backup plan. Score your backup readiness across physical keys, PIN codes, mobile app, remote access, and Bluetooth fallback.',
+                description: 'Score smart lock emergency access by backup keys, PIN codes, app access, remote unlock, Bluetooth fallback, and outage readiness.',
                 softwareVersion: '1.0',
                 datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },

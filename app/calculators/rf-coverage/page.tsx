@@ -6,8 +6,33 @@ import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechR
 import { Radio, MapPin, AlertTriangle, Check } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 export default function RFCoverage() {
+  const faqs = [
+    {
+      question: 'How far can a smart lock signal reach?',
+      answer: 'Indoor smart lock range depends on protocol, frequency, wall materials, hub placement, and interference. A practical planning range is often much shorter than the marketing range, especially in apartments, hotels, concrete buildings, and metal door environments.',
+    },
+    {
+      question: 'Which building materials block RF?',
+      answer: 'Metal doors, elevator shafts, reinforced concrete, brick, foil-backed insulation, and dense utility rooms can sharply reduce RF range. Drywall and wood usually have lower loss, but multiple walls and floor penetrations still add up.',
+    },
+    {
+      question: 'Is 900 MHz better than 2.4 GHz?',
+      answer: 'Sub-GHz systems such as Z-Wave often penetrate walls better than 2.4 GHz systems, but they may have lower data rates and different ecosystem limits. The best choice depends on building materials, hub placement, device availability, and interference.',
+    },
+    {
+      question: 'How many repeaters do I need?',
+      answer: 'Repeater count depends on distance, wall loss, floor count, and whether powered devices can relay traffic. Large or dense buildings should plan repeaters with redundancy, then confirm placement with a signal test before final installation.',
+    },
+    {
+      question: 'How do I plan RF coverage for apartments?',
+      answer: 'Plan by floor and corridor, not just total square footage. Apartments often need repeaters near stairwells, elevators, utility rooms, and long hallways because unit walls, doors, and metal infrastructure create uneven coverage.',
+    },
+  ]
+
   const [buildingLength, setBuildingLength] = useState(30)
   const [buildingWidth, setBuildingWidth] = useState(20)
   const [floors, setFloors] = useState(2)
@@ -73,6 +98,13 @@ export default function RFCoverage() {
           <div className="page-header__icon"><Radio className="w-14 h-14" /></div>
           <h1 className="text-4xl font-bold mb-4">RF Coverage Estimator</h1>
           <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Plan mesh network topology and signal coverage</p>
+        </div>
+
+        <div className="max-w-6xl mx-auto">
+          <CalculatorAnswerBlock
+            title="How should you estimate smart lock RF coverage?"
+            answer="Smart lock RF coverage should be estimated from protocol range, building dimensions, floor count, wall density, interference, and whether powered repeaters are available. Treat the result as a planning baseline: dense apartments, hotels, concrete, and metal doors usually need on-site RSSI testing before the final hub or repeater layout is approved."
+          />
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -224,6 +256,9 @@ export default function RFCoverage() {
       <ToolRating toolSlug="rf-coverage" />
 
       <RelatedResources calculatorSlug="rf-coverage-estimator" />
+      <div className="max-w-6xl mx-auto">
+        <CalculatorFaqBlock faqs={faqs} />
+      </div>
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

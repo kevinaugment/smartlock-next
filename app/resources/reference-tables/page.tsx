@@ -3,8 +3,8 @@ import type { Metadata } from 'next'
 import { Table2, ArrowLeft } from 'lucide-react'
 
 export const metadata: Metadata = {
-    title: 'Smart Lock Reference Tables — Protocol, Grade & Battery Comparisons | SLockHub',
-    description: 'Comprehensive comparison tables for smart lock protocols, ANSI/BHMA grades, battery life, and lock types. Essential reference for professionals.',
+    title: 'Smart Lock Reference Tables | Protocol, Grade, Battery & Encryption',
+    description: 'Compare smart lock protocols, ANSI/BHMA grades, battery life, lock types, and encryption standards in quick reference tables.',
     alternates: { canonical: '/resources/reference-tables' },
 }
 
@@ -90,7 +90,7 @@ export default function ReferenceTablesPage() {
                     <div className="page-header__icon">
                         <Table2 className="w-10 h-10" />
                     </div>
-                    <h1 className="page-header__title">Reference Tables</h1>
+                    <h1 className="page-header__title">Smart Lock Reference Tables</h1>
                     <p className="page-header__subtitle">
                         Side-by-side comparison data for smart lock protocols, security grades, battery life, and lock types
                     </p>
@@ -490,7 +490,7 @@ export default function ReferenceTablesPage() {
                 {/* CTA Section */}
                 <div className="max-w-6xl mx-auto mt-8">
                     <div className="cta-section">
-                        <h2 className="cta-section__title">Need Help Choosing?</h2>
+                        <h2 className="cta-section__title">Specs, Fit, Protocols</h2>
                         <p className="cta-section__subtitle">
                             Use our interactive calculators and decision tools to find the perfect smart lock
                         </p>

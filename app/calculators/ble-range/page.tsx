@@ -6,6 +6,8 @@ import { Bluetooth, AlertTriangle, Lightbulb, Check } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface Inputs {
     bleVersion: string
@@ -36,6 +38,29 @@ const obstacleLoss: Record<string, { loss: number; label: string }> = {
 }
 
 export default function BLERangeCalculator() {
+    const faqs = [
+        {
+            question: 'What is normal Bluetooth lock range?',
+            answer: 'A reliable Bluetooth smart lock range is usually a few meters indoors for proximity unlock, even if the radio can connect farther away. Doors, bodies, phones in pockets, interference, and RSSI thresholds all reduce dependable unlock distance.',
+        },
+        {
+            question: 'Why is proximity unlock unreliable?',
+            answer: 'Proximity unlock depends on RSSI, phone antenna orientation, operating system background limits, body blocking, door materials, and competing 2.4 GHz traffic. Small signal changes can make the lock think a user is closer or farther away than they are.',
+        },
+        {
+            question: 'Does TX power affect battery life?',
+            answer: 'Yes. Higher transmit power can improve range and link margin, but it usually increases battery drain. For locks, the best setting is the lowest power that still gives reliable approach detection at the intended distance.',
+        },
+        {
+            question: 'How does RSSI map to distance?',
+            answer: 'RSSI is only a rough proxy for distance. A stronger value often means the phone is closer, but walls, reflections, metal, and body position can change RSSI without a matching distance change.',
+        },
+        {
+            question: 'Can BLE work through doors?',
+            answer: 'BLE can work through many wood and drywall doors, but metal doors, metal frames, reinforced walls, and elevator areas can reduce range sharply. Test from both sides of the door before relying on automatic unlock.',
+        },
+    ]
+
     const [inputs, setInputs] = useState<Inputs>({
         bleVersion: '5.0',
         txPower: 0,
@@ -148,6 +173,13 @@ export default function BLERangeCalculator() {
                     <p className="page-header__subtitle">
                         Estimate Bluetooth Low Energy signal coverage for proximity-based smart lock unlocking
                     </p>
+                </div>
+
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="What is normal Bluetooth smart lock range?"
+                        answer="Bluetooth smart lock range is usually planned around reliable proximity, not maximum radio reach. Indoors, dependable auto-unlock often needs a strong RSSI within a few meters of the door because phones, bodies, walls, metal frames, and 2.4 GHz interference can change signal strength quickly."
+                    />
                 </div>
 
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -307,6 +339,9 @@ export default function BLERangeCalculator() {
 
                 <ToolRating toolSlug="ble-range" />
                 <RelatedResources calculatorSlug="ble-range" />
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
                 <BeTechCalculatorRecommendation
                     description="Be-Tech locks feature BLE 5.0 with configurable TX power and proximity-based auto-unlock. Reliable detection at up to 10m through standard walls."
                     badge="BLE 5.0"

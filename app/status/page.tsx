@@ -4,8 +4,8 @@ import { queryOne, query } from '@/lib/db'
 import { Search, CheckCircle, XCircle, HelpCircle } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'System Status - SLockHub.com',
-  description: 'Real-time status of SLockHub.com services and database connectivity.',
+  title: 'SLockHub Status | Database, Articles, Services',
+  description: 'Check SLockHub service status for article data, categories, database connectivity, and platform runtime.',
   robots: 'noindex',
 }
 

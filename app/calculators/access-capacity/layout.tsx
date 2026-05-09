@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Access Control Capacity Calculator - SLockHub.com',
-    description: 'Calculate access control system capacity for buildings and campuses. Plan user counts, credential types, and throughput for smart lock deployments.',
+    title: 'Access Control Capacity Calculator | Users, Credentials & Doors',
+    description: 'Plan smart lock capacity by user count, credential type, permission groups, door count, and platform limits for buildings and campuses.',
     canonical: '/calculators/access-capacity',
 })
 
@@ -19,7 +19,7 @@ export default function AccessCapacityLayout({ children }: { children: React.Rea
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Calculate access control system capacity for buildings and campuses.',
+                description: 'Plan smart lock capacity by users, credentials, permission groups, doors, and platform limits.',
             }} />
             <JsonLd data={{
                 '@context': 'https://schema.org',

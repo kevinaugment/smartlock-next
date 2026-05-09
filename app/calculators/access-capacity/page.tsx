@@ -6,6 +6,8 @@ import { Users, AlertTriangle, Check, Lightbulb } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface Inputs {
     brand: string
@@ -29,6 +31,29 @@ const brandLimits: Record<string, { maxUsers: number; maxGroups: number; maxSche
 }
 
 export default function AccessCapacityCalculator() {
+    const faqs = [
+        {
+            question: 'How many users can a smart lock store?',
+            answer: 'Smart lock user capacity varies widely by product tier. Basic residential locks may store dozens of users, while commercial and cloud-managed access systems can support hundreds or thousands. Always verify per-lock, per-door, and platform limits before rollout.',
+        },
+        {
+            question: 'What happens when code capacity is full?',
+            answer: 'When capacity is full, new users or credentials may fail to save, scheduled codes may not sync, and administrators may need to delete old users manually. A deployment should maintain a buffer for turnover, vendors, emergency users, and temporary access.',
+        },
+        {
+            question: 'Do offline locks have lower capacity?',
+            answer: 'Offline locks often have tighter local memory limits because users, schedules, and credentials must be stored on the device. Cloud-managed systems can manage larger directories, but each lock may still cache only the credentials it needs locally.',
+        },
+        {
+            question: 'How many credentials do apartments need?',
+            answer: 'A multifamily property should count residents, staff, maintenance vendors, leasing teams, emergency access, amenity doors, and expected turnover. A practical plan includes a 15% to 25% capacity buffer beyond the current user count.',
+        },
+        {
+            question: 'Should every user get unique access?',
+            answer: 'Yes. Unique access improves accountability, revocation, privacy, and incident response. Shared codes should be avoided for staff, contractors, tenants, and guests except as a temporary fallback with a defined expiration process.',
+        },
+    ]
+
     const [inputs, setInputs] = useState<Inputs>({
         brand: 'generic',
         totalUsers: 50,
@@ -123,6 +148,13 @@ export default function AccessCapacityCalculator() {
                     <p className="page-header__subtitle">
                         Verify your locks can handle all users, credentials, and permission groups
                     </p>
+                </div>
+
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="How do you calculate smart lock user capacity?"
+                        answer="Smart lock user capacity should include every resident, employee, vendor, guest, administrator, emergency user, credential type, permission group, and schedule the lock or platform must store. The safest deployment plan keeps at least 15% to 25% unused capacity so turnover, temporary access, and future doors do not push the system over its limit."
+                    />
                 </div>
 
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -339,6 +371,9 @@ export default function AccessCapacityCalculator() {
 
                 <ToolRating toolSlug="access-capacity" />
                 <RelatedResources calculatorSlug="access-capacity" />
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
                 <BeTechCalculatorRecommendation
                     description="Be-Tech commercial access control systems support up to 3,000 users per lock with multi-credential management, making them ideal for medium to large deployments."
                     badge="High Capacity"

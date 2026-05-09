@@ -9,26 +9,51 @@ import {
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { SeoPathways } from '@/components/seo/SeoPathways'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Signal Strength Calculator (2026) | Z-Wave, Wi-Fi, BLE Range',
-  description: 'Estimate smart lock signal strength by protocol, distance, wall material, frequency, RSSI, and link margin. Compare Z-Wave, Zigbee, Thread, Wi-Fi, and BLE range.',
+  title: 'Smart Lock Signal Strength Calculator - Check Wi-Fi, Z-Wave & BLE Range',
+  description: 'Check whether your smart lock signal will reach through walls and doors by protocol, distance, material, RSSI, and link margin.',
   keywords: 'signal strength calculator, RF signal analysis, Z-Wave range, Zigbee signal strength, smart lock connectivity, dBm calculator, path loss, RSSI calculator',
   alternates: { canonical: '/calculators/signal-strength' },
   openGraph: {
-    title: 'Smart Lock Signal Strength Calculator (2026)',
-    description: 'Physics-based RF signal calculator using distance, protocol, wall materials, RSSI, and link margin.',
+    title: 'Smart Lock Signal Strength Calculator - Check Wi-Fi, Z-Wave & BLE Range',
+    description: 'Check whether your smart lock signal will reach through walls and doors using protocol, distance, material, RSSI, and link margin.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Smart Lock Signal Strength Calculator (2026)',
-    description: 'Estimate whether your smart lock signal will reach reliably through walls, doors, and distance.',
+    title: 'Smart Lock Signal Strength Calculator - Check Range',
+    description: 'Check whether your smart lock signal will reach reliably through walls, doors, and distance.',
   },
 }
 
 export default function SignalStrengthPage() {
+  const faqs = [
+    {
+      question: 'What RSSI is good for a smart lock?',
+      answer: 'A smart lock RSSI around -50 to -70 dBm is generally good. Readings below about -80 dBm are more likely to cause delays, disconnects, retries, and battery drain.',
+    },
+    {
+      question: 'How much do walls reduce signal?',
+      answer: 'Drywall may only cost a few dB, while brick, concrete, metal doors, mirrors, and appliances can remove enough signal to break reliability. Material type matters more than distance alone.',
+    },
+    {
+      question: 'Is 2.4 GHz worse through concrete?',
+      answer: 'Yes, 2.4 GHz protocols such as Wi-Fi, Zigbee, Thread, and Bluetooth usually lose more signal through dense materials than sub-GHz Z-Wave. Concrete and metal are common failure points.',
+    },
+    {
+      question: 'How do I improve smart lock signal?',
+      answer: 'Move the hub closer, add a mesh repeater, reduce metal obstructions, avoid crowded 2.4 GHz channels, or choose a protocol with better wall penetration for the building.',
+    },
+    {
+      question: 'When do I need a repeater?',
+      answer: 'Add a repeater when RSSI is marginal, link margin is under about 10 dB, commands time out, or battery life drops because the lock keeps retrying weak radio transmissions.',
+    },
+  ]
+
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -93,6 +118,31 @@ export default function SignalStrengthPage() {
             </p>
           </div>
 
+          <div className="max-w-4xl mx-auto">
+            <CalculatorAnswerBlock
+              title="What RSSI is good for a smart lock?"
+              answer="For smart locks, RSSI around -50 to -70 dBm is usually reliable, -70 to -80 dBm is marginal, and weaker than -80 dBm often causes slow commands, disconnects, and higher battery use from retries. For business-critical doors, target at least 10 dB of link margin after wall and door losses."
+            >
+              <div className="data-table-wrap">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>RSSI range</th>
+                      <th>Signal quality</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>-50 to -30 dBm</td><td>Excellent</td><td>No action needed</td></tr>
+                    <tr><td>-70 to -50 dBm</td><td>Good</td><td>Acceptable for most locks</td></tr>
+                    <tr><td>-80 to -70 dBm</td><td>Marginal</td><td>Monitor latency and battery life</td></tr>
+                    <tr><td>Below -80 dBm</td><td>Poor</td><td>Add repeater or change placement</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </CalculatorAnswerBlock>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto" style={{ marginBottom: 'var(--space-3xl)' }}>
             <SignalSummary label="Best penetration" value="Z-Wave" detail="908 MHz has lower path loss than 2.4 GHz protocols" />
             <SignalSummary label="Target margin" value="10 dB+" detail="Recommended link margin for reliable lock operation" />
@@ -101,7 +151,7 @@ export default function SignalStrengthPage() {
 
           <div className="max-w-4xl mx-auto" style={{ marginBottom: 'var(--space-3xl)' }}>
             <div className="callout callout-info">
-              <h2 className="callout-title">Why 908 MHz (Z-Wave) Penetrates Better Than 2.4 GHz</h2>
+              <h2 className="callout-title">908 MHz, 2.4 GHz, Walls</h2>
               <p>
                 Lower frequency = longer wavelength = better diffraction around obstacles. Z-Wave&apos;s 33cm wavelength vs 2.4GHz&apos;s 12.5cm wavelength means 2-3× better wall penetration. One concrete wall (-12dB) can break 2.4GHz but not Z-Wave.
               </p>
@@ -464,9 +514,13 @@ export default function SignalStrengthPage() {
 
           <RelatedResources calculatorSlug="signal-strength-analyzer" />
 
-          {/* Related Resources */}
+          <div className="max-w-7xl mx-auto">
+            <CalculatorFaqBlock faqs={faqs} />
+          </div>
+
+          {/* Signal, Battery, Protocol */}
           <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
-            <h2 className="section-title">Related Resources</h2>
+            <h2 className="section-title">Signal, Battery, Protocol</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Link href="/calculators/battery-life" className="link-card">
                 <div style={{ color: 'var(--color-accent)', marginBottom: 'var(--space-sm)' }}><Battery className="w-8 h-8" /></div>

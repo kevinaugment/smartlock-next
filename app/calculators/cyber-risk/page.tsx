@@ -6,6 +6,8 @@ import { ShieldAlert, Lock, Wifi, RefreshCw, Check, X, AlertTriangle, Info } fro
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface CyberRiskResult {
     score: number
@@ -23,6 +25,29 @@ interface CyberRiskResult {
 }
 
 export default function CyberRiskScorecard() {
+    const faqs = [
+        {
+            question: 'Can smart locks be hacked?',
+            answer: 'Smart locks can be attacked through weak PINs, default credentials, insecure Bluetooth, cloud account compromise, exposed APIs, outdated firmware, or physical tampering. Risk depends on configuration and vendor controls.',
+        },
+        {
+            question: 'What increases cyber risk?',
+            answer: 'Cyber risk increases when locks lack lockout controls, use unknown encryption, skip firmware updates, depend fully on cloud access, expose APIs, or store credentials without encryption.',
+        },
+        {
+            question: 'Are firmware updates required?',
+            answer: 'Firmware updates are important because smart locks can inherit vulnerabilities from radio chips, mobile apps, cloud APIs, and vendor services. A lock with no update path is harder to defend over time.',
+        },
+        {
+            question: 'Is cloud access risky?',
+            answer: 'Cloud access adds convenience and remote administration, but it also adds account, API, vendor, and outage risk. Use MFA, least-privilege admin accounts, audit logs, and offline fallback access.',
+        },
+        {
+            question: 'How do I reduce smart lock attack surface?',
+            answer: 'Reduce attack surface by changing default credentials, enabling lockout, using strong PIN policy, keeping firmware updated, closing unnecessary ports, limiting cloud admins, and preserving physical backup access.',
+        },
+    ]
+
     // Authentication
     const [authMethods, setAuthMethods] = useState({ pin: true, rfid: true, fingerprint: false, mobile: true, physical_key: true })
     const [mfaEnabled, setMfaEnabled] = useState(false)
@@ -131,6 +156,31 @@ export default function CyberRiskScorecard() {
                     <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)' }}>
                         Evaluate the digital attack surface of your smart lock deployment
                     </p>
+                </div>
+
+                <div className="max-w-4xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="Can smart locks be hacked?"
+                        answer="Smart locks can be hacked or misused when authentication, encryption, firmware, cloud access, network exposure, or physical tamper controls are weak. The practical risk is lower when the deployment uses unique credentials, failed-attempt lockout, encrypted communication, signed firmware updates, limited admin access, and offline fallback access."
+                    >
+                        <div className="data-table-wrap">
+                            <table className="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Risk area</th>
+                                        <th>Common weak point</th>
+                                        <th>Minimum control</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Authentication</td><td>Shared or short PINs</td><td>Unique codes and lockout</td></tr>
+                                    <tr><td>Firmware</td><td>No update process</td><td>Signed OTA updates</td></tr>
+                                    <tr><td>Cloud</td><td>Overbroad admin access</td><td>MFA and audit logs</td></tr>
+                                    <tr><td>Network</td><td>Open ports or exposed APIs</td><td>Firewall and key rotation</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </CalculatorAnswerBlock>
                 </div>
 
                 <div className="max-w-4xl mx-auto" style={{ marginBottom: 'var(--space-3xl)' }}>
@@ -374,6 +424,10 @@ export default function CyberRiskScorecard() {
                 />
 
                 <RelatedResources calculatorSlug="cyber-risk-scorecard" />
+
+                <div className="max-w-7xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
 
                 <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>
                     <h2 className="text-2xl font-bold mb-6">Related Tools</h2>

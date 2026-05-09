@@ -4,8 +4,8 @@ import { Mail, MessageCircle, BookOpen, Check } from 'lucide-react'
 import ContactForm from '@/components/ContactForm'
 
 export const metadata: Metadata = {
-  title: 'Contact - SLockHub.com',
-  description: 'Get in touch with SLockHub.com. We are here to help with your smart lock questions.',
+  title: 'Contact SLockHub | Smart Lock Questions, Tools & Research',
+  description: 'Contact SLockHub about smart lock guides, calculators, product research, protocol comparisons, installation fit, and security topics.',
   alternates: { canonical: '/contact' },
 }
 
@@ -23,7 +23,7 @@ export default function Contact() {
           </div>
 
           <div className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
-            <h2 className="section-title">Get in Touch</h2>
+            <h2 className="section-title">Email, Community, Docs</h2>
 
             <div className="form-group" style={{ marginBottom: 'var(--space-xl)' }}>
               <div className="feature-item">
@@ -48,7 +48,7 @@ export default function Contact() {
                 <div className="feature-item__icon feature-item__icon--lg feature-item__icon--accent"><BookOpen className="w-8 h-8" /></div>
                 <div>
                   <h3 className="feature-item__title">Documentation</h3>
-                  <p className="feature-item__desc">Browse our comprehensive knowledge base for instant answers</p>
+                  <p className="feature-item__desc">Browse smart lock guides for quick answers</p>
                 </div>
               </div>
             </div>
@@ -71,7 +71,7 @@ export default function Contact() {
             <ul className="space-y-3">
               <li className="check-item">
                 <Check className="check-item__icon check-item__icon--accent" />
-                <span className="feature-item__desc">Check our <a href="/articles" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Knowledge Base</a> for common questions</span>
+                <span className="feature-item__desc">Check our <a href="/articles" style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Smart Lock Guides</a> for common questions</span>
               </li>
               <li className="check-item">
                 <Check className="check-item__icon check-item__icon--accent" />

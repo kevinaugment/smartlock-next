@@ -39,7 +39,8 @@ async function main() {
     'stale lib/db/client.ts adapter must stay removed so there is only one DB facade'
   )
 
-  for (const exportName of ['getTursoClient', 'query', 'queryOne', 'execute', 'batch']) {
+  const requiredFunctionExports = ['getTursoClient', 'query', 'queryOne', 'execute', 'batch'] as const
+  for (const exportName of requiredFunctionExports) {
     assert.equal(typeof moduleExports[exportName], 'function', `${exportName} must remain exported`)
   }
   assert.equal(

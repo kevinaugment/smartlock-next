@@ -6,8 +6,33 @@ import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechR
 import { WifiOff, AlertTriangle, Lightbulb, Check } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 export default function OfflineResilience() {
+  const faqs = [
+    {
+      question: 'Will a smart lock work without internet?',
+      answer: 'Many smart locks can still unlock without internet using cached PINs, Bluetooth, local hubs, or a physical key. Remote unlock, cloud logs, notifications, and new credential sync may stop until connectivity returns.',
+    },
+    {
+      question: 'Which features fail during outages?',
+      answer: 'Cloud-dependent features such as remote commands, live alerts, app sync, integrations, and centralized user changes may fail during an outage. Local keypad, physical key, Bluetooth, or cached credentials may continue depending on the lock.',
+    },
+    {
+      question: 'Are local hubs safer than cloud locks?',
+      answer: 'Local hubs can improve outage resilience because they keep core control inside the building, but they still need power, backups, secure configuration, and maintenance. Cloud systems can work well when they cache credentials and provide physical fallback.',
+    },
+    {
+      question: 'What backup access should rentals have?',
+      answer: 'Rentals should have at least one non-cloud backup such as a physical key, backup PIN, trusted local contact, or lockbox. Hosts should document the process and test it before relying on remote support during a guest lockout.',
+    },
+    {
+      question: 'How do I score outage risk?',
+      answer: 'Score outage risk by checking internet reliability, power backup, cloud dependency, local credential caching, physical override, failover internet, and how long the lock can operate without cloud or utility power.',
+    },
+  ]
+
   const [protocol, setProtocol] = useState('zigbee')
   const [hasLocalHub, setHasLocalHub] = useState(true)
   const [hasBackupPower, setHasBackupPower] = useState(false)
@@ -126,6 +151,23 @@ export default function OfflineResilience() {
           <div className="page-header__icon"><WifiOff className="w-14 h-14" /></div>
           <h1 className="text-4xl font-bold mb-4">Offline Resilience Scorecard</h1>
           <p style={{ fontSize: "1.25rem", color: "var(--color-text-secondary)" }}>Evaluate how well your system works during outages</p>
+        </div>
+
+        <div className="max-w-6xl mx-auto">
+          <CalculatorAnswerBlock
+            title="Will a smart lock work without internet?"
+            answer="A smart lock may still work without internet if it has local PIN storage, Bluetooth access, a local hub, backup power, or a physical key. The features most likely to fail are remote unlock, cloud notifications, live audit sync, and new credential updates. Resilient deployments separate basic entry from cloud-only management."
+          >
+            <div className="overflow-x-auto">
+              <table className="data-table">
+                <tbody>
+                  <tr><td style={{ fontWeight: 600 }}>Usually works offline</td><td>Physical key, cached PINs, local Bluetooth, some local hub commands</td></tr>
+                  <tr><td style={{ fontWeight: 600 }}>Often fails offline</td><td>Remote unlock, live alerts, cloud audit sync, new cloud credentials</td></tr>
+                  <tr><td style={{ fontWeight: 600 }}>Needs separate backup</td><td>Hub power, internet failover, emergency guest support, admin recovery</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </CalculatorAnswerBlock>
         </div>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -295,6 +337,9 @@ export default function OfflineResilience() {
       <ToolRating toolSlug="offline-resilience" />
 
       <RelatedResources calculatorSlug="offline-resilience-scorecard" />
+      <div className="max-w-6xl mx-auto">
+        <CalculatorFaqBlock faqs={faqs} />
+      </div>
 
       {/* Be-Tech Brand Recommendation */}
       <BeTechCalculatorRecommendation

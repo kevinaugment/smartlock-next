@@ -11,6 +11,7 @@ export default function AdminLayout({
 }
 
 export const metadata = {
-  title: 'Admin - SLockHub.com',
-  description: 'Admin portal for SLockHub.com',
+  title: 'SLockHub Admin',
+  description: 'SLockHub content and database management portal.',
+  robots: 'noindex, nofollow',
 }

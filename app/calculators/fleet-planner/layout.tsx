@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Multi-Property Fleet Planner - SLockHub.com',
-    description: 'Analyze protocol fragmentation across your property portfolio. Calculate unification costs, maintenance savings, and payback period for fleet standardization.',
+    title: 'Smart Lock Fleet Planner | Multi-Property Protocol & Cost Tool',
+    description: 'Plan multi-property smart lock fleets by protocol fragmentation, standardization cost, maintenance savings, user capacity, and payback period.',
     canonical: '/calculators/fleet-planner',
 })
 
@@ -19,7 +19,7 @@ export default function FleetPlannerLayout({ children }: { children: React.React
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Analyze protocol fragmentation across your property portfolio. Calculate unification costs, maintenance savings, and payback period for fleet standardization.',
+                description: 'Plan multi-property smart lock fleets by protocol fragmentation, cost, maintenance savings, and payback period.',
                 softwareVersion: '1.0',
                 datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },

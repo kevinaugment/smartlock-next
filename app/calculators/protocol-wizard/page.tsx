@@ -6,26 +6,51 @@ import { Wand2, BookOpen } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { SeoPathways } from '@/components/seo/SeoPathways'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Protocol Wizard | Zigbee vs Z-Wave vs Wi-Fi Selector',
-  description: 'Find the best smart lock protocol (Zigbee, Z-Wave, Thread, Wi-Fi, Bluetooth) for your needs. Science-based comparison using IEEE 802.15.4, CSA standards. Battery, range, cost analysis.',
+  description: 'Choose the best smart lock protocol for battery life, range, hub cost, local control, Matter support, and enterprise scale.',
   keywords: 'protocol selector, Zigbee vs Z-Wave, smart lock protocol, Thread Matter, Wi-Fi locks, protocol comparison tool',
   alternates: { canonical: '/calculators/protocol-wizard' },
   openGraph: {
     title: 'Smart Lock Protocol Wizard',
-    description: 'Choose between Zigbee, Z-Wave, Thread, Wi-Fi, Bluetooth, and Matter based on range, battery life, hub cost, and ecosystem.',
+    description: 'Choose the best smart lock protocol for battery life, range, hub cost, local control, Matter support, and enterprise scale.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Smart Lock Protocol Wizard',
-    description: 'Find the best smart lock protocol for your range, battery, hub, and smart home requirements.',
+    description: 'Choose the best smart lock protocol for battery life, range, hub cost, local control, Matter support, and enterprise scale.',
   },
 }
 
 export default function ProtocolWizardPage() {
+  const faqs = [
+    {
+      question: 'Which smart lock protocol is best?',
+      answer: 'The best smart lock protocol depends on scale and priorities. Z-Wave is strong for range, Zigbee and Thread are efficient mesh options, Wi-Fi is simple for one or two locks, and Bluetooth is best for local phone-based access.',
+    },
+    {
+      question: 'Is Z-Wave better than Wi-Fi?',
+      answer: 'Z-Wave is usually better for multi-door reliability and battery life because it uses a low-power sub-GHz mesh. Wi-Fi is easier to set up but often drains batteries faster and depends more heavily on router coverage.',
+    },
+    {
+      question: 'Does Matter improve battery life?',
+      answer: 'Matter does not automatically improve battery life. Battery performance depends on the transport, such as Thread, Wi-Fi, or Bluetooth, plus firmware, usage, and signal quality.',
+    },
+    {
+      question: 'Do I need a hub?',
+      answer: 'You need a hub or border router for many Zigbee, Z-Wave, and Thread deployments. Wi-Fi and Bluetooth locks can avoid a hub, but that may trade off battery life, remote access, or local-control resilience.',
+    },
+    {
+      question: 'Which protocol is best for apartments?',
+      answer: 'Apartments often benefit from Z-Wave, Zigbee, or Thread when many locks need reliable mesh coverage. Wi-Fi can work for a single unit, but crowded 2.4 GHz environments and frequent battery swaps should be modeled first.',
+    },
+  ]
+
   const protocolComparisonRows = [
     { protocol: 'Zigbee', standard: 'IEEE 802.15.4-2020', frequency: '2.4 GHz', range: '10-20m indoor', battery: '12+ months', hubCost: '$30-80' },
     { protocol: 'Z-Wave', standard: 'ITU-T G.9959', frequency: '868-922 MHz*', range: '30-40m indoor', battery: '12 months', hubCost: '$60-150' },
@@ -117,6 +142,42 @@ export default function ProtocolWizardPage() {
             <div className="page-header__icon"><Wand2 className="w-14 h-14" /></div>
             <h1 className="page-header__title">Smart Lock Protocol Selection Wizard</h1>
             <p className="page-header__subtitle">Answer 6 questions to find the optimal protocol for your needs</p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <CalculatorAnswerBlock
+              title="Which smart lock protocol is best?"
+              answer="The best smart lock protocol is the one that matches your range, battery, hub, local-control, and ecosystem requirements. Wi-Fi is simplest for small installs, Z-Wave is strong for range and dense buildings, Zigbee is efficient for mesh networks, Thread supports newer Matter ecosystems, and Bluetooth works best for local single-door access."
+            >
+              <div className="data-table-wrap">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Scenario</th>
+                      <th>Best starting protocol</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Single door, no hub</td>
+                      <td>Wi-Fi or Bluetooth</td>
+                    </tr>
+                    <tr>
+                      <td>Apartment or commercial range</td>
+                      <td>Z-Wave</td>
+                    </tr>
+                    <tr>
+                      <td>Low-power mesh ecosystem</td>
+                      <td>Zigbee or Thread</td>
+                    </tr>
+                    <tr>
+                      <td>Apple or Matter-forward setup</td>
+                      <td>Thread / Matter</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </CalculatorAnswerBlock>
           </div>
 
           <div className="max-w-4xl mx-auto mb-12">
@@ -348,9 +409,13 @@ export default function ProtocolWizardPage() {
 
           <RelatedResources calculatorSlug="protocol-selection-wizard" />
 
-          {/* Related Resources */}
+          <div className="max-w-7xl mx-auto">
+            <CalculatorFaqBlock faqs={faqs} />
+          </div>
+
+          {/* Protocol, Battery, Cost */}
           <div className="max-w-7xl mx-auto mt-12">
-            <h2 className="section-title">Related Calculators</h2>
+            <h2 className="section-title">Protocol, Battery, Cost</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Link href="/calculators/battery-life" className="link-card">
                 <div className="text-3xl mb-3" style={{ color: 'var(--color-accent)' }}>⚡</div>

@@ -9,27 +9,52 @@ import {
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { SeoPathways } from '@/components/seo/SeoPathways'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
 
 // SEO Metadata
 export const metadata: Metadata = {
-  title: 'Smart Lock Battery Life Calculator | Accurate mAh-Based Estimates (2026)',
-  description: 'Calculate exact smart lock battery life for Wi-Fi, Zigbee, Z-Wave & Thread protocols. Real power consumption data, temperature compensation, 4-battery AA configuration.',
+  title: 'Smart Lock Battery Life Calculator - See How Long Yours Lasts',
+  description: 'Estimate how long your smart lock batteries will last by protocol, unlocks per day, temperature, battery type, and signal quality.',
   keywords: 'smart lock battery life, battery calculator, zigbee battery life, wifi lock battery, z-wave battery life, smart lock power consumption',
   alternates: { canonical: '/calculators/battery-life' },
   openGraph: {
-    title: 'Smart Lock Battery Life Calculator - Protocol-Specific Estimates',
-    description: 'Accurate battery life calculator using real mAh ratings and power consumption data',
+    title: 'Smart Lock Battery Life Calculator - See How Long Yours Lasts',
+    description: 'Estimate battery runtime by protocol, usage, temperature, battery type, and signal quality.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Smart Lock Battery Life Calculator',
-    description: 'Estimate battery replacement intervals by protocol, usage pattern, temperature, and battery chemistry.',
+    title: 'Smart Lock Battery Life Calculator - See How Long Yours Lasts',
+    description: 'Estimate battery replacement intervals by protocol, usage, temperature, and battery type.',
   },
 }
 
 export default function BatteryLifePage() {
+  const faqs = [
+    {
+      question: 'How long do smart lock batteries last?',
+      answer: 'Smart lock batteries commonly last 3 to 18 months depending on protocol, usage, temperature, signal quality, and battery chemistry. Wi-Fi locks usually sit at the shorter end, while Zigbee, Z-Wave, Thread, Bluetooth, and NFC locks often last longer.',
+    },
+    {
+      question: 'Why do Wi-Fi locks drain faster?',
+      answer: 'Wi-Fi locks drain faster because the radio uses more power to maintain network connectivity and handle cloud communication. Low-power mesh protocols sleep more efficiently between lock events.',
+    },
+    {
+      question: 'Which batteries are best?',
+      answer: 'Lithium AA batteries are usually best for outdoor, cold-weather, or high-reliability locks because they hold voltage better than alkaline cells. Alkaline batteries can work indoors where temperature and usage are moderate.',
+    },
+    {
+      question: 'Does cold weather reduce battery life?',
+      answer: 'Cold weather can sharply reduce alkaline battery capacity and voltage. Lithium batteries perform better in cold climates and are usually worth the extra cost for exterior doors.',
+    },
+    {
+      question: 'How many unlocks per day affect runtime?',
+      answer: 'Every lock or unlock event uses motor and radio energy, so high-turnover doors drain faster. Daily usage matters most on rental, hotel, office, and multifamily doors with frequent access events.',
+    },
+  ]
+
   // Schema.org structured data
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -124,6 +149,31 @@ export default function BatteryLifePage() {
             <p className="page-header__subtitle">
               Calculate precise battery life based on protocol power consumption, usage patterns, and battery chemistry
             </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <CalculatorAnswerBlock
+              title="How long do smart lock batteries last?"
+              answer="Smart lock batteries typically last 3 to 18 months. Wi-Fi locks often need replacement every 3 to 4 months because the radio stays more active, while Zigbee, Z-Wave, Thread, Bluetooth, and NFC locks can often reach 10 to 18 months when the door is aligned and signal quality is good."
+            >
+              <div className="data-table-wrap">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Protocol</th>
+                      <th>Typical runtime</th>
+                      <th>Primary battery driver</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Wi-Fi</td><td>3-4 months</td><td>Always-on network activity</td></tr>
+                    <tr><td>Zigbee / Z-Wave</td><td>12+ months</td><td>Low-power mesh sleep behavior</td></tr>
+                    <tr><td>Thread</td><td>10-11 months</td><td>Low-power IP mesh behavior</td></tr>
+                    <tr><td>Bluetooth / NFC</td><td>10-18 months</td><td>Local, short-range access pattern</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </CalculatorAnswerBlock>
           </div>
 
           {/* Key Insight */}
@@ -434,6 +484,10 @@ export default function BatteryLifePage() {
           </div>
 
           <RelatedResources calculatorSlug="battery-life-comparison" />
+
+          <div className="max-w-7xl mx-auto">
+            <CalculatorFaqBlock faqs={faqs} />
+          </div>
 
           {/* Related Tools & Articles */}
           <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>

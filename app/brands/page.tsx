@@ -7,8 +7,8 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title: 'Smart Lock Brands | Compare Protocols, Products & Best Use Cases',
-  description: 'Browse smart lock brands by protocol support, product depth, price tier, and use case. Compare Yale, August, Schlage, Samsung, Nuki, Tedee, Weiser, and more.',
+  title: 'Smart Lock Brands | Compare Protocols, Products & Use Cases',
+  description: 'Compare smart lock brands by protocol support, product depth, price tier, door fit, ecosystem, and best use case.',
   alternates: { canonical: '/brands' },
   openGraph: {
     title: 'Smart Lock Brands',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Smart Lock Brands',
-    description: 'Browse smart lock brands, product lines, protocols, and comparison paths.',
+    description: 'Compare smart lock brand catalogs, product lines, protocols, ecosystems, and comparison paths.',
   },
 }
 
@@ -96,7 +96,7 @@ export default async function Brands() {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Smart Lock Brands',
-    description: 'Browse smart lock brands by protocol support, product depth, price tier, and use case.',
+    description: 'Compare smart lock brands by protocol support, product depth, price tier, ecosystem fit, and use case.',
     url: 'https://www.slockhub.com/brands',
     mainEntity: {
       '@type': 'ItemList',
@@ -123,7 +123,7 @@ export default async function Brands() {
         </div>
 
         <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
-          <h2 className="section-title">Start With Brand Depth and Protocol Fit</h2>
+          <h2 className="section-title">Brand, Protocol, Door Fit</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {brandPathways.map((path) => (
               <div key={path.title} className="card">
@@ -157,7 +157,7 @@ export default async function Brands() {
 
         {brands.length > 0 ? (
           <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
-            <h2 className="section-title">Protocol Coverage Across Brands</h2>
+            <h2 className="section-title">Wi-Fi, Matter, Z-Wave Brands</h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {protocolStats.map((stat) => (
                 <Link key={stat.label} href={stat.href} className="link-card">
@@ -247,7 +247,7 @@ export default async function Brands() {
 
         {/* Common Features */}
         <div className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
-          <h2 className="section-title">Common Features to Look For</h2>
+          <h2 className="section-title">Keypad, Fingerprint, Guest Codes</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {features.map(feature => (
               <div key={feature.name} className="card" style={{ padding: 'var(--space-md)', background: 'var(--color-bg-alt)' }}>
@@ -260,7 +260,7 @@ export default async function Brands() {
 
         {/* Buying Guide */}
         <div className="cta-section" style={{ marginBottom: 'var(--space-3xl)' }}>
-          <h2 className="cta-section__title" style={{ fontSize: '1.75rem' }}>Buying Considerations</h2>
+          <h2 className="cta-section__title" style={{ fontSize: '1.75rem' }}>Price, Support, Compatibility</h2>
           <div className="grid md:grid-cols-3 gap-6" style={{ textAlign: 'left' }}>
             <div>
               <h3 style={{ fontWeight: 600, marginBottom: 'var(--space-sm)', fontSize: '1.125rem' }}>Protocol</h3>
@@ -288,7 +288,7 @@ export default async function Brands() {
 
         {/* Tools */}
         <div className="content-card" style={{ textAlign: 'center' }}>
-          <h2 className="section-title section-title--center">Need Help Choosing?</h2>
+          <h2 className="section-title section-title--center">Fit, Cost, Protocol Tools</h2>
           <p className="page-subtitle" style={{ marginBottom: 'var(--space-xl)' }}>
             Use our interactive tools to find the perfect smart lock for your needs
           </p>

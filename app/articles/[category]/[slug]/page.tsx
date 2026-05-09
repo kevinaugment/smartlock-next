@@ -13,64 +13,12 @@ import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture';
 import TableOfContents from '@/components/TableOfContents';
 import { Calculator } from 'lucide-react';
 import { extractHeadings } from '@/lib/markdown';
-
-const CALC_SLUG_MAP: Record<string, string> = {
-  'diagnostic-tool': 'compatibility',
-  'error-code-lookup': 'compatibility',
-  'door-lock-compatibility-checker': 'compatibility',
-  'protocol-selection-wizard': 'protocol-wizard',
-  'bia-calculator': 'lock-tco',
-  'rto-rpo-planner': 'emergency-backup',
-  'failover-tester': 'offline-resilience',
-  'rental-roi-calculator': 'str-roi',
-  'turnover-time-estimator': 'installation-time',
-  'integration-roi-calculator': 'hotel-roi',
-  'api-compatibility-checker': 'compatibility',
-  'offline-resilience-scorecard': 'offline-resilience',
-  'privacy-impact-assessment': 'privacy-compliance',
-  'data-retention-calculator': 'security-compliance',
-  'log-analyzer': 'security-compliance',
-  'anomaly-detector': 'cyber-risk',
-};
-
-const CALC_TITLES: Record<string, string> = {
-  'lock-tco': 'TCO Calculator',
-  'battery-life': 'Battery Life Calculator',
-  'protocol-wizard': 'Protocol Selection Wizard',
-  'signal-strength': 'Signal Strength Calculator',
-  'str-roi': 'STR ROI Calculator',
-  'installation-cost': 'Installation Cost Calculator',
-  'compatibility': 'Compatibility Checker',
-  'mesh-planner': 'Mesh Network Planner',
-  'rf-coverage': 'RF Coverage Planner',
-  'fleet-planner': 'Fleet Planner',
-  'credential-planner': 'Credential Planner',
-  'installation-time': 'Installation Time Estimator',
-  'subscription-compare': 'Subscription Comparison',
-  'offline-resilience': 'Offline Resilience Planner',
-  'emergency-backup': 'Emergency Backup Planner',
-  'access-capacity': 'Access Capacity Calculator',
-  'security-compliance': 'Security Compliance Checker',
-  'lock-compare': 'Lock Comparison Tool',
-  'warranty-lifecycle': 'Warranty Lifecycle Planner',
-  'network-bandwidth': 'Network Bandwidth Calculator',
-  'poe-power': 'PoE Power Budget Calculator',
-  'fire-compliance': 'Fire Code Compliance Checker',
-  'guest-code': 'Guest Code Planner',
-  'ble-range': 'BLE Range Calculator',
-  'cyber-risk': 'Cyber Risk Calculator',
-  'pin-strength': 'PIN Strength Analyzer',
-  'door-fit': 'Door Fit Checker',
-  'hotel-roi': 'Hotel ROI Calculator',
-  'energy-cost': 'Energy Cost Calculator',
-  'noise-level': 'Noise Level Calculator',
-  'retrofit-advisor': 'Retrofit Advisor',
-  'privacy-compliance': 'Privacy Compliance Checker',
-};
+import { getCalculatorTitle, resolveCalculatorRouteSlug } from '@/lib/calculators/slugs';
 
 function getRelatedTools(article: NonNullable<ReturnType<typeof getArticleBySlug>>): string[] {
   return (article.relatedTools || [])
-    .map(tool => CALC_SLUG_MAP[tool] || tool)
+    .map(tool => resolveCalculatorRouteSlug(tool))
+    .filter((slug): slug is NonNullable<typeof slug> => !!slug)
     .filter((slug, i, arr) => arr.indexOf(slug) === i)
     .slice(0, 3);
 }
@@ -107,6 +55,126 @@ function getPathwayTopic(article: NonNullable<ReturnType<typeof getArticleBySlug
   if (article.slug.includes('compatibility') || article.slug.includes('install')) return 'compatibility';
   if (article.category === 'protocols') return 'signal';
   return 'installation';
+}
+
+function getArticleStructuredData(article: NonNullable<ReturnType<typeof getArticleBySlug>>, categoryName: string) {
+  const articleUrl = `https://www.slockhub.com/articles/${article.category}/${article.slug}`;
+  const baseSchemas = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: article.title,
+      description: article.description,
+      datePublished: article.pubDate,
+      dateModified: article.updatedAt || article.pubDate,
+      author: {
+        '@type': 'Organization',
+        name: 'SLockHub.com',
+        url: 'https://www.slockhub.com',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'SLockHub.com',
+        url: 'https://www.slockhub.com',
+      },
+      mainEntityOfPage: articleUrl,
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Articles', item: 'https://www.slockhub.com/articles' },
+        { '@type': 'ListItem', position: 2, name: categoryName, item: `https://www.slockhub.com/articles/${article.category}` },
+        { '@type': 'ListItem', position: 3, name: article.title },
+      ],
+    },
+  ];
+
+  if (article.slug !== 'zigbee-vs-zwave-comparison') {
+    return baseSchemas;
+  }
+
+  return [
+    ...baseSchemas,
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Is Zigbee or Z-Wave better for smart locks?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Z-Wave is usually better when range, wall penetration, and reduced interference matter most. Zigbee is better when you already have a strong Zigbee hub and powered Zigbee router devices in the home.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Do Zigbee smart locks need a hub?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes. Zigbee smart locks need a compatible Zigbee coordinator or hub, such as SmartThings, Hubitat, Home Assistant with a Zigbee adapter, or supported Echo devices with built-in Zigbee.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Do Z-Wave smart locks work without Wi-Fi?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes. Z-Wave locks communicate with a Z-Wave hub over sub-GHz radio, not directly over Wi-Fi. Remote app control may still require the hub and internet connection, but local lock-to-hub communication does not depend on Wi-Fi.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Which has better battery life, Zigbee or Z-Wave?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Battery life is usually similar. Both protocols let battery-powered locks sleep most of the time, so real-world battery life depends more on lock model, signal quality, usage frequency, and cold weather than on Zigbee versus Z-Wave alone.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Which protocol is better for apartments?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Z-Wave is often better for apartments because sub-GHz radio usually handles walls and crowded 2.4 GHz environments better. Zigbee can still work well if the unit already has a strong Zigbee mesh and the hub is close to the lock.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Can Zigbee and Z-Wave locks work together?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes, but they need a controller that supports both protocols or separate hubs connected through the same automation platform. Multi-protocol platforms such as SmartThings, Hubitat, and Home Assistant can often manage both.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Is Z-Wave better than Zigbee for thick walls?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Usually yes. Z-Wave uses lower-frequency radio than Zigbee, so it often performs better through brick, concrete, and multi-floor layouts. Always verify with a signal or RF coverage check before scaling to many locks.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Should property managers choose Zigbee or Z-Wave?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Property managers should usually start with Z-Wave for lock-first deployments where range, hub automation, and repeatable troubleshooting matter. Choose Zigbee if the portfolio is already standardized on Zigbee hubs and powered Zigbee routers.',
+          },
+        },
+      ],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Table',
+      name: 'Zigbee vs Z-Wave smart lock comparison table',
+      description: 'Comparison of Zigbee and Z-Wave smart locks by frequency, range, wall penetration, battery life, hub requirements, interference risk, ecosystem, and best deployment fit.',
+      about: ['Zigbee smart locks', 'Z-Wave smart locks', 'smart lock protocols'],
+      mainEntityOfPage: articleUrl,
+    },
+  ];
 }
 
 // 静态生成所有文章页面
@@ -200,6 +268,7 @@ export default async function ArticlePage({
   const answerChecklist = getAnswerChecklist(article);
   const showCompatibilityReport = article.slug === 'door-compatibility-guide';
   const headings = extractHeadings(content);
+  const structuredData = getArticleStructuredData(article, categoryInfo.name);
 
   return (
     <div className="page-bg">
@@ -207,36 +276,7 @@ export default async function ArticlePage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
-              '@context': 'https://schema.org',
-              '@type': 'Article',
-              headline: article.title,
-              description: article.description,
-              datePublished: article.pubDate,
-              dateModified: article.updatedAt || article.pubDate,
-              author: {
-                '@type': 'Organization',
-                name: 'SLockHub.com',
-                url: 'https://www.slockhub.com',
-              },
-              publisher: {
-                '@type': 'Organization',
-                name: 'SLockHub.com',
-                url: 'https://www.slockhub.com',
-              },
-              mainEntityOfPage: `https://www.slockhub.com/articles/${article.category}/${article.slug}`,
-            },
-            {
-              '@context': 'https://schema.org',
-              '@type': 'BreadcrumbList',
-              itemListElement: [
-                { '@type': 'ListItem', position: 1, name: 'Articles', item: 'https://www.slockhub.com/articles' },
-                { '@type': 'ListItem', position: 2, name: categoryInfo.name, item: `https://www.slockhub.com/articles/${article.category}` },
-                { '@type': 'ListItem', position: 3, name: article.title },
-              ],
-            },
-          ]),
+          __html: JSON.stringify(structuredData),
         }}
       />
       <article className="container-main" style={{ padding: 'var(--space-xl) var(--space-md)', maxWidth: '72rem', margin: '0 auto' }}>
@@ -274,7 +314,7 @@ export default async function ArticlePage({
         </section>
 
         <section className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
-          <h2 className="section-title">Reviewed Guidance</h2>
+          <h2 className="section-title">Updated, Depth, Sources</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <TrustStat label="Updated" value={article.updatedAt || article.pubDate} detail="Used for freshness-sensitive lock, protocol, and setup guidance." />
             <TrustStat label="Coverage" value={`${article.wordCount.toLocaleString()} words`} detail={`${article.readingTime} min read with ${article.isPillar ? 'pillar' : 'support'} article depth.`} />
@@ -320,13 +360,13 @@ export default async function ArticlePage({
         {/* Be-Tech 品牌推荐 */}
         <BeTechRecommendation />
 
-        <SeoPathways topic={pathwayTopic} title="Continue Your Smart Lock Research" />
+        <SeoPathways topic={pathwayTopic} title="Next Tools and Guides" />
 
         {/* 相关文章 */}
         {relatedArticles.length > 0 && (
           <section style={{ marginTop: 'var(--space-3xl)', paddingTop: 'var(--space-3xl)', borderTop: '1px solid var(--color-border)' }}>
             <h2 className="section-title">
-              Related Articles
+              Best Articles to Read Next
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {relatedArticles.map((related) => (
@@ -376,12 +416,12 @@ function RelatedToolsPanel({ tools }: { tools: string[] }) {
     <section className="content-card" style={{ marginBottom: 'var(--space-xl)' }}>
       <h2 className="section-title" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
         <Calculator className="w-5 h-5" style={{ color: 'var(--color-accent)' }} />
-        Tools to Validate This Decision
+        Related Tools
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {tools.map((slug) => (
           <Link key={slug} href={`/calculators/${slug}`} className="link-card">
-            <h3 className="link-card__title">{CALC_TITLES[slug] || slug}</h3>
+            <h3 className="link-card__title">{getCalculatorTitle(slug)}</h3>
             <p className="link-card__desc">Use this before buying, drilling, pairing, or changing access settings.</p>
             <span style={{ color: 'var(--color-accent)', fontSize: '0.875rem', fontWeight: 500, marginTop: 'var(--space-sm)' }}>
               Open tool →

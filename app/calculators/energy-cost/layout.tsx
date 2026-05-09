@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'Energy Cost Calculator - SLockHub.com',
-    description: 'Calculate annual electricity and battery costs for smart lock deployments. Compare energy consumption across Wi-Fi, Zigbee, Z-Wave, and Thread protocols.',
+    title: 'Smart Lock Energy Cost Calculator | Battery, PoE & Protocol Power',
+    description: 'Calculate smart lock battery and electricity costs across Wi-Fi, Zigbee, Z-Wave, Thread, PoE, battery chemistry, and fleet size.',
     canonical: '/calculators/energy-cost',
 })
 
@@ -19,7 +19,7 @@ export default function EnergyCostLayout({ children }: { children: React.ReactNo
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Calculate annual electricity and battery costs for smart lock deployments. Compare energy consumption across Wi-Fi, Zigbee, Z-Wave, and Thread protocols.',
+                description: 'Calculate smart lock battery and electricity costs across protocol, PoE, battery chemistry, and fleet size.',
                 softwareVersion: '1.0',
                 datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },

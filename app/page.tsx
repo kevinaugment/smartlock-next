@@ -7,19 +7,19 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'SLockHub | Smart Lock Guides, Calculators, Brands & Protocols',
-  description: 'Research smart locks with expert guides, calculators, brand comparisons, protocol explainers, product shortlists, and installation planning tools.',
+  title: 'Smart Lock Fit, Protocol & Cost Tools | SLockHub',
+  description: 'Plan a smart lock purchase with calculators and guides for door compatibility, protocol choice, battery life, signal range, security, and cost.',
   alternates: { canonical: '/' },
   openGraph: {
-    title: 'SLockHub - Smart Lock Engineering Hub',
-    description: 'Smart lock guides, calculators, protocols, brand comparisons, and product decision tools.',
+    title: 'Smart Lock Fit, Protocol & Cost Tools',
+    description: 'Smart lock calculators and guides for compatibility, protocol choice, battery life, signal range, security, and cost.',
     type: 'website',
     url: 'https://www.slockhub.com',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SLockHub - Smart Lock Engineering Hub',
-    description: 'Research smart lock protocols, products, installation fit, signal reliability, and ownership cost.',
+    title: 'Smart Lock Fit, Protocol & Cost Tools',
+    description: 'Validate door fit, protocol, signal reliability, battery life, security, and ownership cost.',
   },
 }
 
@@ -31,7 +31,7 @@ const jsonLd = {
       name: 'SLockHub.com',
       url: 'https://www.slockhub.com',
       logo: 'https://www.slockhub.com/favicon.svg',
-      description: 'Comprehensive smart lock guides covering protocols, security, installation, troubleshooting, and real-world applications.',
+      description: 'Smart lock guides for protocols, security, installation, troubleshooting, rental access, and product decisions.',
     },
     {
       '@type': 'WebSite',
@@ -69,7 +69,7 @@ export default function HomePage() {
         <div className="container-main">
           <div className="home-hero__grid">
             <div>
-              <div className="tool-eyebrow">Smart lock research operations</div>
+              <div className="tool-eyebrow">Smart lock decision tools</div>
               <h1 className="hero__title">Plan, compare, and validate smart lock deployments</h1>
               <p className="hero__subtitle">
                 Practical calculators, protocol references, brand data, and installation checks for access control decisions.
@@ -120,7 +120,7 @@ export default function HomePage() {
 
       <section className="section-sm section-alt home-decision-section">
         <div className="container-main">
-          <h2 className="section-title section-title--center">Start by Decision Type</h2>
+          <h2 className="section-title section-title--center">Fit, Protocol, Cost</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
             {decisionHubs.map((item) => (
               <Link key={item.href} href={item.href} className="link-card">
@@ -132,10 +132,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Knowledge Base Categories */}
+      {/* Smart Lock Guide Categories */}
       <section className="section">
         <div className="container-main">
-          <h2 className="section-title section-title--center">Knowledge Base</h2>
+          <h2 className="section-title section-title--center">Guides, Security, Installation</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {categories.map((category) => (
               <Link
@@ -163,7 +163,7 @@ export default function HomePage() {
       {/* Top Calculators */}
       <section className="section-sm section-alt">
         <div className="container-main">
-          <h2 className="section-title section-title--center">Interactive Calculators</h2>
+          <h2 className="section-title section-title--center">Cost, Signal, Battery Tools</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {calculators.map((calc) => (
               <Link

@@ -6,6 +6,8 @@ import { Flame, AlertTriangle, Lightbulb, Check } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface Inputs {
     buildingType: string
@@ -23,6 +25,29 @@ interface Inputs {
 }
 
 export default function FireComplianceChecker() {
+    const faqs = [
+        {
+            question: 'Are smart locks allowed on fire doors?',
+            answer: 'Smart locks may be allowed on fire doors only when the full door assembly, latch, closer, egress function, listing, and installation method remain compliant. Final approval belongs to the local authority having jurisdiction, especially for commercial, hotel, school, and multifamily doors.',
+        },
+        {
+            question: 'What does fail-safe mean?',
+            answer: 'Fail-safe means the lock releases when power is lost, allowing egress. Electromagnetic locks commonly need fail-safe operation and fire alarm release. Fail-secure hardware stays locked on power loss and may be appropriate for some secure areas only when egress rules are still met.',
+        },
+        {
+            question: 'Do access controlled doors need manual release?',
+            answer: 'Many egress doors need a way to open from the inside without special knowledge, tools, tight grasping, or multiple actions. Depending on the hardware, that may mean lever operation, push hardware, request-to-exit devices, or fire alarm release.',
+        },
+        {
+            question: 'Who approves egress hardware?',
+            answer: 'The authority having jurisdiction, fire marshal, building inspector, or code consultant typically approves egress hardware. Manufacturers and installers can provide listings and diagrams, but local review decides whether the installed assembly is acceptable.',
+        },
+        {
+            question: 'Can Airbnb locks violate fire code?',
+            answer: 'Yes. A rental lock can create a code issue if it blocks emergency egress, removes required latching, disables a fire-rated assembly, lacks required override, or forces guests to use an app or code to exit. Short-term rentals should preserve simple inside egress.',
+        },
+    ]
+
     const [inputs, setInputs] = useState<Inputs>({
         buildingType: 'office',
         occupancy: 100,
@@ -138,6 +163,23 @@ export default function FireComplianceChecker() {
                     <p className="page-header__subtitle">
                         Verify smart lock installations meet IBC, NFPA, and ADA fire safety requirements
                     </p>
+                </div>
+
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="Are smart locks allowed on fire doors?"
+                        answer="Smart locks can be used on some fire-rated and egress doors when the lock, latch, closer, release method, fire alarm interface, and door assembly remain code-compliant. The key test is whether occupants can exit safely and whether the installation preserves the listed fire door assembly. Always confirm with the AHJ before installing access control on required egress doors."
+                    >
+                        <div className="overflow-x-auto">
+                            <table className="data-table">
+                                <tbody>
+                                    <tr><td style={{ fontWeight: 600 }}>Usually required</td><td>Free egress from inside, compliant latch, listed hardware, proper closer operation</td></tr>
+                                    <tr><td style={{ fontWeight: 600 }}>Higher risk</td><td>Maglocks, delayed egress, modified fire doors, app-only exits, missing fire alarm release</td></tr>
+                                    <tr><td style={{ fontWeight: 600 }}>Approval source</td><td>Local AHJ, fire marshal, building inspector, or qualified code consultant</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </CalculatorAnswerBlock>
                 </div>
 
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -323,6 +365,9 @@ export default function FireComplianceChecker() {
 
                 <ToolRating toolSlug="fire-compliance" />
                 <RelatedResources calculatorSlug="fire-compliance" />
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
                 <BeTechCalculatorRecommendation
                     description="Be-Tech commercial locks include fail-safe modes, FACP integration, and ADA-compliant lever handles as standard. Fire-rated models available for 60 and 90-minute assemblies."
                     badge="Fire Safe"

@@ -3,8 +3,8 @@ import { buildSeoMetadata } from '@/lib/seo/metadata'
 import { JsonLd } from '@/components/JsonLd'
 
 export const metadata: Metadata = buildSeoMetadata({
-    title: 'RF Coverage Estimator - SLockHub.com',
-    description: 'Plan mesh network topology and signal coverage for smart lock deployments. Calculate required hubs, effective range, and signal quality based on building specs and protocol.',
+    title: 'RF Coverage Estimator | Smart Lock Range, Walls, Hubs & Mesh',
+    description: 'Estimate smart lock RF coverage by protocol, wall material, floors, distance, hub placement, mesh repeaters, and signal quality.',
     canonical: '/calculators/rf-coverage',
 })
 
@@ -19,7 +19,7 @@ export default function RFCoverageLayout({ children }: { children: React.ReactNo
                 applicationCategory: 'UtilityApplication',
                 operatingSystem: 'Web',
                 offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-                description: 'Plan mesh network topology and signal coverage for smart lock deployments. Calculate required hubs, effective range, and signal quality based on building specs and protocol.',
+                description: 'Estimate smart lock RF coverage by protocol, walls, floors, distance, hub placement, mesh repeaters, and signal quality.',
                 softwareVersion: '1.0',
                 datePublished: '2026-02-15',
                 creator: { '@type': 'Organization', name: 'SLockHub.com', url: 'https://www.slockhub.com' },

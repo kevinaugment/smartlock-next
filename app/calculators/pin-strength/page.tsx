@@ -6,6 +6,8 @@ import { ShieldCheck, AlertTriangle, Eye, EyeOff, Info } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 /** Common weak PINs (top 30 most used) */
 const COMMON_PINS = new Set([
@@ -184,6 +186,29 @@ function analyzePin(pin: string, keypadType: 'numeric' | 'alphanumeric', lockout
 }
 
 export default function PinStrengthChecker() {
+    const faqs = [
+        {
+            question: 'What makes a smart lock PIN secure?',
+            answer: 'A secure smart lock PIN is unique, long enough for the keypad, not based on a date or address, not sequential, and protected by lockout rules after failed attempts. For rentals and workplaces, each user should have an individual code that can expire or be revoked.',
+        },
+        {
+            question: 'Is a 4-digit code enough?',
+            answer: 'A random 4-digit code has only 10,000 combinations, so it is weaker than a 6-digit or 8-digit code. Four digits may be acceptable for low-risk temporary use with strong lockout settings, but managed properties should prefer longer unique codes when supported.',
+        },
+        {
+            question: 'How often should PINs change?',
+            answer: 'PINs should change when a guest checks out, an employee leaves, a contractor project ends, or a code may have been shared. Unique expiring codes are better than rotating one shared code on a fixed calendar.',
+        },
+        {
+            question: 'What is anti-snoop keypad entry?',
+            answer: 'Anti-snoop entry lets users enter extra random digits before or after the real PIN so fingerprints, shoulder surfing, and smudge patterns are harder to exploit. It is useful on exposed keypads and high-turnover rental doors.',
+        },
+        {
+            question: 'How many failed attempts should trigger lockout?',
+            answer: 'Many deployments use a lockout after 3 to 5 failed attempts, with a delay long enough to make brute-force entry impractical. The right threshold should balance security, guest mistakes, staff operations, and emergency access procedures.',
+        },
+    ]
+
     const [pin, setPin] = useState('')
     const [showPin, setShowPin] = useState(false)
     const [keypadType, setKeypadType] = useState<'numeric' | 'alphanumeric'>('numeric')
@@ -215,6 +240,20 @@ export default function PinStrengthChecker() {
                     <p style={{ fontSize: '1.25rem', color: 'var(--color-text-secondary)' }}>
                         Evaluate the security of your smart lock PIN code against common attack patterns
                     </p>
+                </div>
+
+                <div className="max-w-7xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="What makes a smart lock PIN secure?"
+                        answer="A secure smart lock PIN is unique to one user, long enough to resist guessing, and free of obvious patterns such as 1234, birthdays, repeated digits, unit numbers, or keypad shapes. The safest policy combines 6 or more digits, automatic expiration for guests, lockout after repeated failures, and immediate revocation when access is no longer needed."
+                    >
+                        <ol className="space-y-2" style={{ color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
+                            <li>1. Use unique codes for guests, staff, vendors, and admins.</li>
+                            <li>2. Prefer 6 to 8 digits when the lock supports longer numeric PINs.</li>
+                            <li>3. Avoid dates, repeated digits, address numbers, and simple sequences.</li>
+                            <li>4. Enable failed-attempt lockout and review access logs.</li>
+                        </ol>
+                    </CalculatorAnswerBlock>
                 </div>
 
                 {/* Key Insight */}
@@ -480,6 +519,9 @@ export default function PinStrengthChecker() {
 
                 {/* RelatedResources */}
                 <RelatedResources calculatorSlug="pin-security-strength-checker" />
+                <div className="max-w-7xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
 
                 {/* Related Tools */}
                 <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-3xl)' }}>

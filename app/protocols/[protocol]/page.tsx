@@ -27,7 +27,7 @@ const protocolData: Record<string, {
     'z-wave': {
         name: 'Z-Wave',
         fullName: 'Z-Wave Plus (700/800 Series)',
-        description: 'Z-Wave operates on the 908 MHz frequency band (in the US), keeping it completely separate from crowded 2.4 GHz Wi-Fi networks. This dedicated frequency provides superior reliability and range for smart lock installations, making it the professional\'s choice for whole-home automation.',
+        description: 'Z-Wave operates on the 908 MHz frequency band in the US, separate from crowded 2.4 GHz Wi-Fi networks. This dedicated frequency improves reliability, wall penetration, and range for whole-home smart lock installations.',
         frequency: '908 MHz (US) / 868 MHz (EU)',
         range: '40m indoor / 100m outdoor',
         maxNodes: '232 devices per network',
@@ -147,10 +147,10 @@ const protocolData: Record<string, {
 export async function generateMetadata({ params }: { params: Promise<{ protocol: string }> }): Promise<Metadata> {
     const { protocol } = await params
     const proto = protocolData[protocol]
-    if (!proto) return { title: 'Protocol Not Found — SLockHub.com' }
+    if (!proto) return { title: 'Smart Lock Protocols | Range, Battery, Hubs | SLockHub' }
 
-    const title = `${proto.name} Smart Locks: Compatible Products & Guide 2026 — SLockHub.com`
-    const description = `Browse all ${proto.name}-compatible smart locks. ${proto.description.slice(0, 120)}...`
+    const title = `${proto.name} Smart Locks | Range, Battery, Hubs & Compatible Products`
+    const description = `Compare ${proto.name} smart locks by range, battery impact, hub requirement, ecosystem fit, security, and compatible products.`
     const canonical = `/protocols/${protocol}`
 
     return {
@@ -351,7 +351,7 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                 </div>
 
                 <section className="content-card" style={{ marginBottom: 'var(--space-2xl)' }}>
-                    <h2 className="section-title">{proto.name} Scorecard</h2>
+                    <h2 className="section-title">Range, Battery, Hub Score</h2>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <ScorecardStat label="Catalog models" value={`${products.length}`} detail="Active products matching this protocol" />
                         <ScorecardStat label="Battery planning" value={getAverageBattery(products)} detail={proto.batteryImpact} />
@@ -362,7 +362,7 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
 
                 {/* Technical Specs */}
                 <div style={{ marginBottom: 'var(--space-3xl)' }}>
-                    <h2 className="section-title">Technical Specifications</h2>
+                    <h2 className="section-title">Frequency, Range, Battery Specs</h2>
                     <div className="card overflow-hidden p-0 comparison-table-desktop">
                         <table className="data-table">
                             <tbody>
@@ -519,7 +519,7 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
 
                 {/* Best For */}
                 <div className="card" style={{ marginBottom: 'var(--space-3xl)', background: 'var(--color-bg-alt)' }}>
-                    <h2 className="section-title">Best For</h2>
+                    <h2 className="section-title">Best Use Cases</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {proto.bestFor.map(use => (
                             <div key={use} className="flex items-center gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
@@ -565,7 +565,7 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                 {/* Compatible Products */}
                 <div style={{ marginBottom: 'var(--space-3xl)' }}>
                     <h2 className="section-title">
-                        Compatible Smart Locks {products.length > 0 && `(${products.length})`}
+                        Locks, Brands, Battery
                     </h2>
                     {products.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -631,7 +631,7 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
                 </div>
 
                 <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
-                    <h2 className="section-title">Planning Tools for {proto.name}</h2>
+                    <h2 className="section-title">Signal, Battery, Protocol Tools</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {planningLinks.map(link => (
                             <Link key={link.href} href={link.href} className="link-card">
@@ -661,7 +661,7 @@ export default async function ProtocolDetailPage({ params }: { params: Promise<{
 
                 {/* CTA */}
                 <div className="cta-section">
-                    <h2 className="cta-section__title">Calculate Your {proto.name} Setup</h2>
+                    <h2 className="cta-section__title">Plan Your {proto.name} Setup</h2>
                     <p className="cta-section__subtitle">
                         Use our calculators to plan your smart lock installation
                     </p>

@@ -6,6 +6,8 @@ import { Wifi, AlertTriangle, Lightbulb, Check } from 'lucide-react'
 import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { BeTechCalculatorRecommendation } from '@/components/calculators/BeTechRecommendation'
+import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
+import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 
 interface Inputs {
     lockCount: number
@@ -37,6 +39,29 @@ const featureBandwidth: Record<string, number> = {
 }
 
 export default function NetworkBandwidthCalculator() {
+    const faqs = [
+        {
+            question: 'How much data does a smart lock use?',
+            answer: 'Most non-video smart locks use very little continuous bandwidth for status, audit logs, notifications, and user sync. Data usage rises with real-time cloud sync, frequent events, firmware updates, integrations, and any camera or video feature.',
+        },
+        {
+            question: 'Do Wi-Fi locks overload routers?',
+            answer: 'A few Wi-Fi locks usually do not overload a router, but large fleets can add device count, connection churn, multicast traffic, and cloud sync load. Enterprises should consider VLANs, QoS, access point capacity, and non-Wi-Fi protocols for scale.',
+        },
+        {
+            question: 'How much bandwidth do firmware updates need?',
+            answer: 'Firmware updates are usually burst traffic rather than constant load. The main planning issue is staging updates so dozens or hundreds of locks do not download at the same time on a constrained network.',
+        },
+        {
+            question: 'How many locks can one network support?',
+            answer: 'The answer depends on router capacity, access point density, protocol, cloud sync rate, and whether cameras are included. Device count and reliability are often bigger constraints than raw Mbps for non-video lock fleets.',
+        },
+        {
+            question: 'Do cloud locks work offline?',
+            answer: 'Some cloud-managed locks can still unlock with cached PINs, local Bluetooth, or physical keys, while remote commands and live sync may fail. Check offline behavior separately from bandwidth because low data use does not guarantee resilience.',
+        },
+    ]
+
     const [inputs, setInputs] = useState<Inputs>({
         lockCount: 10,
         protocol: 'wifi',
@@ -139,6 +164,13 @@ export default function NetworkBandwidthCalculator() {
                     <p className="page-header__subtitle">
                         Estimate bandwidth requirements for cloud-connected smart lock deployments
                     </p>
+                </div>
+
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorAnswerBlock
+                        title="How much bandwidth does a smart lock fleet need?"
+                        answer="Most smart lock fleets need modest continuous bandwidth for audit logs, status checks, notifications, and user synchronization. The larger planning risks are Wi-Fi device capacity, firmware update bursts, real-time integrations, and video-enabled door hardware. For enterprise rollouts, estimate both steady traffic and peak update windows."
+                    />
                 </div>
 
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
@@ -291,6 +323,9 @@ export default function NetworkBandwidthCalculator() {
 
                 <ToolRating toolSlug="network-bandwidth" />
                 <RelatedResources calculatorSlug="network-bandwidth" />
+                <div className="max-w-6xl mx-auto">
+                    <CalculatorFaqBlock faqs={faqs} />
+                </div>
                 <BeTechCalculatorRecommendation
                     description="Be-Tech locks support efficient Zigbee and Z-Wave protocols that minimize network bandwidth consumption while maintaining reliable cloud connectivity."
                     badge="Low Bandwidth"

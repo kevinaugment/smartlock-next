@@ -6,8 +6,8 @@ description: >-
   time.
 category: guides
 pubDate: 2024-04-06T00:00:00.000Z
-wordCount: 1060
-readingTime: 5
+wordCount: 724
+readingTime: 4
 keywords:
   - auto-lock not working
   - automatic lock fails
@@ -26,67 +26,47 @@ relatedArticles:
   - smart-lock-shows-wrong-status
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## Quick Answer
+## Auto-Lock Depends on the Whole Door
 
-Auto-lock is reliable only when the door closes cleanly, the lock knows the correct door status, the timer is realistic, and no other automation is issuing conflicting commands. Start by fixing the physical door: the latch should catch every time and the deadbolt should extend without rubbing the strike plate. Then check the door sensor, increase the auto-lock delay, and remove duplicate routines in HomeKit, Alexa, Google Home, SmartThings, or Home Assistant.
+Auto-lock is reliable only when the door closes cleanly, the lock knows the correct door state, the delay fits real behavior, and no other system sends conflicting commands. A timer cannot fix a door that bounces open. A routine cannot fix a deadbolt that rubs the strike plate.
 
-Do not judge auto-lock by one test. Run it through normal use for several days: groceries, kids, guests, weather, and repeated trips in and out. A setting that works in a quiet test can still fail in real life.
+Start with the physical door. Close it normally and make sure the latch catches without needing a push. Lock and unlock with the thumb turn while the door is open, then repeat with the door closed. If movement is smooth while open but rough while closed, adjust the strike plate, hinge screws, weatherstripping, or door alignment before changing app settings.
 
-## Check the Mechanical Door First
+## Make the Door Sensor Trustworthy
 
-Auto-lock cannot compensate for a door that does not close fully. If the latch does not catch, the door may look closed while it can still be pushed open. If the deadbolt rubs the strike plate, the motor may stop, reverse, or report a false lock.
+If the lock uses a door sensor, the app should report open when the door is open and closed when it is closed. A sensor that always says open may prevent auto-lock. A sensor that says closed while the door is open can throw the bolt into the frame.
 
-Test the door without the smart features first. Close it normally, release it, and push from the outside without turning the handle. The latch should hold. Then lock and unlock with the door open; the deadbolt should move smoothly. Repeat with the door closed. If it is smooth while open but rough while closed, the strike plate or door alignment is the problem.
+Recalibrate the sensor, realign the magnet, and replace any separate sensor battery if the state is wrong. Watch the app while opening and closing the door several times. If the sensor remains unreliable, a simple timer-only auto-lock may be safer until the sensor is fixed.
 
-Common fixes include tightening hinge screws, adjusting the strike plate, lightly filing the strike opening, or correcting weatherstrip pressure. If the door changes with humidity or temperature, leave more clearance than a perfect dry-weather fit.
+## Use a Delay People Can Live With
 
-## Verify the Door Sensor
+Very short delays create accidental relocks. Thirty seconds may pass before someone brings in groceries, helps a child, or returns to the car for another bag. Start around 5 minutes, then adjust after a week of normal use. If the door is left unlocked too long, reduce it. If people keep getting relocked during entry, increase it.
 
-If your lock uses a door sensor, the app should show open when the door is open and closed when the door is closed. If that state is wrong, auto-lock rules will make bad decisions.
+For better security at night, use a separate bedtime routine or status check rather than making the daytime delay too aggressive. A reliable habit is more valuable than a strict setting that everyone disables.
 
-A sensor that always says open may prevent auto-lock from running. A sensor that says closed while the door is open can trigger locking at the wrong time. Recalibrate the sensor, realign the magnet, replace weak sensor batteries if it has its own battery, and test again.
+## Remove Competing Automations
 
-If the sensor is unreliable and you cannot fix it immediately, use a timer-only auto-lock setting for now. That is less precise, but it may be more dependable than a false door state.
+Many smart homes accidentally create two or three auto-lock rules. The lock app may have native auto-lock enabled, HomeKit may have a routine, Alexa may have another, and SmartThings or Home Assistant may also react to the same door sensor. The result can look random because different systems win at different times.
 
-## Set a Realistic Delay
+Audit every platform connected to the lock. Search for routines triggered by door open, door closed, lock unlocked, arrival, departure, bedtime, or all doors. Keep one primary rule and disable duplicates. If you rely on a smart-home platform, either turn off native auto-lock or make the native delay longer so it acts as a fallback.
 
-Very short timers create more problems than they solve. Thirty seconds may be fine for a single person entering with empty hands, but it is poor for families, deliveries, mobility aids, strollers, or multiple trips from a car.
+## Prefer Local Behavior for Critical Doors
 
-Start with 5 minutes. If the door is often left unlocked longer than you like, reduce it to 3 minutes after a week of observation. If people are still getting relocked while entering, move to 7 or 10 minutes. The right delay is the shortest one that does not interfere with normal entry.
+Some auto-lock runs locally inside the lock. Some depends on a hub, Wi-Fi, cloud service, or automation platform. For exterior doors, native local auto-lock is usually the safest baseline because it can keep working during internet issues. Platform routines are useful as enhancements, but they should not be the only way the door locks itself.
 
-Use a separate night routine if you want tighter security after bedtime. A daytime 5-minute delay and a nighttime check can be better than an aggressive all-day auto-lock.
+If the lock often appears offline, solve connectivity before blaming auto-lock. A weak hub path or unstable Wi-Fi can delay status updates, drop commands, and make an automation look unreliable even when the lock hardware is fine.
 
-## Remove Duplicate Automations
+## Test in Real Use
 
-Many auto-lock problems come from multiple systems controlling the same lock. The native lock app may have auto-lock enabled, while HomeKit has an automation, Alexa has a routine, SmartThings has a lock rule, and Home Assistant has its own script. The shortest or most aggressive rule wins.
+Do more than one clean test. Try keypad unlock, app unlock, thumb-turn unlock, physical key use, and automation-triggered unlock if you use one. Confirm the timer starts when expected and that the bolt extends without grinding. Leave the door open once during testing if a sensor is active, and make sure the lock does not jam itself.
 
-Audit every platform connected to the lock. Search for routines triggered by lock state, door sensor state, arrival, departure, bedtime, or "all doors." Disable duplicates and keep one primary rule. If you want platform automations, turn off the lock's native auto-lock or make the native delay longer than the platform rule.
+Then watch normal use for several days. If auto-lock only fails during busy moments, the delay is too short or the door is not closing consistently. If failures happen after app or hub commands, look for automation conflicts or connectivity. If the motor tries but cannot finish, return to alignment.
 
-After changing routines, test from every unlock method: keypad, app, thumb turn, physical key, and automation. Some locks start the timer only after electronic unlocks, while others treat every unlock the same.
+## When to Turn It Off
 
-## Account for Connectivity
+Disable auto-lock during move-in, maintenance, parties, furniture delivery, or repeated in-and-out work. Re-enable it afterward and confirm the setting took effect.
 
-Some auto-lock behavior is local to the lock; some depends on the cloud or hub. Local auto-lock usually keeps working when the internet is down. Platform automations may fail if Wi-Fi, the hub, or cloud services are offline.
-
-For exterior doors, prefer local lock-native auto-lock as the baseline. Use smart-home routines as enhancement, not the only lock-back mechanism. For hub-based locks, keep the hub close enough and powered by a reliable outlet. If the lock often appears offline, fix that before blaming auto-lock.
-
-## Test a New Setup
-
-Use a simple test plan:
-
-1. Unlock with the keypad, close the door, and wait for the full delay.
-2. Leave the door open and confirm the lock does not jam itself if a door sensor is active.
-3. Unlock twice in a row and confirm the timer restarts after the latest unlock.
-4. Unlock from the app and confirm the same behavior.
-5. Check the access log for failed lock attempts or automation conflicts.
-
-Then watch normal use for a week. If the lock succeeds only during controlled tests, the issue is usually door closure, a too-short timer, or a hidden automation.
-
-## When to Disable Auto-Lock
-
-Disable auto-lock temporarily during move-in, maintenance, parties, furniture delivery, or repeated in-and-out work. Re-enable it afterward and confirm the setting took effect.
-
-If auto-lock keeps failing despite alignment, sensor checks, battery replacement, and automation cleanup, leave it off until repaired. A manual locking habit plus a nightly status check is better than an automation that sometimes locks, sometimes jams, and sometimes creates false confidence.
+If auto-lock remains unpredictable after alignment, sensor calibration, battery replacement, and automation cleanup, leave it off until repaired. A manual locking habit plus a nightly status check is safer than an automation that sometimes works and sometimes creates false confidence.
 
 ## Related Guides
 

@@ -6,8 +6,8 @@ description: >-
   all lock brands.
 category: guides
 pubDate: 2024-03-14T00:00:00.000Z
-wordCount: 1090
-readingTime: 5
+wordCount: 586
+readingTime: 3
 keywords:
   - wrong lock status
   - lock status not updating
@@ -26,61 +26,39 @@ relatedArticles:
   - improve-connection-stability
 updatedDate: '2026-05-09T00:00:00.000Z'
 ---
-## Quick Answer
+## Check Reality Before Fixing the App
 
-If the app shows the wrong smart lock status, physically check the door first, then force a status refresh from the app. If the door is actually locked but the app says unlocked, the issue is usually sync lag, app cache, hub connectivity, or calibration. If the app says locked but the deadbolt is not fully extended, treat it as a mechanical or calibration problem, not just a display bug.
+When the app shows the wrong status, start at the door if possible. Look at the bolt, try the handle, and turn the thumb piece. Write down what the app says and what the lock physically does. If the door is actually locked but the app says unlocked, you are likely dealing with sync lag, cache, hub routing, or calibration. If the app says locked but the bolt is not fully extended, treat it as a mechanical problem first.
 
-Remote status is useful only when it matches reality. Until the issue is fixed, verify critical doors manually or with a trusted local person before relying on the app.
+Remote status is only useful when it matches the door. Until the issue is fixed, verify critical doors manually or through a trusted local person before relying on the app.
 
-## Confirm the Real State
+## Separate Display Lag From Position Problems
 
-Start at the door if possible. Try the handle, look at the deadbolt, and use the thumb turn. Write down what the app says versus what the lock physically does.
+If the lock moves correctly and only the app is stale, force a fresh status check. Pull to refresh if the app supports it, close and reopen the app, stand near Bluetooth locks, and confirm the hub or Wi-Fi connection is online. If another phone shows the right state, the first phone may be caching old data.
 
-If the lock operates correctly but the app is stale, focus on sync. If the lock does not fully lock or unlock, fix the mechanical issue first. A wrong status reading can be a symptom of incomplete bolt travel.
+If the lock does not fully lock or unlock, fix the mechanism before chasing app sync. Deadbolt drag, a tight strike plate, low batteries, or an overtightened mounting plate can stop the bolt short while the app receives a misleading state.
 
-## Force a Fresh Status Check
+## Recalibrate After Jams or Battery Changes
 
-Pull down to refresh in the app if supported. Close and reopen the app. Send a harmless command such as lock or unlock only if you are sure the door can move safely.
+Smart locks can lose track of fully locked and fully unlocked positions after jams, battery changes, manual overrides, or repeated partial travel. Look for calibration, door handing, lock orientation, or reset-position settings in the app. Follow the prompts with the door open unless the manufacturer says otherwise.
 
-For Bluetooth locks, stand near the door. For Wi-Fi locks, check whether the lock is online. For hub-based locks, confirm the hub is online and that other devices are responding. If the status updates after a manual refresh, the problem is probably delay or packet loss, not calibration.
+After calibration, test app status after keypad unlock, app unlock, thumb-turn operation, and auto-lock. If calibration fails or drifts again, inspect alignment. A lock cannot learn accurate positions if the bolt rubs during every cycle.
 
-## Recalibrate the Lock
+## Check Door Sensor State Separately
 
-Smart locks can lose track of the deadbolt position after battery changes, jams, manual override, or repeated partial movements. Recalibration teaches the lock what fully locked and fully unlocked mean.
+Some systems report both lock state and door state. If the app says the door is open when it is closed, auto-lock and notifications can fail even if the deadbolt state is correct. Realign the magnet, recalibrate the sensor, replace a separate sensor battery, and keep metal interference in mind.
 
-Look in the app for `Calibrate`, `Door handing`, `Reset position`, or `Lock orientation`. Follow the prompts with the door open unless the app tells you otherwise. After calibration, test app status after a keypad unlock, app unlock, thumb-turn lock, and auto-lock.
+Do not mix these two problems together. A wrong door-open reading is not always a wrong deadbolt reading, and the fix may be in the sensor rather than the lock motor.
 
-If calibration fails, check for friction. The lock cannot learn positions correctly when the bolt is dragging on the strike plate.
+## Refresh the Hub or Platform
 
-## Check Door Sensor Behavior
+For Z-Wave, Zigbee, Matter, HomeKit, SmartThings, or Home Assistant setups, the lock app may not be the only source of status. A hub can hold a stale state, miss a report, or route updates poorly. Reboot the hub if every phone sees the same wrong state through that platform. For mesh networks, a repair or heal may improve status reporting.
 
-Some locks report both lock state and door state. If the app says the door is open when it is closed, auto-lock and status notifications may also be wrong.
+Manual key or thumb-turn use can also matter. Some locks detect manual position changes better than others. If status is wrong only after someone uses the key, the model may not report manual movement reliably until the next electronic command or refresh.
 
-Open and close the door while watching the app. If the door sensor lags or reports the wrong state, realign the magnet, recalibrate the sensor, replace the sensor battery if separate, and remove nearby metal or magnetic interference when possible.
+## When to Escalate
 
-If the lock status is correct but the door status is wrong, keep these issues separate. A door sensor problem does not always mean the deadbolt sensor is broken.
-
-## Clear App or Hub Staleness
-
-If only one phone shows the wrong status, the app may be caching stale data. Log out and back in, force close the app, or reinstall it if needed. Compare with another authorized user's phone before changing lock hardware.
-
-If every phone shows the wrong status through a hub, refresh or reboot the hub. For Z-Wave and Zigbee systems, a repair or heal operation may improve routing if status updates are being lost.
-
-## Account for Manual Operation
-
-Some locks detect manual thumb-turn and key operation well; others update status only after electronic operation. If the status is wrong only after someone uses the physical key or thumb turn, the model may not have reliable manual-position sensing.
-
-The workaround is to press the keypad, refresh the app, or use app/keypad operation when remote status matters. If accurate manual detection is critical, choose a lock known for better position sensing.
-
-## Fix the Underlying Mechanical Cause
-
-Status errors often follow incomplete bolt movement. If the app says locked but the bolt stops short, inspect alignment, strike depth, mounting screw tension, and batteries. If the app says unlocked but the bolt remains partly extended, recalibrate after the mechanism moves smoothly.
-
-Do not hide a mechanical problem by refreshing the app until it says what you want. A deadbolt that does not travel fully is a security issue.
-
-## When to Contact Support
-
-Escalate if calibration does not hold, app and physical state diverge repeatedly, every user sees the wrong status, or status errors began after a firmware update. Provide the model, firmware version, hub type, screenshots, and a short video showing the physical lock state and app state together.
+Contact support if calibration does not hold, every user sees repeated wrong status, status errors began after a firmware update, or the app says locked while the bolt is visibly short of full extension. Provide the model, firmware version, hub type, screenshots, and a short video showing the physical lock and app state together.
 
 ## Related Guides
 

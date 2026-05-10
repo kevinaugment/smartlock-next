@@ -4,8 +4,8 @@ description: 'Plan a smart lock mesh network with Zigbee, Z-Wave, Thread, repeat
 category: protocols
 pubDate: 2026-05-09T00:00:00.000Z
 updatedDate: 2026-05-09T00:00:00.000Z
-wordCount: 540
-readingTime: 5
+wordCount: 373
+readingTime: 2
 keywords:
   - smart lock mesh network
   - smart lock repeater placement
@@ -21,44 +21,29 @@ isSupport: true
 featured: true
 ---
 
-## Quick Answer
+## Plan the Path Before Installing the Lock
 
-A smart lock mesh network works best when the hub, powered repeaters, and lock locations are planned before installation. Battery locks usually do not repeat traffic, so every exterior door should have a reliable powered node or hub path nearby.
+A smart lock mesh works only when the hub, powered repeaters, and door locations are planned together. Battery locks usually do not repeat traffic, so every exterior door needs a reliable route to a powered node, hub, border router, or coordinator. Guessing from a desk test is how fleets end up with slow commands and short battery life.
 
-Start with the [Mesh Network Planner](/calculators/mesh-planner), then validate weak links with the [Signal Strength Calculator](/calculators/signal-strength).
+Start with the [Mesh Network Planner](/calculators/mesh-planner), then validate weak links with the [Signal Strength Calculator](/calculators/signal-strength) or [RF Coverage Planner](/calculators/rf-coverage).
 
-## Mesh Planning Table
+## Repeaters Need to Be on the Route
 
-| Planning item | Why it matters | What to do |
-|---|---|---|
-| Hub location | Determines first-hop reliability | Keep it central and away from interference |
-| Powered repeaters | Battery locks usually do not repeat | Add plugs/modules near lock paths |
-| Wall material | Concrete, brick, and metal cut signal | Measure instead of guessing |
-| Protocol | Z-Wave, Zigbee, and Thread behave differently | Match protocol to building and hub |
-| Door usage | Heavy use increases retries and battery load | Plan stronger signal for busy doors |
-| Recovery path | Locks must work during outages | Keep local codes and backup access |
+Place repeaters between the hub and the lock, not behind the lock or in random outlets. For an exterior door, the best repeater may be an interior plug near the entry, a powered module in the next room, or a hub moved closer to the door path. After adding repeaters, allow the mesh to rebuild if the platform requires it, then test status and commands several times.
 
-## Repeater Placement Rules
+Heavy-use doors deserve stronger signal than rarely used storage doors. Retries wake the lock, delay commands, and drain batteries. If batteries die faster than expected, check signal and door alignment before blaming the lock brand.
 
-Place repeaters between the hub and the lock, not behind the lock or at random outlets. For exterior doors, the best repeater may be an interior plug near the entry, a powered module in a nearby room, or a hub closer to the door path.
+## Protocols Behave Differently
 
-After adding repeaters, allow the mesh to rebuild if your platform requires it, then test lock status and commands multiple times.
+Z-Wave often performs well through some walls because it uses sub-GHz frequencies. Zigbee and Thread use 2.4 GHz, so Wi-Fi congestion, appliances, concrete, and metal doors can matter more. Thread has a Matter-forward path, while Zigbee has a mature hub and repeater ecosystem.
 
-## Protocol Differences
-
-Z-Wave often works well through walls because it uses sub-GHz frequencies. Zigbee and Thread use 2.4 GHz, so they can face more Wi-Fi and appliance interference. Thread has a Matter-forward path, while Zigbee has a mature hub and repeater ecosystem.
-
-The right protocol depends on the building, not a generic range number.
-
-## Battery Impact
-
-Weak mesh links cause retries. Retries wake the lock, delay commands, and reduce battery life. If batteries die faster than expected, check signal and door alignment before blaming the brand.
-
-For Wi-Fi locks, read [Wi-Fi Smart Lock Battery Drain](/articles/protocols/wifi-smart-lock-battery-drain). For mesh locks, verify repeaters and hub placement first.
+The right protocol depends on the building. A generic range number is less useful than testing the actual path from controller to door.
 
 ## Rental and Multifamily Notes
 
-Do not standardize a rental or multifamily fleet from a desk test. Pilot doors on different floors, at corridor ends, near elevators, and behind metal fire doors. Record battery life, command latency, and support tickets before scaling.
+Do not standardize a rental or multifamily fleet from one easy door. Pilot units on different floors, corridor ends, elevator-adjacent doors, metal fire doors, and remote buildings. Track command latency, battery life, missed status updates, and support tickets before scaling.
+
+For rentals, controller ownership is part of the network plan. A tenant-owned router or hub can make a technically good mesh impossible to support.
 
 ## Internal Links
 

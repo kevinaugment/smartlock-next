@@ -4,8 +4,8 @@ description: 'Choose enterprise smart lock protocols by door count, audit logs, 
 category: protocols
 pubDate: 2026-05-09T00:00:00.000Z
 updatedDate: 2026-05-09T00:00:00.000Z
-wordCount: 570
-readingTime: 5
+wordCount: 387
+readingTime: 2
 keywords:
   - enterprise smart lock protocol
   - commercial smart lock protocol
@@ -21,52 +21,29 @@ isSupport: true
 featured: true
 ---
 
-## Quick Answer
+## Enterprise Protocol Choices Start With Operations
 
-Enterprise smart lock protocol selection starts with operations, not radios. Door count, credential lifecycle, audit logs, identity integration, network capacity, fire code, and support ownership should decide whether Wi-Fi, Z-Wave, Matter/Thread, wired access control, or a managed platform is appropriate.
+Enterprise smart lock selection should start with door count, credential lifecycle, support ownership, audit requirements, and outage tolerance. The radio is only one layer. A small office may be fine with Wi-Fi or a managed cloud lock. A thick-wall commercial building may need Z-Wave, wired access control, or planned repeaters. A multi-site portfolio usually needs a managed platform more than a consumer ecosystem.
 
-Use the [Fleet Planner](/calculators/fleet-planner) and [Access Capacity Calculator](/calculators/access-capacity) before shortlisting hardware.
+Use the [Fleet Planner](/calculators/fleet-planner) and [Access Capacity Calculator](/calculators/access-capacity) before shortlisting hardware. If the team cannot explain who adds users, removes users, handles lockouts, exports logs, and replaces batteries, the protocol decision is premature.
 
-## Enterprise Protocol Decision Table
+## What the Protocol Must Support
 
-| Deployment need | Better starting point | Why |
-|---|---|---|
-| One small office | Wi-Fi or managed cloud lock | Fast setup and simple admin |
-| Thick-wall commercial building | Z-Wave or wired access control | Better physical reliability planning |
-| Multi-site portfolio | Managed platform | Central support, monitoring, and reporting |
-| Apple/consumer amenity space | Matter/HomeKit pilot | Good resident or staff UX, but verify controls |
-| High-security doors | Wired access control | Egress, audit, and monitoring requirements |
-| Offline-critical access | Local credential storage | Reduces internet and cloud outage risk |
+The deployment needs named user lifecycle, staff and visitor roles, emergency access, audit-log retention, and a repeatable help desk process. If HR, badge, visitor, hotel PMS, or building automation integration is required, confirm that before buying locks. A protocol that works for one door can still fail the organization if credentials cannot be managed at scale.
 
-## What Matters More Than Protocol
-
-For enterprise teams, protocol is only one layer. The deployment also needs:
-
-- Named user lifecycle and deprovisioning.
-- Staff, vendor, visitor, and emergency roles.
-- Audit-log retention and export.
-- HR, badge, visitor, or PMS integration.
-- Battery or power maintenance policy.
-- Help desk playbooks for lockouts and failed credentials.
-- Privacy and access-log governance.
-
-## Network and Power Planning
-
-Wi-Fi locks add router load, cloud dependency, and battery maintenance. Z-Wave and Zigbee add hub and repeater design. Matter/Thread adds controller and border-router planning. Wired doors add PoE, voltage drop, fire egress, and installer coordination.
-
-Use the [Network Bandwidth Calculator](/calculators/network-bandwidth) and [PoE Power Budget Calculator](/calculators/poe-power) when the deployment touches commercial infrastructure.
+Wi-Fi adds router load, cloud dependency, and battery maintenance. Z-Wave and Zigbee add hub and repeater design. Matter and Thread add controller and border-router planning. Wired access adds power, cabling, fire egress, and installer coordination. None is universally best; each moves work to a different team.
 
 ## Pilot Before Standardizing
 
-Pilot across different door types: exterior doors, fire-rated doors, elevator-adjacent corridors, metal frames, high-traffic staff doors, and remote sites. Measure command success, battery drain, credential sync, support tickets, and audit-log usefulness.
+Pilot on different door types: exterior doors, metal frames, high-traffic staff entrances, elevator-adjacent corridors, fire-rated openings, and remote sites. Measure command success, battery drain, credential sync, audit-log usefulness, and support tickets. A clean single-door demo does not prove a 300-door rollout is ready.
 
-Do not treat a successful single-door demo as proof that a 300-door rollout is ready.
+Use the [Network Bandwidth Calculator](/calculators/network-bandwidth) and [PoE Power Budget Calculator](/calculators/poe-power) when the deployment touches commercial infrastructure. For regulated or life-safety doors, involve facilities, security, IT, and compliance early.
 
-## Compliance and Security
+## Compliance and Ownership
 
-Commercial doors may be subject to fire, ADA, insurance, privacy, and security requirements. Consumer lock convenience should not override egress, emergency access, or identity-management controls.
+Commercial doors may involve fire, ADA, privacy, insurance, and security requirements. Consumer convenience should not override egress, emergency access, or identity-management controls. Pair protocol selection with the [Security Compliance Checker](/calculators/security-compliance), [Privacy Compliance Checker](/calculators/privacy-compliance), and [Enterprise Deployment Guide](/articles/use-cases/enterprise-commercial-deployment).
 
-Pair protocol selection with the [Security Compliance Checker](/calculators/security-compliance), [Privacy Compliance Checker](/calculators/privacy-compliance), and [Enterprise Deployment Guide](/articles/use-cases/enterprise-commercial-deployment).
+The best enterprise protocol is the one your organization can monitor, support, audit, and recover under stress.
 
 ## Internal Links
 

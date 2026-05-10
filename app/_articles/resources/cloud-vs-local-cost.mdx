@@ -1,9 +1,8 @@
 ---
-title: 'Cloud vs. Local Smart Locks: The 10-Year TCO & ''Hidden'' Exit Costs'
+title: 'Cloud vs Local Smart Locks: TCO, Subscriptions, and Exit Risk'
 description: >-
-  Most buyers analyze 3-year costs. We analyze 10. Discover why the 'Hardware
-  Refresh Cycle' and 'Per-User' fees make Cloud systems 300% more expensive than
-  you think.
+  Compare cloud and local smart lock architecture by subscription cost, staff
+  time, data control, integrations, hardware refresh, and exit risk.
 category: resources
 pubDate: 2024-05-20T00:00:00.000Z
 slug: cloud-vs-local-cost
@@ -21,113 +20,42 @@ tags:
   - data-table
   - decision-guide
 updatedDate: '2026-05-09T00:00:00.000Z'
-wordCount: 1015
+wordCount: 717
 readingTime: 4
 ---
-## Executive Summary
 
-When selecting an access control architecture, most decision-makers look at the **Day 1 Price** or the **3-Year Contract**. This is a financial error.
+Cloud and local smart lock systems are not just two ways to unlock a door. They are two different operating models. A cloud system buys vendor-managed software, remote access, integrations, and support. A local system buys more control, lower recurring fees, and more responsibility for the network, backups, documentation, and security.
 
-Our "Deep Scan" market analysis reveals two critical factors often omitted from vendor quotes:
-1.  **The Hardware Refresh Cycle**: Smart locks have a 5-7 year lifespan. Commercial mechanical locks have 20. In a 10-year period, **you will buy your cloud locks twice**.
-2.  **The "Exit Cost"**: If you stop paying the SaaS subscription, does your lock revert to a "dumb" key, or does it become a brick?
+The mistake is comparing only the first hardware quote. A cloud proposal may look clean because the monthly fee hides support, remote access, and integrations in one line. A local deployment may look cheaper because there is no per-door subscription, but the labor shifts to whoever maintains the hubs, servers, VPN, automations, backups, and access policies. The real comparison is total cost of ownership, not sticker price.
 
-This guide compares the **10-Year Total Cost of Ownership (TCO)** of Cloud SaaS vs. Local Self-Hosted architectures.
+Use the [Subscription vs Purchase Calculator](/calculators/subscription-compare) and [Installation Cost Estimator](/calculators/installation-cost) before choosing either path. The answer changes quickly by door count, user count, turnover rate, integration needs, and the cost of a lockout.
 
----
+## What Cloud Systems Really Buy
 
-## 10-Year Cost Breakdown (100 Unit Deployment)
+Cloud systems are attractive because they reduce the amount of infrastructure the owner must run. For apartments, gyms, coworking spaces, short-term rentals, and offices, that can be valuable. The vendor may handle remote access, app updates, user management, PMS or booking integrations, audit logs, role permissions, and support escalation.
 
-Scenario: A 100-unit multi-family complex.
-*   **Cloud System**: Wi-Fi locks with a $6/door/mo fee.
-*   **Local System**: Zigbee/Z-Wave locks with a self-hosted server (Home Assistant/Hubitat).
+That convenience has a recurring cost. Per-door pricing is common, but it is not the only model. Some vendors price by active user, some by building, and some bundle hardware into a higher monthly fee. Per-user pricing is especially risky for high-turnover or high-membership businesses because the access cost grows with credential count rather than door count.
 
-| Cost Category | Cloud SaaS (e.g., Latch, SmartRent) | Local / Self-Hosted (e.g., Z-Wave + HA) |
-| :--- | :--- | :--- |
-| **Initial Hardware** | **$25,000**<br>($250/lock) | **$30,000**<br>($200/lock + $10k Infrastructure) |
-| **Year 5 Refresh**<br>*(The Hidden Killer)* | **$25,000**<br>(Electronics fail, warranty expired) | **$5,000**<br>(Replace server/hub only; locks last) |
-| **Subscription Fees**<br>*(10 Years)* | **$72,000**<br>($6/mo x 100 x 120 mo) | **$3,000**<br>(Remote access VPN / Nabu Casa) |
-| **Battery Maintenance** | **$10,000**<br>(Wi-Fi: 4000 swaps @ $2.50) | **$2,500**<br>(Zigbee: 1000 swaps @ $2.50) |
-| **IT & Labor** | **$2,000**<br>(Vendor Support) | **$20,000**<br>(In-house maintenance) |
-| **10-Year Total TCO** | **$134,000** | **$60,500** |
-| **Cost Per Door/Year** | **$134 / door** | **$60.50 / door** |
+The other cloud cost is exit risk. Before signing, ask what happens if the subscription ends, the vendor is acquired, or the service shuts down. In a soft-cloud design, the keypad and local programming may still work even if remote management stops. In a hard-cloud design, losing the service can damage the entire access workflow. That question belongs in procurement, not after cancellation.
 
-### Critical Takeaway
-At Year 10, the **Cloud system costs 2.2x more** than the Local system. The primary drivers are the **Second Hardware Buy** (because consumer-grade cloud locks don't last) and the accumulated **SaaS rent**.
+## What Local Systems Really Cost
 
----
+Local systems reduce vendor rent, but they do not remove operating cost. Someone still has to keep the controller healthy, document the topology, manage backups, update firmware, secure remote access, monitor batteries, and recover the system after hardware failure. In a small home or technical owner-operator setup, that may be acceptable. In a managed property, it is labor that needs a named owner.
 
-## The 3 Pricing Models You Must Know
+Local also changes integration work. Connecting a self-hosted Z-Wave or Zigbee system to booking software, staff directories, or property-management workflows may require middleware or custom automation. If one technical employee built that workflow and nobody else understands it, the system has a continuity risk even if the monthly bill is low.
 
-Vendors are tricky. They don't just charge "per lock".
+Security responsibility also shifts. A cloud vendor is not automatically safer, but it usually owns patching and remote-access infrastructure. With a local system, the property owner must avoid exposed admin panels, weak VPN setups, undocumented passwords, and unpatched controller software.
 
-### 1. Per Door Pricing (The Standard)
-*   **Cost**: $3 - $15 per door / month.
-*   **Trap**: Often tiered. "Basic" ($3) opens the door. "Pro" ($8) gives you logs. "Enterprise" ($15) gives you SSO/API access.
+## Hardware Refresh and Battery Labor
 
-### 2. Per User Pricing (The Gym Trap)
-*   **Cost**: $1 - $5 per *active user* / month.
-*   **Trap**: Fatal for high-turnover businesses like gyms or coworking spaces. A 5-door gym with 500 members pays **$2,500/month**! Never sign a per-user contract for high-volume access.
+Both architectures need realistic hardware assumptions. Smart locks are electronics mounted on moving doors, exposed to vibration, weather, tenant behavior, and battery limits. Mechanical hardware may last longer than the connected electronics, and a ten-year plan should expect some refresh or replacement.
 
-### 3. The "Hardware as a Service" Lease
-*   **Cost**: $0 upfront, higher monthly fee.
-*   **Trap**: You never own the locks. If you cancel, they come and un-install them (charged to you), or software-brick them.
+Battery labor can be just as important as subscription cost. Wi-Fi locks may be easier to deploy but can create more battery visits, especially on weak signals. Low-power mesh locks may reduce battery work but require hub and repeater planning. The cheaper architecture on paper is not cheaper if it creates emergency truck rolls.
 
----
+## How to Choose
 
-## The "Exit Strutegy": What happens if you cancel?
+Choose cloud when integrations, support accountability, staff turnover, and remote administration matter more than subscription avoidance. This is often true for hospitality, multifamily operators, gyms, and teams that do not have technical staff to maintain local infrastructure.
 
-This is the most important question to ask your sales rep.
+Choose local when data control, offline resilience, low recurring cost, and hardware ownership matter more than vendor-managed convenience. This can fit schools, technically capable facilities teams, private estates, and long-term owner-operators who are willing to document and maintain the system.
 
-| Architecture | Cancellation Consequence | Risk Level |
-| :--- | :--- | :--- |
-| **Cloud (Hard)** | **The Brick**. App stops working. PIN codes deleted. Lock is physically useless. | **High** |
-| **Cloud (Soft)** | **The Dumb Lock**. Remote access dies. Keypad still works manually (programming at the door). | **Medium** |
-| **Local / Open** | **No Change**. You own the server. Everything keeps working. | **Zero** |
-
-> **Warning**: Many "Proptech" startups run at a loss. If they go bankrupt (e.g., a server shutdown), a "Hard Cloud" system becomes $25,000 of e-waste overnight. A Local system keeps running because *you* host the server.
-
----
-
-## The Hidden Costs of "Local Only"
-
-We must be fair. Local is cheaper, but it demands **Time** and **Skill**.
-
-1.  **The "Bus Factor"**: If your IT manager (who built the Docker/Node-RED backend) quits or gets hit by a bus, who has the root password? Local systems are often undocumented spaghetti code.
-2.  **Security Liability**: In a Cloud system, the vendor patches the firewall. In a Local system, **you** are the CISO. If you leave a port open and get hacked, it is 100% your fault.
-3.  **Integration Friction**: Connecting a Local Z-Wave network to a Property Management System (Guesty/Mews) often requires writing custom Python scripts. Cloud systems have "One-Click" integrations.
-
----
-
-## Summary: Who Wins?
-
-*   **Choose Cloud** if: You need "One-Click" integrations (Airbnb/VRBO), have zero IT staff, and your business model can absorb $134/door/year as a cost of doing business.
-*   **Choose Local** if: You are a school, government, or long-term facility manager who wants to buy reliable hardware once (Grade 1), keep data private, and avoid the "SaaS Tax" forever.
-
-## Related Tools
-*   **[Subscription vs Purchase Calculator](/calculators/subscription-compare)**: Run the 10-year numbers yourself.
-*   **Lock Grading Decoder**: Don't put a Grade 3 residential lock on a commercial door.
-*   **[Installation Cost Estimator](/calculators/installation-cost)**: See how much "Hardwired" infrastructure actually costs.
-
-## Frequently Asked Questions
-
-### Why do smart locks only last 5-7 years?
-Electronics degrade. Capacitors dry out, soldering cracks from thermal expansion (winter/summer), and motors wear out. A mechanical deadbolt is a chunk of steel; a smart lock is a computer on a door. Computers don't last 20 years.
-
-### Can I upgrade a Local system to Cloud later?
-Usually, yes. If you buy open-standard locks (Z-Wave/Zigbee), you can start with a local hub (Hubitat) and later swap it for a commercial cloud hub (like Ring or SmartThings Enterprise) without changing the locks. The reverse (Cloud to Local) is often impossible if the locks are invalid Wi-Fi proprietary models.
-
-### What is the "User Tax"?
-This refers to "Per User" pricing models. Always calculate your TCO based on your *maximum* potential user count, not just your current count. A gym membership drive could double your monthly access fees if you aren't careful.
-
-## 2026 Planning Notes
-
-Published range, battery, and interoperability numbers are planning inputs only. Walls, radio congestion, border routers, and firmware policy still change the field result materially.
-
-Treat local radio health, border-router or hub placement, and fallback behavior during internet loss as first-class design inputs, not afterthoughts.
-
-## How to Use This Reference
-
-1. Confirm the exact door type, lock family, controller path, and operating environment you are designing for.
-2. Eliminate options that fail the mechanical, compliance, offline-access, or lifecycle-cost requirements that matter most for this deployment.
-3. Validate the final choice against the current manufacturer documentation and a test on the real door whenever the consequence of failure is high.
+The best decision is usually not pure cloud or pure local. Many properties need local credential behavior at the door, cloud administration for staff, and a written exit plan if the vendor relationship changes. Put the cancellation scenario, hardware refresh plan, and maintenance owner in writing before deployment.

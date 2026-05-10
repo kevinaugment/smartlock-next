@@ -1,9 +1,8 @@
 ---
-title: 'Smart Home Protocol Specs: The Ultimate Technical Cheat Sheet (2026)'
+title: 'Smart Home Protocol Specs for Smart Locks'
 description: >-
-  Direct technical comparison of Z-Wave 800, Zigbee 3.0, Thread, and Wi-Fi 6. We
-  compare frequency, bandwidth, max nodes, security encryption, and mesh
-  capabilities.
+  Compare Z-Wave, Zigbee, Thread, Matter, Bluetooth, and Wi-Fi for smart lock
+  range, mesh design, security model, hubs, and interoperability.
 category: resources
 pubDate: 2024-05-20T00:00:00.000Z
 slug: smart-home-protocol-specs-table
@@ -21,90 +20,40 @@ tags:
   - data-table
   - standard
 updatedDate: '2026-05-09T00:00:00.000Z'
-wordCount: 748
+wordCount: 650
 readingTime: 3
 ---
-## Executive Summary
 
-Marketing fluff says "Seamless Connectivity." Engineers need to know Frequency, Max Hops, and Encryption standards.
+Smart lock protocols should be judged by the door, not by a spec sheet alone. Frequency, mesh design, hub requirements, power use, security model, and ecosystem support all matter, but the best protocol is the one that stays reliable at the actual door with the actual users and maintenance team.
 
-This guide is the definitive technical reference for the 4 major smart lock protocols. Use this to design networks that don't fail when you add your 50th device.
+The main choices are Wi-Fi, Bluetooth LE, Zigbee, Z-Wave, Thread, and Matter. Matter is different from the others because it is an interoperability layer rather than a radio by itself. A Matter smart lock may use Thread or Wi-Fi underneath, and that transport affects battery life, hub requirements, and network planning.
 
----
+Use the [Protocol Selection Wizard](/calculators/protocol-wizard) first if you are choosing hardware, then validate the physical layout with the [Mesh Topology Guide](/articles/resources/mesh-topology-guide) or the relevant signal tools.
 
-## Master Comparison Table
+## Frequency and Range
 
-| Specification | **Z-Wave (800 Series)** | **Zigbee 3.0** | **Thread (Matter)** | **Wi-Fi 6 (802.11ax)** |
-| :--- | :--- | :--- | :--- | :--- |
-| **Frequency** | **908.42 MHz** (Sub-1GHz) | 2.4 GHz (Global) | 2.4 GHz (IEEE 802.15.4) | 2.4 GHz / 5 GHz |
-| **PHY Layer** | FSK / OQPSK | O-QPSK | O-QPSK | OFDM / OFDMA |
-| **Range (Indoor)** | **Excellent** (Penetrates Brick) | **Fair** (Blocked by Walls) | **Fair** (Mesh extends it) | **Good** (High Power) |
-| **Max Nodes** | 4,000 (LR Mode) | ~65,000 (Practical: 200) | ~250 per subnet | 255 (Router limit) |
-| **Mesh Hops** | Max 4 Hops | Unlimited (Practical: 15) | Unlimited (IP Routing) | None (Star Topology) |
-| **Security** | **S2 (AES-128)** Mandatory | AES-128 + Trust Center | ChaCha20 / DTLS | WPA3 (SAE) |
-| **Addressing** | Proprietary Node ID | 16-bit Network Address | **IPv6** (Native IP) | IP Address (DHCP) |
-| **Interoperability** | **Extremely High** (Strict Cert) | Medium (Profiles) | **High** (Matter Layer) | Low (Proprietary Cloud) |
+Z-Wave often performs well for locks because it operates below the crowded 2.4 GHz band in many regions. Lower-frequency signals can be more forgiving through walls, people, and dense construction. That makes Z-Wave a practical choice for apartments, older homes, and managed properties where the hub path can be controlled.
 
----
+Zigbee and Thread use 2.4 GHz radios. They can work very well, but they share spectrum with Wi-Fi, Bluetooth, microwaves, and other devices. Their reliability depends heavily on channel choice, repeater quality, and coordinator or border-router placement. A good 2.4 GHz mesh can be solid; a careless one can create battery and status problems.
 
-## Detailed Technical Analysis
+Wi-Fi uses higher power and familiar infrastructure. It is convenient because many Wi-Fi locks avoid a separate hub, but the lock still needs strong 2.4 GHz coverage at the door. A fast router in the living room does not guarantee a stable lock on an exterior door.
 
-### 1. Frequency Physics (900 MHz vs 2.4 GHz)
-*   **Z-Wave (908 MHz)**: The "Golden Frequency." Its wavelength is ~33cm. It passes through furniture, water pipes, and people with minimal loss. It does not compete with your Wi-Fi router.
-*   **Zigbee/Thread (2.4 GHz)**: The "Jungle Frequency." Its wavelength is ~12cm. It competes with Wi-Fi, Bluetooth, Microwaves, and Baby Monitors. In a crowded apartment, 2.4GHz noise floors can reach -80dBm, drowning out smart locks.
+Bluetooth LE is efficient and useful for nearby phone access, but remote control usually depends on a bridge, hub, or platform device. It is better understood as a local access layer than a complete remote-management architecture.
 
-### 2. Mesh Architecture & Hops
-*   **Z-Wave Mesh**: Uses "Source Routing" (Hub calculates path). Deeply established but limited to 4 hops.
-*   **Thread**: A "Self-Healing" Mesh. Unlike Zigbee where a "Coordinator" failure kills the network, Thread has no single point of failure. Multiple devices can become "Border Routers." If one breaks, traffic re-routes instantly.
+## Mesh Design and Hubs
 
-### 3. Z-Wave Long Range (LR)
-The new 800-Series chips support **Z-Wave LR**.
-*   **Topology**: Star (Direct to Hub), not Mesh.
-*   **Power**: Increases output to +14dBm (limit of FCC).
-*   **Range**: Tested up to **1.5 Miles** Line-of-Sight.
-*   **Use Case**: Front gates, detached garages, mailboxes.
+Battery locks are usually sleepy devices. They should not be counted on to repeat traffic for other devices. The mesh is built by powered routers, plugs, modules, switches, border routers, or hubs placed between the controller and the door.
 
----
+Z-Wave and Zigbee networks depend on a controller. Thread uses border routers and IP routing, which can reduce some single-controller assumptions but still requires a healthy Thread network. Wi-Fi is usually a star topology around the router or access points. None of these architectures removes the need to test the real installed location.
 
-## The "Matter" Revolution
+## Matter and Interoperability
 
-**Matter** is not a radio protocol; it is the language spoken *over* the radio.
-*   **The Problem**: A Zigbee bulb speaks "Zigbee Cluster Library." A Z-Wave bulb speaks "Command Classes." They need a Hub to translate.
-*   **The Fix**: Matter runs over Thread and Wi-Fi. It unifies the command set.
-*   **Smart Lock Benefit**: A Matter-over-Thread lock works with Apple Home, Google Home, and Alexa simultaneously, with **Local Control** (no cloud latency).
+Matter can reduce platform lock-in by giving Apple Home, Google Home, Alexa, SmartThings, and Home Assistant a more common device language. For smart locks, that is useful, but it does not guarantee that every advanced feature appears in every app. Guest codes, logs, schedules, Home Key style features, and battery details may still vary by model and ecosystem.
 
----
+The key question is whether the lock is Matter over Thread or Matter over Wi-Fi. Thread usually fits low-power battery devices better. Wi-Fi may be simpler for buyers who already have strong coverage, but it carries the same battery and signal concerns as other Wi-Fi locks.
 
 ## Which Should You Choose?
 
-*   **Concrete Walls / Large Home**: **Z-Wave 800**. The 900MHz physics wins every time.
-*   **Apple Ecosystem**: **Thread**. Apple HomeKit is built on Thread. It is fast, IP-based, and seamless.
-*   **Rental/Airbnb**: **Wi-Fi**. No Hub required. Simplicity for the owner is key.
-*   **Tech Enthusiast**: **Zigbee2MQTT**. Cheap sensors ($10), massive compatibility, open control.
+Choose Z-Wave when the building is difficult, the door count is growing, and a mature hub workflow is acceptable. Choose Zigbee when you already maintain a strong Zigbee mesh and the lock model is well supported. Choose Thread when Matter interoperability and low-power mesh behavior are both priorities. Choose Wi-Fi when one-door simplicity matters more than battery optimization. Choose Bluetooth LE when local phone access is the main use case and remote management is secondary.
 
-## Related Tools
-*   **[Protocol Selection Wizard](/calculators/protocol-wizard)**: An interactive quiz to pick the best one for you.
-*   **[Mesh Topology Guide](/articles/resources/mesh-topology-guide)**: Visualizing the hops and repeater placement.
-
-## Frequently Asked Questions
-
-### Is Z-Wave dead?
-No. Z-Wave still dominates the professional security market (Alarm.com/Ring) because sub-GHz is more reliable for critical sensors than 2.4GHz. It will coexist with Matter.
-
-### Can Thread devices talk to Zigbee?
-Not directly. They use the same radio hardware (802.15.4) but different software languages. You need a Hub that supports both (like a specialized border router).
-
-### Does Wi-Fi 6 improve smart locks?
-Yes. Wi-Fi 6 introduces **TWT (Target Wake Time)**. It allows the router to tell the lock "Go to sleep for exactly 4 hours, then wake up." This could potentially double Wi-Fi lock battery life in the future.
-
-## 2026 Planning Notes
-
-Published range, battery, and interoperability numbers are planning inputs only. Walls, radio congestion, border routers, and firmware policy still change the field result materially.
-
-Confirm the exact radio path and controller role before you buy: Matter support does not guarantee the same lock features across Thread, Wi-Fi, HomeKit, Alexa, Google Home, or SmartThings.
-
-## How to Use This Reference
-
-1. Confirm the exact door type, lock family, controller path, and operating environment you are designing for.
-2. Eliminate options that fail the mechanical, compliance, offline-access, or lifecycle-cost requirements that matter most for this deployment.
-3. Validate the final choice against the current manufacturer documentation and a test on the real door whenever the consequence of failure is high.
+Do not choose from protocol names alone. Confirm the exact lock, hub, app, feature set, credential workflow, and door location. The right protocol is the one that preserves access after the first month, not the one with the most impressive specification line.

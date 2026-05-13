@@ -12,6 +12,7 @@ import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
 import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
+import { calculatorEvidenceLastVerified, calculatorEvidenceReviewCadence } from '@/lib/seo/evidence'
 
 export const metadata: Metadata = buildSeoMetadata({
     title: 'Airbnb Smart Lock ROI Calculator | Short-Term Rental Investment Analysis',
@@ -21,6 +22,9 @@ export const metadata: Metadata = buildSeoMetadata({
 })
 
 export default function STRROIPage() {
+  const evidenceLastVerified = calculatorEvidenceLastVerified
+  const evidenceReviewCadence = calculatorEvidenceReviewCadence
+
   const faqs = [
     {
       question: 'Do smart locks pay for themselves on Airbnb?',
@@ -368,7 +372,7 @@ export default function STRROIPage() {
             <div className="info-box">
               <div className="flex items-center justify-between mb-6">
                 <h3 style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--color-text-primary)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><BookOpen className="w-6 h-6" style={{ color: "var(--color-accent)" }} /> STR Industry Data Sources</h3>
-                <span className="badge badge-success">Verified Feb 2026</span>
+                <span className="badge badge-success">Verified {evidenceLastVerified}</span>
               </div>
               <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-lg)" }}>All cost and savings data derived from 2026 short-term rental industry benchmarks, operational studies, and authoritative market research</p>
 
@@ -424,7 +428,9 @@ export default function STRROIPage() {
                 </p>
               </div>
               <div className="mt-4 text-center">
-                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Calculator last updated: February 15, 2026 | Next review: August 2026</p>
+                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", lineHeight: 1.5 }}>
+                  Last verified: {evidenceLastVerified} | Review cadence: {evidenceReviewCadence}
+                </p>
               </div>
             </div>
           </div>

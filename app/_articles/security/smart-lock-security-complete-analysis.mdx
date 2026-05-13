@@ -30,6 +30,14 @@ A well-installed smart lock from a reputable manufacturer can add protections th
 
 Use the [Security Scorecard](/calculators/offline-resilience) if you want a structured assessment. This guide explains the practical threat model so you can separate serious risks from dramatic but unlikely hacking stories.
 
+## Methodology And Scope
+
+This analysis reviews smart lock risk across five surfaces: physical entry, PIN and credential handling, wireless protocol security, vendor app or cloud account exposure, and operational recovery. The protocol review focuses on current lock-relevant security models such as Z-Wave S2 access-control classes, Zigbee 3.0 install-code and trust-center behavior, Thread and Matter commissioning, Bluetooth LE pairing, and Wi-Fi cloud-account dependency.
+
+The vulnerability review is category-based rather than a maintained live database. We use public CVE patterns, vendor advisories, protocol documentation, and recurring field failure modes to identify the kinds of weaknesses buyers should check before deployment. Do not treat this page as a guarantee that one named model is vulnerability-free; use it as a threat-model checklist before reading a product manual, firmware changelog, and vendor support policy.
+
+The practical scoring bias is intentional: common failures such as reused PINs, unremoved users, weak doors, dead batteries, and cloud account recovery gaps are weighted more heavily than rare remote attacks that require unusual proximity, equipment, or implementation defects.
+
 ## Smart Lock Security In Plain Terms
 
 Most smart lock incidents are not movie-style remote hacks. The common problems are simpler: reused codes, shared master PINs, dead batteries, failed code removal, bad installation, weak account security, and guests or tenants keeping access longer than intended.
@@ -104,3 +112,19 @@ Use this checklist before relying on a smart lock for an exterior door, rental, 
 A modern smart lock can be safer than a basic mechanical lock when it is installed correctly and managed well. It gives you unique credentials, revocation, logs, alerts, and automation that a traditional key cannot provide. It can also be worse than a good deadbolt if the door is weak, the code policy is sloppy, or the vendor account is neglected.
 
 For most buyers, the best answer is not "avoid smart locks." It is "buy a reputable lock, harden the door, use unique codes, keep a backup path, and treat access management as part of security." That is the difference between a smart lock as a useful control and a smart lock as another unmanaged gadget.
+
+## Evidence Status And Change Log
+
+Last verified: 2026-05-13.
+
+Current evidence status:
+
+- Protocol claims are limited to the security properties normally associated with the protocol family; individual products can still implement pairing, cloud access, firmware updates, or logging poorly.
+- Vulnerability discussion is based on public advisory patterns and security-category review, not a live exploit feed.
+- Operational guidance is based on repeated failure modes visible across residential, rental, and commercial smart lock deployments.
+- Product-specific security conclusions should be checked against the vendor's latest firmware notes, certification claims, and support lifecycle before purchase.
+
+Change log:
+
+- 2026-05-13: Added methodology, scope limits, evidence status, and change-log disclosure so the article does not overclaim unmaintained vulnerability coverage.
+- 2026-05-09: Updated article body and internal links for the current SLockHub article taxonomy.

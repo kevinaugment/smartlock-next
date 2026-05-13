@@ -69,23 +69,23 @@ Expected: all pass.
 - Modify: `app/_articles/security/smart-lock-security-complete-analysis.mdx`
 - Test: `tests/evidence-panels.test.ts`
 
-- [ ] **Step 1: Define an evidence schema**
+- [x] **Step 1: Define an evidence schema**
 
 Create a small typed registry with `lastVerified`, `modelLimit`, `sourceNotes`, and `reviewCadence`.
 
-- [ ] **Step 2: Render a standard evidence panel**
+- [x] **Step 2: Render a standard evidence panel**
 
 Add a reusable component that displays formula notes, data-source classes, and freshness dates. Avoid fake claims; label sources as datasheet-derived, vendor-stated, or field-observed.
 
-- [ ] **Step 3: Add evidence panels to priority calculators**
+- [x] **Step 3: Add evidence panels to priority calculators**
 
 Start with battery life, signal strength, installation cost, lock TCO, and compatibility. Each page must disclose formula assumptions and practical limits.
 
-- [ ] **Step 4: Turn the security article into a citable asset**
+- [x] **Step 4: Turn the security article into a citable asset**
 
 Add a CVE methodology section, test scope, reviewed attack surfaces, and a change log. Do not invent a full CVE table until there is a maintained source file.
 
-- [ ] **Step 5: Verify evidence coverage**
+- [x] **Step 5: Verify evidence coverage**
 
 Add a test that priority calculators include `EvidencePanel` and a last-verified date.
 
@@ -159,8 +159,8 @@ Compare GSC after 28 days and 90 days. Track calculator entrances, article-to-to
 
 ## Verification Gate for Every Batch
 
-- [ ] Run targeted tests for edited modules.
-- [ ] Run `./node_modules/.bin/tsx tests/seo-content-consistency.test.ts` when touching SEO/content structure.
-- [ ] Run `npm run build` before release if the batch changes runtime page code.
+- [x] Run targeted tests for edited modules.
+- [x] Run `./node_modules/.bin/tsx tests/seo-content-consistency.test.ts` when touching SEO/content structure.
+- [x] Run `npm run build` before release if the batch changes runtime page code.
 - [ ] Run `gitnexus detect-changes --repo smartlock-next` before committing.
 - [ ] Keep commits small and batch-scoped.

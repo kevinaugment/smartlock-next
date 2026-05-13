@@ -9,6 +9,7 @@ import { SeoPathways } from '@/components/seo/SeoPathways'
 import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
 import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
+import { calculatorEvidenceLastVerified, calculatorEvidenceReviewCadence } from '@/lib/seo/evidence'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Protocol Wizard | Zigbee vs Z-Wave vs Wi-Fi Selector',
@@ -28,6 +29,9 @@ export const metadata: Metadata = {
 }
 
 export default function ProtocolWizardPage() {
+  const evidenceLastVerified = calculatorEvidenceLastVerified
+  const evidenceReviewCadence = calculatorEvidenceReviewCadence
+
   const faqs = [
     {
       question: 'Which smart lock protocol is best?',
@@ -336,7 +340,7 @@ export default function ProtocolWizardPage() {
               </div>
 
               <div className="callout callout-info">
-                <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-sm)" }}><strong>Complete Data Sources (Verified Feb 2026):</strong></p>
+                <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-sm)" }}><strong>Complete Data Sources (Verified {evidenceLastVerified}):</strong></p>
 
                 <div className="space-y-3" style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>
                   <div>
@@ -440,7 +444,7 @@ export default function ProtocolWizardPage() {
             <div className="info-box">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>Technical Standards & Sources</h3>
-                <span className="badge badge-success">Verified Feb 2026</span>
+                <span className="badge badge-success">Verified {evidenceLastVerified}</span>
               </div>
               <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-lg)" }}>All protocol comparisons based on official standards and manufacturer specifications</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -469,7 +473,9 @@ export default function ProtocolWizardPage() {
                 </p>
               </div>
               <div className="mt-4 text-center">
-                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Wizard last updated: February 15, 2026 | Next review: August 2026</p>
+                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", lineHeight: 1.5 }}>
+                  Last verified: {evidenceLastVerified} | Review cadence: {evidenceReviewCadence}
+                </p>
               </div>
             </div>
           </div>

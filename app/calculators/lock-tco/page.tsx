@@ -9,6 +9,8 @@ import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
 import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
+import { EvidencePanel } from '@/components/seo/EvidencePanel'
+import { calculatorEvidenceProfiles } from '@/lib/seo/evidence'
 
 interface TCOInputs {
   lockPrice: number
@@ -92,6 +94,7 @@ function adjustForUsage(dailyUsage: number): number {
 }
 
 export default function TCOCalculator() {
+  const evidenceProfile = calculatorEvidenceProfiles['lock-tco']
   const faqs = [
     {
       question: 'What is included in smart lock TCO?',
@@ -672,6 +675,10 @@ export default function TCOCalculator() {
         </div>
 
         <ToolRating toolSlug="lock-tco" />
+
+        <div className="max-w-7xl mx-auto">
+          <EvidencePanel profile={evidenceProfile} />
+        </div>
 
         <div className="max-w-7xl mx-auto">
           <ReportLeadCapture

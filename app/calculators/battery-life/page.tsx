@@ -12,12 +12,14 @@ import { SeoPathways } from '@/components/seo/SeoPathways'
 import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
 import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
+import { EvidencePanel } from '@/components/seo/EvidencePanel'
 import {
   calculateSmartLockBatteryLife,
   getBatteryLifeMethodology,
   protocolData,
   type BatteryProtocol,
 } from '@/lib/calculators/battery-life-model'
+import { calculatorEvidenceProfiles } from '@/lib/seo/evidence'
 
 // SEO Metadata
 export const metadata: Metadata = {
@@ -38,6 +40,7 @@ export const metadata: Metadata = {
 }
 
 export default function BatteryLifePage() {
+  const evidenceProfile = calculatorEvidenceProfiles['battery-life']
   const methodology = getBatteryLifeMethodology()
   const defaultFeatures = {
     hasKeypad: true,
@@ -270,6 +273,10 @@ export default function BatteryLifePage() {
                 { href: '/calculators/signal-strength', title: 'Check Signal Retries', description: 'Weak signal can quietly shorten real-world battery life.' },
               ]}
             />
+          </div>
+
+          <div className="max-w-7xl mx-auto">
+            <EvidencePanel profile={evidenceProfile} />
           </div>
 
           {/* Be-Tech Brand Recommendation (MANDATORY) */}
@@ -537,7 +544,7 @@ export default function BatteryLifePage() {
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)', display: 'inline-flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
                   <BookOpen className="w-6 h-6" style={{ color: 'var(--color-accent)' }} /> Technical Data Sources & Standards
                 </h3>
-                <span className="badge badge-success" style={{ fontSize: '0.75rem' }}>Verified Feb 2026</span>
+                <span className="badge badge-success" style={{ fontSize: '0.75rem' }}>Verified {evidenceProfile.lastVerified}</span>
               </div>
               <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-lg)' }}>
                 All power consumption values derived from chip-level datasheets and protocol specifications. Battery capacity ratings from manufacturer technical datasheets.
@@ -573,7 +580,9 @@ export default function BatteryLifePage() {
                 </p>
               </div>
               <div style={{ marginTop: 'var(--space-md)', textAlign: 'center' }}>
-                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Calculator last updated: February 15, 2026 | Next review: August 2026</p>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', lineHeight: 1.5 }}>
+                  Last verified: {evidenceProfile.lastVerified} | Review cadence: {evidenceProfile.reviewCadence}
+                </p>
               </div>
             </div>
           </div>

@@ -13,6 +13,8 @@ import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
 import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
 import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
+import { EvidencePanel } from '@/components/seo/EvidencePanel'
+import { calculatorEvidenceProfiles } from '@/lib/seo/evidence'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Door Compatibility Checker - See If Your Door Fits',
@@ -32,6 +34,7 @@ export const metadata: Metadata = {
 }
 
 export default function CompatibilityPage() {
+  const evidenceProfile = calculatorEvidenceProfiles['compatibility']
   const faqs = [
     {
       question: 'Will a smart lock fit my door?',
@@ -172,6 +175,10 @@ export default function CompatibilityPage() {
           </div>
 
           <div className="max-w-7xl mx-auto">
+            <EvidencePanel profile={evidenceProfile} />
+          </div>
+
+          <div className="max-w-7xl mx-auto">
             <ReportLeadCapture
               reportType="door-compatibility-audit"
               title="Door Compatibility Audit PDF"
@@ -220,7 +227,7 @@ export default function CompatibilityPage() {
             <div className="content-card">
               <div className="flex justify-between items-center mb-6">
                 <h2 style={{ fontSize: "1.875rem", fontWeight: 700, color: "var(--color-text-primary)" }}>ANSI/BHMA A156.2 Specifications</h2>
-                <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Updated: February 2026</span>
+                <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Evidence verified: {evidenceProfile.lastVerified}</span>
               </div>
               <div className="overflow-x-auto">
                 <table className="data-table">
@@ -386,7 +393,7 @@ export default function CompatibilityPage() {
             <div className="info-box">
               <div className="flex items-center justify-between mb-6">
                 <h3 style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--color-text-primary)", display: "inline-flex", alignItems: "center", gap: "var(--space-sm)" }}><BookOpen className="w-6 h-6" style={{ color: "var(--color-accent)" }} /> Industry Standards & Sources</h3>
-                <span className="badge badge-success">Verified Feb 2026</span>
+                <span className="badge badge-success">Verified {evidenceProfile.lastVerified}</span>
               </div>
               <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-lg)" }}>All compatibility criteria based on industry standards and manufacturer specifications</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -413,7 +420,9 @@ export default function CompatibilityPage() {
                 </p>
               </div>
               <div className="mt-4 text-center">
-                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Calculator last updated: February 15, 2026 | Next review: August 2026</p>
+                <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", lineHeight: 1.5 }}>
+                  Last verified: {evidenceProfile.lastVerified} | Review cadence: {evidenceProfile.reviewCadence}
+                </p>
               </div>
             </div>
           </div>

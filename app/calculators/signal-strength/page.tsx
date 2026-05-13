@@ -12,6 +12,8 @@ import { SeoPathways } from '@/components/seo/SeoPathways'
 import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
 import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
+import { EvidencePanel } from '@/components/seo/EvidencePanel'
+import { calculatorEvidenceProfiles } from '@/lib/seo/evidence'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Signal Strength Calculator - Check Wi-Fi, Z-Wave & BLE Range',
@@ -31,6 +33,7 @@ export const metadata: Metadata = {
 }
 
 export default function SignalStrengthPage() {
+  const evidenceProfile = calculatorEvidenceProfiles['signal-strength']
   const faqs = [
     {
       question: 'What RSSI is good for a smart lock?',
@@ -201,6 +204,10 @@ export default function SignalStrengthPage() {
             />
           </div>
 
+          <div className="max-w-7xl mx-auto">
+            <EvidencePanel profile={evidenceProfile} />
+          </div>
+
           {/* Be-Tech Brand Recommendation */}
           <div className="max-w-7xl mx-auto" style={{ marginTop: 'var(--space-xl)' }}>
             <div className="content-card">
@@ -259,7 +266,7 @@ export default function SignalStrengthPage() {
             <div className="content-card">
               <div className="flex justify-between items-center" style={{ marginBottom: 'var(--space-lg)' }}>
                 <h2 className="section-title" style={{ marginBottom: 0 }}>Material Attenuation Database</h2>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Updated: February 2026</span>
+                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Evidence verified: {evidenceProfile.lastVerified}</span>
               </div>
               <div className="overflow-x-auto">
                 <table className="data-table">
@@ -351,7 +358,7 @@ export default function SignalStrengthPage() {
             <div className="content-card">
               <div className="flex justify-between items-center" style={{ marginBottom: 'var(--space-lg)' }}>
                 <h2 className="section-title" style={{ marginBottom: 0 }}>Protocol RF Specifications</h2>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Updated: February 2026</span>
+                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Evidence verified: {evidenceProfile.lastVerified}</span>
               </div>
               <div className="overflow-x-auto">
                 <table className="data-table">
@@ -547,11 +554,11 @@ export default function SignalStrengthPage() {
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-primary)', display: 'inline-flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
                   <BookOpen className="w-6 h-6" style={{ color: 'var(--color-accent)' }} /> Authoritative Data Sources & Standards
                 </h3>
-                <span className="badge badge-success" style={{ fontSize: '0.75rem' }}>Verified Feb 2026</span>
+                <span className="badge badge-success" style={{ fontSize: '0.75rem' }}>Verified {evidenceProfile.lastVerified}</span>
               </div>
 
               <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-lg)', lineHeight: 1.6 }}>
-                All RF calculations, protocol specifications, and material attenuation values are derived from internationally recognized standards organizations and industry alliances. Data is current as of February 2026.
+                All RF calculations, protocol specifications, and material attenuation values are derived from internationally recognized standards organizations and industry alliances. Evidence profile last verified on {evidenceProfile.lastVerified}.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -605,7 +612,7 @@ export default function SignalStrengthPage() {
 
               <div style={{ marginTop: 'var(--space-md)', textAlign: 'center' }}>
                 <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
-                  Calculator last updated: February 15, 2026 | Next review: August 2026
+                  Last verified: {evidenceProfile.lastVerified} | Review cadence: {evidenceProfile.reviewCadence}
                 </p>
               </div>
             </div>

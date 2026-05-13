@@ -2,6 +2,7 @@ import type { CalculatorEvidenceProfile, EvidenceSourceType } from '@/lib/seo/ev
 
 const sourceTypeLabels: Record<EvidenceSourceType, string> = {
   'datasheet-derived': 'Datasheet-derived',
+  'vendor-stated': 'Vendor-stated',
   'standards-based': 'Standards-based',
   'market-benchmark': 'Market benchmark',
   'field-observed': 'Field-observed',

@@ -1,4 +1,4 @@
-export type EvidenceSourceType = 'datasheet-derived' | 'standards-based' | 'market-benchmark' | 'field-observed'
+export type EvidenceSourceType = 'datasheet-derived' | 'vendor-stated' | 'standards-based' | 'market-benchmark' | 'field-observed'
 
 export interface EvidenceSourceNote {
   type: EvidenceSourceType
@@ -85,7 +85,7 @@ export const calculatorEvidenceProfiles: Record<PriorityEvidenceCalculatorSlug, 
     reviewCadence: 'Review dimensional assumptions annually and when ANSI/BHMA standards or major manufacturer installation manuals change.',
     sourceNotes: [
       { type: 'standards-based', label: 'Door prep', note: 'Thickness, backset, bore, and latch-bore assumptions follow common ANSI/BHMA bored lock dimensions.' },
-      { type: 'datasheet-derived', label: 'Manufacturer manuals', note: 'Fit guidance references recurring requirements from major residential and commercial smart lock manuals.' },
+      { type: 'vendor-stated', label: 'Manufacturer manuals', note: 'Fit guidance references recurring requirements from major residential and commercial smart lock manuals.' },
       { type: 'field-observed', label: 'Install risk', note: 'Material, fire rating, glass, and strike alignment are treated as risk factors because they often trigger labor or code review.' },
     ],
   },

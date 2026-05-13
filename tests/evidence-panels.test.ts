@@ -17,6 +17,14 @@ const staleEvidencePhrases = [
   'Next review: August 2026',
 ]
 
+const expectedSourceTypes = [
+  'datasheet-derived',
+  'vendor-stated',
+  'standards-based',
+  'market-benchmark',
+  'field-observed',
+]
+
 function main() {
   assert.deepEqual(priorityEvidenceCalculatorSlugs, priorityPages, 'priority evidence slugs must match Batch 2 scope')
 
@@ -27,6 +35,9 @@ function main() {
     assert.ok(profile.modelLimit.length >= 60, `${slug} must disclose a meaningful model limit`)
     assert.equal(profile.sourceNotes.length >= 3, true, `${slug} must list at least 3 source notes`)
     assert.equal(profile.reviewCadence.length >= 20, true, `${slug} must disclose review cadence`)
+    for (const source of profile.sourceNotes) {
+      assert.ok(expectedSourceTypes.includes(source.type), `${slug} uses unsupported evidence source type: ${source.type}`)
+    }
 
     const pagePath = `app/calculators/${slug}/page.tsx`
     const page = readFileSync(pagePath, 'utf8')
@@ -44,6 +55,13 @@ function main() {
     for (const stalePhrase of staleEvidencePhrases) {
       assert.doesNotMatch(page, new RegExp(stalePhrase), `${pagePath} must not retain stale evidence phrase: ${stalePhrase}`)
     }
+  }
+
+  const sourceTypesInUse = new Set(Object.values(calculatorEvidenceProfiles).flatMap((profile) =>
+    profile.sourceNotes.map((source) => source.type)
+  ))
+  for (const sourceType of expectedSourceTypes) {
+    assert.ok(sourceTypesInUse.has(sourceType), `evidence profiles must include source type: ${sourceType}`)
   }
 
   const securityArticle = readFileSync('app/_articles/security/smart-lock-security-complete-analysis.mdx', 'utf8')

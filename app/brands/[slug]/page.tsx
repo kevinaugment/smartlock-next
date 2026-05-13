@@ -5,6 +5,17 @@ import { ExternalLink } from 'lucide-react'
 import StarRating from '@/components/brands/StarRating'
 import { getBrandBySlug } from '@/lib/services/brand-service'
 import { BrandModel, type Brand, type Product } from '@/lib/db/brand-models'
+import {
+    brandFactLastVerified,
+    brandFactReviewCadence,
+    buildProductFactDisplays,
+    getBrandProtocolFacts,
+    getFactDisplay,
+    getProductProtocolFacts,
+    getProtocolFact,
+    getProtocolClaimText,
+    getSupportedProtocolLabels,
+} from '@/lib/brands/fact-policy'
 
 export const dynamic = 'force-dynamic'
 export const dynamicParams = true
@@ -15,8 +26,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const brand = await BrandModel.getBySlug(slug)
     if (!brand) return { title: 'Brand Not Found' }
 
-    const protocols = getProtocols(brand)
-    const protocolText = protocols.length > 0 ? protocols.join(', ') : 'Wi-Fi, Matter, Z-Wave, Zigbee, Thread, and Bluetooth'
+    const protocolFacts = getBrandProtocolFacts(brand)
+    const protocolText = getProtocolClaimText(protocolFacts)
     const title = brand.meta_title || `${brand.name} Smart Locks | Protocols, Products & Use Cases`
     const description = brand.meta_description || `Compare ${brand.name} smart locks by protocol support, product depth, price tier, door fit, battery expectations, and best use case. Protocols: ${protocolText}.`
     const canonical = `/brands/${slug}`
@@ -49,36 +60,6 @@ export async function generateStaticParams() {
     }
 }
 
-function getProtocols(brand: { supports_wifi: boolean; supports_zigbee: boolean; supports_zwave: boolean; supports_thread: boolean; supports_matter: boolean; supports_bluetooth: boolean }) {
-    const protocols: string[] = []
-    if (brand.supports_wifi) protocols.push('Wi-Fi')
-    if (brand.supports_zigbee) protocols.push('Zigbee')
-    if (brand.supports_zwave) protocols.push('Z-Wave')
-    if (brand.supports_thread) protocols.push('Thread')
-    if (brand.supports_matter) protocols.push('Matter')
-    if (brand.supports_bluetooth) protocols.push('Bluetooth')
-    return protocols
-}
-
-const PROTOCOL_MATRIX = [
-    { label: 'Wi-Fi', slug: 'wifi', field: 'supports_wifi', match: ['wifi', 'wi-fi'] },
-    { label: 'Zigbee', slug: 'zigbee', field: 'supports_zigbee', match: ['zigbee'] },
-    { label: 'Z-Wave', slug: 'z-wave', field: 'supports_zwave', match: ['zwave', 'z-wave'] },
-    { label: 'Thread', slug: 'thread', field: 'supports_thread', match: ['thread'] },
-    { label: 'Matter', slug: 'matter', field: 'supports_matter', match: ['matter'] },
-    { label: 'Bluetooth', slug: 'bluetooth', field: 'supports_bluetooth', match: ['bluetooth', 'ble'] },
-] as const
-
-function normalizeProtocol(value: string | undefined): string {
-    return (value || '').toLowerCase().replace(/\s+/g, '-')
-}
-
-function productMatchesProtocol(product: Product, matches: readonly string[]): boolean {
-    const primary = normalizeProtocol(product.protocol)
-    const secondary = normalizeProtocol(product.secondary_protocol)
-    return matches.some(match => primary.includes(match) || secondary.includes(match)) || (matches.includes('matter') && product.supports_matter)
-}
-
 function getTopProducts(products: Product[]): Product[] {
     return [...products].sort((a, b) => {
         if (b.rating !== a.rating) return b.rating - a.rating
@@ -107,10 +88,10 @@ function getAvgBattery(products: Product[]): string {
 }
 
 function getBrandVerdict(brand: Brand, products: Product[], protocols: string[]): string {
-    const matterCount = products.filter(product => product.supports_matter).length
+    const matterCount = products.filter(product => getProtocolFact(getProductProtocolFacts(product), 'Matter')?.supported).length
     const fingerprintCount = products.filter(product => product.has_fingerprint).length
     const remoteCount = products.filter(product => product.has_remote_access || product.has_guest_codes).length
-    const protocolText = protocols.length > 0 ? protocols.join(', ') : 'core smart-lock protocols'
+    const protocolText = protocols.length > 0 ? protocols.join(', ') : 'protocol support that needs verification'
 
     if (brand.target_market?.toLowerCase().includes('commercial') || remoteCount >= Math.max(2, products.length / 2)) {
         return `${brand.name} is strongest as a managed-access shortlist: ${products.length} active model${products.length === 1 ? '' : 's'}, ${remoteCount} with remote or guest-code workflows, and protocol coverage across ${protocolText}.`
@@ -126,6 +107,8 @@ function getBrandVerdict(brand: Brand, products: Product[], protocols: string[])
 
 function getUseCaseFit(brand: Brand, products: Product[], protocols: string[]) {
     const lowerMarket = brand.target_market?.toLowerCase() || ''
+    const productsWithMatter = products.filter(product => getProtocolFact(getProductProtocolFacts(product), 'Matter')?.supported)
+    const productsWithAnsiOrUl = products.filter(product => getFactDisplay(buildProductFactDisplays(product), 'ANSI grade')?.status === 'Catalog field' || product.ul_listed)
     return [
         {
             label: 'Homeowners',
@@ -139,13 +122,13 @@ function getUseCaseFit(brand: Brand, products: Product[], protocols: string[]) {
         },
         {
             label: 'Commercial doors',
-            verdict: lowerMarket.includes('commercial') || products.some(product => product.ansi_grade === '1' || product.ul_listed) ? 'Shortlist-worthy' : 'Secondary fit',
-            detail: `${products.filter(product => product.ansi_grade || product.ul_listed).length} model${products.filter(product => product.ansi_grade || product.ul_listed).length === 1 ? '' : 's'} include ANSI or UL evidence.`,
+            verdict: lowerMarket.includes('commercial') || productsWithAnsiOrUl.some(product => product.ansi_grade === '1' || product.ul_listed) ? 'Shortlist-worthy' : 'Secondary fit',
+            detail: `${productsWithAnsiOrUl.length} model${productsWithAnsiOrUl.length === 1 ? '' : 's'} include ANSI or UL evidence.`,
         },
         {
             label: 'Matter-first homes',
-            verdict: products.some(product => product.supports_matter) ? 'Supported' : 'Limited support',
-            detail: products.some(product => product.supports_matter) ? `${products.filter(product => product.supports_matter).length} Matter-capable model${products.filter(product => product.supports_matter).length === 1 ? '' : 's'} are available.` : 'Choose a Matter-first brand or compare against Yale, Aqara, or Level before buying.',
+            verdict: productsWithMatter.length > 0 ? 'Supported' : 'Needs verification',
+            detail: productsWithMatter.length > 0 ? `${productsWithMatter.length} Matter-capable model${productsWithMatter.length === 1 ? '' : 's'} are available.` : 'Matter support is not listed as true for current catalog models; verify vendor specs or compare against Yale, Aqara, or Level before buying.',
         },
     ]
 }
@@ -162,10 +145,10 @@ function getCompareLinks(brandSlug: string, brandName: string) {
 
 function getBestLinks(products: Product[]) {
     const links: Array<{ href: string; label: string }> = []
-    if (products.some(product => product.supports_matter)) links.push({ href: '/best/matter-smart-locks', label: 'Best Matter smart locks' })
-    if (products.some(product => productMatchesProtocol(product, ['z-wave', 'zwave']))) links.push({ href: '/best/z-wave-smart-locks', label: 'Best Z-Wave smart locks' })
-    if (products.some(product => productMatchesProtocol(product, ['zigbee']))) links.push({ href: '/best/zigbee-smart-locks', label: 'Best Zigbee smart locks' })
-    if (products.some(product => productMatchesProtocol(product, ['wifi', 'wi-fi']))) links.push({ href: '/best/wifi-smart-locks', label: 'Best Wi-Fi smart locks' })
+    if (products.some(product => getProductProtocolFacts(product).some(fact => fact.label === 'Matter' && fact.supported))) links.push({ href: '/best/matter-smart-locks', label: 'Best Matter smart locks' })
+    if (products.some(product => getProductProtocolFacts(product).some(fact => fact.label === 'Z-Wave' && fact.supported))) links.push({ href: '/best/z-wave-smart-locks', label: 'Best Z-Wave smart locks' })
+    if (products.some(product => getProductProtocolFacts(product).some(fact => fact.label === 'Zigbee' && fact.supported))) links.push({ href: '/best/zigbee-smart-locks', label: 'Best Zigbee smart locks' })
+    if (products.some(product => getProductProtocolFacts(product).some(fact => fact.label === 'Wi-Fi' && fact.supported))) links.push({ href: '/best/wifi-smart-locks', label: 'Best Wi-Fi smart locks' })
     if (links.length === 0) links.push({ href: '/best/smart-locks-2026', label: 'Best smart locks 2026' })
     return links.slice(0, 3)
 }
@@ -177,7 +160,8 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
     const brand = await getBrandBySlug(slug)
     if (!brand) notFound()
 
-    const protocols = getProtocols(brand)
+    const protocolFacts = getBrandProtocolFacts(brand)
+    const protocols = getSupportedProtocolLabels(protocolFacts)
 
     const allProducts = brand.series.flatMap(s => s.products)
     const topProducts = getTopProducts(allProducts)
@@ -262,8 +246,10 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                             </p>
 
                             <div className="flex flex-wrap gap-2" style={{ marginBottom: 'var(--space-md)' }}>
-                                {protocols.map(p => (
-                                    <span key={p} className="badge badge-accent">{p}</span>
+                                {protocolFacts.map(fact => (
+                                    <span key={fact.label} className={fact.supported ? 'badge badge-accent' : 'badge badge-default'}>
+                                        {fact.label}: {fact.supported ? fact.status : 'Unknown'}
+                                    </span>
                                 ))}
                                 <span className="badge badge-default" style={{ textTransform: 'capitalize' }}>{brand.price_tier}</span>
                                 <span className="badge badge-default" style={{ textTransform: 'capitalize' }}>{brand.target_market}</span>
@@ -310,14 +296,13 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                                 </tr>
                             </thead>
                             <tbody>
-                                {PROTOCOL_MATRIX.map(item => {
-                                    const supported = Boolean(brand[item.field as keyof typeof brand])
-                                    const count = allProducts.filter(product => productMatchesProtocol(product, item.match)).length
+                                {protocolFacts.map(item => {
+                                    const count = allProducts.filter(product => getProductProtocolFacts(product).some(fact => fact.label === item.label && fact.supported)).length
                                     return (
                                         <tr key={item.label}>
                                             <td className="font-medium text-color-primary">{item.label}</td>
-                                            <td>{supported ? 'Supported' : 'Not listed'}</td>
-                                            <td>{count > 0 ? `${count} matching model${count === 1 ? '' : 's'}` : 'No matching product field yet'}</td>
+                                            <td>{item.supported ? item.status : 'Unknown'}</td>
+                                            <td>{count > 0 ? `${count} matching model${count === 1 ? '' : 's'}` : item.caveat}</td>
                                             <td>
                                                 <Link href={`/protocols/${item.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 600 }} prefetch={false}>
                                                     View {item.label} guide
@@ -331,11 +316,29 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                     </div>
                 </section>
 
+                <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+                    <h2 className="section-title">Brand Fact Evidence</h2>
+                    <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-md)' }}>
+                        Last verified: {brandFactLastVerified}. {brandFactReviewCadence}
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <SummaryStat label="Protocol source" value="Vendor stated" detail="Brand-level protocol flags are treated as vendor-stated until confirmed on a specific model." />
+                        <SummaryStat label="Missing facts" value="Unknown" detail="Unlisted protocol, warranty, battery, and certification fields are not inferred from brand reputation." />
+                        <SummaryStat label="Model check" value="Required" detail="Use product-level fact labels before making Matter, Thread, Wi-Fi, Z-Wave, ANSI, or battery claims." />
+                    </div>
+                </section>
+
                 {topProducts.length > 0 && (
                     <section style={{ marginBottom: 'var(--space-3xl)' }}>
                         <h2 className="section-title">Best {brand.name} Models to Compare First</h2>
                         <div className="grid md:grid-cols-3 gap-4">
                             {topProducts.map(product => (
+                                (() => {
+                                    const facts = buildProductFactDisplays(product)
+                                    const batteryFact = getFactDisplay(facts, 'Battery')
+                                    const ansiFact = getFactDisplay(facts, 'ANSI grade')
+                                    const protocolFactText = getProtocolClaimText(getProductProtocolFacts(product))
+                                    return (
                                 <Link
                                     key={product.slug}
                                     href={`/brands/${brand.slug}/${product.slug}`}
@@ -343,12 +346,14 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                                  prefetch={false}>
                                     <h3 className="link-card__title">{product.name}</h3>
                                     <p className="link-card__desc">
-                                        {product.protocol.toUpperCase()}{product.supports_matter ? ' · Matter' : ''}{product.battery_life_months ? ` · ${product.battery_life_months} mo battery` : ''}{product.ansi_grade ? ` · Grade ${product.ansi_grade}` : ''}
+                                        {protocolFactText} · {batteryFact?.value} battery · {ansiFact?.value} security
                                     </p>
                                     <div style={{ marginTop: 'var(--space-sm)' }}>
                                         <StarRating productId={product.id} size="sm" showCount={false} />
                                     </div>
                                 </Link>
+                                    )
+                                })()
                             ))}
                         </div>
                     </section>
@@ -405,6 +410,12 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
 
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {series.products.map(product => (
+                                (() => {
+                                    const facts = buildProductFactDisplays(product)
+                                    const batteryFact = getFactDisplay(facts, 'Battery')
+                                    const ansiFact = getFactDisplay(facts, 'ANSI grade')
+                                    const protocolText = getProtocolClaimText(getProductProtocolFacts(product))
+                                    return (
                                 <Link
                                     key={product.slug}
                                     href={`/brands/${brand.slug}/${product.slug}`}
@@ -416,10 +427,8 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                                     </h4>
 
                                     <div className="flex flex-wrap gap-1" style={{ marginBottom: 'var(--space-sm)' }}>
-                                        <span className="badge badge-accent" style={{ fontSize: '0.7rem' }}>{product.protocol.toUpperCase()}</span>
-                                        {product.ansi_grade && (
-                                            <span className="badge badge-default" style={{ fontSize: '0.7rem' }}>Grade {product.ansi_grade}</span>
-                                        )}
+                                        <span className="badge badge-accent" style={{ fontSize: '0.7rem' }}>{protocolText}</span>
+                                        <span className="badge badge-default" style={{ fontSize: '0.7rem' }}>{ansiFact?.value}</span>
                                         {product.has_fingerprint && (
                                             <span className="badge badge-default" style={{ fontSize: '0.7rem' }}>Fingerprint</span>
                                         )}
@@ -429,7 +438,7 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                                         <div className="flex justify-between" style={{ marginBottom: '2px' }}>
                                             <span>Battery</span>
                                             <span style={{ fontWeight: 500 }}>
-                                                {product.battery_count}× {product.battery_type} · {product.battery_life_months} mo
+                                                {batteryFact?.value} · {batteryFact?.status}
                                             </span>
                                         </div>
 
@@ -442,6 +451,8 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
                                         <span style={{ fontSize: '0.8rem', color: 'var(--color-accent)', fontWeight: 600 }}>View Details →</span>
                                     </div>
                                 </Link>
+                                    )
+                                })()
                             ))}
                         </div>
                     </div>

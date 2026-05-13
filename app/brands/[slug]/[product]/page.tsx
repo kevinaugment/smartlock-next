@@ -8,6 +8,15 @@ import type { ProductDetail } from '@/lib/services/brand-service'
 import { ProductModel, ProductSeriesModel, type ProductWithBrand } from '@/lib/db/brand-models'
 import { SeoPathways } from '@/components/seo/SeoPathways'
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
+import {
+    brandFactLastVerified,
+    brandFactReviewCadence,
+    buildProductFactDisplays,
+    getFactDisplay,
+    getProductProtocolFacts,
+    getProtocolFact,
+    getProtocolClaimText,
+} from '@/lib/brands/fact-policy'
 
 export const dynamic = 'force-dynamic'
 export const dynamicParams = true
@@ -104,17 +113,22 @@ function getBatteryCostVerdict(product: ProductDetail): string {
 
 function getQuickVerdict(product: ProductDetail): string {
     const strengths: string[] = []
-    strengths.push(product.protocol.toUpperCase())
-    if (product.supports_matter) strengths.push('Matter-ready')
+    const protocolFacts = getProductProtocolFacts(product)
+    const matterFact = getProtocolFact(protocolFacts, 'Matter')
+    const productFacts = buildProductFactDisplays(product)
+    const ansiFact = getFactDisplay(productFacts, 'ANSI grade')
+    strengths.push(getProtocolClaimText(protocolFacts))
+    if (matterFact?.supported) strengths.push('Matter-ready')
     if (product.has_fingerprint) strengths.push('fingerprint access')
     if (product.has_keypad) strengths.push('keypad access')
-    if (product.ansi_grade) strengths.push(`ANSI Grade ${product.ansi_grade}`)
+    if (ansiFact?.status === 'Catalog field') strengths.push(ansiFact.value)
     return `${product.name} is a ${getPriceTier(product.price_usd)} ${product.brand_name} lock positioned around ${strengths.slice(0, 3).join(', ') || 'core smart-lock basics'}.`
 }
 
 function getSkipIfVerdict(product: ProductDetail): string {
     const reasons: string[] = []
-    if (!product.supports_matter) reasons.push('Matter support is mandatory')
+    const matterFact = getProtocolFact(getProductProtocolFacts(product), 'Matter')
+    if (!matterFact?.supported) reasons.push('you need vendor-confirmed Matter support')
     if (!product.has_fingerprint) reasons.push('fingerprint access is required')
     if (!product.has_remote_access) reasons.push('remote access is a must-have')
     if (!product.door_thickness_min_mm && !product.bore_diameter_mm) reasons.push('you need fully listed door-fit specs before shortlisting')
@@ -123,14 +137,14 @@ function getSkipIfVerdict(product: ProductDetail): string {
 }
 
 function getProtocolReliabilityVerdict(product: ProductDetail): string {
-    const protocol = product.protocol.toUpperCase()
+    const protocol = getProtocolClaimText(getProductProtocolFacts(product))
     if (product.rf_range_meters) {
         return `${protocol} model with listed RF range of ${product.rf_range_meters}m${product.rf_frequency ? ` at ${product.rf_frequency}` : ''}.`
     }
     if (product.secondary_protocol) {
         return `${protocol} primary connectivity with ${product.secondary_protocol.toUpperCase()} as a secondary protocol.`
     }
-    if (product.supports_matter) {
+    if (getProtocolFact(getProductProtocolFacts(product), 'Matter')?.supported) {
         return `${protocol} connectivity with Matter support for stronger ecosystem portability.`
     }
     return `${protocol} connectivity; verify hub, bridge, and range requirements for your installation.`
@@ -149,17 +163,19 @@ function getCredentialCapacityVerdict(product: ProductDetail): string {
 
 function getBestPageLinks(product: ProductDetail): Array<{ href: string; label: string }> {
     const links: Array<{ href: string; label: string }> = []
-    if (product.supports_matter) links.push({ href: '/best/matter-smart-locks', label: 'Best Matter Smart Locks' })
-    if (product.protocol.toLowerCase().includes('z-wave') || product.protocol.toLowerCase().includes('zwave')) links.push({ href: '/best/z-wave-smart-locks', label: 'Best Z-Wave Smart Locks' })
-    if (product.protocol.toLowerCase().includes('zigbee')) links.push({ href: '/best/zigbee-smart-locks', label: 'Best Zigbee Smart Locks' })
-    if (product.protocol.toLowerCase().includes('wifi') || product.protocol.toLowerCase().includes('wi-fi')) links.push({ href: '/best/wifi-smart-locks', label: 'Best Wi-Fi Smart Locks' })
+    const protocolFacts = getProductProtocolFacts(product)
+    if (getProtocolFact(protocolFacts, 'Matter')?.supported) links.push({ href: '/best/matter-smart-locks', label: 'Best Matter Smart Locks' })
+    if (getProtocolFact(protocolFacts, 'Z-Wave')?.supported) links.push({ href: '/best/z-wave-smart-locks', label: 'Best Z-Wave Smart Locks' })
+    if (getProtocolFact(protocolFacts, 'Zigbee')?.supported) links.push({ href: '/best/zigbee-smart-locks', label: 'Best Zigbee Smart Locks' })
+    if (getProtocolFact(protocolFacts, 'Wi-Fi')?.supported) links.push({ href: '/best/wifi-smart-locks', label: 'Best Wi-Fi Smart Locks' })
     if (product.has_fingerprint) links.push({ href: '/best/fingerprint-smart-locks', label: 'Best Fingerprint Smart Locks' })
     if (product.battery_life_months && product.battery_life_months >= 12) links.push({ href: '/best/smart-locks-with-longest-battery-life', label: 'Longest Battery Life Smart Locks' })
     return links.slice(0, 3)
 }
 
 function getProtocolHref(product: ProductDetail): string {
-    const protocol = product.protocol.toLowerCase().replace(/\s+/g, '-').replace('zwave', 'z-wave').replace('wi-fi', 'wifi')
+    const primaryProtocol = getProductProtocolFacts(product).find(fact => fact.supported)
+    const protocol = primaryProtocol?.slug || product.protocol.toLowerCase().replace(/\s+/g, '-').replace('zwave', 'z-wave').replace('wi-fi', 'wifi')
     return `/protocols/${protocol}`
 }
 
@@ -194,6 +210,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     if (!product || product.brand_slug !== brandSlug) notFound()
 
     const ecosystems = product.ecosystems
+    const productFactDisplays = buildProductFactDisplays(product)
+    const productProtocolFacts = getProductProtocolFacts(product)
+    const batteryFact = getFactDisplay(productFactDisplays, 'Battery')
+    const ansiFact = getFactDisplay(productFactDisplays, 'ANSI grade')
+    const matterFact = getProtocolFact(productProtocolFacts, 'Matter')
+    const protocolFactText = getProtocolClaimText(productProtocolFacts)
     const siblingProducts = getSiblingProducts(
         allProducts.filter(item => item.brand_slug === product.brand_slug),
         product.slug
@@ -204,9 +226,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     const additionalProperty = [
         { name: 'Primary protocol', value: product.protocol.toUpperCase() },
         ...(product.secondary_protocol ? [{ name: 'Secondary protocol', value: product.secondary_protocol.toUpperCase() }] : []),
-        ...(product.supports_matter ? [{ name: 'Matter support', value: 'Yes' }] : []),
-        ...(product.battery_life_months ? [{ name: 'Battery life', value: `${product.battery_life_months} months` }] : []),
-        ...(product.ansi_grade ? [{ name: 'ANSI grade', value: `Grade ${product.ansi_grade}` }] : []),
+        ...(matterFact?.supported ? [{ name: 'Matter support', value: 'Yes' }] : []),
+        ...(batteryFact?.status === 'Catalog field' ? [{ name: 'Battery life', value: batteryFact.value }] : []),
+        ...(ansiFact?.status === 'Catalog field' ? [{ name: 'ANSI grade', value: ansiFact.value }] : []),
         ...(product.encryption_type ? [{ name: 'Encryption', value: product.encryption_type }] : []),
         ...(product.door_thickness_min_mm && product.door_thickness_max_mm
             ? [{ name: 'Door thickness', value: `${product.door_thickness_min_mm}-${product.door_thickness_max_mm} mm` }]
@@ -298,7 +320,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <SpecItem label="Door fit" value={getDoorFitVerdict(product)} />
                                 <SpecItem label="Battery / cost" value={getBatteryCostVerdict(product)} />
-                                <SpecItem label="Best for" value={product.series_name || `${product.protocol.toUpperCase()} buyers`} />
+                                <SpecItem label="Best for" value={product.series_name || `${protocolFactText} buyers`} />
                             </div>
                         </div>
 
@@ -320,7 +342,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                 product: product.slug,
                                 brand: product.brand_name,
                                 protocol: product.protocol,
-                                matter: product.supports_matter,
+                                matter: Boolean(matterFact?.supported),
                                 batteryMonths: product.battery_life_months || null,
                                 priceUsd: product.price_usd || null,
                             }}
@@ -338,9 +360,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                 {getProtocolReliabilityVerdict(product)}
                             </p>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                <SpecItem label="Primary Protocol" value={product.protocol.toUpperCase()} />
-                                {product.secondary_protocol && <SpecItem label="Secondary" value={product.secondary_protocol.toUpperCase()} />}
-                                <SpecItem label="Matter Support" value={product.supports_matter ? 'Yes ✓' : 'No'} />
+                                {productProtocolFacts.map(fact => (
+                                    <SpecItem key={fact.label} label={fact.label} value={`${fact.supported ? 'Supported' : 'Unknown'} · ${fact.status}`} />
+                                ))}
                                 {product.rf_frequency && <SpecItem label="RF Frequency" value={product.rf_frequency} />}
                                 {product.rf_range_meters && <SpecItem label="RF Range" value={`${product.rf_range_meters}m`} />}
                                 {product.encryption_type && <SpecItem label="Encryption" value={product.encryption_type} />}
@@ -353,7 +375,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                 {product.battery_type && <SpecItem label="Battery Type" value={product.battery_type} />}
                                 {product.battery_count && <SpecItem label="Battery Count" value={`${product.battery_count}×`} />}
-                                {product.battery_life_months && <SpecItem label="Battery Life" value={`${product.battery_life_months} months`} />}
+                                <SpecItem label="Battery Life" value={`${batteryFact?.value} · ${batteryFact?.status}`} />
                                 {product.standby_power_mw != null && <SpecItem label="Standby Power" value={`${product.standby_power_mw} mW`} />}
                                 {product.active_power_mw != null && <SpecItem label="Active Power" value={`${product.active_power_mw} mW`} />}
                             </div>
@@ -363,9 +385,31 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                         <div className="content-card">
                             <h2 className="section-title">Security and Access</h2>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                {product.ansi_grade && <SpecItem label="ANSI/BHMA Grade" value={`Grade ${product.ansi_grade}`} />}
+                                <SpecItem label="ANSI/BHMA Grade" value={`${ansiFact?.value} · ${ansiFact?.status}`} />
                                 <SpecItem label="UL Listed" value={product.ul_listed ? 'Yes ✓' : 'No'} />
                                 {product.encryption_type && <SpecItem label="Encryption" value={product.encryption_type} />}
+                            </div>
+                        </div>
+
+                        <div className="content-card">
+                            <h2 className="section-title">Product Fact Evidence</h2>
+                            <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-md)' }}>
+                                Last verified: {brandFactLastVerified}. {brandFactReviewCadence}
+                            </p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {productFactDisplays.map(fact => (
+                                    <div key={fact.label} className="card" style={{ background: 'var(--color-bg-alt)', margin: 0 }}>
+                                        <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: 'var(--space-xs)' }}>
+                                            {fact.label} · {fact.status}
+                                        </div>
+                                        <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-xs)' }}>
+                                            {fact.value}
+                                        </div>
+                                        <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
+                                            {fact.caveat}
+                                        </p>
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
@@ -431,8 +475,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                                 {sibling.name}
                                             </h3>
                                             <div className="flex flex-wrap gap-2" style={{ marginBottom: 'var(--space-sm)' }}>
-                                                <span className="badge badge-default">{sibling.protocol.toUpperCase()}</span>
-                                                {sibling.battery_life_months && <span className="badge badge-default">{sibling.battery_life_months} mo</span>}
+                                                <span className="badge badge-default">{getProtocolClaimText(getProductProtocolFacts(sibling))}</span>
+                                                <span className="badge badge-default">{getFactDisplay(buildProductFactDisplays(sibling), 'Battery')?.value}</span>
                                                 {sibling.price_usd && <span className="badge badge-default">{formatUsd(sibling.price_usd)}</span>}
                                             </div>
                                             <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
@@ -448,7 +492,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                             <h2 className="section-title">Protocols, Brands, Tools</h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <Link href={getProtocolHref(product)} className="link-card" prefetch={false}>
-                                    <h3 className="link-card__title">{product.protocol.toUpperCase()} Protocol Guide</h3>
+                                    <h3 className="link-card__title">{protocolFactText} Protocol Guide</h3>
                                     <p className="link-card__desc">Check hub, range, and ecosystem tradeoffs before buying.</p>
                                 </Link>
                                 <Link href={compareLink.href} className="link-card" prefetch={false}>
@@ -519,15 +563,15 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                             <div className="space-y-3" style={{ fontSize: '0.875rem' }}>
                                 <div className="flex justify-between">
                                     <span style={{ opacity: 0.8 }}>Protocol</span>
-                                    <span style={{ fontWeight: 600 }}>{product.protocol.toUpperCase()}</span>
+                                    <span style={{ fontWeight: 600 }}>{protocolFactText}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span style={{ opacity: 0.8 }}>Battery Life</span>
-                                    <span style={{ fontWeight: 600 }}>{product.battery_life_months ? `${product.battery_life_months} months` : '—'}</span>
+                                    <span style={{ fontWeight: 600 }}>{batteryFact?.value}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span style={{ opacity: 0.8 }}>Security</span>
-                                    <span style={{ fontWeight: 600 }}>Grade {product.ansi_grade || '—'}</span>
+                                    <span style={{ fontWeight: 600 }}>{ansiFact?.value}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span style={{ opacity: 0.8 }}>Fingerprint</span>

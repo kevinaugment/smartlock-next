@@ -123,19 +123,19 @@ Run `./node_modules/.bin/tsx tests/seo-template-profiles.test.ts` and confirm al
 - Modify: seed data only when source-backed
 - Test: new brand fact consistency test
 
-- [ ] **Step 1: Add brand fact status labels**
+- [x] **Step 1: Add brand fact status labels**
 
 Use labels such as `Vendor stated`, `Catalog field`, `Unknown`, and `Needs verification` for battery, protocol, ANSI grade, Matter support, and warranty.
 
-- [ ] **Step 2: Add last-verified and caveat blocks**
+- [x] **Step 2: Add last-verified and caveat blocks**
 
 Each brand page should show a small evidence block near the product matrix.
 
-- [ ] **Step 3: Normalize protocol claims**
+- [x] **Step 3: Normalize protocol claims**
 
 Prevent pages from calling Z-Wave locks Wi-Fi locks, or Matter support Thread support, unless the product data explicitly states it.
 
-- [ ] **Step 4: Verify brand pages**
+- [x] **Step 4: Verify brand pages**
 
 Add tests that no brand/product page renders unsupported protocol claims from missing data.
 

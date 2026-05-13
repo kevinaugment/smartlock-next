@@ -1,70 +1,27 @@
 'use client'
 
 import { useState } from 'react'
-
-interface ProtocolData {
-  protocol: string
-  label: string
-  baseLifeDays: number
-  idlePowerMw: number
-  activePowerMw: number
-  typicalCapacityMah: number
-}
-
-const protocolData: ProtocolData[] = [
-  { protocol: 'zigbee', label: 'Zigbee', baseLifeDays: 365, idlePowerMw: 0.02, activePowerMw: 12, typicalCapacityMah: 2800 },
-  { protocol: 'zwave', label: 'Z-Wave', baseLifeDays: 365, idlePowerMw: 0.03, activePowerMw: 13, typicalCapacityMah: 2800 },
-  { protocol: 'thread', label: 'Thread', baseLifeDays: 320, idlePowerMw: 0.03, activePowerMw: 14, typicalCapacityMah: 2800 },
-  { protocol: 'ble', label: 'Bluetooth', baseLifeDays: 350, idlePowerMw: 0.05, activePowerMw: 15, typicalCapacityMah: 2800 },
-  { protocol: 'wifi', label: 'Wi-Fi', baseLifeDays: 90, idlePowerMw: 100, activePowerMw: 300, typicalCapacityMah: 2800 },
-  { protocol: 'nfc', label: 'NFC', baseLifeDays: 500, idlePowerMw: 0.01, activePowerMw: 8, typicalCapacityMah: 2800 },
-]
-
-interface BatteryConfig {
-  key: string
-  label: string
-  cellCount: number
-  capacityMah: number
-  voltage: number
-}
-
-const batteryConfigs: BatteryConfig[] = [
-  { key: '4xAA', label: '4× AA', cellCount: 4, capacityMah: 2800, voltage: 1.5 },
-  { key: '8xAA', label: '8× AA', cellCount: 8, capacityMah: 2800, voltage: 1.5 },
-  { key: '4xC', label: '4× C Cell', cellCount: 4, capacityMah: 8000, voltage: 1.5 },
-  { key: 'CR123A-x2', label: '2× CR123A (3V)', cellCount: 2, capacityMah: 1500, voltage: 3.0 },
-  { key: 'lithium-pack', label: 'Li-Ion Pack (3.7V)', cellCount: 1, capacityMah: 5000, voltage: 3.7 },
-  { key: 'usb-c-rechargeable', label: 'USB-C Rechargeable', cellCount: 1, capacityMah: 8000, voltage: 3.7 },
-]
-
-const batteryChemistries: Record<string, { label: string; capacityMultiplier: number; coldMultiplier: number }> = {
-  'alkaline': { label: 'Alkaline (Standard)', capacityMultiplier: 1.0, coldMultiplier: 0.70 },
-  'lithium': { label: 'Lithium (Premium)', capacityMultiplier: 1.07, coldMultiplier: 0.90 },
-  'nimh': { label: 'NiMH Rechargeable', capacityMultiplier: 0.71, coldMultiplier: 0.75 },
-  'cr123a': { label: 'CR123A Lithium', capacityMultiplier: 1.0, coldMultiplier: 0.88 },
-  'li-ion': { label: 'Li-Ion (Built-in)', capacityMultiplier: 1.0, coldMultiplier: 0.85 },
-}
-
-const brandPresets: Record<string, { label: string; featureMultiplier: number; efficiency: string }> = {
-  'generic': { label: 'Generic / Custom', featureMultiplier: 1.0, efficiency: 'Standard' },
-  'yale': { label: 'Yale', featureMultiplier: 1.05, efficiency: 'Average' },
-  'schlage': { label: 'Schlage', featureMultiplier: 1.02, efficiency: 'Good' },
-  'august': { label: 'August', featureMultiplier: 1.08, efficiency: 'Average (Wi-Fi heavy)' },
-  'kwikset': { label: 'Kwikset', featureMultiplier: 1.03, efficiency: 'Good' },
-  'level': { label: 'Level', featureMultiplier: 0.92, efficiency: 'Excellent (compact)' },
-  'aqara': { label: 'Aqara', featureMultiplier: 0.95, efficiency: 'Excellent' },
-  'ultraloq': { label: 'Ultraloq', featureMultiplier: 1.10, efficiency: 'Average (multi-auth)' },
-  'betech': { label: 'Be-Tech', featureMultiplier: 0.94, efficiency: 'Excellent (commercial)' },
-}
+import {
+  batteryChemistries,
+  batteryConfigs,
+  brandPresets,
+  calculateSmartLockBatteryLife,
+  protocolData,
+  type BatteryChemistryKey,
+  type BatteryConfigKey,
+  type BatteryEnvironment,
+  type BatteryProtocol,
+  type BatteryTemperature,
+} from '@/lib/calculators/battery-life-model'
 
 export default function BatteryCalculator() {
-  const [protocol, setProtocol] = useState('zigbee')
+  const [protocol, setProtocol] = useState<BatteryProtocol>('zigbee')
   const [dailyUsage, setDailyUsage] = useState(10)
-  const [batteryConfig, setBatteryConfig] = useState('4xAA')
-  const [batteryChemistry, setBatteryChemistry] = useState('alkaline')
-  const [temperature, setTemperature] = useState('normal')
+  const [batteryConfig, setBatteryConfig] = useState<BatteryConfigKey>('4xAA')
+  const [batteryChemistry, setBatteryChemistry] = useState<BatteryChemistryKey>('alkaline')
+  const [temperature, setTemperature] = useState<BatteryTemperature>('normal')
   const [brand, setBrand] = useState('generic')
-  const [environment, setEnvironment] = useState('indoor')
+  const [environment, setEnvironment] = useState<BatteryEnvironment>('indoor')
   const [nightMode, setNightMode] = useState(false)
 
   // Feature toggles
@@ -76,73 +33,25 @@ export default function BatteryCalculator() {
   const [hasBleAdvertising, setHasBleAdvertising] = useState(false)
   const [hasWifiKeepAlive, setHasWifiKeepAlive] = useState(false)
 
-  const calculateBatteryLife = () => {
-    const protocolInfo = protocolData.find(p => p.protocol === protocol) || protocolData[0]
-    const config = batteryConfigs.find(c => c.key === batteryConfig) || batteryConfigs[0]
-    const chemistry = batteryChemistries[batteryChemistry] || batteryChemistries['alkaline']
-    const brandData = brandPresets[brand] || brandPresets['generic']
-
-    // Total capacity: cells × per-cell capacity × chemistry multiplier
-    const totalCapacityMah = config.cellCount * config.capacityMah * chemistry.capacityMultiplier
-
-    // Daily power consumption
-    const activeMinutesPerDay = dailyUsage * 0.5 // 30 seconds per operation
-    const idleMinutesPerDay = 1440 - activeMinutesPerDay
-
-    const dailyActiveMwh = (protocolInfo.activePowerMw * activeMinutesPerDay) / 60
-    const dailyIdleMwh = (protocolInfo.idlePowerMw * idleMinutesPerDay) / 60
-    let dailyTotalMwh = dailyActiveMwh + dailyIdleMwh
-
-    // Feature multipliers
-    let featureMultiplier = 1.0
-    if (hasKeypad) featureMultiplier *= 1.08
-    if (hasAutoLock) featureMultiplier *= 1.05
-    if (hasFingerprint) featureMultiplier *= 1.15
-    if (hasCamera) featureMultiplier *= 1.45
-    if (hasDoorbell) featureMultiplier *= 1.12
-    if (hasBleAdvertising) featureMultiplier *= 1.10
-    if (hasWifiKeepAlive) featureMultiplier *= 1.30
-
-    // Brand efficiency factor
-    featureMultiplier *= brandData.featureMultiplier
-
-    // Night mode saves ~8% overall (reduces polling 8hrs/day)
-    if (nightMode) featureMultiplier *= 0.92
-
-    dailyTotalMwh *= featureMultiplier
-
-    // Temperature compensation
-    let tempFactor = 1.0
-    if (temperature === 'cold') tempFactor = chemistry.coldMultiplier
-    if (temperature === 'freezing') tempFactor = chemistry.coldMultiplier * 0.7
-    if (temperature === 'hot') tempFactor = 0.9
-
-    // Environment impact
-    let envFactor = 1.0
-    if (environment === 'outdoor-covered') envFactor = 0.95
-    if (environment === 'outdoor-exposed') envFactor = 0.85
-
-    // Total energy available
-    const totalEnergyMwh = (totalCapacityMah * config.voltage) * tempFactor * envFactor
-
-    const estimatedDays = Math.floor(totalEnergyMwh / dailyTotalMwh)
-
-    // Annual battery cost estimate
-    const replacementsPerYear = estimatedDays > 0 ? 365 / estimatedDays : 0
-    const cellCost = batteryChemistry === 'lithium' ? 2.0 : batteryChemistry === 'nimh' ? 1.5 : batteryChemistry === 'cr123a' ? 3.5 : batteryChemistry === 'li-ion' ? 0 : 0.5
-    const annualBatteryCost = replacementsPerYear * config.cellCount * cellCost
-
-    return {
-      days: estimatedDays,
-      months: Math.floor(estimatedDays / 30),
-      dailyPowerMwh: dailyTotalMwh.toFixed(2),
-      totalEnergyMwh: totalEnergyMwh.toFixed(0),
-      annualCost: annualBatteryCost.toFixed(2),
-      replacementsPerYear: replacementsPerYear.toFixed(1),
-    }
-  }
-
-  const result = calculateBatteryLife()
+  const result = calculateSmartLockBatteryLife({
+    protocol,
+    dailyUsage,
+    batteryConfig,
+    batteryChemistry,
+    temperature,
+    brand,
+    environment,
+    nightMode,
+    features: {
+      hasKeypad,
+      hasAutoLock,
+      hasFingerprint,
+      hasCamera,
+      hasDoorbell,
+      hasBleAdvertising,
+      hasWifiKeepAlive,
+    },
+  })
 
   const labelStyle = { display: 'block' as const, fontSize: '0.875rem', fontWeight: 500 as const, color: 'var(--color-text-secondary)', marginBottom: 'var(--space-xs)' }
   const hintStyle = { fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }
@@ -169,9 +78,9 @@ export default function BatteryCalculator() {
             {/* Protocol */}
             <div>
               <label style={labelStyle}>Communication Protocol</label>
-              <select value={protocol} onChange={(e) => setProtocol(e.target.value)} className="form-input">
+              <select value={protocol} onChange={(e) => setProtocol(e.target.value as BatteryProtocol)} className="form-input">
                 {protocolData.map(p => (
-                  <option key={p.protocol} value={p.protocol}>{p.label} (Idle: {p.idlePowerMw}mW, Active: {p.activePowerMw}mW)</option>
+                  <option key={p.protocol} value={p.protocol}>{p.label} ({p.typicalRuntime}; idle model {p.idlePowerMw}mW)</option>
                 ))}
               </select>
             </div>
@@ -179,7 +88,7 @@ export default function BatteryCalculator() {
             {/* Battery Configuration */}
             <div>
               <label style={labelStyle}>Battery Configuration</label>
-              <select value={batteryConfig} onChange={(e) => setBatteryConfig(e.target.value)} className="form-input">
+              <select value={batteryConfig} onChange={(e) => setBatteryConfig(e.target.value as BatteryConfigKey)} className="form-input">
                 {batteryConfigs.map(c => (
                   <option key={c.key} value={c.key}>{c.label} — {c.capacityMah}mAh × {c.cellCount} @ {c.voltage}V</option>
                 ))}
@@ -189,7 +98,7 @@ export default function BatteryCalculator() {
             {/* Battery Chemistry */}
             <div>
               <label style={labelStyle}>Battery Chemistry</label>
-              <select value={batteryChemistry} onChange={(e) => setBatteryChemistry(e.target.value)} className="form-input">
+              <select value={batteryChemistry} onChange={(e) => setBatteryChemistry(e.target.value as BatteryChemistryKey)} className="form-input">
                 {Object.entries(batteryChemistries).map(([key, data]) => (
                   <option key={key} value={key}>{data.label}</option>
                 ))}
@@ -213,7 +122,7 @@ export default function BatteryCalculator() {
             {/* Temperature */}
             <div>
               <label style={labelStyle}>Operating Temperature</label>
-              <select value={temperature} onChange={(e) => setTemperature(e.target.value)} className="form-input">
+              <select value={temperature} onChange={(e) => setTemperature(e.target.value as BatteryTemperature)} className="form-input">
                 <option value="freezing">Extreme Cold (below -10°C / 14°F)</option>
                 <option value="cold">Cold (-10°C to 5°C / 14°F to 41°F)</option>
                 <option value="normal">Normal (5°C to 35°C / 41°F to 95°F)</option>
@@ -224,7 +133,7 @@ export default function BatteryCalculator() {
             {/* Installation Environment */}
             <div>
               <label style={labelStyle}>Installation Environment</label>
-              <select value={environment} onChange={(e) => setEnvironment(e.target.value)} className="form-input">
+              <select value={environment} onChange={(e) => setEnvironment(e.target.value as BatteryEnvironment)} className="form-input">
                 <option value="indoor">Indoor (climate controlled)</option>
                 <option value="outdoor-covered">Outdoor Covered (porch, awning)</option>
                 <option value="outdoor-exposed">Outdoor Exposed (direct weather)</option>
@@ -283,8 +192,8 @@ export default function BatteryCalculator() {
           <h2 className="text-xl font-bold mb-6">Estimated Battery Life</h2>
 
           <div className="text-center mb-8">
-            <div className="text-6xl font-bold mb-2">{result.months}</div>
-            <div className="text-xl opacity-90">months</div>
+            <div className="text-6xl font-bold mb-2">{result.displayMonths}</div>
+            <div className="text-xl opacity-90">{result.displayMonths === 1 ? 'month' : 'months'}</div>
             <div className="text-sm opacity-75 mt-2">({result.days} days)</div>
           </div>
 
@@ -313,8 +222,8 @@ export default function BatteryCalculator() {
               <span className="font-semibold">{result.dailyPowerMwh} mWh</span>
             </div>
             <div className="flex justify-between">
-              <span className="opacity-90">Total Energy:</span>
-              <span className="font-semibold">{result.totalEnergyMwh} mWh</span>
+              <span className="opacity-90">Usable Energy:</span>
+              <span className="font-semibold">{result.usableEnergyMwh} mWh</span>
             </div>
           </div>
 
@@ -344,6 +253,12 @@ export default function BatteryCalculator() {
               }
             </p>
           </div>
+
+          {result.isOutsideModelRange && (
+            <div className="mt-4 p-4 bg-white/10 rounded-lg">
+              <p className="text-xs opacity-90"><strong>Model range:</strong> {result.rangeNote}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import {
   BookOpen, Calculator, Shield, Wrench, Building2, Globe,
   Wifi, Lock, Key, Cpu, Info
 } from 'lucide-react'
+import { calculatorCount } from '@/lib/calculators/catalog'
 
 export const metadata: Metadata = {
   title: 'About SLockHub | Smart Lock Guides, Tools & Product Research',
@@ -51,7 +52,7 @@ export default function AboutPage() {
               {
                 icon: <Calculator className="w-8 h-8" />,
                 title: 'Interactive Calculators',
-                desc: '32 specialized tools to estimate battery life, calculate costs, check compatibility, and plan installations'
+                desc: `${calculatorCount} specialized tools to estimate battery life, calculate costs, check compatibility, and plan installations`
               },
               {
                 icon: <Shield className="w-8 h-8" />,
@@ -75,7 +76,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { value: '70+', label: 'Articles' },
-              { value: '32', label: 'Calculators' },
+              { value: String(calculatorCount), label: 'Calculators' },
               { value: '7', label: 'Categories' },
               { value: '6+', label: 'Protocols' },
             ].map((stat) => (

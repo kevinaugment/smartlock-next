@@ -12,6 +12,12 @@ import { SeoPathways } from '@/components/seo/SeoPathways'
 import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
 import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
+import {
+  calculateSmartLockBatteryLife,
+  getBatteryLifeMethodology,
+  protocolData,
+  type BatteryProtocol,
+} from '@/lib/calculators/battery-life-model'
 
 // SEO Metadata
 export const metadata: Metadata = {
@@ -32,6 +38,36 @@ export const metadata: Metadata = {
 }
 
 export default function BatteryLifePage() {
+  const methodology = getBatteryLifeMethodology()
+  const defaultFeatures = {
+    hasKeypad: true,
+    hasAutoLock: true,
+    hasFingerprint: false,
+    hasCamera: false,
+    hasDoorbell: false,
+    hasBleAdvertising: false,
+    hasWifiKeepAlive: false,
+  }
+  const protocolRuntimeRows = protocolData.map((protocol) => ({
+    ...protocol,
+    estimate: calculateSmartLockBatteryLife({
+      protocol: protocol.protocol,
+      dailyUsage: protocol.protocol === 'wifi' ? 20 : 10,
+      batteryConfig: '4xAA',
+      batteryChemistry: 'alkaline',
+      temperature: 'normal',
+      brand: 'generic',
+      environment: 'indoor',
+      nightMode: false,
+      features: {
+        ...defaultFeatures,
+        hasWifiKeepAlive: protocol.protocol === 'wifi',
+      },
+    }),
+  }))
+  const answerRuntimeRows = protocolRuntimeRows.filter((row) =>
+    (['wifi', 'zigbee', 'zwave', 'thread', 'ble', 'nfc'] as BatteryProtocol[]).includes(row.protocol)
+  )
   const faqs = [
     {
       question: 'How long do smart lock batteries last?',
@@ -154,7 +190,7 @@ export default function BatteryLifePage() {
           <div className="max-w-4xl mx-auto">
             <CalculatorAnswerBlock
               title="How long do smart lock batteries last?"
-              answer="Smart lock batteries typically last 3 to 18 months. Wi-Fi locks often need replacement every 3 to 4 months because the radio stays more active, while Zigbee, Z-Wave, Thread, Bluetooth, and NFC locks can often reach 10 to 18 months when the door is aligned and signal quality is good."
+              answer="Smart lock batteries typically last 3 to 18 months. Wi-Fi locks often need replacement every 2 to 5 months because the radio stays more active, while Zigbee, Z-Wave, Thread, Bluetooth, and NFC locks can often reach 9 to 18 months when the door is aligned and signal quality is good."
             >
               <div className="data-table-wrap">
                 <table className="data-table">
@@ -166,10 +202,13 @@ export default function BatteryLifePage() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr><td>Wi-Fi</td><td>3-4 months</td><td>Always-on network activity</td></tr>
-                    <tr><td>Zigbee / Z-Wave</td><td>12+ months</td><td>Low-power mesh sleep behavior</td></tr>
-                    <tr><td>Thread</td><td>10-11 months</td><td>Low-power IP mesh behavior</td></tr>
-                    <tr><td>Bluetooth / NFC</td><td>10-18 months</td><td>Local, short-range access pattern</td></tr>
+                    {answerRuntimeRows.map((row) => (
+                      <tr key={row.protocol}>
+                        <td>{row.label}</td>
+                        <td>{row.typicalRuntime}</td>
+                        <td>{row.primaryBatteryDriver}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -206,8 +245,8 @@ export default function BatteryLifePage() {
               ]}
               formula={{
                 label: 'Battery model',
-                equation: 'Estimated life = usable battery capacity / ((idle current x idle hours) + (active current x operations x active seconds))',
-                notes: 'The model separates idle draw from lock/unlock events because Wi-Fi locks often spend far more energy staying connected than moving the bolt.',
+                equation: methodology.formula,
+                notes: `${methodology.rangeLimit} The model separates idle draw from lock/unlock events because Wi-Fi locks often spend far more energy staying connected than moving the bolt.`,
               }}
               assumptions={[
                 'Default residential use is about 10 lock or unlock operations per day.',
@@ -217,7 +256,7 @@ export default function BatteryLifePage() {
               example={{
                 title: 'Family front door with Wi-Fi lock',
                 inputs: '4 AA alkaline cells, Wi-Fi, 20 operations/day, mild climate',
-                result: 'Battery replacement may land near the 2-4 month range instead of the 10-12 month range common for Zigbee or Z-Wave.',
+                result: 'Battery replacement may land near the 2-5 month range instead of the 9-18 month range common for low-power mesh or local-radio protocols.',
                 decision: 'Use this result in TCO comparisons before choosing hub-free Wi-Fi for multiple doors.',
               }}
               sources={[
@@ -254,7 +293,7 @@ export default function BatteryLifePage() {
                     <span className="badge badge-success">Long Battery Life</span>
                   </div>
                   <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-sm)' }}>
-                    Be-Tech locks feature optimized power management across all protocols. Zigbee models achieve 12+ month battery life with standard usage.
+                    Be-Tech locks feature optimized power management across all protocols. Use the calculator above to compare replacement intervals by protocol, battery chemistry, and door usage.
                   </p>
                   <a
                     href="https://www.betechlock.com/"
@@ -285,41 +324,15 @@ export default function BatteryLifePage() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td style={{ fontWeight: 600 }}>Zigbee</td>
-                      <td style={{ color: 'var(--color-success)' }}>0.02 mW</td>
-                      <td>12 mW</td>
-                      <td style={{ fontWeight: 600 }}>12+ months</td>
-                      <td style={{ color: 'var(--color-success)', fontWeight: 500 }}>★★★★★</td>
-                    </tr>
-                    <tr>
-                      <td style={{ fontWeight: 600 }}>Z-Wave</td>
-                      <td style={{ color: 'var(--color-success)' }}>0.03 mW</td>
-                      <td>13 mW</td>
-                      <td style={{ fontWeight: 600 }}>12 months</td>
-                      <td style={{ color: 'var(--color-success)', fontWeight: 500 }}>★★★★★</td>
-                    </tr>
-                    <tr>
-                      <td style={{ fontWeight: 600 }}>Thread</td>
-                      <td style={{ color: 'var(--color-success)' }}>0.03 mW</td>
-                      <td>14 mW</td>
-                      <td style={{ fontWeight: 600 }}>10-11 months</td>
-                      <td style={{ color: 'var(--color-success)', fontWeight: 500 }}>★★★★</td>
-                    </tr>
-                    <tr>
-                      <td style={{ fontWeight: 600 }}>Bluetooth</td>
-                      <td style={{ color: 'var(--color-warning)' }}>0.05 mW</td>
-                      <td>15 mW</td>
-                      <td style={{ fontWeight: 600 }}>10-12 months</td>
-                      <td style={{ color: 'var(--color-warning)', fontWeight: 500 }}>★★★★</td>
-                    </tr>
-                    <tr>
-                      <td style={{ fontWeight: 600 }}>Wi-Fi</td>
-                      <td style={{ color: 'var(--color-danger)' }}>100 mW</td>
-                      <td>300 mW</td>
-                      <td style={{ fontWeight: 600, color: 'var(--color-danger)' }}>3-4 months</td>
-                      <td style={{ color: 'var(--color-danger)', fontWeight: 500 }}>★★</td>
-                    </tr>
+                    {protocolRuntimeRows.map((row) => (
+                      <tr key={row.protocol}>
+                        <td style={{ fontWeight: 600 }}>{row.label}</td>
+                        <td style={{ color: row.protocol === 'wifi' ? 'var(--color-danger)' : 'var(--color-success)' }}>{row.idlePowerMw} mW</td>
+                        <td>{row.activePowerMw} mW</td>
+                        <td style={{ fontWeight: 600, color: row.protocol === 'wifi' ? 'var(--color-danger)' : undefined }}>{row.estimate.displayLabel}</td>
+                        <td style={{ color: row.protocol === 'wifi' ? 'var(--color-danger)' : 'var(--color-success)', fontWeight: 500 }}>{'★'.repeat(row.efficiencyRating)}{'☆'.repeat(5 - row.efficiencyRating)}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

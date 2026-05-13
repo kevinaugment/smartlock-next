@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import type { ReactNode } from 'react'
 import CalculatorDiscovery from '@/components/CalculatorDiscovery'
+import { calculatorCount } from '@/lib/calculators/catalog'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Calculators | Cost, Door Fit, Battery, Signal & Security',
@@ -358,7 +359,7 @@ export default function CalculatorsPage() {
     url: 'https://www.slockhub.com/calculators',
     mainEntity: {
       '@type': 'ItemList',
-      numberOfItems: calculators.length,
+      numberOfItems: calculatorCount,
       itemListElement: calculators.map((calc, i) => ({
         '@type': 'ListItem',
         position: i + 1,
@@ -380,7 +381,7 @@ export default function CalculatorsPage() {
             </div>
             <h1 className="page-header__title">Smart Lock Calculators</h1>
             <p className="page-header__subtitle">
-              {calculators.length} interactive tools for TCO analysis, signal planning, compliance checking, and more.
+              {calculatorCount} interactive tools for TCO analysis, signal planning, compliance checking, and more.
             </p>
           </div>
 

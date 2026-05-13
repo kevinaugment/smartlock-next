@@ -2,6 +2,12 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { AlertTriangle, Check, X, ExternalLink } from 'lucide-react'
 import { getBrands } from '@/lib/services/brand-service'
+import {
+  getBrandProtocolFacts,
+  getProtocolFact,
+  getProtocolClaimText,
+  getSupportedProtocolLabels,
+} from '@/lib/brands/fact-policy'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -61,17 +67,6 @@ const brandPathways = [
   },
 ]
 
-function getProtocols(brand: { supports_wifi: boolean; supports_zigbee: boolean; supports_zwave: boolean; supports_thread: boolean; supports_matter: boolean; supports_bluetooth: boolean }) {
-  const protocols: string[] = []
-  if (brand.supports_wifi) protocols.push('Wi-Fi')
-  if (brand.supports_zigbee) protocols.push('Zigbee')
-  if (brand.supports_zwave) protocols.push('Z-Wave')
-  if (brand.supports_thread) protocols.push('Thread')
-  if (brand.supports_matter) protocols.push('Matter')
-  if (brand.supports_bluetooth) protocols.push('Bluetooth')
-  return protocols
-}
-
 export default async function Brands() {
   let brands: Awaited<ReturnType<typeof getBrands>> = []
 
@@ -86,10 +81,10 @@ export default async function Brands() {
     .slice(0, 6)
 
   const protocolStats = [
-    { label: 'Wi-Fi', count: brands.filter((brand) => brand.supports_wifi).length, href: '/protocols/wifi' },
-    { label: 'Matter', count: brands.filter((brand) => brand.supports_matter).length, href: '/protocols/matter' },
-    { label: 'Z-Wave', count: brands.filter((brand) => brand.supports_zwave).length, href: '/protocols/z-wave' },
-    { label: 'Zigbee', count: brands.filter((brand) => brand.supports_zigbee).length, href: '/protocols/zigbee' },
+    { label: 'Wi-Fi', count: brands.filter((brand) => getProtocolFact(getBrandProtocolFacts(brand), 'Wi-Fi')?.supported).length, href: '/protocols/wifi' },
+    { label: 'Matter', count: brands.filter((brand) => getProtocolFact(getBrandProtocolFacts(brand), 'Matter')?.supported).length, href: '/protocols/matter' },
+    { label: 'Z-Wave', count: brands.filter((brand) => getProtocolFact(getBrandProtocolFacts(brand), 'Z-Wave')?.supported).length, href: '/protocols/z-wave' },
+    { label: 'Zigbee', count: brands.filter((brand) => getProtocolFact(getBrandProtocolFacts(brand), 'Zigbee')?.supported).length, href: '/protocols/zigbee' },
   ]
 
   const collectionSchema = {
@@ -148,7 +143,7 @@ export default async function Brands() {
               {topBrands.map((brand) => (
                 <Link key={brand.slug} href={`/brands/${brand.slug}`} className="link-card" prefetch={false}>
                   <h3 className="link-card__title">{brand.name}</h3>
-                  <p className="link-card__desc">{brand.product_count} products indexed. Protocols: {getProtocols(brand).join(', ') || 'Not specified'}.</p>
+                  <p className="link-card__desc">{brand.product_count} products indexed. Protocols: {getProtocolClaimText(getBrandProtocolFacts(brand))}.</p>
                 </Link>
               ))}
             </div>
@@ -192,7 +187,8 @@ export default async function Brands() {
         {/* Brand Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {brands.map(brand => {
-            const protocols = getProtocols(brand)
+            const protocolFacts = getBrandProtocolFacts(brand)
+            const protocols = getSupportedProtocolLabels(protocolFacts)
             return (
               <Link
                 key={brand.slug}
@@ -222,9 +218,13 @@ export default async function Brands() {
                   <div style={{ marginBottom: 'var(--space-md)' }}>
                     <h4 className="form-label">Protocols:</h4>
                     <div className="flex flex-wrap gap-2">
-                      {protocols.map(p => (
-                        <span key={p} className="badge badge-accent">{p}</span>
-                      ))}
+                      {protocols.length > 0 ? (
+                        protocols.map(p => (
+                          <span key={p} className="badge badge-accent">{p}</span>
+                        ))
+                      ) : (
+                        <span className="badge badge-default">Needs verification</span>
+                      )}
                     </div>
                   </div>
 

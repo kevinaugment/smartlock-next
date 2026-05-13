@@ -55,6 +55,11 @@ function main() {
   assert.match(brandPage, /getBrandProtocolFacts/, 'brand page must use protocol fact policy')
   assert.match(brandPage, /Brand Fact Evidence/, 'brand page must render evidence block')
 
+  const brandIndexPage = readFileSync('app/brands/page.tsx', 'utf8')
+  assert.doesNotMatch(brandIndexPage, /function getProtocols/, 'brand index page must not maintain a separate protocol parser')
+  assert.match(brandIndexPage, /getBrandProtocolFacts/, 'brand index page must use shared protocol fact policy')
+  assert.match(brandIndexPage, /Needs verification/, 'brand index page must label missing protocol support instead of hiding it')
+
   const productPage = readFileSync('app/brands/[slug]/[product]/page.tsx', 'utf8')
   assert.match(productPage, /buildProductFactDisplays/, 'product page must use fact display policy')
   assert.match(productPage, /getProductProtocolFacts/, 'product page must use protocol fact policy')

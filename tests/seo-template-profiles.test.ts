@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import { getComparisonSeoProfile } from '../lib/seo/comparison-page-seo'
-import { getBestPageSeoProfile } from '../lib/seo/best-page-seo'
+import {
+  getBestPageCalculatorPathways,
+  getBestPageCommercialIntent,
+  getBestPageSeoProfile,
+} from '../lib/seo/best-page-seo'
 import type { Brand, ProductWithBrand } from '../lib/db/brand-models'
 
 function brand(slug: string, name: string): Brand {
@@ -85,6 +90,27 @@ function assertMeaningfulText(value: string, label: string) {
   assert.equal(value.includes('null'), false, `${label} must not contain null`)
 }
 
+const expectedCommercialLabels = ['Best for', 'Avoid if', 'Decision factor', 'Evidence needed']
+const expectedCalculatorPrefixes = ['/calculators/']
+
+function assertCommercialIntent(blocks: Array<{ label: string; detail: string }>, label: string) {
+  assert.deepEqual(blocks.map((block) => block.label), expectedCommercialLabels, `${label} must include all commercial investigation blocks in order`)
+  for (const block of blocks) {
+    assertMeaningfulText(block.detail, `${label} ${block.label}`)
+  }
+}
+
+function assertCalculatorPathways(pathways: Array<{ href: string; label: string; detail: string }>, label: string) {
+  assert.equal(pathways.length >= 3, true, `${label} must include at least three calculator pathways`)
+  for (const pathway of pathways) {
+    assert.ok(expectedCalculatorPrefixes.some((prefix) => pathway.href.startsWith(prefix)), `${label} pathway must link to calculator: ${pathway.href}`)
+    assert.ok(pathway.label.length >= 8, `${label} pathway label must be clear`)
+    assert.equal(pathway.label.includes('undefined'), false, `${label} pathway label must not contain undefined`)
+    assert.equal(pathway.label.includes('null'), false, `${label} pathway label must not contain null`)
+    assertMeaningfulText(pathway.detail, `${label} pathway detail`)
+  }
+}
+
 function main() {
   const comparisonPairs = [
     ['nuki', 'Nuki', 'tedee', 'Tedee'],
@@ -120,11 +146,13 @@ function main() {
     assertMeaningfulText(profile.subtitle, `${slug1}-vs-${slug2} subtitle`)
     assertMeaningfulText(profile.verdict, `${slug1}-vs-${slug2} verdict`)
     assertMeaningfulText(profile.angle, `${slug1}-vs-${slug2} angle`)
+    assertCommercialIntent(profile.commercialIntent, `${slug1}-vs-${slug2}`)
+    assertCalculatorPathways(profile.calculatorPathways, `${slug1}-vs-${slug2}`)
     assertMeaningfulText(profile.faq.question, `${slug1}-vs-${slug2} FAQ question`)
     assertMeaningfulText(profile.faq.answer, `${slug1}-vs-${slug2} FAQ answer`)
   }
 
-  for (const slug of ['matter-smart-locks', 'smart-locks-for-airbnb', 'smart-locks-with-longest-battery-life']) {
+  for (const slug of ['best-z-wave-smart-locks', 'z-wave-smart-locks', 'smart-locks-for-airbnb', 'matter-smart-locks', 'smart-locks-with-longest-battery-life', 'renter-friendly-smart-locks']) {
     const profile = getBestPageSeoProfile(slug)
     assert.ok(profile, `${slug} must have a dedicated best-page SEO profile`)
     assertMeaningfulText(profile.title, `${slug} title`)
@@ -133,7 +161,22 @@ function main() {
     assertMeaningfulText(profile.intro, `${slug} intro`)
     assert.equal(profile.methodology.length, 3, `${slug} must define three methodology bullets`)
     assert.equal(profile.intentSignals.length, 3, `${slug} must define three intent signals`)
+    assertCommercialIntent(getBestPageCommercialIntent(slug), slug)
+    assertCalculatorPathways(getBestPageCalculatorPathways(slug), slug)
   }
+
+  assertCommercialIntent(getBestPageCommercialIntent('budget-smart-locks'), 'fallback best page')
+  assertCalculatorPathways(getBestPageCalculatorPathways('budget-smart-locks'), 'fallback best page')
+
+  const bestPage = readFileSync('app/best/[slug]/page.tsx', 'utf8')
+  assert.match(bestPage, /Best For, Avoid If, Evidence Needed/, 'best page must render commercial intent block')
+  assert.match(bestPage, /Validate This Shortlist With Tools/, 'best page must render calculator pathways above product list')
+  assert.match(bestPage, /calculatorPathways\.map/, 'best page must render configured calculator pathways')
+
+  const comparePage = readFileSync('app/compare/[slug]/page.tsx', 'utf8')
+  assert.match(comparePage, /Best For, Avoid If, Evidence Needed/, 'compare page must render commercial intent block')
+  assert.match(comparePage, /Validate This Comparison With Tools/, 'compare page must render calculator pathways above product list')
+  assert.match(comparePage, /commercialIntent\.map/, 'compare page must render configured commercial intent blocks')
 }
 
 main()

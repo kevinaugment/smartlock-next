@@ -1,4 +1,5 @@
 import type { Brand, ProductWithBrand } from '@/lib/db/brand-models'
+import type { CalculatorPathway, CommercialIntentBlock } from '@/lib/seo/best-page-seo'
 
 const CURRENT_YEAR = '2026'
 
@@ -8,6 +9,8 @@ export interface ComparisonSeoProfile {
     subtitle: string
     verdict: string
     angle: string
+    commercialIntent: CommercialIntentBlock[]
+    calculatorPathways: CalculatorPathway[]
     faq: { question: string; answer: string }
 }
 
@@ -74,6 +77,17 @@ function getGenericProfile(
     const priceWinner = getLowerPricedBrand(brand1, brand2, products1, products2)
     const ratingWinner = getBetterRatedBrand(brand1, brand2, products1, products2)
     const protocolText = sharedProtocols.length > 0 ? sharedProtocols.join(', ') : 'smart-home protocol'
+    const commercialIntent: CommercialIntentBlock[] = [
+        { label: 'Best for', detail: `Buyers comparing ${brand1.name} and ${brand2.name} by price, protocol fit, battery planning, access features, and door compatibility before shortlisting exact models.` },
+        { label: 'Avoid if', detail: `You need a one-model answer without checking whether the selected ${brand1.name} or ${brand2.name} lock fits your door, hub, and credential workflow.` },
+        { label: 'Decision factor', detail: `Use brand-level differences only as a starting point; the final choice should come from model-level protocol, battery, security, door-fit, and price evidence.` },
+        { label: 'Evidence needed', detail: `Confirm current retail price, supported protocols, battery-life claims, ANSI/BHMA or encryption signals, door-prep dimensions, and warranty/support expectations.` },
+    ]
+    const calculatorPathways: CalculatorPathway[] = [
+        { href: '/calculators/compatibility', label: 'Door compatibility checker', detail: 'Check whether the shortlisted model fits your bore, backset, thickness, material, and lock type.' },
+        { href: '/calculators/protocol-wizard', label: 'Protocol wizard', detail: 'Decide whether Wi-Fi, Z-Wave, Zigbee, Thread, Bluetooth, or Matter fits your hub and reliability needs.' },
+        { href: '/calculators/lock-tco', label: 'Lock TCO calculator', detail: 'Compare hardware, batteries, subscriptions, hub cost, installation, and maintenance over the ownership period.' },
+    ]
 
     const angle = ratingWinner && priceWinner && ratingWinner !== priceWinner
         ? `${ratingWinner.name} has stronger average catalog ratings, while ${priceWinner.name} has the lower visible entry price. Compare exact models when confidence and budget point in different directions.`
@@ -91,6 +105,8 @@ function getGenericProfile(
         subtitle: `Compare ${brand1.name} and ${brand2.name} smart locks by price, protocol support, battery life, security signals, access features, door fit, and buying use case.`,
         verdict,
         angle,
+        commercialIntent,
+        calculatorPathways,
         faq: {
             question: `${brand1.name} vs ${brand2.name}: which smart lock brand is better?`,
             answer: angle,

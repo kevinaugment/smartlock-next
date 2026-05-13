@@ -275,6 +275,8 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
     const bestModel1 = getBestModel(products1)
     const bestModel2 = getBestModel(products2)
     const seoProfile = getComparisonSeoProfile(brand1, brand2, products1, products2)
+    const commercialIntent = seoProfile.commercialIntent
+    const calculatorPathways = seoProfile.calculatorPathways
     const pageUrl = `https://www.slockhub.com/compare/${slug}`
     const winnerCards = [
         {
@@ -485,6 +487,27 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
                                 winner={card.winner?.name || 'Tie / model-specific'}
                                 detail={card.detail}
                             />
+                        ))}
+                    </div>
+                </div>
+
+                <div className="card" style={{ marginBottom: 'var(--space-3xl)' }}>
+                    <h2 className="section-title">Best For, Avoid If, Evidence Needed</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {commercialIntent.map((block) => (
+                            <VerdictItem key={block.label} label="Commercial investigation" value={block.label} detail={block.detail} />
+                        ))}
+                    </div>
+                </div>
+
+                <div className="card" style={{ marginBottom: 'var(--space-3xl)' }}>
+                    <h2 className="section-title">Validate This Comparison With Tools</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {calculatorPathways.map((pathway) => (
+                            <Link key={pathway.href} href={pathway.href} className="link-card" prefetch={false}>
+                                <h3 className="link-card__title">{pathway.label}</h3>
+                                <p className="link-card__desc">{pathway.detail}</p>
+                            </Link>
                         ))}
                     </div>
                 </div>

@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 import { getTopNPageData } from '@/lib/services/brand-service'
 import { TopNPageModel } from '@/lib/db/brand-models'
 import { SeoPathways } from '@/components/seo/SeoPathways'
-import { getBestPageSeoProfile } from '@/lib/seo/best-page-seo'
+import { getBestPageCalculatorPathways, getBestPageCommercialIntent, getBestPageSeoProfile } from '@/lib/seo/best-page-seo'
 
 export const dynamic = 'force-dynamic'
 export const dynamicParams = true
@@ -164,6 +164,8 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
     const topProducts = pageData.products.slice(0, 3)
     const seoProfile = getBestPageSeoProfile(slug)
     const methodology = seoProfile?.methodology || getSelectionMethodology(pageData.title, pageData.products.length)
+    const commercialIntent = getBestPageCommercialIntent(slug)
+    const calculatorPathways = getBestPageCalculatorPathways(slug)
     const decisionTree = getDecisionTree(pageData.products)
     const intentSignals = getIntentSignals(slug)
     const protocolCount = new Set(pageData.products.flatMap((product) => [product.protocol, product.secondary_protocol].filter(Boolean))).size
@@ -273,6 +275,27 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                     {intentSignals.map((signal) => (
                         <SummaryStat key={signal.label} label="Ranking signal" value={signal.label} detail={signal.detail} />
                     ))}
+                </div>
+
+                <div className="content-card" style={{ marginBottom: 'var(--space-2xl)' }}>
+                    <h2 className="section-title">Best For, Avoid If, Evidence Needed</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {commercialIntent.map((block) => (
+                            <SummaryStat key={block.label} label="Commercial investigation" value={block.label} detail={block.detail} />
+                        ))}
+                    </div>
+                </div>
+
+                <div className="content-card" style={{ marginBottom: 'var(--space-2xl)' }}>
+                    <h2 className="section-title">Validate This Shortlist With Tools</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {calculatorPathways.map((pathway) => (
+                            <Link key={pathway.href} href={pathway.href} className="link-card" prefetch={false}>
+                                <h3 className="link-card__title">{pathway.label}</h3>
+                                <p className="link-card__desc">{pathway.detail}</p>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -497,12 +520,11 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                         <div className="content-card">
                             <h3 style={{ fontWeight: 600, marginBottom: 'var(--space-md)', fontSize: '1rem' }}>Calculate Your Needs</h3>
                             <div className="space-y-2">
-                                <Link href="/calculators/battery-life" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center', fontSize: '0.875rem' }} prefetch={false}>
-                                    Battery Life Calculator
-                                </Link>
-                                <Link href="/calculators/lock-tco" className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center', fontSize: '0.875rem' }} prefetch={false}>
-                                    Total Cost Calculator
-                                </Link>
+                                {calculatorPathways.slice(0, 3).map((pathway) => (
+                                    <Link key={pathway.href} href={pathway.href} className="btn btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center', fontSize: '0.875rem' }} prefetch={false}>
+                                        {pathway.label}
+                                    </Link>
+                                ))}
                             </div>
                         </div>
 

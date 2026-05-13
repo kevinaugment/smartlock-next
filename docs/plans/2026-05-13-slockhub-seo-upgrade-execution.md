@@ -98,19 +98,19 @@ Add a test that priority calculators include `EvidencePanel` and a last-verified
 - Modify: `app/compare/[slug]/page.tsx`
 - Test: `tests/seo-template-profiles.test.ts`
 
-- [ ] **Step 1: Add intent blocks for commercial investigation**
+- [x] **Step 1: Add intent blocks for commercial investigation**
 
 Each best/comparison page should show `Best for`, `Avoid if`, `Decision factor`, and `Evidence needed` blocks above the product list.
 
-- [ ] **Step 2: Expand protocol and use-case best-page profiles**
+- [x] **Step 2: Expand protocol and use-case best-page profiles**
 
 Prioritize `best-z-wave-smart-locks`, `best-smart-locks-for-airbnb`, `matter-smart-locks`, `smart-locks-with-longest-battery-life`, and `renter-friendly-smart-locks`.
 
-- [ ] **Step 3: Add calculator pathways**
+- [x] **Step 3: Add calculator pathways**
 
 Every best/comparison page should link to the relevant tool: battery, compatibility, signal, TCO, guest code, or protocol wizard.
 
-- [ ] **Step 4: Verify SEO templates**
+- [x] **Step 4: Verify SEO templates**
 
 Run `./node_modules/.bin/tsx tests/seo-template-profiles.test.ts` and confirm all profiles have specific title, description, methodology, and intent signals.
 

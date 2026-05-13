@@ -183,6 +183,9 @@ const profiles: Record<string, BestPageSeoProfile> = {
     },
 }
 
+profiles['best-smart-locks-for-airbnb'] = profiles['smart-locks-for-airbnb']
+profiles['renter-friendly-smart-locks-no-drill-apartments'] = profiles['renter-friendly-smart-locks']
+
 export function getBestPageSeoProfile(slug: string): BestPageSeoProfile | null {
     return profiles[slug] || null
 }

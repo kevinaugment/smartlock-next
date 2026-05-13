@@ -152,7 +152,16 @@ function main() {
     assertMeaningfulText(profile.faq.answer, `${slug1}-vs-${slug2} FAQ answer`)
   }
 
-  for (const slug of ['best-z-wave-smart-locks', 'z-wave-smart-locks', 'smart-locks-for-airbnb', 'matter-smart-locks', 'smart-locks-with-longest-battery-life', 'renter-friendly-smart-locks']) {
+  for (const slug of [
+    'best-z-wave-smart-locks',
+    'z-wave-smart-locks',
+    'best-smart-locks-for-airbnb',
+    'smart-locks-for-airbnb',
+    'matter-smart-locks',
+    'smart-locks-with-longest-battery-life',
+    'renter-friendly-smart-locks',
+    'renter-friendly-smart-locks-no-drill-apartments',
+  ]) {
     const profile = getBestPageSeoProfile(slug)
     assert.ok(profile, `${slug} must have a dedicated best-page SEO profile`)
     assertMeaningfulText(profile.title, `${slug} title`)

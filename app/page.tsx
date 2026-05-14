@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import {
   BookOpen, Calculator, Radio, Lock, Battery, Wrench,
   Building2, Lightbulb, Link as LinkIcon, DollarSign,
-  Wand2, Signal
+  Wand2, Signal, DoorOpen, ShieldCheck, Home, Database
 } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -31,7 +31,7 @@ const jsonLd = {
       name: 'SLockHub.com',
       url: 'https://www.slockhub.com',
       logo: 'https://www.slockhub.com/favicon.svg',
-      description: 'Smart lock guides for protocols, security, installation, troubleshooting, rental access, and product decisions.',
+      description: 'Independent smart lock planning tools, calculators, reference data, and buying decision guides.',
     },
     {
       '@type': 'WebSite',
@@ -52,10 +52,17 @@ const jsonLd = {
 }
 
 const decisionHubs = [
-  { href: '/calculators/compatibility', title: 'Check Door Fit', description: 'Start here if you are unsure whether a smart lock will fit your door.' },
-  { href: '/calculators/protocol-wizard', title: 'Choose a Protocol', description: 'Pick Wi-Fi, Z-Wave, Zigbee, Thread, Bluetooth, or Matter by use case.' },
-  { href: '/brands', title: 'Browse Brands', description: 'Compare brand catalogs, protocol support, and product depth.' },
-  { href: '/compare', title: 'Compare Options', description: 'Move into brand-vs-brand and protocol comparison paths.' },
+  { href: '/calculators/compatibility', title: 'Will this lock fit my door?', description: 'Check thickness, bore, backset, material, and install risk before buying.', icon: <DoorOpen className="w-5 h-5" /> },
+  { href: '/calculators/protocol-wizard', title: 'Which protocol should I use?', description: 'Choose Wi-Fi, Z-Wave, Zigbee, Thread, Bluetooth, or Matter by use case.', icon: <Wand2 className="w-5 h-5" /> },
+  { href: '/calculators/battery-life', title: 'How long will batteries last?', description: 'Estimate runtime by protocol, usage, temperature, and battery chemistry.', icon: <Battery className="w-5 h-5" /> },
+  { href: '/calculators/lock-tco', title: 'What will this cost over time?', description: 'Model hardware, installation, hubs, batteries, subscriptions, and maintenance.', icon: <DollarSign className="w-5 h-5" /> },
+]
+
+const problemRoutes = [
+  { href: '/calculators/signal-strength', label: 'Weak signal or offline lock', icon: <Signal className="w-5 h-5" /> },
+  { href: '/calculators/security-compliance', label: 'Security and compliance check', icon: <ShieldCheck className="w-5 h-5" /> },
+  { href: '/articles/use-cases/smart-locks-airbnb-complete-guide', label: 'Airbnb or rental workflow', icon: <Home className="w-5 h-5" /> },
+  { href: '/resources/reference-tables', label: 'Reference tables and specs', icon: <Database className="w-5 h-5" /> },
 ]
 
 export default function HomePage() {
@@ -70,28 +77,28 @@ export default function HomePage() {
           <div className="home-hero__grid">
             <div>
               <div className="tool-eyebrow">Smart lock decision tools</div>
-              <h1 className="hero__title">Plan, compare, and validate smart lock deployments</h1>
+              <h1 className="hero__title">Calculate smart lock fit, battery, protocol, and cost before buying</h1>
               <p className="hero__subtitle">
-                Practical calculators, protocol references, brand data, and installation checks for access control decisions.
+                SLockHub is an independent tool site for smart lock decisions. Start with a calculator, verify the assumptions, then compare models with fewer surprises.
               </p>
               <div className="grid-actions home-hero__actions">
                 <Link href="/calculators" className="btn btn-primary btn-lg" prefetch={false}>
                   <Calculator className="w-5 h-5" /> Open Calculators
                 </Link>
-                <Link href="/brands" className="btn btn-secondary btn-lg" prefetch={false}>
-                  <Lock className="w-5 h-5" /> Browse Brand Data
+                <Link href="/calculators/compatibility" className="btn btn-secondary btn-lg" prefetch={false}>
+                  <DoorOpen className="w-5 h-5" /> Check Door Fit
                 </Link>
-                <Link href="/articles" className="btn btn-ghost btn-lg" prefetch={false}>
-                  <BookOpen className="w-5 h-5" /> Read Guides
+                <Link href="/calculators/protocol-wizard" className="btn btn-ghost btn-lg" prefetch={false}>
+                  <Wand2 className="w-5 h-5" /> Choose Protocol
                 </Link>
               </div>
             </div>
 
             <aside className="home-hero__panel" aria-label="Primary checks">
-              <div className="tool-eyebrow">Deployment checks</div>
+              <div className="tool-eyebrow">Start with the problem</div>
               {decisionHubs.map((item) => (
                 <Link key={item.href} href={item.href} className="home-check-row" prefetch={false}>
-                  <span>{item.title}</span>
+                  <span>{item.icon}{item.title}</span>
                   <small>{item.description}</small>
                 </Link>
               ))}
@@ -100,10 +107,10 @@ export default function HomePage() {
 
           <div className="home-metrics">
             {[
-              { value: '70+', label: 'Technical Articles' },
+              { value: 'Tool-first', label: 'Independent planning site' },
               { value: '32', label: 'Interactive Tools' },
-              { value: '7', label: 'Topic Categories' },
-              { value: '100%', label: 'Free & Open' },
+              { value: '119', label: 'Supporting Guides' },
+              { value: 'Free', label: 'No account required' },
             ].map((stat) => (
               <div key={stat.label} className="home-metric">
                 <div className="hero__stat-value">
@@ -120,10 +127,11 @@ export default function HomePage() {
 
       <section className="section-sm section-alt home-decision-section">
         <div className="container-main">
-          <h2 className="section-title section-title--center">Fit, Protocol, Cost</h2>
+          <h2 className="section-title section-title--center">Choose the Next Tool</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
             {decisionHubs.map((item) => (
               <Link key={item.href} href={item.href} className="link-card" prefetch={false}>
+                <div style={{ color: 'var(--color-accent)', marginBottom: 'var(--space-sm)' }}>{item.icon}</div>
                 <h3 className="link-card__title">{item.title}</h3>
                 <p className="link-card__desc">{item.description}</p>
               </Link>
@@ -132,10 +140,32 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="section-sm">
+        <div className="container-main">
+          <div className="home-tool-router">
+            <div>
+              <div className="tool-eyebrow">More entry points</div>
+              <h2 className="section-title">Route by search intent</h2>
+              <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, maxWidth: '42rem' }}>
+                Use tools for decisions, reference tables for specifications, and guides for context. SLockHub is not a lock manufacturer or official brand site.
+              </p>
+            </div>
+            <div className="home-problem-grid">
+              {problemRoutes.map((item) => (
+                <Link key={item.href} href={item.href} className="home-problem-link" prefetch={false}>
+                  {item.icon}
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Smart Lock Guide Categories */}
       <section className="section">
         <div className="container-main">
-          <h2 className="section-title section-title--center">Guides, Security, Installation</h2>
+          <h2 className="section-title section-title--center">Guides That Support the Tools</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {categories.map((category) => (
               <Link

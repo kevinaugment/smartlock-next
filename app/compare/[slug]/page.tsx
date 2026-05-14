@@ -7,6 +7,7 @@ import { BrandModel, ProductModel, type Brand, type ProductWithBrand } from '@/l
 import { SeoPathways } from '@/components/seo/SeoPathways'
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
 import { getComparisonSeoProfile } from '@/lib/seo/comparison-page-seo'
+import { formatUsdCents } from '@/lib/format/price'
 
 export const dynamic = 'force-dynamic'
 export const dynamicParams = true
@@ -129,8 +130,8 @@ function getPriceRange(products: ProductWithBrand[]): string {
     if (prices.length === 0) return 'N/A'
     const min = Math.min(...prices)
     const max = Math.max(...prices)
-    if (min === max) return `$${min}`
-    return `$${min} – $${max}`
+    if (min === max) return formatUsdCents(min)
+    return `${formatUsdCents(min)} – ${formatUsdCents(max)}`
 }
 
 function getLowestPrice(products: ProductWithBrand[]): number | null {
@@ -876,7 +877,7 @@ function BestModelCard({ brand, product }: { brand: Brand; product: ProductWithB
                 {product.ansi_grade && <span className="badge badge-default">Grade {product.ansi_grade}</span>}
             </div>
             <p style={{ fontSize: '0.88rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
-                Rated {product.rating.toFixed(1)}/5 across {product.review_count || 0} reviews{product.price_usd ? `, with a listed price around $${product.price_usd}` : ''}.
+                Rated {product.rating.toFixed(1)}/5 across {product.review_count || 0} reviews{product.price_usd ? `, with a listed price around ${formatUsdCents(product.price_usd)}` : ''}.
             </p>
         </Link>
     )
@@ -945,7 +946,7 @@ function ProductList({ brand, products }: { brand: Brand; products: ProductWithB
                             </span>
                             {product.price_usd && (
                                 <span style={{ color: 'var(--color-text-muted)' }}>
-                                    ${product.price_usd}
+                                    {formatUsdCents(product.price_usd)}
                                 </span>
                             )}
                             {product.battery_life_months && (

@@ -24,6 +24,7 @@ export const priorityEvidenceCalculatorSlugs = [
   'installation-cost',
   'lock-tco',
   'compatibility',
+  'protocol-wizard',
 ] as const
 
 export type PriorityEvidenceCalculatorSlug = (typeof priorityEvidenceCalculatorSlugs)[number]
@@ -87,6 +88,18 @@ export const calculatorEvidenceProfiles: Record<PriorityEvidenceCalculatorSlug, 
       { type: 'standards-based', label: 'Door prep', note: 'Thickness, backset, bore, and latch-bore assumptions follow common ANSI/BHMA bored lock dimensions.' },
       { type: 'vendor-stated', label: 'Manufacturer manuals', note: 'Fit guidance references recurring requirements from major residential and commercial smart lock manuals.' },
       { type: 'field-observed', label: 'Install risk', note: 'Material, fire rating, glass, and strike alignment are treated as risk factors because they often trigger labor or code review.' },
+    ],
+  },
+  'protocol-wizard': {
+    slug: 'protocol-wizard',
+    title: 'Protocol decision evidence',
+    lastVerified: calculatorEvidenceLastVerified,
+    modelLimit: 'Protocol recommendations are planning guidance, not product guarantees. Final reliability still depends on the exact lock model, hub firmware, building materials, radio congestion, local internet, and ecosystem feature support.',
+    reviewCadence: 'Review protocol decision weights twice per year and whenever Matter, Thread, Z-Wave, Zigbee, Bluetooth, Wi-Fi, or major hub ecosystems change lock support.',
+    sourceNotes: [
+      { type: 'standards-based', label: 'Protocol behavior', note: 'Protocol tradeoffs are mapped from public radio standards and smart-home interoperability specifications.' },
+      { type: 'datasheet-derived', label: 'Battery and range inputs', note: 'Battery and range weights reuse the same chipset-class assumptions used by SLockHub battery and signal calculators.' },
+      { type: 'field-observed', label: 'Deployment friction', note: 'Hub, scale, local-control, and ecosystem weights reflect practical install risk across homes, rentals, and commercial doors.' },
     ],
   },
 }

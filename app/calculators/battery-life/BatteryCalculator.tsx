@@ -195,6 +195,9 @@ export default function BatteryCalculator() {
             <div className="text-6xl font-bold mb-2">{result.displayMonths}</div>
             <div className="text-xl opacity-90">{result.displayMonths === 1 ? 'month' : 'months'}</div>
             <div className="text-sm opacity-75 mt-2">({result.days} days)</div>
+            {result.isOutsideModelRange && (
+              <div className="text-xs opacity-75 mt-2">practical planning cap applied</div>
+            )}
           </div>
 
           <div className="space-y-3 text-sm bg-white/10 rounded-lg p-4 mb-6">

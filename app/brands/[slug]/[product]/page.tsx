@@ -8,6 +8,7 @@ import type { ProductDetail } from '@/lib/services/brand-service'
 import { ProductModel, ProductSeriesModel, type ProductWithBrand } from '@/lib/db/brand-models'
 import { SeoPathways } from '@/components/seo/SeoPathways'
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
+import { formatUsdCents, formatUsdCentsForSchema, isUsdCentsBelow, usdCentsToDollars } from '@/lib/format/price'
 import {
     brandFactLastVerified,
     brandFactReviewCadence,
@@ -85,14 +86,14 @@ export async function generateStaticParams() {
 
 function getPriceTier(priceUsd: number | undefined): string {
     if (!priceUsd) return 'Contact Manufacturer'
-    if (priceUsd < 150) return 'Budget-Friendly'
-    if (priceUsd < 300) return 'Mid-Range'
+    if (isUsdCentsBelow(priceUsd, 150)) return 'Budget-Friendly'
+    if (isUsdCentsBelow(priceUsd, 300)) return 'Mid-Range'
     return 'Premium'
 }
 
 function formatUsd(price: number | null | undefined): string {
     if (price == null) return 'Contact manufacturer'
-    return `$${price}`
+    return formatUsdCents(price)
 }
 
 function getDoorFitVerdict(product: ProductDetail): string {
@@ -263,7 +264,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                     '@type': 'Offer',
                                     url: product.buy_url || productUrl,
                                     priceCurrency: 'USD',
-                                    price: product.price_usd.toFixed(2),
+                                    price: formatUsdCentsForSchema(product.price_usd),
                                     availability: 'https://schema.org/InStock',
                                 },
                             }),
@@ -344,7 +345,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                                 protocol: product.protocol,
                                 matter: Boolean(matterFact?.supported),
                                 batteryMonths: product.battery_life_months || null,
-                                priceUsd: product.price_usd || null,
+                                priceUsd: usdCentsToDollars(product.price_usd),
+                                priceCents: product.price_usd || null,
                             }}
                             bullets={[
                                 'Captures model-level protocol, battery, price, and door-fit context.',

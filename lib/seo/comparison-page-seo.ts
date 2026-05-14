@@ -1,5 +1,6 @@
 import type { Brand, ProductWithBrand } from '@/lib/db/brand-models'
 import type { CalculatorPathway, CommercialIntentBlock } from '@/lib/seo/best-page-seo'
+import { formatUsdCents } from '@/lib/format/price'
 
 const CURRENT_YEAR = '2026'
 
@@ -25,8 +26,8 @@ function getPriceRange(products: ProductWithBrand[]): string {
     if (prices.length === 0) return 'N/A'
     const min = Math.min(...prices)
     const max = Math.max(...prices)
-    if (min === max) return `$${min}`
-    return `$${min} - $${max}`
+    if (min === max) return formatUsdCents(min)
+    return `${formatUsdCents(min)} - ${formatUsdCents(max)}`
 }
 
 function getProtocols(products: ProductWithBrand[]): string[] {

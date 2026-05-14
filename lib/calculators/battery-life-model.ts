@@ -47,6 +47,8 @@ export interface BatteryLifeInput {
 export interface BatteryLifeEstimate {
   days: number
   months: number
+  rawDays: number
+  practicalDays: number
   displayMonths: number
   displayLabel: string
   dailyPowerMwh: string
@@ -95,6 +97,22 @@ export const brandPresets: Record<string, { label: string; featureMultiplier: nu
   betech: { label: 'Be-Tech', featureMultiplier: 0.94, efficiency: 'Excellent (commercial)' },
 }
 
+const PRACTICAL_RUNTIME_CAP_DAYS = 730
+const MAX_STANDARD_PACK_DAYS = 540
+const MAX_EXTENDED_PACK_DAYS = 730
+const LOW_POWER_PROTOCOLS: BatteryProtocol[] = ['zigbee', 'zwave', 'thread', 'ble', 'nfc']
+
+function getPracticalRuntimeCap(input: BatteryLifeInput): number {
+  if (input.protocol === 'wifi') return 150
+  if (LOW_POWER_PROTOCOLS.includes(input.protocol)) {
+    if (input.batteryConfig === '8xAA' || input.batteryConfig === '4xC' || input.batteryConfig === 'usb-c-rechargeable') {
+      return MAX_EXTENDED_PACK_DAYS
+    }
+    return MAX_STANDARD_PACK_DAYS
+  }
+  return PRACTICAL_RUNTIME_CAP_DAYS
+}
+
 export function calculateSmartLockBatteryLife(input: BatteryLifeInput): BatteryLifeEstimate {
   const protocolInfo = protocolData.find((p) => p.protocol === input.protocol) || protocolData[0]
   const config = batteryConfigs.find((c) => c.key === input.batteryConfig) || batteryConfigs[0]
@@ -134,15 +152,19 @@ export function calculateSmartLockBatteryLife(input: BatteryLifeInput): BatteryL
   if (input.nightMode) featureMultiplier *= 0.92
   dailyTotalMwh *= featureMultiplier
 
-  const estimatedDays = Math.max(1, Math.floor(usableEnergyMwh / dailyTotalMwh))
+  const rawDays = Math.max(1, Math.floor(usableEnergyMwh / dailyTotalMwh))
+  const practicalCapDays = getPracticalRuntimeCap(input)
+  const estimatedDays = Math.min(rawDays, practicalCapDays)
   const displayMonths = Math.max(1, Math.round(estimatedDays / 30))
   const replacementsPerYear = 365 / estimatedDays
   const annualBatteryCost = replacementsPerYear * config.cellCount * chemistry.cellCost
-  const isOutsideModelRange = estimatedDays > 730
+  const isOutsideModelRange = rawDays > practicalCapDays
 
   return {
     days: estimatedDays,
     months: Math.floor(estimatedDays / 30),
+    rawDays,
+    practicalDays: estimatedDays,
     displayMonths,
     displayLabel: `${displayMonths} ${displayMonths === 1 ? 'month' : 'months'}`,
     dailyPowerMwh: dailyTotalMwh.toFixed(1),
@@ -151,7 +173,7 @@ export function calculateSmartLockBatteryLife(input: BatteryLifeInput): BatteryL
     replacementsPerYear: replacementsPerYear.toFixed(1),
     isOutsideModelRange,
     rangeNote: isOutsideModelRange
-      ? 'This estimate exceeds the 24-month planning cap. Treat it as a best-case upper bound and verify against the lock vendor battery specification.'
+      ? `The raw energy estimate is ${rawDays} days, but the calculator caps the planning result at ${practicalCapDays} days because self-discharge, firmware polling, motor strain, and low-voltage cutoff dominate long estimates.`
       : 'Estimate is inside the normal planning range for consumer smart locks.',
   }
 }

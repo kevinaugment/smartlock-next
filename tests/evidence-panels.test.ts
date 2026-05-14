@@ -9,6 +9,7 @@ const priorityPages = [
   'installation-cost',
   'lock-tco',
   'compatibility',
+  'protocol-wizard',
 ] as const
 
 const staleEvidencePhrases = [

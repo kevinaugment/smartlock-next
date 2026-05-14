@@ -43,7 +43,7 @@ function product(brandSlug: string, overrides: Partial<ProductWithBrand> = {}): 
     slug: `${brandSlug}-lock`,
     model_number: null,
     description: '',
-    price_usd: 199,
+    price_usd: 19900,
     currency: 'USD',
     battery_type: null,
     battery_count: null,
@@ -138,11 +138,13 @@ function main() {
       brand(slug1, name1),
       brand(slug2, name2),
       [product(slug1)],
-      [product(slug2, { price_usd: 149, rating: 4.1 })]
+      [product(slug2, { price_usd: 14900, rating: 4.1 })]
     )
 
     assert.match(profile.title, new RegExp(`${name1}|${name2}`), `${slug1}-vs-${slug2} title must name a queried brand`)
     assertMeaningfulText(profile.description, `${slug1}-vs-${slug2} description`)
+    assert.doesNotMatch(profile.description, /\$19900|\$14900/, `${slug1}-vs-${slug2} description must not render raw price cents`)
+    assert.doesNotMatch(profile.description, /\$1\.99|\$1\.49/, `${slug1}-vs-${slug2} description must not double-convert price cents`)
     assertMeaningfulText(profile.subtitle, `${slug1}-vs-${slug2} subtitle`)
     assertMeaningfulText(profile.verdict, `${slug1}-vs-${slug2} verdict`)
     assertMeaningfulText(profile.angle, `${slug1}-vs-${slug2} angle`)

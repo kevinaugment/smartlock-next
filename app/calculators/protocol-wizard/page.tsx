@@ -9,7 +9,8 @@ import { SeoPathways } from '@/components/seo/SeoPathways'
 import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
 import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
 import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
-import { calculatorEvidenceLastVerified, calculatorEvidenceReviewCadence } from '@/lib/seo/evidence'
+import { EvidencePanel } from '@/components/seo/EvidencePanel'
+import { calculatorEvidenceLastVerified, calculatorEvidenceProfiles, calculatorEvidenceReviewCadence } from '@/lib/seo/evidence'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Protocol Wizard | Zigbee vs Z-Wave vs Wi-Fi Selector',
@@ -29,6 +30,7 @@ export const metadata: Metadata = {
 }
 
 export default function ProtocolWizardPage() {
+  const evidenceProfile = calculatorEvidenceProfiles['protocol-wizard']
   const evidenceLastVerified = calculatorEvidenceLastVerified
   const evidenceReviewCadence = calculatorEvidenceReviewCadence
 
@@ -234,6 +236,10 @@ export default function ProtocolWizardPage() {
                 { href: '/calculators/lock-tco', title: 'Quantify 5-Year Cost', description: 'Convert protocol choice into battery, hub, and maintenance cost.' },
               ]}
             />
+          </div>
+
+          <div className="max-w-7xl mx-auto">
+            <EvidencePanel profile={evidenceProfile} />
           </div>
 
           {/* Brand reference */}

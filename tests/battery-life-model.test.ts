@@ -94,6 +94,36 @@ function main() {
   const methodology = getBatteryLifeMethodology()
   assert.match(methodology.formula, /usable energy/i, 'methodology must disclose the usable-energy formula')
   assert.match(methodology.rangeLimit, /24 months/i, 'methodology must disclose the planning cap')
+
+  const lowUsageEstimate = calculateSmartLockBatteryLife({
+    protocol: 'zigbee',
+    dailyUsage: 1,
+    batteryConfig: '8xAA',
+    batteryChemistry: 'alkaline',
+    temperature: 'normal',
+    brand: 'generic',
+    environment: 'indoor',
+    nightMode: true,
+    features: {
+      hasKeypad: false,
+      hasAutoLock: false,
+      hasFingerprint: false,
+      hasCamera: false,
+      hasDoorbell: false,
+      hasBleAdvertising: false,
+      hasWifiKeepAlive: false,
+    },
+  })
+
+  assert.ok(
+    lowUsageEstimate.rawDays > lowUsageEstimate.days,
+    'low-use theoretical estimates should expose the raw estimate separately from the practical planning result'
+  )
+  assert.ok(
+    lowUsageEstimate.days <= 730,
+    `extended-pack low-power estimates must be capped to a practical planning range, received ${lowUsageEstimate.days} days`
+  )
+  assert.equal(lowUsageEstimate.isOutsideModelRange, true, 'capped estimates must be flagged')
 }
 
 main()

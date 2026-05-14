@@ -16,6 +16,7 @@ import {
     getProtocolClaimText,
     getSupportedProtocolLabels,
 } from '@/lib/brands/fact-policy'
+import { formatUsdCents } from '@/lib/format/price'
 
 export const dynamic = 'force-dynamic'
 export const dynamicParams = true
@@ -73,12 +74,7 @@ function getPriceRange(products: Product[]): string {
     if (prices.length === 0) return 'Retailer pricing varies'
     const min = Math.min(...prices)
     const max = Math.max(...prices)
-    return min === max ? formatPrice(min) : `${formatPrice(min)}-${formatPrice(max)}`
-}
-
-function formatPrice(price: number): string {
-    const normalized = price >= 1000 ? price / 100 : price
-    return `$${Math.round(normalized)}`
+    return min === max ? formatUsdCents(min) : `${formatUsdCents(min)}-${formatUsdCents(max)}`
 }
 
 function getAvgBattery(products: Product[]): string {

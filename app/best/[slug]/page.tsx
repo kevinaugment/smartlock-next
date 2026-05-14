@@ -6,6 +6,7 @@ import { getTopNPageData } from '@/lib/services/brand-service'
 import { TopNPageModel } from '@/lib/db/brand-models'
 import { SeoPathways } from '@/components/seo/SeoPathways'
 import { getBestPageCalculatorPathways, getBestPageCommercialIntent, getBestPageSeoProfile } from '@/lib/seo/best-page-seo'
+import { formatUsdCents, isUsdCentsBelow } from '@/lib/format/price'
 
 export const dynamic = 'force-dynamic'
 export const dynamicParams = true
@@ -67,7 +68,7 @@ function getBestForBadges(product: NonNullable<Awaited<ReturnType<typeof getTopN
     if (product.battery_life_months && product.battery_life_months >= 12) badges.push('Longer battery planning')
     if (product.ansi_grade) badges.push(`Grade ${product.ansi_grade} security`)
     if (product.has_guest_codes || product.has_remote_access) badges.push('Guest access')
-    if (product.price_usd && product.price_usd < 150) badges.push('Budget shortlist')
+    if (isUsdCentsBelow(product.price_usd, 150)) badges.push('Budget shortlist')
     return badges.slice(0, 3)
 }
 
@@ -409,7 +410,7 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                                                     </td>
                                                     <td>{product.protocol.toUpperCase()}</td>
                                                     <td>{product.battery_life_months ? `${product.battery_life_months} mo` : '—'}</td>
-                                                    <td>{product.price_usd ? `$${product.price_usd}` : '—'}</td>
+                                                    <td>{product.price_usd ? formatUsdCents(product.price_usd) : '—'}</td>
                                                     <td>{product.ansi_grade ? `Grade ${product.ansi_grade}` : '—'}</td>
                                                     <td>{product.has_fingerprint ? 'Yes' : 'No'}</td>
                                                 </tr>
@@ -438,7 +439,7 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                                                 </div>
                                                 <div className="comparison-card__row">
                                                     <span className="comparison-card__label">Price</span>
-                                                    <span className="comparison-card__value">{product.price_usd ? `$${product.price_usd}` : '—'}</span>
+                                                    <span className="comparison-card__value">{product.price_usd ? formatUsdCents(product.price_usd) : '—'}</span>
                                                 </div>
                                                 <div className="comparison-card__row">
                                                     <span className="comparison-card__label">Security</span>

@@ -8,6 +8,7 @@ import { ToolRating } from '@/components/ToolRating'
 import { RelatedResources } from '@/components/calculators/RelatedResources'
 import { CalculatorAnswerBlock } from '@/components/seo/CalculatorAnswerBlock'
 import { CalculatorFaqBlock } from '@/components/seo/CalculatorFaqBlock'
+import { CalculatorSeoBlock } from '@/components/seo/CalculatorSeoBlock'
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
 import { EvidencePanel } from '@/components/seo/EvidencePanel'
 import { calculatorEvidenceProfiles } from '@/lib/seo/evidence'
@@ -675,6 +676,43 @@ export default function TCOCalculator() {
         </div>
 
         <ToolRating toolSlug="lock-tco" />
+
+        <div className="max-w-7xl mx-auto">
+          <CalculatorSeoBlock
+            title="How the TCO model is calculated"
+            answers={[
+              'Whether a cheaper lock stays cheaper after batteries, hubs, subscriptions, maintenance, and replacements.',
+              'How protocol choice changes operating cost through battery replacement and hub requirements.',
+              'Which cost driver deserves negotiation before buying hardware or approving a deployment.',
+            ]}
+            formula={{
+              label: 'Ownership model',
+              equation: 'TCO = hardware + hub + installation + batteries + subscriptions + cloud platform + maintenance + warranty risk',
+              notes: 'The model separates one-time and recurring costs so a low hardware price does not hide battery visits, per-door SaaS fees, or out-of-warranty replacement risk.',
+            }}
+            assumptions={[
+              'Battery replacement frequency starts from protocol defaults and is adjusted by daily usage.',
+              'Regional multipliers approximate market pricing but do not replace local quotes.',
+              'Warranty replacement risk uses a planning failure-rate assumption rather than a prediction for one model.',
+            ]}
+            example={{
+              title: 'Three rental doors over five years',
+              inputs: '3 locks, Zigbee, DIY install, no subscription, 10 operations/day',
+              result: 'Hub cost is visible upfront, but lower battery replacement frequency can offset it over the ownership period.',
+              decision: 'Compare against Wi-Fi before choosing hub-free locks for remote rentals.',
+            }}
+            sources={[
+              'Retail hardware and hub price bands used as market benchmarks.',
+              'Protocol battery defaults aligned with SLockHub battery-life assumptions.',
+              'Maintenance, warranty, and subscription inputs are exposed so users can replace defaults with quote data.',
+            ]}
+            links={[
+              { href: '/calculators/battery-life', title: 'Validate Battery Burden', description: 'Model replacement intervals before accepting the TCO default.' },
+              { href: '/calculators/protocol-wizard', title: 'Recheck Protocol Fit', description: 'Choose the protocol that fits range, hub, and battery priorities.' },
+              { href: '/calculators/installation-cost', title: 'Estimate Install Cost', description: 'Add door-prep and labor assumptions to the ownership model.' },
+            ]}
+          />
+        </div>
 
         <div className="max-w-7xl mx-auto">
           <EvidencePanel profile={evidenceProfile} />

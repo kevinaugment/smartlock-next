@@ -76,6 +76,8 @@ Make the homepage a calculator and decision-path router, not a generic guide hub
 
 Use existing data to grow high-intent clusters.
 
+**Status:** Implemented for the published Best-page cluster. All 20 seeded `/best/*` pages now have dedicated tool-first SEO profiles instead of relying on generic fallback copy, with unique titles/descriptions, intent-specific evidence limits, commercial investigation blocks, and calculator pathways to real tool pages. Tests now cross-check the profile list against the published `top_n_pages` seed data to prevent future Best pages from launching without a dedicated profile.
+
 - Best by use case: Airbnb, renter-friendly, long battery life, Matter, Z-Wave.
 - Protocol pages: Wi-Fi vs Z-Wave, Zigbee vs Z-Wave, Thread vs Zigbee, Matter over Thread.
 - Comparison pages: brand-vs-brand with calculator validation above product lists.

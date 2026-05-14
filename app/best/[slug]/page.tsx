@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 import { getTopNPageData } from '@/lib/services/brand-service'
 import { TopNPageModel } from '@/lib/db/brand-models'
 import { SeoPathways } from '@/components/seo/SeoPathways'
-import { getBestPageCalculatorPathways, getBestPageCommercialIntent, getBestPageSeoProfile } from '@/lib/seo/best-page-seo'
+import { getBestPageCalculatorPathways, getBestPageCommercialIntent, getBestPageFaqs, getBestPageSeoProfile } from '@/lib/seo/best-page-seo'
 import { formatUsdCents, isUsdCentsBelow } from '@/lib/format/price'
 
 export const dynamic = 'force-dynamic'
@@ -82,6 +82,19 @@ function getMissingDataNote(products: NonNullable<Awaited<ReturnType<typeof getT
         missingSecurity > 0 ? `${missingSecurity} model${missingSecurity === 1 ? '' : 's'} have limited security certification detail` : null,
     ].filter(Boolean)
     return notes.length > 0 ? notes.join('; ') + '.' : 'Core price, battery, and security fields are present for the ranked models.'
+}
+
+function getProductEvidenceSummary(product: NonNullable<Awaited<ReturnType<typeof getTopNPageData>>>['products'][number]): string {
+    const evidence: string[] = [`${product.protocol.toUpperCase()} protocol`]
+    if (product.battery_life_months) evidence.push(`${product.battery_life_months}-month listed battery estimate`)
+    if (product.ansi_grade) evidence.push(`ANSI/BHMA Grade ${product.ansi_grade}`)
+    if (product.has_keypad) evidence.push('keypad access')
+    if (product.has_fingerprint) evidence.push('fingerprint access')
+    if (product.has_guest_codes) evidence.push('guest-code support')
+    if (product.supports_matter) evidence.push('Matter support')
+    if (product.price_usd) evidence.push(`${formatUsdCents(product.price_usd)} listed price`)
+
+    return `${product.brand_name} ${product.name} is included in this shortlist based on structured SLockHub catalog fields: ${evidence.join(', ')}. Validate door fit, signal quality, battery assumptions, and backup entry before treating it as the best option for your installation.`
 }
 
 function getDecisionTree(products: NonNullable<Awaited<ReturnType<typeof getTopNPageData>>>['products']) {
@@ -167,6 +180,7 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
     const methodology = seoProfile?.methodology || getSelectionMethodology(pageData.title, pageData.products.length)
     const commercialIntent = getBestPageCommercialIntent(slug)
     const calculatorPathways = getBestPageCalculatorPathways(slug)
+    const faqs = getBestPageFaqs(slug, pageData.faqs)
     const decisionTree = getDecisionTree(pageData.products)
     const intentSignals = getIntentSignals(slug)
     const protocolCount = new Set(pageData.products.flatMap((product) => [product.protocol, product.secondary_protocol].filter(Boolean))).size
@@ -219,7 +233,7 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                             '@context': 'https://schema.org',
                             '@type': 'Product',
                             name: `${product.brand_name} ${product.name}`,
-                            description: product.description || '',
+                            description: getProductEvidenceSummary(product),
                             category: pageData.title,
                             brand: {
                                 '@type': 'Brand',
@@ -342,7 +356,7 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                                     </Link>
 
                                     <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-md)', lineHeight: 1.6 }}>
-                                        {product.description}
+                                        {getProductEvidenceSummary(product)}
                                     </p>
 
                                     {/* Key Specs row */}
@@ -551,11 +565,11 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                 </div>
 
                 {/* FAQ Section */}
-                {pageData.faqs.length > 0 && (
+                {faqs.length > 0 && (
                     <div className="content-card" style={{ marginTop: 'var(--space-3xl)' }}>
                         <h2 className="section-title">Frequently Asked Questions</h2>
                         <div className="space-y-6">
-                            {pageData.faqs.map((faq, i) => (
+                            {faqs.map((faq, i) => (
                                 <div key={i}>
                                     <h3 style={{ fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-sm)', fontSize: '1rem' }}>
                                         {faq.question}

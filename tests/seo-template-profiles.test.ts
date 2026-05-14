@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { getComparisonSeoProfile } from '../lib/seo/comparison-page-seo'
 import {
   getBestPageCalculatorPathways,
   getBestPageCommercialIntent,
+  getBestPageFaqs,
   getBestPageSeoProfile,
 } from '../lib/seo/best-page-seo'
 import type { Brand, ProductWithBrand } from '../lib/db/brand-models'
@@ -104,6 +105,7 @@ function assertCalculatorPathways(pathways: Array<{ href: string; label: string;
   assert.equal(pathways.length >= 3, true, `${label} must include at least three calculator pathways`)
   for (const pathway of pathways) {
     assert.ok(expectedCalculatorPrefixes.some((prefix) => pathway.href.startsWith(prefix)), `${label} pathway must link to calculator: ${pathway.href}`)
+    assert.ok(existsSync(`app${pathway.href}/page.tsx`), `${label} pathway must point to an implemented calculator page: ${pathway.href}`)
     assert.ok(pathway.label.length >= 8, `${label} pathway label must be clear`)
     assert.equal(pathway.label.includes('undefined'), false, `${label} pathway label must not contain undefined`)
     assert.equal(pathway.label.includes('null'), false, `${label} pathway label must not contain null`)
@@ -111,7 +113,61 @@ function assertCalculatorPathways(pathways: Array<{ href: string; label: string;
   }
 }
 
+function assertProfileFaqs(faqs: Array<{ question: string; answer: string }>, label: string) {
+  assert.equal(faqs.length, 5, `${label} must include five profile FAQs`)
+  assert.equal(new Set(faqs.map((faq) => faq.question)).size, faqs.length, `${label} FAQ questions must be unique`)
+  const joinedFaqs = faqs.map((faq) => `${faq.question} ${faq.answer}`).join(' ')
+  assert.doesNotMatch(joinedFaqs, /\btested\b|\bverified\b|unhackable|99\.7|0\.002|gold standard|unbeatable|ALL ecosystems|Expert-ranked|expert-ranked|pinnacle|exclusive to premium/i, `${label} FAQs must not carry unsupported legacy claims`)
+  for (const faq of faqs) {
+    assert.ok(faq.question.length >= 25, `${label} FAQ question must be clear enough for SEO use`)
+    assert.equal(faq.question.includes('undefined'), false, `${label} FAQ question must not contain undefined`)
+    assert.equal(faq.question.includes('null'), false, `${label} FAQ question must not contain null`)
+    assertMeaningfulText(faq.answer, `${label} FAQ answer`)
+  }
+}
+
+function getPublishedTopNPageSlugsFromSeed(): string[] {
+  const seed = readFileSync('database/d1-import-ordered.sql', 'utf8')
+  const slugs: string[] = []
+  const topNPageInsertPattern = /INSERT INTO "top_n_pages" \([^)]+\) VALUES \([^,]+, '([^']+)'[\s\S]*?'published'/g
+  let match: RegExpExecArray | null
+  while ((match = topNPageInsertPattern.exec(seed))) {
+    slugs.push(match[1])
+  }
+  return slugs
+}
+
 function main() {
+  const canonicalBestPageSlugs = [
+    'z-wave-smart-locks',
+    'smart-locks-for-airbnb',
+    'matter-smart-locks',
+    'smart-locks-with-longest-battery-life',
+    'renter-friendly-smart-locks',
+    'smart-locks-2026',
+    'thread-smart-locks',
+    'smart-locks-for-apartments',
+    'smart-locks-for-rental-properties',
+    'smart-locks-for-commercial',
+    'smart-locks-for-families',
+    'smart-locks-for-home-security',
+    'auto-unlock-smart-locks',
+    'homekit-smart-locks',
+    'wifi-smart-locks',
+    'zigbee-smart-locks',
+    'fingerprint-smart-locks',
+    'keypad-smart-locks',
+    'budget-smart-locks',
+    'mid-range-smart-locks',
+    'premium-smart-locks',
+  ]
+  const publishedTopNPageSlugs = getPublishedTopNPageSlugsFromSeed()
+  assert.deepEqual(
+    [...canonicalBestPageSlugs].sort(),
+    [...publishedTopNPageSlugs, 'renter-friendly-smart-locks'].sort(),
+    'canonical best-page profile test list must cover every published top_n_pages slug plus intentional aliases'
+  )
+
   const comparisonPairs = [
     ['nuki', 'Nuki', 'tedee', 'Tedee'],
     ['schlage', 'Schlage', 'weiser', 'Weiser'],
@@ -156,13 +212,9 @@ function main() {
 
   for (const slug of [
     'best-z-wave-smart-locks',
-    'z-wave-smart-locks',
     'best-smart-locks-for-airbnb',
-    'smart-locks-for-airbnb',
-    'matter-smart-locks',
-    'smart-locks-with-longest-battery-life',
-    'renter-friendly-smart-locks',
     'renter-friendly-smart-locks-no-drill-apartments',
+    ...canonicalBestPageSlugs,
   ]) {
     const profile = getBestPageSeoProfile(slug)
     assert.ok(profile, `${slug} must have a dedicated best-page SEO profile`)
@@ -174,15 +226,27 @@ function main() {
     assert.equal(profile.intentSignals.length, 3, `${slug} must define three intent signals`)
     assertCommercialIntent(getBestPageCommercialIntent(slug), slug)
     assertCalculatorPathways(getBestPageCalculatorPathways(slug), slug)
+    assertProfileFaqs(getBestPageFaqs(slug, [{ question: 'Legacy seed question?', answer: 'Legacy seed answer.' }]), slug)
   }
 
-  assertCommercialIntent(getBestPageCommercialIntent('budget-smart-locks'), 'fallback best page')
-  assertCalculatorPathways(getBestPageCalculatorPathways('budget-smart-locks'), 'fallback best page')
+  const bestPageTitles = canonicalBestPageSlugs.map((slug) => getBestPageSeoProfile(slug)?.title)
+  const bestPageDescriptions = canonicalBestPageSlugs.map((slug) => getBestPageSeoProfile(slug)?.description)
+  assert.equal(new Set(bestPageTitles).size, canonicalBestPageSlugs.length, 'canonical best-page profiles must not reuse titles')
+  assert.equal(new Set(bestPageDescriptions).size, canonicalBestPageSlugs.length, 'canonical best-page profiles must not reuse descriptions')
+
+  assertCommercialIntent(getBestPageCommercialIntent('garage-smart-locks'), 'fallback best page')
+  assertCalculatorPathways(getBestPageCalculatorPathways('garage-smart-locks'), 'fallback best page')
+  assert.deepEqual(getBestPageFaqs('garage-smart-locks', [{ question: 'Fallback question?', answer: 'Fallback answer.' }]), [{ question: 'Fallback question?', answer: 'Fallback answer.' }], 'fallback best page must preserve supplied DB FAQs')
 
   const bestPage = readFileSync('app/best/[slug]/page.tsx', 'utf8')
   assert.match(bestPage, /Best For, Avoid If, Evidence Needed/, 'best page must render commercial intent block')
   assert.match(bestPage, /Validate This Shortlist With Tools/, 'best page must render calculator pathways above product list')
   assert.match(bestPage, /calculatorPathways\.map/, 'best page must render configured calculator pathways')
+  assert.match(bestPage, /getBestPageFaqs\(slug, pageData\.faqs\)/, 'best page must prefer profile FAQs over legacy DB FAQs')
+  assert.doesNotMatch(bestPage, /pageData\.faqs\.map/, 'best page must not directly render legacy DB FAQs')
+  assert.match(bestPage, /function getProductEvidenceSummary/, 'best page must generate product summaries from structured evidence')
+  assert.match(bestPage, /description: getProductEvidenceSummary\(product\)/, 'best page Product schema must use structured evidence summaries')
+  assert.doesNotMatch(bestPage, /\{product\.description\}/, 'best page must not directly render legacy product descriptions')
 
   const comparePage = readFileSync('app/compare/[slug]/page.tsx', 'utf8')
   assert.match(comparePage, /Best For, Avoid If, Evidence Needed/, 'compare page must render commercial intent block')

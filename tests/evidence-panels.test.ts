@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { calculatorEvidenceProfiles, priorityEvidenceCalculatorSlugs } from '../lib/seo/evidence'
+import type { EvidenceSourceType } from '../lib/seo/evidence'
 
 const priorityPages = [
   'battery-life',
@@ -24,7 +25,7 @@ const expectedSourceTypes = [
   'standards-based',
   'market-benchmark',
   'field-observed',
-]
+] satisfies EvidenceSourceType[]
 
 function main() {
   assert.deepEqual(priorityEvidenceCalculatorSlugs, priorityPages, 'priority evidence slugs must match Batch 2 scope')
@@ -68,7 +69,7 @@ function main() {
   const securityArticle = readFileSync('app/_articles/security/smart-lock-security-complete-analysis.mdx', 'utf8')
   assert.match(securityArticle, /## Methodology And Scope/, 'security article must include methodology and scope')
   assert.match(securityArticle, /## Evidence Status And Change Log/, 'security article must include evidence status and change log')
-  assert.match(securityArticle, /Last verified: 2026-05-13/, 'security article must disclose last verification date')
+  assert.match(securityArticle, /Last verified: 2026-08-06/, 'security article must disclose last verification date')
   assert.doesNotMatch(securityArticle, /full CVE database/i, 'security article must not overclaim a maintained full CVE database')
 }
 

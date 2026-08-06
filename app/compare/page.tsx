@@ -3,6 +3,7 @@ import Link from 'next/link'
 import {
   ArrowRight, CheckCircle, XCircle, GitCompareArrows
 } from 'lucide-react'
+import { priorityComparisonLinks } from '@/lib/seo/priority-comparisons'
 
 export const metadata: Metadata = {
   title: 'Smart Lock Comparisons | Brands, Protocols, Battery & Cost',
@@ -187,6 +188,21 @@ export default function ComparePage() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {popularComparisons.map((item) => (
+              <Link key={item.href} href={item.href} className="link-card" prefetch={false}>
+                <h3 className="link-card__title">{item.title}</h3>
+                <p className="link-card__desc">{item.detail}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+          <h2 className="section-title">Priority Brand Matchups</h2>
+          <p style={{ color: 'var(--color-text-secondary)', maxWidth: '52rem', lineHeight: 1.7, marginBottom: 'var(--space-xl)' }}>
+            Start with these brand pairs when the decision depends on security, budget, retrofit fit, region, ecosystem, or door compatibility.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {priorityComparisonLinks.map((item) => (
               <Link key={item.href} href={item.href} className="link-card" prefetch={false}>
                 <h3 className="link-card__title">{item.title}</h3>
                 <p className="link-card__desc">{item.detail}</p>

@@ -1,7 +1,10 @@
 import { MetadataRoute } from 'next'
 import { cache } from 'react'
 import { getAllArticles } from '@/lib/articles/registry'
+import { calculatorRouteSlugs } from '@/lib/calculators/slugs'
 import { BrandModel, ProductModel, TopNPageModel } from '@/lib/db/brand-models'
+import { getCanonicalComparisonHref, priorityComparisonLinks } from '@/lib/seo/priority-comparisons'
+import { priorityBestPageLinks, protocolPageLinks } from '@/lib/seo/priority-pages'
 
 const BASE_URL = 'https://www.slockhub.com'
 
@@ -27,6 +30,14 @@ function toSitemapDate(dateStr: string | undefined | null): string {
 const BUILD_DATE = new Date().toISOString().slice(0, 10) // YYYY-MM-DD
 
 const getSeoProducts = cache(() => ProductModel.getAllForSeo())
+
+function uniqueSitemapPages(pages: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
+    const byUrl = new Map<string, MetadataRoute.Sitemap[number]>()
+    for (const page of pages) {
+        byUrl.set(page.url, page)
+    }
+    return Array.from(byUrl.values())
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const articles = getAllArticles()
@@ -149,21 +160,34 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
 
     // Calculator pages
-    const calculatorSlugs = [
-        'lock-tco', 'battery-life', 'protocol-wizard', 'signal-strength',
-        'str-roi', 'installation-cost', 'compatibility', 'mesh-planner',
-        'rf-coverage', 'fleet-planner', 'credential-planner', 'installation-time',
-        'subscription-compare', 'offline-resilience', 'emergency-backup',
-        'access-capacity', 'security-compliance', 'lock-compare', 'warranty-lifecycle',
-        'network-bandwidth', 'poe-power', 'fire-compliance', 'guest-code', 'ble-range',
-        'cyber-risk', 'door-fit', 'energy-cost', 'hotel-roi',
-        'noise-level', 'pin-strength', 'privacy-compliance', 'retrofit-advisor',
-    ]
-    const calculatorPages: MetadataRoute.Sitemap = calculatorSlugs.map((slug) => ({
+    const calculatorPages: MetadataRoute.Sitemap = calculatorRouteSlugs.map((slug) => ({
         url: `${BASE_URL}/calculators/${slug}`,
         lastModified: BUILD_DATE,
         changeFrequency: 'monthly' as const,
         priority: 0.9,
+    }))
+
+    const priorityComparisonPages: MetadataRoute.Sitemap = priorityComparisonLinks.map((link) => ({
+        url: `${BASE_URL}${link.href}`,
+        lastModified: BUILD_DATE,
+        changeFrequency: 'monthly' as const,
+        priority: link.source === 'gsc' ? 0.8 : 0.7,
+    }))
+
+    const priorityBrandPages: MetadataRoute.Sitemap = Array.from(
+        new Set(priorityComparisonLinks.flatMap(link => link.slugs))
+    ).map((slug) => ({
+        url: `${BASE_URL}/brands/${slug}`,
+        lastModified: BUILD_DATE,
+        changeFrequency: 'weekly' as const,
+        priority: 0.75,
+    }))
+
+    const priorityBestPages: MetadataRoute.Sitemap = priorityBestPageLinks.map((link) => ({
+        url: `${BASE_URL}${link.href}`,
+        lastModified: BUILD_DATE,
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
     }))
 
     // Dynamic brand/product/best pages (from database)
@@ -184,8 +208,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         // Brand comparison pages (all combinations)
         for (let i = 0; i < brands.length; i++) {
             for (let j = i + 1; j < brands.length; j++) {
+                const href = getCanonicalComparisonHref(brands[i].slug, brands[j].slug)
                 comparisonPages.push({
-                    url: `${BASE_URL}/compare/${brands[i].slug}-vs-${brands[j].slug}`,
+                    url: `${BASE_URL}${href}`,
                     lastModified: BUILD_DATE,
                     changeFrequency: 'monthly' as const,
                     priority: 0.7,
@@ -213,7 +238,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     // Protocol pages (static list)
-    const protocolSlugs = ['z-wave', 'zigbee', 'wifi', 'bluetooth', 'thread', 'matter']
     const protocolPages: MetadataRoute.Sitemap = [
         {
             url: `${BASE_URL}/protocols`,
@@ -221,23 +245,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             changeFrequency: 'monthly' as const,
             priority: 0.7,
         },
-        ...protocolSlugs.map((slug) => ({
-            url: `${BASE_URL}/protocols/${slug}`,
+        ...protocolPageLinks.map((link) => ({
+            url: `${BASE_URL}${link.href}`,
             lastModified: BUILD_DATE,
             changeFrequency: 'monthly' as const,
             priority: 0.7,
         })),
     ]
 
-    return [
+    return uniqueSitemapPages([
         ...staticPages,
         ...categoryPages,
         ...articlePages,
         ...calculatorPages,
         ...protocolPages,
+        ...priorityComparisonPages,
+        ...priorityBrandPages,
+        ...priorityBestPages,
         ...comparisonPages,
         ...brandPages,
         ...productPages,
         ...bestPages,
-    ]
+    ])
 }

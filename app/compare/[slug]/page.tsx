@@ -7,6 +7,7 @@ import { BrandModel, ProductModel, type Brand, type ProductWithBrand } from '@/l
 import { SeoPathways } from '@/components/seo/SeoPathways'
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
 import { getComparisonSeoProfile } from '@/lib/seo/comparison-page-seo'
+import { getCanonicalComparisonHref, getRelatedComparisonLinks } from '@/lib/seo/priority-comparisons'
 import { formatUsdCents } from '@/lib/format/price'
 
 export const dynamic = 'force-dynamic'
@@ -50,6 +51,8 @@ function parseBrandSlugs(slug: string): { slug1: string; slug2: string } | null 
 async function getComparisonData(slug: string): Promise<ComparisonData | null> {
     const parsed = parseBrandSlugs(slug)
     if (!parsed) return null
+    const canonicalSlug = getCanonicalComparisonHref(parsed.slug1, parsed.slug2).replace('/compare/', '')
+    if (canonicalSlug !== slug) return null
 
     const [brands, products] = await Promise.all([
         getBrandsForComparison(),
@@ -106,7 +109,8 @@ export async function generateStaticParams() {
 
         for (let i = 0; i < brands.length; i++) {
             for (let j = i + 1; j < brands.length; j++) {
-                params.push({ slug: `${brands[i].slug}-vs-${brands[j].slug}` })
+                const href = getCanonicalComparisonHref(brands[i].slug, brands[j].slug)
+                params.push({ slug: href.replace('/compare/', '') })
             }
         }
 
@@ -278,6 +282,14 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
     const seoProfile = getComparisonSeoProfile(brand1, brand2, products1, products2)
     const commercialIntent = seoProfile.commercialIntent
     const calculatorPathways = seoProfile.calculatorPathways
+    const relatedComparisonLinks = getRelatedComparisonLinks([brand1.slug, brand2.slug], `/compare/${slug}`, 8)
+    const caveatItems = [
+        { label: 'Door fit', detail: seoProfile.caveats.doorFit },
+        { label: 'Protocol', detail: seoProfile.caveats.protocol },
+        { label: 'Price', detail: seoProfile.caveats.price },
+        { label: 'Region', detail: seoProfile.caveats.region },
+        { label: 'Model', detail: seoProfile.caveats.model },
+    ]
     const pageUrl = `https://www.slockhub.com/compare/${slug}`
     const winnerCards = [
         {
@@ -635,18 +647,12 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
                                 Choose {brand1.name} if...
                             </h3>
                             <ul className="space-y-2">
-                                <li className="flex items-start gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                                    <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--color-success)' }} />
-                                    You need {getProtocols(products1).join(' or ')} protocol support
-                                </li>
-                                <li className="flex items-start gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                                    <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--color-success)' }} />
-                                    Your budget is around {getPriceRange(products1)}
-                                </li>
-                                <li className="flex items-start gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                                    <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--color-success)' }} />
-                                    You prioritize the {brand1.target_market || 'general'} market segment
-                                </li>
+                                {seoProfile.chooseReasons.brand1.map((reason) => (
+                                    <li key={reason} className="flex items-start gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+                                        <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--color-success)' }} />
+                                        {reason}
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                         <div>
@@ -654,20 +660,23 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
                                 Choose {brand2.name} if...
                             </h3>
                             <ul className="space-y-2">
-                                <li className="flex items-start gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                                    <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--color-success)' }} />
-                                    You need {getProtocols(products2).join(' or ')} protocol support
-                                </li>
-                                <li className="flex items-start gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                                    <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--color-success)' }} />
-                                    Your budget is around {getPriceRange(products2)}
-                                </li>
-                                <li className="flex items-start gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                                    <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--color-success)' }} />
-                                    You prioritize the {brand2.target_market || 'general'} market segment
-                                </li>
+                                {seoProfile.chooseReasons.brand2.map((reason) => (
+                                    <li key={reason} className="flex items-start gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+                                        <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--color-success)' }} />
+                                        {reason}
+                                    </li>
+                                ))}
                             </ul>
                         </div>
+                    </div>
+                </div>
+
+                <div style={{ marginBottom: 'var(--space-3xl)' }}>
+                    <h2 className="section-title">Door, Region, Model Caveats</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                        {caveatItems.map((item) => (
+                            <VerdictItem key={item.label} label="Decision caveat" value={item.label} detail={item.detail} />
+                        ))}
                     </div>
                 </div>
 
@@ -681,6 +690,15 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
                         <VerdictItem label="Protocol breadth" value={`${protocols1.length} vs ${protocols2.length}`} detail="Primary and secondary protocols represented." />
                         <VerdictItem label="Matter models" value={`${getMatterCount(products1)} vs ${getMatterCount(products2)}`} detail="Models marked with Matter support." />
                         <VerdictItem label="Battery evidence" value={`${getAvgBatteryLife(products1)} vs ${getAvgBatteryLife(products2)}`} detail="Average from models with battery-life data." />
+                    </div>
+                </div>
+
+                <div style={{ marginBottom: 'var(--space-3xl)' }}>
+                    <h2 className="section-title">Evidence and Update Boundary</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <VerdictItem label="Last reviewed" value={seoProfile.evidence.lastVerified} detail="Visible comparison copy and catalog-field assumptions are reviewed on this cadence." />
+                        <VerdictItem label="Source boundary" value="Catalog fields" detail={seoProfile.evidence.sourceBoundary} />
+                        <VerdictItem label="Data limitations" value="Verify before buying" detail={seoProfile.evidence.dataLimitations} />
                     </div>
                 </div>
 
@@ -748,6 +766,20 @@ export default async function BrandComparisonPage({ params }: { params: Promise<
                         ))}
                     </div>
                 </div>
+
+                {relatedComparisonLinks.length > 0 && (
+                    <section className="content-card" style={{ marginBottom: 'var(--space-3xl)' }}>
+                        <h2 className="section-title">Related Brand Matchups</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            {relatedComparisonLinks.map((link) => (
+                                <Link key={link.href} href={link.href} className="link-card" prefetch={false}>
+                                    <h3 className="link-card__title">{link.title}</h3>
+                                    <p className="link-card__desc">{link.detail}</p>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+                )}
 
                 {/* Related Comparisons CTA */}
                 <div className="cta-section">

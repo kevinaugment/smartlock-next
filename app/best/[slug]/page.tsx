@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 import { getTopNPageData } from '@/lib/services/brand-service'
 import { TopNPageModel } from '@/lib/db/brand-models'
 import { SeoPathways } from '@/components/seo/SeoPathways'
-import { getBestPageCalculatorPathways, getBestPageCommercialIntent, getBestPageFaqs, getBestPageSeoProfile } from '@/lib/seo/best-page-seo'
+import { getBestPageCalculatorPathways, getBestPageCommercialIntent, getBestPageEvidence, getBestPageFaqs, getBestPageSeoProfile } from '@/lib/seo/best-page-seo'
 import { formatUsdCents, isUsdCentsBelow } from '@/lib/format/price'
 
 export const dynamic = 'force-dynamic'
@@ -180,6 +180,7 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
     const methodology = seoProfile?.methodology || getSelectionMethodology(pageData.title, pageData.products.length)
     const commercialIntent = getBestPageCommercialIntent(slug)
     const calculatorPathways = getBestPageCalculatorPathways(slug)
+    const evidenceBoundary = getBestPageEvidence(slug)
     const faqs = getBestPageFaqs(slug, pageData.faqs)
     const decisionTree = getDecisionTree(pageData.products)
     const intentSignals = getIntentSignals(slug)
@@ -290,6 +291,17 @@ export default async function TopNPage({ params }: { params: Promise<{ slug: str
                     {intentSignals.map((signal) => (
                         <SummaryStat key={signal.label} label="Ranking signal" value={signal.label} detail={signal.detail} />
                     ))}
+                </div>
+
+                <div style={{ marginBottom: 'var(--space-2xl)' }}>
+                    <h2 className="section-title">Review, Inclusion, Data Limits</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <SummaryStat label="Last reviewed" value={evidenceBoundary.lastVerified} detail="Visible ranking rules and catalog-field assumptions are reviewed on this cadence." />
+                        <SummaryStat label="Inclusion rule" value="Category fit" detail={evidenceBoundary.inclusionRule} />
+                        <SummaryStat label="Exclusion rule" value="Thin evidence" detail={evidenceBoundary.exclusionRule} />
+                        <SummaryStat label="Source boundary" value="Catalog fields" detail={evidenceBoundary.sourceBoundary} />
+                        <SummaryStat label="Data limits" value="Verify before buying" detail={evidenceBoundary.dataLimitations} />
+                    </div>
                 </div>
 
                 <div className="content-card" style={{ marginBottom: 'var(--space-2xl)' }}>

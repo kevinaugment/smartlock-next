@@ -1,4 +1,5 @@
 const CURRENT_YEAR = '2026'
+const BEST_PAGE_LAST_REVIEWED = 'August 2026'
 
 export interface CommercialIntentBlock {
     label: 'Best for' | 'Avoid if' | 'Decision factor' | 'Evidence needed'
@@ -14,6 +15,14 @@ export interface CalculatorPathway {
 export interface BestPageFaq {
     question: string
     answer: string
+}
+
+export interface BestPageEvidence {
+    lastVerified: string
+    inclusionRule: string
+    exclusionRule: string
+    sourceBoundary: string
+    dataLimitations: string
 }
 
 export interface BestPageSeoProfile {
@@ -666,4 +675,17 @@ export function getBestPageFaqs(slug: string, fallbackFaqs: BestPageFaq[] = []):
     const profile = profiles[slug]
     if (!profile) return fallbackFaqs
     return profile.faqs || buildProfileFaqs(profile)
+}
+
+export function getBestPageEvidence(slug: string): BestPageEvidence {
+    const profile = profiles[slug]
+    const category = profile ? getCategoryName(profile) : slug.replace(/-/g, ' ')
+
+    return {
+        lastVerified: BEST_PAGE_LAST_REVIEWED,
+        inclusionRule: `Included models must match the published ${category} page intent and have enough catalog data to compare protocol, access, battery, price, security, or door-fit signals.`,
+        exclusionRule: `Models are treated as lower-confidence or excluded from recommendations when the category fit, availability, required hub, door compatibility, or evidence fields are too thin for a buying decision.`,
+        sourceBoundary: 'Rankings use SLockHub catalog fields, page rules, active product status, listed prices, battery estimates, protocol fields, access features, and security or door-fit data where available.',
+        dataLimitations: 'Retail price, firmware support, ecosystem behavior, installer requirements, warranty terms, and regional SKU availability can change after publication and should be verified before purchase.',
+    }
 }

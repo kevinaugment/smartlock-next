@@ -1,12 +1,27 @@
 import assert from 'node:assert/strict'
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
+import { join } from 'node:path'
 import { getComparisonSeoProfile } from '../lib/seo/comparison-page-seo'
+import type { ComparisonCaveats } from '../lib/seo/comparison-page-seo'
 import {
   getBestPageCalculatorPathways,
   getBestPageCommercialIntent,
+  getBestPageEvidence,
   getBestPageFaqs,
   getBestPageSeoProfile,
 } from '../lib/seo/best-page-seo'
+import {
+  getCanonicalComparisonHref,
+  getBrandComparisonLinks,
+  getComparisonPairKey,
+  getRelatedComparisonLinks,
+  priorityComparisonLinks,
+} from '../lib/seo/priority-comparisons'
+import {
+  coreHubLinks,
+  priorityBestPageLinks,
+  strategicSeoPathwayLinks,
+} from '../lib/seo/priority-pages'
 import type { Brand, ProductWithBrand } from '../lib/db/brand-models'
 
 function brand(slug: string, name: string): Brand {
@@ -15,21 +30,18 @@ function brand(slug: string, name: string): Brand {
     name,
     slug,
     description: `${name} smart locks`,
-    logo_url: null,
-    website_url: null,
-    country: null,
-    founded_year: null,
-    parent_company: null,
-    market_position: null,
+    supports_wifi: true,
+    supports_zigbee: false,
+    supports_zwave: false,
+    supports_thread: false,
+    supports_matter: false,
+    supports_bluetooth: true,
     target_market: 'Residential',
     price_tier: 'mid',
-    warranty_years: null,
-    support_rating: null,
-    innovation_score: null,
+    rating: 4.2,
+    featured: false,
     status: 'published',
     display_order: 1,
-    meta_title: null,
-    meta_description: null,
     created_at: '',
     updated_at: '',
   }
@@ -42,39 +54,25 @@ function product(brandSlug: string, overrides: Partial<ProductWithBrand> = {}): 
     series_id: 1,
     name: `${brandSlug} lock`,
     slug: `${brandSlug}-lock`,
-    model_number: null,
     description: '',
     price_usd: 19900,
-    currency: 'USD',
-    battery_type: null,
-    battery_count: null,
     battery_life_months: 12,
-    standby_power_mw: null,
-    active_power_mw: null,
     protocol: 'wifi',
-    secondary_protocol: null,
     supports_matter: false,
     has_fingerprint: false,
     has_keypad: true,
+    has_auto_lock: true,
+    has_auto_unlock: false,
+    has_voice_control: false,
     has_guest_codes: true,
+    has_activity_log: true,
+    has_physical_key: true,
     has_remote_access: true,
-    max_pin_codes: null,
-    max_fingerprints: null,
-    door_thickness_min_mm: null,
-    door_thickness_max_mm: null,
-    bore_diameter_mm: null,
-    backset_mm: null,
     ansi_grade: '2',
     ul_listed: false,
-    encryption_type: null,
-    ip_rating: null,
+    operations_per_day: 10,
     rating: 4.3,
     review_count: 100,
-    pros_json: null,
-    cons_json: null,
-    specs_json: null,
-    meta_title: null,
-    meta_description: null,
     is_active: true,
     display_order: 1,
     created_at: '',
@@ -126,6 +124,41 @@ function assertProfileFaqs(faqs: Array<{ question: string; answer: string }>, la
   }
 }
 
+function assertComparisonDecisionProfile(
+  profile: {
+    chooseReasons: { brand1: string[]; brand2: string[] }
+    caveats: ComparisonCaveats
+    evidence: { lastVerified: string; sourceBoundary: string; dataLimitations: string }
+  },
+  label: string
+) {
+  assert.equal(profile.chooseReasons.brand1.length, 3, `${label} must define three brand1 choice reasons`)
+  assert.equal(profile.chooseReasons.brand2.length, 3, `${label} must define three brand2 choice reasons`)
+  for (const reason of [...profile.chooseReasons.brand1, ...profile.chooseReasons.brand2]) {
+    assertMeaningfulText(reason, `${label} choice reason`)
+  }
+  for (const [key, value] of Object.entries(profile.caveats)) {
+    assertMeaningfulText(value, `${label} ${key} caveat`)
+  }
+  assert.ok(profile.evidence.lastVerified.length >= 6, `${label} evidence must include a visible review date`)
+  assertMeaningfulText(profile.evidence.sourceBoundary, `${label} source boundary`)
+  assertMeaningfulText(profile.evidence.dataLimitations, `${label} data limitations`)
+}
+
+function assertBestPageEvidence(evidence: {
+  lastVerified: string
+  inclusionRule: string
+  exclusionRule: string
+  sourceBoundary: string
+  dataLimitations: string
+}, label: string) {
+  assert.ok(evidence.lastVerified.length >= 6, `${label} evidence must include a visible review date`)
+  assertMeaningfulText(evidence.inclusionRule, `${label} inclusion rule`)
+  assertMeaningfulText(evidence.exclusionRule, `${label} exclusion rule`)
+  assertMeaningfulText(evidence.sourceBoundary, `${label} source boundary`)
+  assertMeaningfulText(evidence.dataLimitations, `${label} data limitations`)
+}
+
 function getPublishedTopNPageSlugsFromSeed(): string[] {
   const seed = readFileSync('database/d1-import-ordered.sql', 'utf8')
   const slugs: string[] = []
@@ -135,6 +168,45 @@ function getPublishedTopNPageSlugsFromSeed(): string[] {
     slugs.push(match[1])
   }
   return slugs
+}
+
+function collectSourceFiles(dir: string): string[] {
+  const files: string[] = []
+  for (const entry of readdirSync(dir)) {
+    if (entry.startsWith('.')) continue
+    const path = join(dir, entry)
+    const stats = statSync(path)
+    if (stats.isDirectory()) {
+      files.push(...collectSourceFiles(path))
+      continue
+    }
+    if (/\.(ts|tsx|md|mdx|json)$/.test(path)) files.push(path)
+  }
+  return files
+}
+
+function assertInternalCompareLinksAreCanonical() {
+  const sourceFiles = ['app', 'components', 'lib']
+    .filter(existsSync)
+    .flatMap(collectSourceFiles)
+    .filter(path => !path.endsWith('lib/articles/content.generated.ts'))
+
+  const violations: string[] = []
+  const compareHrefPattern = /\/compare\/([a-z0-9-]+)-vs-([a-z0-9-]+)/g
+
+  for (const file of sourceFiles) {
+    const text = readFileSync(file, 'utf8')
+    let match: RegExpExecArray | null
+    while ((match = compareHrefPattern.exec(text))) {
+      const href = `/compare/${match[1]}-vs-${match[2]}`
+      const canonicalHref = getCanonicalComparisonHref(match[1], match[2])
+      if (href !== canonicalHref) {
+        violations.push(`${file}: ${href} should be ${canonicalHref}`)
+      }
+    }
+  }
+
+  assert.deepEqual(violations, [], 'internal static compare links must use canonical comparison URLs')
 }
 
 function main() {
@@ -167,13 +239,34 @@ function main() {
     [...publishedTopNPageSlugs, 'renter-friendly-smart-locks'].sort(),
     'canonical best-page profile test list must cover every published top_n_pages slug plus intentional aliases'
   )
+  assert.deepEqual(
+    priorityBestPageLinks.map(link => link.href).sort(),
+    publishedTopNPageSlugs.map(slug => `/best/${slug}`).sort(),
+    'priority best-page links must cover exactly the published top_n_pages slugs used for sitemap fallback'
+  )
+  for (const href of [
+    '/calculators',
+    '/protocols',
+    '/resources',
+    '/articles/security/smart-lock-security-complete-analysis',
+    '/best/smart-locks-with-longest-battery-life',
+    '/articles/guides/door-compatibility-guide',
+  ]) {
+    assert.ok(strategicSeoPathwayLinks.some(link => link.href === href), `${href} must be present in shared strategic SEO pathways`)
+  }
+  assert.ok(coreHubLinks.some(link => link.href === '/resources'), 'core hub links must expose the resources hub, not only resource subpages')
+  assertInternalCompareLinksAreCanonical()
 
   const comparisonPairs = [
     ['nuki', 'Nuki', 'tedee', 'Tedee'],
     ['schlage', 'Schlage', 'weiser', 'Weiser'],
     ['kwikset', 'Kwikset', 'defiant', 'Defiant'],
     ['schlage', 'Schlage', 'defiant', 'Defiant'],
+    ['kwikset', 'Kwikset', 'schlage', 'Schlage'],
+    ['samsung', 'Samsung', 'xiaomi', 'Xiaomi'],
+    ['tedee', 'Tedee', 'august', 'August'],
     ['schlage', 'Schlage', 'veise', 'Veise'],
+    ['veise', 'Veise', 'schlage', 'Schlage'],
     ['switchbot', 'SwitchBot', 'nuki', 'Nuki'],
     ['august', 'August', 'nuki', 'Nuki'],
     ['august', 'August', 'switchbot', 'SwitchBot'],
@@ -206,8 +299,65 @@ function main() {
     assertMeaningfulText(profile.angle, `${slug1}-vs-${slug2} angle`)
     assertCommercialIntent(profile.commercialIntent, `${slug1}-vs-${slug2}`)
     assertCalculatorPathways(profile.calculatorPathways, `${slug1}-vs-${slug2}`)
+    assertComparisonDecisionProfile(profile, `${slug1}-vs-${slug2}`)
     assertMeaningfulText(profile.faq.question, `${slug1}-vs-${slug2} FAQ question`)
     assertMeaningfulText(profile.faq.answer, `${slug1}-vs-${slug2} FAQ answer`)
+  }
+
+  const requiredPriorityComparisonHrefs = [
+    '/compare/schlage-vs-weiser',
+    '/compare/schlage-vs-defiant',
+    '/compare/kwikset-vs-defiant',
+    '/compare/nuki-vs-tedee',
+    '/compare/kwikset-vs-schlage',
+    '/compare/samsung-vs-xiaomi',
+    '/compare/tedee-vs-august',
+    '/compare/veise-vs-schlage',
+    '/compare/lockly-vs-schlage',
+    '/compare/eufy-vs-simplisafe',
+  ]
+  assert.equal(
+    new Set(priorityComparisonLinks.map(link => link.href)).size,
+    priorityComparisonLinks.length,
+    'priority comparison links must not duplicate hrefs'
+  )
+  assert.equal(
+    new Set(priorityComparisonLinks.map(link => getComparisonPairKey(link.slugs))).size,
+    priorityComparisonLinks.length,
+    'priority comparison links must not expose duplicate directions for the same brand pair'
+  )
+  for (const link of priorityComparisonLinks) {
+    assert.equal(
+      link.href,
+      getCanonicalComparisonHref(link.slugs[0], link.slugs[1]),
+      `${link.href} must be the canonical internal URL for its brand pair`
+    )
+  }
+  for (const href of requiredPriorityComparisonHrefs) {
+    const link = priorityComparisonLinks.find(item => item.href === href)
+    assert.ok(link, `${href} must exist in the shared priority comparison source`)
+    assert.equal(link?.source, 'gsc', `${href} must be marked as a GSC priority comparison`)
+    assertMeaningfulText(link?.detail || '', `${href} priority detail`)
+  }
+  const duplicateDirectionChecks = [
+    ['schlage', 'kwikset', '/compare/kwikset-vs-schlage'],
+    ['august', 'tedee', '/compare/tedee-vs-august'],
+    ['schlage', 'veise', '/compare/veise-vs-schlage'],
+    ['schlage', 'lockly', '/compare/lockly-vs-schlage'],
+    ['yale', 'aqara', '/compare/aqara-vs-yale'],
+    ['switchbot', 'nuki', '/compare/nuki-vs-switchbot'],
+  ] as const
+  for (const [slug1, slug2, expectedHref] of duplicateDirectionChecks) {
+    assert.equal(getCanonicalComparisonHref(slug1, slug2), expectedHref, `${slug1}/${slug2} must resolve to the priority URL`)
+    assert.equal(getCanonicalComparisonHref(slug2, slug1), expectedHref, `${slug2}/${slug1} must resolve to the same priority URL`)
+  }
+  const samsungRelatedLinks = getRelatedComparisonLinks(['samsung', 'xiaomi'], '/compare/samsung-vs-xiaomi', 8)
+  assert.equal(samsungRelatedLinks.some(link => link.href === '/compare/samsung-vs-xiaomi'), false, 'related comparison links must exclude the current page')
+  const reverseKwiksetSchlageRelatedLinks = getRelatedComparisonLinks(['schlage', 'kwikset'], '/compare/schlage-vs-kwikset', 8)
+  assert.equal(reverseKwiksetSchlageRelatedLinks.some(link => link.href === '/compare/kwikset-vs-schlage'), false, 'related comparison links must exclude the same unordered pair even when the current URL is a reverse direction')
+  assert.ok(getBrandComparisonLinks('samsung', 3).some(link => link.href === '/compare/samsung-vs-xiaomi'), 'Samsung brand page must link to the Samsung vs Xiaomi priority comparison')
+  for (const link of getBrandComparisonLinks('defiant', 5)) {
+    assert.equal(link.href, getCanonicalComparisonHref(link.slugs[0], link.slugs[1]), `${link.href} brand fallback link must use the canonical comparison URL`)
   }
 
   for (const slug of [
@@ -226,6 +376,7 @@ function main() {
     assert.equal(profile.intentSignals.length, 3, `${slug} must define three intent signals`)
     assertCommercialIntent(getBestPageCommercialIntent(slug), slug)
     assertCalculatorPathways(getBestPageCalculatorPathways(slug), slug)
+    assertBestPageEvidence(getBestPageEvidence(slug), slug)
     assertProfileFaqs(getBestPageFaqs(slug, [{ question: 'Legacy seed question?', answer: 'Legacy seed answer.' }]), slug)
   }
 
@@ -240,6 +391,8 @@ function main() {
 
   const bestPage = readFileSync('app/best/[slug]/page.tsx', 'utf8')
   assert.match(bestPage, /Best For, Avoid If, Evidence Needed/, 'best page must render commercial intent block')
+  assert.match(bestPage, /Review, Inclusion, Data Limits/, 'best page must render visible evidence boundaries')
+  assert.match(bestPage, /getBestPageEvidence\(slug\)/, 'best page must load shared evidence boundaries')
   assert.match(bestPage, /Validate This Shortlist With Tools/, 'best page must render calculator pathways above product list')
   assert.match(bestPage, /calculatorPathways\.map/, 'best page must render configured calculator pathways')
   assert.match(bestPage, /getBestPageFaqs\(slug, pageData\.faqs\)/, 'best page must prefer profile FAQs over legacy DB FAQs')
@@ -249,9 +402,41 @@ function main() {
   assert.doesNotMatch(bestPage, /\{product\.description\}/, 'best page must not directly render legacy product descriptions')
 
   const comparePage = readFileSync('app/compare/[slug]/page.tsx', 'utf8')
+  assert.match(comparePage, /getCanonicalComparisonHref/, 'compare static params must use canonical comparison URLs')
+  assert.match(comparePage, /const canonicalSlug = getCanonicalComparisonHref\(parsed\.slug1, parsed\.slug2\)\.replace\('\/compare\/', ''\)/, 'compare detail route must calculate the canonical slug before rendering')
+  assert.match(comparePage, /if \(canonicalSlug !== slug\) return null/, 'compare detail route must 404 reverse-direction duplicate URLs')
   assert.match(comparePage, /Best For, Avoid If, Evidence Needed/, 'compare page must render commercial intent block')
   assert.match(comparePage, /Validate This Comparison With Tools/, 'compare page must render calculator pathways above product list')
   assert.match(comparePage, /commercialIntent\.map/, 'compare page must render configured commercial intent blocks')
+  assert.match(comparePage, /seoProfile\.chooseReasons\.brand1\.map/, 'compare page must render pair-specific brand1 choice reasons')
+  assert.match(comparePage, /Door, Region, Model Caveats/, 'compare page must render pair-specific caveats')
+  assert.match(comparePage, /Evidence and Update Boundary/, 'compare page must render visible evidence boundaries')
+  assert.match(comparePage, /Related Brand Matchups/, 'compare page must render related comparison silo links')
+
+  const compareHub = readFileSync('app/compare/page.tsx', 'utf8')
+  assert.match(compareHub, /priorityComparisonLinks\.map/, 'compare hub must render shared priority comparison links')
+
+  const brandPage = readFileSync('app/brands/[slug]/page.tsx', 'utf8')
+  assert.match(brandPage, /getBrandComparisonLinks\(brandSlug, 3\)/, 'brand pages must use shared priority comparison links')
+
+  const seoPathways = readFileSync('components/seo/SeoPathways.tsx', 'utf8')
+  assert.match(seoPathways, /strategicSeoPathwayLinks/, 'SeoPathways must render shared strategic SEO pathways')
+  assert.match(seoPathways, /Research Hubs/, 'SeoPathways must label shared research hub links')
+
+  const humanSitemap = readFileSync('app/sitemap/page.tsx', 'utf8')
+  assert.match(humanSitemap, /Priority Brand Comparisons/, 'human sitemap must expose priority comparison links')
+  assert.match(humanSitemap, /coreHubLinks\.map/, 'human sitemap must render shared core hub links')
+  assert.match(humanSitemap, /priorityBestPageLinks\.map/, 'human sitemap must render shared priority best-page links')
+
+  const xmlSitemap = readFileSync('app/sitemap.ts', 'utf8')
+  assert.match(xmlSitemap, /calculatorRouteSlugs\.map/, 'XML sitemap must use the shared calculator slug registry')
+  assert.match(xmlSitemap, /getCanonicalComparisonHref/, 'XML sitemap must canonicalize dynamic brand comparison URLs')
+  assert.match(xmlSitemap, /priorityComparisonLinks\.map/, 'XML sitemap must include priority comparison fallback URLs')
+  assert.match(xmlSitemap, /priorityBestPageLinks\.map/, 'XML sitemap must include priority best-page fallback URLs')
+  assert.match(xmlSitemap, /uniqueSitemapPages/, 'XML sitemap must de-duplicate static fallback and dynamic DB URLs')
+
+  const packageJson = readFileSync('package.json', 'utf8')
+  assert.match(packageJson, /"test:seo"/, 'package scripts must expose the SEO regression test bundle')
 }
 
 main()

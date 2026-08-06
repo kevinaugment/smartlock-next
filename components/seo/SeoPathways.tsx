@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { strategicSeoPathwayLinks } from '@/lib/seo/priority-pages'
 
 type PathwayTopic = 'compatibility' | 'homekit' | 'installation' | 'signal' | 'comparison' | 'product'
 
@@ -42,6 +43,9 @@ const PATHWAYS: Record<PathwayTopic, Array<{ href: string; title: string; descri
 
 export function SeoPathways({ topic, title = 'Recommended Next Steps' }: SeoPathwaysProps) {
     const links = PATHWAYS[topic]
+    const strategicLinks = strategicSeoPathwayLinks.filter(
+        strategicLink => !links.some(link => link.href === strategicLink.href)
+    )
 
     return (
         <section className="content-card" style={{ marginTop: 'var(--space-3xl)' }}>
@@ -56,6 +60,22 @@ export function SeoPathways({ topic, title = 'Recommended Next Steps' }: SeoPath
                         </span>
                     </Link>
                 ))}
+            </div>
+            <div style={{ marginTop: 'var(--space-2xl)' }}>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 'var(--space-md)' }}>
+                    Research Hubs
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {strategicLinks.map((link) => (
+                        <Link key={link.href} href={link.href} className="link-card" prefetch={false}>
+                            <h3 className="link-card__title">{link.title}</h3>
+                            <p className="link-card__desc">{link.description}</p>
+                            <span style={{ display: 'inline-block', marginTop: 'var(--space-sm)', color: 'var(--color-accent)', fontSize: '0.875rem', fontWeight: 600 }}>
+                                Open →
+                            </span>
+                        </Link>
+                    ))}
+                </div>
             </div>
         </section>
     )

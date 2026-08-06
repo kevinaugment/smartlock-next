@@ -543,8 +543,8 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     description: "Compare Matter, HomeKit, and Z-Wave smart locks for property managers by interoperability, battery life, range, hubs, security, and fleet operations.",
     category: 'protocols',
     pubDate: '2026-05-09',
-    wordCount: 359,
-    readingTime: 2,
+    wordCount: 980,
+    readingTime: 5,
     keywords: ["Matter vs HomeKit smart lock", "Z-Wave smart lock", "Matter smart lock", "HomeKit smart lock", "smart lock protocol comparison"],
     tags: ["matter", "homekit", "z-wave", "property-management"],
     isPillar: false,
@@ -552,7 +552,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     featured: true,
     relatedArticles: ["smart-lock-protocols-overview", "apple-home-key-smart-locks-guide", "zigbee-vs-zwave-comparison"],
     relatedTools: ["protocol-wizard", "signal-strength", "mesh-planner"],
-    updatedAt: '2026-05-09',
+    updatedAt: '2026-08-07',
   },
   'z-wave-vs-matter-smart-locks': {
     slug: 'z-wave-vs-matter-smart-locks',
@@ -628,8 +628,8 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     description: "Compare Thread and Zigbee smart locks by battery life, hub requirements, 2.4 GHz range, Matter support, ecosystem maturity, and installation planning.",
     category: 'protocols',
     pubDate: '2026-05-09',
-    wordCount: 379,
-    readingTime: 2,
+    wordCount: 930,
+    readingTime: 5,
     keywords: ["thread vs zigbee smart lock", "Thread smart lock", "Zigbee smart lock", "Thread vs Zigbee battery"],
     tags: ["thread", "zigbee", "matter", "mesh"],
     isPillar: false,
@@ -637,7 +637,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     featured: true,
     relatedArticles: ["matter-over-thread-smart-locks", "zigbee-vs-zwave-comparison", "smart-lock-protocols-overview"],
     relatedTools: ["protocol-wizard", "signal-strength", "mesh-planner"],
-    updatedAt: '2026-05-09',
+    updatedAt: '2026-08-07',
   },
   'wifi-vs-z-wave-smart-locks': {
     slug: 'wifi-vs-z-wave-smart-locks',
@@ -730,8 +730,8 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     description: "Choose enterprise smart lock protocols by door count, audit logs, identity integration, network capacity, offline access, compliance, and support operations.",
     category: 'protocols',
     pubDate: '2026-05-09',
-    wordCount: 387,
-    readingTime: 2,
+    wordCount: 920,
+    readingTime: 5,
     keywords: ["enterprise smart lock protocol", "commercial smart lock protocol", "smart lock protocol selection enterprise", "multi site smart lock deployment"],
     tags: ["enterprise", "commercial", "protocol-selection", "access-control"],
     isPillar: false,
@@ -739,7 +739,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     featured: true,
     relatedArticles: ["enterprise-commercial-deployment", "enterprise-system-integration", "smart-lock-mesh-network-planning"],
     relatedTools: ["fleet-planner", "access-capacity", "network-bandwidth"],
-    updatedAt: '2026-05-09',
+    updatedAt: '2026-08-07',
   },
   'best-z-wave-smart-locks-hubs-apartments': {
     slug: 'best-z-wave-smart-locks-hubs-apartments',
@@ -1212,12 +1212,12 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
   // ==================== INTEGRATION ====================
   'enterprise-system-integration': {
     slug: 'enterprise-system-integration',
-    title: "Smart Lock Enterprise System Integration: Complete Technical Guide",
-    description: "Deep dive into integrating smart locks with HR systems, calendar platforms, visitor management, and building automation. Includes API architectures, code examples, error handling strategies, and real-world implementation patterns.",
+    title: "Smart Lock Enterprise System Integration Planning Guide",
+    description: "Plan smart lock integration with HR, identity, visitor, property, calendar, and building systems using source-of-truth rules, sync patterns, logs, retries, privacy controls, and fallback access.",
     category: 'integration',
     pubDate: '2024-02-05',
-    wordCount: 595,
-    readingTime: 3,
+    wordCount: 1170,
+    readingTime: 6,
     keywords: ["smart lock API integration", "HR system integration smart lock", "calendar integration access control", "enterprise access automation", "building automation integration", "smart lock webhook integration"],
     tags: ["api-integration", "automation", "enterprise", "hr-systems", "calendar-sync"],
     isPillar: false,
@@ -1225,7 +1225,7 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
     featured: true,
     relatedArticles: ["enterprise-commercial-deployment", "multifamily-smart-locks-resident-staff-access", "smart-lock-protocols-overview"],
     relatedTools: ["integration-roi-calculator", "api-compatibility-checker"],
-    updatedAt: '2026-05-09'
+    updatedAt: '2026-08-07'
   },
   'airbnb-smart-lock-integration-schlage-yale-august': {
     slug: 'airbnb-smart-lock-integration-schlage-yale-august',
@@ -1279,19 +1279,19 @@ export const articleRegistry: Record<string, ArticleMetadata> = {
   },
   'set-up-lock-automations': {
     slug: 'set-up-lock-automations',
-    title: "How to Set Up Smart Lock Automations - Complete Guide",
-    description: "Create smart lock automations for auto-lock, geo-fence unlock, schedule-based access, and integrate with smart home routines. Platform-specific guides for HomeKit, Alexa, Google Home.",
+    title: "How to Set Up Smart Lock Automations - Practical Setup Guide",
+    description: "Create safer smart lock automations for auto-lock, guest codes, geofencing, doorbell workflows, Apple Home, Google Home, Alexa, SmartThings, and rental or business access.",
     category: 'integration',
     pubDate: '2024-03-23',
-    wordCount: 519,
-    readingTime: 3,
+    wordCount: 1030,
+    readingTime: 5,
     keywords: ["smart lock automation", "auto lock setup", "geofence unlock", "schedule lock", "smart home routines"],
     tags: ["automation", "routines", "smart-home", "how-to"],
     isPillar: false,
     isSupport: true,
     featured: false,
     relatedArticles: ["connect-lock-to-homekit", "improve-auto-lock-reliability"],
-    updatedAt: '2026-05-09'
+    updatedAt: '2026-08-07'
   },
   // ==================== RESOURCES ====================
   'cloud-vs-local-cost': {

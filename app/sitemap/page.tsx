@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getAllArticles } from '@/lib/articles/registry'
 import { calculatorRouteSlugs, calculatorTitles } from '@/lib/calculators/slugs'
+import { priorityComparisonLinks } from '@/lib/seo/priority-comparisons'
+import { coreHubLinks, priorityBestPageLinks, protocolPageLinks } from '@/lib/seo/priority-pages'
 
 export const metadata: Metadata = {
   title: 'SLockHub Sitemap | Guides, Calculators, Resources',
@@ -17,33 +19,6 @@ const categories = [
   { name: 'Use Cases', slug: 'use-cases' },
   { name: 'Resources', slug: 'resources' },
   { name: 'Integration', slug: 'integration' },
-]
-
-const coreHubs = [
-  { name: 'All Calculators', href: '/calculators' },
-  { name: 'Brand Compare Hub', href: '/compare' },
-  { name: 'Smart Lock Protocols', href: '/protocols' },
-  { name: 'Buying Resources', href: '/resources/buying-guide' },
-  { name: 'Reference Tables', href: '/resources/reference-tables' },
-  { name: 'Installation Guides', href: '/resources/installation-guides' },
-]
-
-const priorityBestPages = [
-  { name: 'Best Smart Locks 2026', slug: 'smart-locks-2026' },
-  { name: 'Best Matter Smart Locks', slug: 'matter-smart-locks' },
-  { name: 'Best Z-Wave Smart Locks', slug: 'z-wave-smart-locks' },
-  { name: 'Best HomeKit Smart Locks', slug: 'homekit-smart-locks' },
-  { name: 'Best Zigbee Smart Locks', slug: 'zigbee-smart-locks' },
-  { name: 'Longest Battery Life Smart Locks', slug: 'smart-locks-with-longest-battery-life' },
-]
-
-const protocolPages = [
-  { name: 'Matter', slug: 'matter' },
-  { name: 'Thread', slug: 'thread' },
-  { name: 'Z-Wave', slug: 'z-wave' },
-  { name: 'Zigbee', slug: 'zigbee' },
-  { name: 'Wi-Fi', slug: 'wifi' },
-  { name: 'Bluetooth', slug: 'bluetooth' },
 ]
 
 const calculators = calculatorRouteSlugs.map((slug) => ({
@@ -81,10 +56,10 @@ export default function Sitemap() {
             <div className="content-card">
               <h2 className="section-title">Core Hubs</h2>
               <ul className="space-y-3">
-                {coreHubs.map((hub) => (
+                {coreHubLinks.map((hub) => (
                   <li key={hub.href}>
                     <Link href={hub.href} style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>
-                      {hub.name}
+                      {hub.title}
                     </Link>
                   </li>
                 ))}
@@ -127,10 +102,10 @@ export default function Sitemap() {
             <div className="content-card">
               <h2 className="section-title">Best Smart Lock Pages</h2>
               <ul className="space-y-3">
-                {priorityBestPages.map((page) => (
-                  <li key={page.slug}>
-                    <Link href={`/best/${page.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>
-                      {page.name}
+                {priorityBestPageLinks.map((page) => (
+                  <li key={page.href}>
+                    <Link href={page.href} style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>
+                      {page.title}
                     </Link>
                   </li>
                 ))}
@@ -141,14 +116,30 @@ export default function Sitemap() {
               <h2 className="section-title">Protocol Pages</h2>
               <ul className="space-y-3">
                 <li><Link href="/protocols" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>All Protocols</Link></li>
-                {protocolPages.map((page) => (
-                  <li key={page.slug}>
-                    <Link href={`/protocols/${page.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>
-                      {page.name}
+                {protocolPageLinks.map((page) => (
+                  <li key={page.href}>
+                    <Link href={page.href} style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>
+                      {page.title}
                     </Link>
                   </li>
                 ))}
               </ul>
+            </div>
+
+            <div className="content-card md:col-span-2">
+              <h2 className="section-title">Priority Brand Comparisons</h2>
+              <div className="grid md:grid-cols-4 gap-4">
+                {priorityComparisonLinks.map((page) => (
+                  <Link key={page.href} href={page.href} style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>
+                    • {page.title}
+                  </Link>
+                ))}
+              </div>
+              <div style={{ marginTop: 'var(--space-md)' }}>
+                <Link href="/compare" style={{ color: 'var(--color-accent)', fontWeight: 600 }} prefetch={false}>
+                  View All Comparisons →
+                </Link>
+              </div>
             </div>
           </div>
 

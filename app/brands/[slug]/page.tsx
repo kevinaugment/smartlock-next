@@ -17,6 +17,7 @@ import {
     getSupportedProtocolLabels,
 } from '@/lib/brands/fact-policy'
 import { formatUsdCents } from '@/lib/format/price'
+import { getBrandComparisonLinks } from '@/lib/seo/priority-comparisons'
 
 export const dynamic = 'force-dynamic'
 export const dynamicParams = true
@@ -129,14 +130,11 @@ function getUseCaseFit(brand: Brand, products: Product[], protocols: string[]) {
     ]
 }
 
-function getCompareLinks(brandSlug: string, brandName: string) {
-    return ['yale', 'schlage', 'august', 'kwikset', 'eufy']
-        .filter(candidate => candidate !== brandSlug)
-        .slice(0, 3)
-        .map(candidate => ({
-            href: `/compare/${brandSlug}-vs-${candidate}`,
-            label: `${brandName} vs ${candidate.charAt(0).toUpperCase()}${candidate.slice(1)}`,
-        }))
+function getCompareLinks(brandSlug: string) {
+    return getBrandComparisonLinks(brandSlug, 3).map(link => ({
+        href: link.href,
+        label: link.title,
+    }))
 }
 
 function getBestLinks(products: Product[]) {
@@ -161,7 +159,7 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
 
     const allProducts = brand.series.flatMap(s => s.products)
     const topProducts = getTopProducts(allProducts)
-    const compareLinks = getCompareLinks(brand.slug, brand.name)
+    const compareLinks = getCompareLinks(brand.slug)
     const bestLinks = getBestLinks(allProducts)
     const useCaseFit = getUseCaseFit(brand, allProducts, protocols)
     const pageUrl = `https://www.slockhub.com/brands/${brand.slug}`

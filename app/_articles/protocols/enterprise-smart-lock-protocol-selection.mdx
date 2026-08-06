@@ -3,9 +3,9 @@ title: 'Enterprise Smart Lock Protocol Selection: Wi-Fi, Z-Wave, Matter, Wired, 
 description: 'Choose enterprise smart lock protocols by door count, audit logs, identity integration, network capacity, offline access, compliance, and support operations.'
 category: protocols
 pubDate: 2026-05-09T00:00:00.000Z
-updatedDate: 2026-05-09T00:00:00.000Z
-wordCount: 387
-readingTime: 2
+updatedDate: 2026-08-07T00:00:00.000Z
+wordCount: 920
+readingTime: 5
 keywords:
   - enterprise smart lock protocol
   - commercial smart lock protocol
@@ -32,6 +32,64 @@ Use the [Fleet Planner](/calculators/fleet-planner) and [Access Capacity Calcula
 The deployment needs named user lifecycle, staff and visitor roles, emergency access, audit-log retention, and a repeatable help desk process. If HR, badge, visitor, hotel PMS, or building automation integration is required, confirm that before buying locks. A protocol that works for one door can still fail the organization if credentials cannot be managed at scale.
 
 Wi-Fi adds router load, cloud dependency, and battery maintenance. Z-Wave and Zigbee add hub and repeater design. Matter and Thread add controller and border-router planning. Wired access adds power, cabling, fire egress, and installer coordination. None is universally best; each moves work to a different team.
+
+## Enterprise Protocol Matrix
+
+| Path | Best fit | Watch-outs |
+|---|---|---|
+| Wi-Fi smart locks | Small offices, simple remote management, low door count | Battery drain, router dependency, cloud outage, network ownership |
+| Z-Wave locks | Managed buildings, thick walls, hub-owned deployments | Hub design, repeater placement, secure inclusion, vendor compatibility |
+| Zigbee locks | Existing Zigbee infrastructure or Home Assistant-led deployments | 2.4 GHz congestion, controller support, code-management feature gaps |
+| Matter over Thread | Future-facing mixed ecosystems with border-router ownership | Feature parity, controller support, guest-code exposure, young ecosystem risk |
+| Wired access control | High-traffic commercial doors and regulated openings | Cabling, power budget, fire egress, installer coordination, cost |
+| Managed access platform | Multi-site organizations that need audit and support contracts | Subscription cost, data portability, vendor lock-in, admin training |
+
+Use the matrix to narrow the operating model before comparing product names. If the deployment has many doors, frequent user churn, or audit obligations, a managed platform or wired access control may be more appropriate than a consumer smart-home protocol.
+
+## Door Classes Need Different Answers
+
+One enterprise building can need several access patterns. A main staff entrance may justify wired or managed access control. A low-risk storage room may be fine with a keypad smart lock. A remote equipment closet may need offline access and a physical recovery key. A short-term visitor door may need scheduled PINs and strong audit logs.
+
+Create door classes before choosing hardware:
+
+- Public exterior doors.
+- Staff-only doors.
+- Visitor or meeting-room doors.
+- Resident or tenant doors.
+- High-security storage or IT rooms.
+- Life-safety or fire-rated openings.
+
+Each class should have its own minimum grade, credential type, backup access, log retention, and support owner. Pair this with [Security Compliance Checker](/calculators/security-compliance) and [Fire Code Compliance Checker](/calculators/fire-compliance) before touching regulated openings.
+
+## Network And Power Ownership
+
+Protocol selection often fails because no one owns the infrastructure around the lock. Wi-Fi locks depend on routers, SSIDs, signal strength, and cloud reachability. Z-Wave and Zigbee locks depend on hubs, repeaters, secure pairing, and route health. Thread locks depend on border routers and Matter controllers. Wired systems depend on PoE budgets, panels, door hardware, and installers.
+
+Assign ownership before rollout. IT may own Wi-Fi and VLANs, facilities may own doors and power, security may own audit policy, and operations may own user support. If ownership is split, the pilot should include all of those teams.
+
+Use [Network Bandwidth Calculator](/calculators/network-bandwidth), [PoE Power Budget Calculator](/calculators/poe-power), and [RF Coverage Planner](/calculators/rf-coverage) to avoid choosing a protocol the building cannot support.
+
+## Integration Readiness
+
+Enterprise protocol selection should be tied to integration readiness. If access must follow HR, visitor management, property management, PMS, or identity events, the chosen platform needs dependable APIs, logs, retries, and role mapping. A protocol that opens reliably but cannot remove users automatically may still fail the business case.
+
+Review [Enterprise System Integration](/articles/integration/enterprise-system-integration) before standardizing on a platform. The integration plan should define source of truth, user identity, door groups, access windows, retry behavior, manual exception handling, and audit exports.
+
+## Pilot Scorecard
+
+Score the pilot against operating outcomes, not only technical connection:
+
+- Command success at each door class.
+- Battery or power stability.
+- Credential create/delete success.
+- Manual thumbturn and status accuracy.
+- Offline behavior during network loss.
+- Log completeness and export usability.
+- Help desk recovery time.
+- Installer effort and door modification risk.
+- Admin training time.
+
+If a protocol performs well in the demo but poorly in support, the rollout is not ready.
 
 ## Pilot Before Standardizing
 

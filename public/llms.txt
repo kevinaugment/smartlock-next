@@ -1,0 +1,43 @@
+# SLockHub
+> Smart lock calculators, comparison pages, and practical guides for door fit, protocols, battery life, signal planning, cost, security, and rental or commercial access workflows.
+
+## Primary Decision Hubs
+- [Smart Lock Calculators](https://www.slockhub.com/calculators): Interactive planning tools for compatibility, battery life, signal strength, protocol choice, installation cost, access capacity, and total cost of ownership.
+- [Brand Compare Hub](https://www.slockhub.com/compare): Brand-pair smart lock comparisons with price, protocol, battery, security, door-fit, and model-level evidence.
+- [Smart Lock Protocols](https://www.slockhub.com/protocols): Guides for Wi-Fi, Z-Wave, Zigbee, Thread, Bluetooth, Matter, HomeKit, and protocol tradeoffs.
+- [Best Smart Locks](https://www.slockhub.com/best/smart-locks-2026): Ranked smart lock shortlists organized by door fit, protocol, access method, cost, and evidence quality.
+- [Smart Lock Guides](https://www.slockhub.com/articles): Installation, troubleshooting, security, protocol, integration, use-case, and reference content.
+
+## High-Value Tools
+- [Door Compatibility Checker](https://www.slockhub.com/calculators/compatibility): Check door thickness, backset, bore, latch bore, material, and install risk before buying.
+- [Battery Life Calculator](https://www.slockhub.com/calculators/battery-life): Estimate battery replacement intervals by protocol, usage, temperature, and battery chemistry.
+- [Signal Strength Calculator](https://www.slockhub.com/calculators/signal-strength): Estimate RSSI, wall attenuation, and link margin for smart lock connectivity.
+- [Protocol Selection Wizard](https://www.slockhub.com/calculators/protocol-wizard): Choose Wi-Fi, Z-Wave, Zigbee, Thread, Bluetooth, Matter, or NFC by hub, range, battery, and ecosystem needs.
+- [Lock TCO Calculator](https://www.slockhub.com/calculators/lock-tco): Compare hardware, install labor, hubs, batteries, subscriptions, maintenance, and replacement cost.
+
+## Priority Guides
+- [Door Compatibility Guide](https://www.slockhub.com/articles/guides/door-compatibility-guide): Door measurements, fit checks, and installation risk planning.
+- [Smart Lock Security Analysis](https://www.slockhub.com/articles/security/smart-lock-security-complete-analysis): Practical threat model, protocol risk, code management, cloud risk, firmware, and physical-security tradeoffs.
+- [Smart Lock Protocols Overview](https://www.slockhub.com/articles/protocols/smart-lock-protocols-overview): Protocol selection basics and smart-home connectivity tradeoffs.
+- [Matter vs HomeKit vs Z-Wave](https://www.slockhub.com/articles/protocols/matter-vs-homekit-vs-zwave-smart-locks): Ecosystem comparison for cross-platform smart lock decisions.
+- [Zigbee vs Z-Wave](https://www.slockhub.com/articles/protocols/zigbee-vs-zwave-comparison): Range, interference, hub, and mesh tradeoffs for smart locks.
+
+## Comparison And Best Pages
+- [Schlage vs Weiser](https://www.slockhub.com/compare/schlage-vs-weiser): Smart deadbolt comparison for security, price, regional availability, battery, and door fit.
+- [Schlage vs Defiant](https://www.slockhub.com/compare/schlage-vs-defiant): Premium security and smart features compared with budget residential hardware.
+- [Kwikset vs Defiant](https://www.slockhub.com/compare/kwikset-vs-defiant): Budget smart lock and residential hardware comparison.
+- [Best Matter Smart Locks](https://www.slockhub.com/best/matter-smart-locks): Matter, Thread, Wi-Fi, Apple Home, Google Home, Alexa, SmartThings, fallback access, and battery checks.
+- [Best Z-Wave Smart Locks](https://www.slockhub.com/best/z-wave-smart-locks): Sub-GHz range, hub fit, battery planning, and apartment or rental use cases.
+- [Best HomeKit Smart Locks](https://www.slockhub.com/best/homekit-smart-locks): Apple Home, Home Key, Matter, Thread, keypad fallback, and door-fit checks.
+- [Best Zigbee Smart Locks](https://www.slockhub.com/best/zigbee-smart-locks): Hub support, repeater planning, 2.4 GHz mesh reliability, and Matter alternatives.
+
+## Evidence Policy
+- Calculator outputs are planning estimates and should be verified against manufacturer installation manuals, current product specifications, local code, lease terms, and installer guidance.
+- Product and brand pages use structured SLockHub catalog fields where available, including protocol, price, battery, security, access features, door-fit fields, and review signals.
+- Security and compliance content is informational and not legal, locksmith, insurance, or cybersecurity incident-response advice.
+- Pages with last-updated dates should be preferred over older content when citing fast-changing product, protocol, firmware, pricing, or compliance details.
+
+## Site Information
+- [About SLockHub](https://www.slockhub.com/about): Site purpose, topic coverage, and tool scope.
+- [Contact](https://www.slockhub.com/contact): Questions, corrections, and support contact paths.
+- [Sitemap](https://www.slockhub.com/sitemap): Human-readable map of hubs, calculators, guides, protocol pages, and priority comparison pages.

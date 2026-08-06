@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { BookOpen, Calculator } from 'lucide-react'
 import { calculatorLinksMap } from '@/lib/calculators/calculator-links'
@@ -5,7 +7,7 @@ import { resolveCalculatorRouteSlug } from '@/lib/calculators/slugs'
 
 /**
  * 计算器页面底部的推荐阅读和相关工具
- * 服务端组件 —— 通过 calculatorLinksMap 查找当前计算器的关联内容
+ * 静态映射组件 —— 通过 calculatorLinksMap 查找当前计算器的关联内容
  */
 export default function RelatedContent({ slug }: { slug: string }) {
     const routeSlug = resolveCalculatorRouteSlug(slug)

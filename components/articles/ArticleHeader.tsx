@@ -1,5 +1,5 @@
 import { ArticleMetadata } from '@/lib/articles/types';
-import { Clock, Calendar, Tag, Star, Sparkles } from 'lucide-react';
+import { Clock, Calendar, Tag, Star, Sparkles, UserRound } from 'lucide-react';
 
 interface ArticleHeaderProps {
   article: ArticleMetadata;
@@ -8,6 +8,7 @@ interface ArticleHeaderProps {
 export function ArticleHeader({ article }: ArticleHeaderProps) {
   const freshnessDate = article.updatedAt || article.pubDate;
   const showPublishedDate = article.updatedAt && article.updatedAt !== article.pubDate;
+  const authorName = article.author || 'SLockHub Editorial Team';
 
   return (
     <header className="mb-12">
@@ -44,6 +45,12 @@ export function ArticleHeader({ article }: ArticleHeaderProps) {
         className="flex flex-wrap items-center gap-6 text-sm pb-6"
         style={{ color: 'var(--color-text-muted)', borderBottom: '1px solid var(--color-border)' }}
       >
+        <div className="flex items-center gap-2">
+          <UserRound className="w-4 h-4" />
+          <span>By</span>
+          <span>{authorName}</span>
+        </div>
+
         <div className="flex items-center gap-2">
           <Calendar className="w-4 h-4" />
           <span>{showPublishedDate ? 'Updated' : 'Published'}</span>

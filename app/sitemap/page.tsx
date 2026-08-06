@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { getAllArticles } from '@/lib/articles/registry'
+import { calculatorRouteSlugs, calculatorTitles } from '@/lib/calculators/slugs'
 
 export const metadata: Metadata = {
   title: 'SLockHub Sitemap | Guides, Calculators, Resources',
@@ -17,25 +19,41 @@ const categories = [
   { name: 'Integration', slug: 'integration' },
 ]
 
-const calculators = [
-  { name: 'TCO Calculator', slug: 'lock-tco' },
-  { name: 'Battery Life Calculator', slug: 'battery-life' },
-  { name: 'Protocol Selection Wizard', slug: 'protocol-wizard' },
-  { name: 'Signal Strength Analyzer', slug: 'signal-strength' },
-  { name: 'STR ROI Calculator', slug: 'str-roi' },
-  { name: 'Installation Cost Estimator', slug: 'installation-cost' },
-  { name: 'Door Compatibility Checker', slug: 'compatibility' },
-  { name: 'Mesh Node Planner', slug: 'mesh-planner' },
-  { name: 'RF Coverage Estimator', slug: 'rf-coverage' },
-  { name: 'Multi-Property Fleet Planner', slug: 'fleet-planner' },
-  { name: 'Credential Capacity Planner', slug: 'credential-planner' },
-  { name: 'Installation Time Estimator', slug: 'installation-time' },
-  { name: 'Subscription vs Purchase', slug: 'subscription-compare' },
-  { name: 'Offline Resilience Scorecard', slug: 'offline-resilience' },
-  { name: 'Emergency Backup Evaluator', slug: 'emergency-backup' },
+const coreHubs = [
+  { name: 'All Calculators', href: '/calculators' },
+  { name: 'Brand Compare Hub', href: '/compare' },
+  { name: 'Smart Lock Protocols', href: '/protocols' },
+  { name: 'Buying Resources', href: '/resources/buying-guide' },
+  { name: 'Reference Tables', href: '/resources/reference-tables' },
+  { name: 'Installation Guides', href: '/resources/installation-guides' },
 ]
 
+const priorityBestPages = [
+  { name: 'Best Smart Locks 2026', slug: 'smart-locks-2026' },
+  { name: 'Best Matter Smart Locks', slug: 'matter-smart-locks' },
+  { name: 'Best Z-Wave Smart Locks', slug: 'z-wave-smart-locks' },
+  { name: 'Best HomeKit Smart Locks', slug: 'homekit-smart-locks' },
+  { name: 'Best Zigbee Smart Locks', slug: 'zigbee-smart-locks' },
+  { name: 'Longest Battery Life Smart Locks', slug: 'smart-locks-with-longest-battery-life' },
+]
+
+const protocolPages = [
+  { name: 'Matter', slug: 'matter' },
+  { name: 'Thread', slug: 'thread' },
+  { name: 'Z-Wave', slug: 'z-wave' },
+  { name: 'Zigbee', slug: 'zigbee' },
+  { name: 'Wi-Fi', slug: 'wifi' },
+  { name: 'Bluetooth', slug: 'bluetooth' },
+]
+
+const calculators = calculatorRouteSlugs.map((slug) => ({
+  name: calculatorTitles[slug],
+  slug,
+}))
+
 export default function Sitemap() {
+  const articleCount = getAllArticles().length
+
   return (
     <div className="page-bg">
       <div className="container-main section">
@@ -53,8 +71,23 @@ export default function Sitemap() {
                 <li><Link href="/" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>Home</Link></li>
                 <li><Link href="/about" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>About</Link></li>
                 <li><Link href="/contact" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>Contact</Link></li>
+                <li><Link href="/faq" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>FAQ</Link></li>
                 <li><Link href="/privacy" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>Privacy Policy</Link></li>
                 <li><Link href="/terms" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>Terms of Service</Link></li>
+              </ul>
+            </div>
+
+            {/* Core Hubs */}
+            <div className="content-card">
+              <h2 className="section-title">Core Hubs</h2>
+              <ul className="space-y-3">
+                {coreHubs.map((hub) => (
+                  <li key={hub.href}>
+                    <Link href={hub.href} style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>
+                      {hub.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -62,7 +95,7 @@ export default function Sitemap() {
             <div className="content-card">
               <h2 className="section-title">Smart Lock Guides</h2>
               <ul className="space-y-3">
-                <li><Link href="/articles" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>All Articles (49+)</Link></li>
+                <li><Link href="/articles" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>All Articles ({articleCount})</Link></li>
                 {categories.map(cat => (
                   <li key={cat.slug}>
                     <Link href={`/articles/${cat.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>
@@ -75,8 +108,8 @@ export default function Sitemap() {
 
             {/* Calculators */}
             <div className="content-card md:col-span-2">
-              <h2 className="section-title">Planning Calculators</h2>
-              <div className="grid md:grid-cols-3 gap-4">
+              <h2 className="section-title">Planning Calculators ({calculators.length})</h2>
+              <div className="grid md:grid-cols-4 gap-4">
                 {calculators.map((calc) => (
                   <Link key={calc.slug} href={`/calculators/${calc.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>
                     • {calc.name}
@@ -90,26 +123,31 @@ export default function Sitemap() {
               </div>
             </div>
 
-            {/* Admin */}
+            {/* Best Pages */}
             <div className="content-card">
-              <h2 className="section-title">Admin Portal</h2>
+              <h2 className="section-title">Best Smart Lock Pages</h2>
               <ul className="space-y-3">
-                <li><Link href="/admin/login" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>Admin Login</Link></li>
-                <li style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
-                  (Dashboard and management pages require authentication)
-                </li>
+                {priorityBestPages.map((page) => (
+                  <li key={page.slug}>
+                    <Link href={`/best/${page.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>
+                      {page.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            {/* API */}
             <div className="content-card">
-              <h2 className="section-title">API Endpoints</h2>
+              <h2 className="section-title">Protocol Pages</h2>
               <ul className="space-y-3">
-                <li><Link href="/api/categories" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>/api/categories</Link></li>
-                <li>
-                  <span style={{ color: 'var(--color-text-muted)', fontWeight: 500 }}>/api/auth/login</span>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginLeft: 'var(--space-sm)' }}>(POST only)</span>
-                </li>
+                <li><Link href="/protocols" style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>All Protocols</Link></li>
+                {protocolPages.map((page) => (
+                  <li key={page.slug}>
+                    <Link href={`/protocols/${page.slug}`} style={{ color: 'var(--color-accent)', fontWeight: 500 }} prefetch={false}>
+                      {page.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

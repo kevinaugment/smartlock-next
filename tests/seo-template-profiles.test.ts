@@ -441,6 +441,8 @@ function main() {
   assert.match(productPage, /ProductModel\.getByBrandAndSlug\(brandSlug, productSlug\)/, 'product detail metadata and page body must query products with the brand slug constraint')
   assert.match(productPage, /ProductModel\.getByBrandSlug\(brandSlug\)/, 'product detail pages must query only sibling products for the active brand')
   assert.match(productPage, /getCanonicalComparisonHref\(product\.brand_slug, competitor\)/, 'product detail comparison links must point directly to canonical comparison URLs')
+  assert.match(productPage, /return '\/protocols'/, 'product detail protocol links must fall back to the protocols hub when no canonical protocol page exists')
+  assert.doesNotMatch(productPage, /\/protocols\/\{?protocol\}?/, 'product detail protocol links must not synthesize unknown protocol child pages')
   assert.doesNotMatch(productPage, /getProductsForDetail = cache\(\(\) => ProductModel\.getAllForComparison\(\)\)/, 'product detail pages must not load the full comparison product catalog per request')
 
   const seoPathways = readFileSync('components/seo/SeoPathways.tsx', 'utf8')

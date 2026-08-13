@@ -88,6 +88,15 @@ export function getFactDisplay(facts: FactDisplay[], label: string): FactDisplay
     return facts.find((fact) => fact.label === label)
 }
 
+export function formatProtocolFactValue(fact: ProtocolFact): string {
+    return fact.supported ? `Supported · ${fact.status}` : 'Not listed'
+}
+
+export function formatFactDisplayValue(fact: FactDisplay | undefined): string {
+    if (!fact) return 'Needs verification'
+    return fact.value === 'Unknown' ? fact.status : `${fact.value} · ${fact.status}`
+}
+
 export function buildProductFactDisplays(product: ProductFactFields): FactDisplay[] {
     return [
         {

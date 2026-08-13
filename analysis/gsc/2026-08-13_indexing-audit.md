@@ -58,6 +58,10 @@ The 2026-08-06 jump from 497 to 730 not-indexed URLs looks like a sitewide recla
    - Fixed in the article detail template using `resolveCalculatorRouteSlug()` and `calculatorTitles`.
    - Local production smoke on `/articles/guides/door-compatibility-guide` found crawlable calculator links for compatibility, door fit, and installation cost.
 
+8. Product detail pages were emitting dead protocol links for unsupported protocol values.
+   - Fixed by falling back to the protocol hub instead of synthesizing missing `/protocols/none` or `/protocols/rfid` paths.
+   - Static indexing audit now reports `0` broken internal links in the generated `out/` tree.
+
 ## Static Deployment Verification Status
 
 Earlier sampled live responses on 2026-08-13 showed:
@@ -69,7 +73,7 @@ Earlier sampled live responses on 2026-08-13 showed:
 - `/best/homekit-smart-locks`: `200` across repeated samples.
 - `/sitemap.xml`: `200` across 5 consecutive samples, 1575 URLs, 1081 compare URLs, and 0 occurrences of `<lastmod>2026-08-13</lastmod>`.
 
-The source now targets a static Cloudflare Pages deployment. After deployment, re-run the same live checks against the static Pages site before requesting indexing. The remaining production operations gate is GitHub Actions secrets for `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `TURSO_DATABASE_URL`, and `TURSO_AUTH_TOKEN`.
+The source now targets a pure static Cloudflare Pages deployment. Static generation uses the checked-in SQL seed at build time and does not require Turso or any remote database secret. After deployment, re-run the same live checks against the static Pages site before requesting indexing. The remaining production operations gate is GitHub Actions secrets for `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
 
 ## Confirmed Issues Still Requiring Non-Code Or Data Follow-Up
 
@@ -80,8 +84,8 @@ The source now targets a static Cloudflare Pages deployment. After deployment, r
    - Prior live checks saw Cloudflare Managed robots rules blocking several AI crawlers. That is not controlled by `app/robots.ts`.
    - This is a GEO/AI-search issue, not ordinary Googlebot blocking, unless exact Googlebot URL Inspection says otherwise.
 
-3. Dynamic route 503/Worker resource spikes were observed online under load.
-   - This pass converts public SEO routes to static export so production should serve prebuilt files instead of reading the database per request.
+3. Old live traffic showed Worker/runtime-style 503 symptoms before the static export cutover.
+   - The current source converts public SEO routes to static export so production should serve prebuilt files instead of reading any database per request.
    - Cloudflare Pages should still be smoke-tested after deployment.
    - Watch `/brands/yale`, `/brands/yale/yale-assure-lock-2-plus`, `/best/homekit-smart-locks`, `/compare/schlage-vs-weiser`, `/protocols/wifi`, and `/sitemap.xml`.
 

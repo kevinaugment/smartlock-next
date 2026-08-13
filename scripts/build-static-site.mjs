@@ -36,8 +36,6 @@ async function prepareLocalBuildDatabase() {
     await client.executeMultiple(seedSql)
     process.env.LIBSQL_DATABASE_URL = databaseUrl
     process.env.LIBSQL_AUTH_TOKEN = ''
-    process.env.TURSO_DATABASE_URL = ''
-    process.env.TURSO_AUTH_TOKEN = ''
     console.log(`Using checked-in SQL seed for static generation: ${seedPath}`)
     return tempDir
   } catch (error) {

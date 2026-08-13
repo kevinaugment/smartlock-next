@@ -7,6 +7,7 @@ import { pathToFileURL } from 'node:url'
 const SITE_ORIGIN = 'https://www.slockhub.com'
 const DEFAULT_PERFORMANCE_CSV = '/Users/luokun/Downloads/https___www.slockhub.com_-Performance-on-Search-2026-08-06/网页.csv'
 const DEFAULT_OUTPUT = 'analysis/gsc/2026-08-13_url-inspection-priority.md'
+const DEFAULT_SITEMAP_XML = 'out/sitemap.xml'
 
 const TECHNICAL_VERIFICATION_URLS = [
   ['Live test only', 'https://www.slockhub.com/sitemap.xml', 'Stable 200. No partial sitemap on DB failure.'],
@@ -19,8 +20,6 @@ const TECHNICAL_VERIFICATION_URLS = [
 
 const PRODUCT_SAMPLE_LIMIT = 5
 const SHORT_RESOURCE_SAMPLE_LIMIT = 5
-const CURRENT_SITEMAP_COMPARE_URLS = 1081
-
 function readSourceText(filePath) {
   return readFileSync(resolve(filePath), 'utf8')
 }
@@ -244,6 +243,29 @@ function getShortResourceSamples(performanceRows) {
     })
 }
 
+function getSitemapStats(sitemapXml = DEFAULT_SITEMAP_XML) {
+  const sitemapPath = resolve(sitemapXml)
+  if (!existsSync(sitemapPath)) {
+    return {
+      path: sitemapPath,
+      exists: false,
+      urls: 0,
+      compareUrls: 0,
+      shortResourceUrls: 0,
+    }
+  }
+
+  const source = readFileSync(sitemapPath, 'utf8')
+  const urls = Array.from(source.matchAll(/<loc>([^<]+)<\/loc>/g)).map((match) => match[1])
+  return {
+    path: sitemapPath,
+    exists: true,
+    urls: urls.length,
+    compareUrls: urls.filter((url) => new URL(url).pathname.startsWith('/compare/')).length,
+    shortResourceUrls: urls.filter((url) => new URL(url).pathname.startsWith('/articles/resources/')).length,
+  }
+}
+
 function renderRows(rows, headers, cells) {
   if (rows.length === 0) return '_No rows._'
   return [
@@ -257,7 +279,7 @@ function pluralize(count, singular, plural = `${singular}s`) {
   return `${count} ${count === 1 ? singular : plural}`
 }
 
-function renderReport({ performanceCsv, performanceRows, compareRows, nonCompareRows, productRows, shortResourceRows }) {
+function renderReport({ performanceCsv, sitemapStats, performanceRows, compareRows, nonCompareRows, productRows, shortResourceRows }) {
   const nonCanonicalVariantCount = compareRows.reduce((sum, row) => sum + row.variants.length, 0)
   const comparePerformanceRows = performanceRows.filter((row) => row.template === 'compare')
   const visibleShortResources = shortResourceRows.filter((row) => row.impressions > 0)
@@ -268,9 +290,13 @@ function renderReport({ performanceCsv, performanceRows, compareRows, nonCompare
 - Rule: submit a small number of high-value and diagnostic URLs only. Do not bulk-submit all compare long-tail URLs.
 - Evidence base: local source review, Coverage aggregate counts, and GSC Performance URL rows.
 - Performance CSV: \`${performanceCsv}\`
+- Sitemap XML: \`${sitemapStats.path}\`${sitemapStats.exists ? '' : ' (missing; run `npm run build` before using sitemap counts)'}
 
 ## Summary
 
+- Sitemap URLs: ${sitemapStats.urls}
+- Compare URLs in sitemap: ${sitemapStats.compareUrls}
+- Short resource URLs in sitemap: ${sitemapStats.shortResourceUrls}
 - Performance URL rows imported: ${performanceRows.length}
 - Compare performance rows: ${comparePerformanceRows.length}
 - Canonical compare groups: ${compareRows.length}
@@ -353,7 +379,7 @@ ${renderRows(shortResourceRows.slice(0, SHORT_RESOURCE_SAMPLE_LIMIT), ['URL', 'W
 
 Do not bulk-submit:
 
-- All ${CURRENT_SITEMAP_COMPARE_URLS} compare sitemap URLs.
+- All ${sitemapStats.compareUrls} compare sitemap URLs.
 - All ${nonCanonicalVariantCount} non-canonical compare variants found in the performance export.
 - All ${shortResourceRows.length} resource articles under 600 words.
 - Any URL from the \`Other 4xx\`, \`404\`, robots-blocked, duplicate-canonical, or noindex buckets until the URL-level Page Indexing export identifies the exact URLs.
@@ -372,10 +398,12 @@ When the missing Page Indexing URL examples are exported:
 
 export function generateUrlInspectionPriority({
   performanceCsv = DEFAULT_PERFORMANCE_CSV,
+  sitemapXml = DEFAULT_SITEMAP_XML,
   output = DEFAULT_OUTPUT,
   nonCompareLimit = 10,
 } = {}) {
   const resolvedPerformanceCsv = resolve(performanceCsv)
+  const sitemapStats = getSitemapStats(sitemapXml)
   const performanceRows = readPerformanceRows(resolvedPerformanceCsv)
   const comparisonSources = readComparisonSources()
   const compareRows = groupCompareRows(performanceRows, comparisonSources)
@@ -384,6 +412,7 @@ export function generateUrlInspectionPriority({
   const shortResourceRows = getShortResourceSamples(performanceRows)
   const report = renderReport({
     performanceCsv: resolvedPerformanceCsv,
+    sitemapStats,
     performanceRows,
     compareRows,
     nonCompareRows,
@@ -400,6 +429,7 @@ export function generateUrlInspectionPriority({
     nonCompareRows,
     productRows,
     shortResourceRows,
+    sitemapStats,
   }
 }
 
@@ -408,6 +438,7 @@ function parseArgs(argv) {
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index]
     if (arg === '--performance-csv') args.performanceCsv = argv[++index]
+    if (arg === '--sitemap-xml') args.sitemapXml = argv[++index]
     if (arg === '--output') args.output = argv[++index]
   }
   return args

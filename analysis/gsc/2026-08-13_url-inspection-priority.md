@@ -4,9 +4,13 @@
 - Rule: submit a small number of high-value and diagnostic URLs only. Do not bulk-submit all compare long-tail URLs.
 - Evidence base: local source review, Coverage aggregate counts, and GSC Performance URL rows.
 - Performance CSV: `/Users/luokun/Downloads/https___www.slockhub.com_-Performance-on-Search-2026-08-06/网页.csv`
+- Sitemap XML: `/Users/luokun/Downloads/us.sitesucker.mac.sitesucker-pro/www.betechlock.com/GitHub/smartlock-next/out/sitemap.xml`
 
 ## Summary
 
+- Sitemap URLs: 1575
+- Compare URLs in sitemap: 1081
+- Short resource URLs in sitemap: 45
 - Performance URL rows imported: 1000
 - Compare performance rows: 648
 - Canonical compare groups: 606

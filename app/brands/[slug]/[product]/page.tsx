@@ -14,6 +14,8 @@ import {
     brandFactLastVerified,
     brandFactReviewCadence,
     buildProductFactDisplays,
+    formatFactDisplayValue,
+    formatProtocolFactValue,
     getFactDisplay,
     getProductProtocolFacts,
     getProtocolFact,
@@ -165,8 +167,8 @@ function getBestPageLinks(product: ProductDetail): Array<{ href: string; label: 
 
 function getProtocolHref(product: ProductDetail): string {
     const primaryProtocol = getProductProtocolFacts(product).find(fact => fact.supported)
-    const protocol = primaryProtocol?.slug || product.protocol.toLowerCase().replace(/\s+/g, '-').replace('zwave', 'z-wave').replace('wi-fi', 'wifi')
-    return `/protocols/${protocol}`
+    if (primaryProtocol?.slug) return `/protocols/${primaryProtocol.slug}`
+    return '/protocols'
 }
 
 function getCompareHref(product: ProductDetail): { href: string; label: string } {
@@ -214,7 +216,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     const bestPageLinks = getBestPageLinks(product)
     const productUrl = `https://www.slockhub.com/brands/${product.brand_slug}/${product.slug}`
     const additionalProperty = [
-        { name: 'Primary protocol', value: product.protocol.toUpperCase() },
+        ...(product.protocol ? [{ name: 'Primary protocol', value: product.protocol.toUpperCase() }] : []),
         ...(product.secondary_protocol ? [{ name: 'Secondary protocol', value: product.secondary_protocol.toUpperCase() }] : []),
         ...(matterFact?.supported ? [{ name: 'Matter support', value: 'Yes' }] : []),
         ...(batteryFact?.status === 'Catalog field' ? [{ name: 'Battery life', value: batteryFact.value }] : []),
@@ -352,7 +354,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                             </p>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                 {productProtocolFacts.map(fact => (
-                                    <SpecItem key={fact.label} label={fact.label} value={`${fact.supported ? 'Supported' : 'Unknown'} · ${fact.status}`} />
+                                    <SpecItem key={fact.label} label={fact.label} value={formatProtocolFactValue(fact)} />
                                 ))}
                                 {product.rf_frequency && <SpecItem label="RF Frequency" value={product.rf_frequency} />}
                                 {product.rf_range_meters && <SpecItem label="RF Range" value={`${product.rf_range_meters}m`} />}
@@ -366,7 +368,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                 {product.battery_type && <SpecItem label="Battery Type" value={product.battery_type} />}
                                 {product.battery_count && <SpecItem label="Battery Count" value={`${product.battery_count}×`} />}
-                                <SpecItem label="Battery Life" value={`${batteryFact?.value} · ${batteryFact?.status}`} />
+                                <SpecItem label="Battery Life" value={formatFactDisplayValue(batteryFact)} />
                                 {product.standby_power_mw != null && <SpecItem label="Standby Power" value={`${product.standby_power_mw} mW`} />}
                                 {product.active_power_mw != null && <SpecItem label="Active Power" value={`${product.active_power_mw} mW`} />}
                             </div>
@@ -376,7 +378,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                         <div className="content-card">
                             <h2 className="section-title">Security and Access</h2>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                <SpecItem label="ANSI/BHMA Grade" value={`${ansiFact?.value} · ${ansiFact?.status}`} />
+                                <SpecItem label="ANSI/BHMA Grade" value={formatFactDisplayValue(ansiFact)} />
                                 <SpecItem label="UL Listed" value={product.ul_listed ? 'Yes ✓' : 'No'} />
                                 {product.encryption_type && <SpecItem label="Encryption" value={product.encryption_type} />}
                             </div>
@@ -483,7 +485,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                             <h2 className="section-title">Protocols, Brands, Tools</h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <Link href={getProtocolHref(product)} className="link-card" prefetch={false}>
-                                    <h3 className="link-card__title">{protocolFactText} Protocol Guide</h3>
+                                    <h3 className="link-card__title">Protocol Guide</h3>
                                     <p className="link-card__desc">Check hub, range, and ecosystem tradeoffs before buying.</p>
                                 </Link>
                                 <Link href={compareLink.href} className="link-card" prefetch={false}>

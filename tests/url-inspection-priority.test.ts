@@ -7,6 +7,7 @@ import { generateUrlInspectionPriority } from '../scripts/generate-url-inspectio
 function main() {
   const dir = mkdtempSync(join(tmpdir(), 'slockhub-url-inspection-'))
   const performanceCsv = join(dir, 'performance.csv')
+  const sitemapXml = join(dir, 'sitemap.xml')
   const output = join(dir, 'priority.md')
 
   writeFileSync(performanceCsv, [
@@ -19,8 +20,16 @@ function main() {
     'https://www.slockhub.com/brands/samsung/samsung-shp-dp609,0,70,0%,14',
     'https://www.slockhub.com/articles/resources/edge-vs-cloud-guide,0,20,0%,35',
   ].join('\n'))
+  writeFileSync(sitemapXml, [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    '<url><loc>https://www.slockhub.com/compare/weiser-vs-schlage</loc></url>',
+    '<url><loc>https://www.slockhub.com/compare/schlage-vs-weiser</loc></url>',
+    '<url><loc>https://www.slockhub.com/articles/resources/edge-vs-cloud-guide</loc></url>',
+    '</urlset>',
+  ].join('\n'))
 
-  const result = generateUrlInspectionPriority({ performanceCsv, output })
+  const result = generateUrlInspectionPriority({ performanceCsv, sitemapXml, output })
   const report = readFileSync(output, 'utf8')
 
   assert.equal(result.performanceRows.length, 7)
@@ -32,8 +41,14 @@ function main() {
   assert.equal(result.compareRows[1].url, 'https://www.slockhub.com/compare/veise-vs-schlage')
   assert.deepEqual(result.compareRows[1].variants, ['https://www.slockhub.com/compare/schlage-vs-veise'])
   assert.equal(result.productRows[0].url, 'https://www.slockhub.com/brands/samsung/samsung-shp-dp609')
+  assert.equal(result.sitemapStats.exists, true)
+  assert.equal(result.sitemapStats.urls, 3)
+  assert.equal(result.sitemapStats.compareUrls, 2)
+  assert.equal(result.sitemapStats.shortResourceUrls, 1)
 
   assert.match(report, /Batch 1: High-Value Canonical Compare Pages/)
+  assert.match(report, /Sitemap URLs: 3/)
+  assert.match(report, /Compare URLs in sitemap: 2/)
   assert.match(report, /200 grouped impressions, 3 grouped clicks/)
   assert.match(report, /90 grouped impressions, 5 grouped clicks/)
   assert.match(report, /Batch 2: Non-Canonical Compare Consolidation Checks/)

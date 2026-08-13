@@ -8,10 +8,10 @@ The GitHub Actions deploy job requires these repository secrets:
 
 - `CLOUDFLARE_API_TOKEN`: token with access to deploy the `smartlock-next` Cloudflare Pages project.
 - `CLOUDFLARE_ACCOUNT_ID`: the Cloudflare account id used by the production Pages project.
-- `TURSO_DATABASE_URL`: build-time data source for static page and sitemap generation.
-- `TURSO_AUTH_TOKEN`: build-time data source token.
 
-The deploy must generate the static `out/` directory and publish it with `wrangler pages deploy out`. It must not build or deploy `.open-next/worker.js`.
+Static generation uses the checked-in `database/d1-import-ordered.sql` seed.
+
+The deploy must generate the static `out/` directory and publish it with `wrangler pages deploy out`. It must not build or deploy `.open-next/worker.js`, and production must not depend on Worker, API, D1, KV, or remote database runtime reads.
 
 ## Production Smoke
 

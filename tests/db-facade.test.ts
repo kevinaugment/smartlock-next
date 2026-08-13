@@ -26,6 +26,11 @@ async function main() {
     false,
     'canonical DB facade must not use process.env.DB for Cloudflare bindings'
   )
+  assert.equal(
+    source.includes('process.env.LIBSQL_DATABASE_URL'),
+    true,
+    'canonical DB facade must support the generic LibSQL database URL used by static generation'
+  )
 
   await assert.rejects(
     () => access(new URL('../lib/db/client.ts', import.meta.url), constants.F_OK),

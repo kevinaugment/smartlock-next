@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm run next:build",
-    "next:build": "npm run articles:generate && npm run redirects:generate && next build",
+    "next:build": "node scripts/build-static-site.mjs",
     "start": "wrangler pages dev out",
     "lint": "next lint",
     "articles:generate": "node scripts/generate-article-content.mjs",

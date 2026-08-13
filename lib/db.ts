@@ -1,5 +1,5 @@
-// Turso数据库连接配置 - 兼容Vercel Edge Runtime
-type TursoClient = {
+// LibSQL数据库连接配置
+type LibsqlClient = {
   execute(input: { sql: string; args: any[] }): Promise<{ rows: unknown[]; rowsAffected: number }>
   batch(
     statements: Array<{ sql: string; args: any[] }>,
@@ -28,7 +28,7 @@ type D1Database = {
   batch<T = unknown>(statements: D1PreparedStatement[]): Promise<D1Result<T>[]>
 }
 
-let tursoClient: TursoClient | null = null
+let libsqlClient: LibsqlClient | null = null
 const d1DatabaseOverrideKey = Symbol.for('smartlock-next.db.d1Override')
 
 async function loadCreateClient() {
@@ -52,17 +52,17 @@ async function getD1Database(): Promise<D1Database | null> {
   }
 }
 
-// 创建Turso客户端
+// Historical export name retained to avoid touching every DB consumer.
 export async function getTursoClient() {
-  if (tursoClient) return tursoClient
+  if (libsqlClient) return libsqlClient
 
   const createClient = await loadCreateClient()
-  tursoClient = createClient({
-    url: process.env.TURSO_DATABASE_URL!,
-    authToken: process.env.TURSO_AUTH_TOKEN!,
+  libsqlClient = createClient({
+    url: (process.env.LIBSQL_DATABASE_URL || process.env.TURSO_DATABASE_URL)!,
+    authToken: process.env.LIBSQL_AUTH_TOKEN || process.env.TURSO_AUTH_TOKEN,
   })
   
-  return tursoClient
+  return libsqlClient
 }
 
 function isRetryableDatabaseError(error: unknown): boolean {

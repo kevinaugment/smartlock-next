@@ -32,28 +32,8 @@ jobs:
       - name: Test SEO static export rules
         run: npm run test:seo
 
-      - name: Verify build-time data secrets
-        run: |
-          missing=0
-          for name in TURSO_DATABASE_URL TURSO_AUTH_TOKEN; do
-            if [ -z "${!name}" ]; then
-              echo "::error title=Missing build secret::$name is required for static generation."
-              missing=1
-            fi
-          done
-          if [ "$missing" -ne 0 ]; then
-            echo "Configure repository Actions secrets before generating the static site."
-            exit 1
-          fi
-        env:
-          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
-          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
-
       - name: Build static site
         run: npm run build
-        env:
-          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
-          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -74,29 +54,25 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify deployment and build-time data secrets
+      - name: Verify deployment secrets
         run: |
           missing=0
-          for name in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID TURSO_DATABASE_URL TURSO_AUTH_TOKEN; do
+          for name in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID; do
             if [ -z "${!name}" ]; then
-              echo "::error title=Missing deployment secret::$name is required for static generation or deployment."
+              echo "::error title=Missing deployment secret::$name is required for Cloudflare Pages deployment."
               missing=1
             fi
           done
           if [ "$missing" -ne 0 ]; then
-            echo "Configure repository Actions secrets before generating and deploying the static Pages site."
+            echo "Configure repository Actions secrets before deploying the static Pages site."
             exit 1
           fi
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
-          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
 
       - name: Deploy static Pages site
         run: npm run deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
-          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}

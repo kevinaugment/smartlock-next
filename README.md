@@ -7,7 +7,7 @@ Professional smart lock knowledge base with interactive calculators, brand compa
 ## Tech Stack
 
 - **Framework:** Next.js 14 (App Router)
-- **Build-time data:** Turso / LibSQL
+- **Build-time data:** checked-in LibSQL seed (`database/d1-import-ordered.sql`)
 - **Runtime:** Static HTML/CSS/JS exported by Next.js
 - **Styling:** TailwindCSS
 - **Deployment:** Cloudflare Pages
@@ -22,12 +22,7 @@ npm install
 
 ### 2. Configure Environment
 
-Copy `.env.example` to `.env.local` and set:
-
-```bash
-TURSO_DATABASE_URL="libsql://your-database.turso.io"
-TURSO_AUTH_TOKEN="your-turso-auth-token"
-```
+Static builds work without remote database secrets. By default, the build imports `database/d1-import-ordered.sql` into a temporary local LibSQL database and generates `out/` from that data.
 
 ### 3. Run Development Server
 
@@ -80,9 +75,7 @@ npm run lint     # Run ESLint
 
 `npm run build` generates the static site in `out/`.
 
-Environment variables required during static generation:
-- `TURSO_DATABASE_URL`
-- `TURSO_AUTH_TOKEN`
+No database secrets are required for static generation.
 
 Deploy with:
 

@@ -502,8 +502,18 @@ function main() {
   const packageJson = readFileSync('package.json', 'utf8')
   assert.match(packageJson, /"test:seo"/, 'package scripts must expose the SEO regression test bundle')
   assert.match(packageJson, /"build": "npm run next:build"/, 'default build must generate the static export')
+  assert.match(packageJson, /node scripts\/build-static-site\.mjs/, 'static build must prepare a build-time local data source')
   assert.match(packageJson, /wrangler pages deploy out/, 'deploy script must publish static Pages assets')
   assert.doesNotMatch(packageJson, /opennextjs-cloudflare build|wrangler deploy --x-autoconfig=false/, 'package scripts must not use Worker build or Worker deploy as the default path')
+
+  const staticBuildScript = readFileSync('scripts/build-static-site.mjs', 'utf8')
+  assert.match(staticBuildScript, /database\/d1-import-ordered\.sql/, 'static build must use the checked-in SQL seed as its default data source')
+  assert.match(staticBuildScript, /executeMultiple\(seedSql\)/, 'static build must import the complete SQL seed before generating pages')
+  assert.match(staticBuildScript, /process\.env\.LIBSQL_DATABASE_URL = databaseUrl/, 'static build must expose the temporary local LibSQL database through the existing DB facade')
+  assert.doesNotMatch(staticBuildScript, /process\.env\.TURSO_DATABASE_URL\) return null|dotenv/, 'static build must not use remote database env as an alternate data source')
+
+  const deployWorkflow = readFileSync('.github/workflows/deploy.yml', 'utf8')
+  assert.doesNotMatch(deployWorkflow, /secrets\.TURSO_DATABASE_URL|secrets\.TURSO_AUTH_TOKEN/, 'GitHub Actions static build must not require remote database secrets')
 
   const wranglerConfig = readFileSync('wrangler.jsonc', 'utf8')
   assert.match(wranglerConfig, /"pages_build_output_dir": "out"/, 'Wrangler config must target the static output directory')

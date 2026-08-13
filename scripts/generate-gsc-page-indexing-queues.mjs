@@ -157,12 +157,43 @@ function actionFor(issue, template, performance) {
 }
 
 function loadUrlDetails(detailsDir, performanceMap) {
-  if (!existsSync(detailsDir)) return []
+  if (!existsSync(detailsDir)) {
+    return {
+      rows: [],
+      status: {
+        state: 'missing-directory',
+        message: 'The Page Indexing URL detail directory does not exist yet.',
+        files: [],
+      },
+    }
+  }
   const files = readdirSync(detailsDir).filter((fileName) => fileName.toLowerCase().endsWith('.csv'))
+  if (files.length === 0) {
+    return {
+      rows: [],
+      status: {
+        state: 'missing-csv',
+        message: 'The Page Indexing URL detail directory exists, but it contains no CSV files.',
+        files,
+      },
+    }
+  }
+
   const rows = []
+  const aggregateFiles = []
   for (const fileName of files) {
     const filePath = join(detailsDir, fileName)
-    for (const record of readCsvObjects(filePath)) {
+    const records = readCsvObjects(filePath)
+    const keys = new Set(records.flatMap((record) => Object.keys(record)))
+    const looksAggregateCoverage = keys.has('原因') && keys.has('来源') && keys.has('验证') && keys.has('网页')
+    const looksChart = keys.has('日期') && keys.has('未编入索引') && keys.has('已编入索引')
+    const looksMetadata = keys.has('资源') && keys.has('值')
+    if (looksAggregateCoverage || looksChart || looksMetadata) {
+      aggregateFiles.push(fileName)
+      continue
+    }
+
+    for (const record of records) {
       const url = detectUrl(record)
       if (!url) continue
       const issue = detectIssue(record, fileName)
@@ -178,7 +209,26 @@ function loadUrlDetails(detailsDir, performanceMap) {
       })
     }
   }
-  return rows
+  if (aggregateFiles.length > 0 && rows.length === 0) {
+    return {
+      rows,
+      status: {
+        state: 'aggregate-only',
+        message: 'Only aggregate Coverage CSV files were found. Export URL-level Page Indexing issue examples instead.',
+        files,
+        aggregateFiles,
+      },
+    }
+  }
+  return {
+    rows,
+    status: {
+      state: 'ok',
+      message: rows.length > 0 ? 'URL-level Page Indexing rows were imported.' : 'CSV files were found, but no SLockHub URL rows could be detected.',
+      files,
+      aggregateFiles,
+    },
+  }
 }
 
 function groupBy(rows, keyFn) {
@@ -207,7 +257,22 @@ function renderTable(rows, limit = 40) {
   return lines.join('\n')
 }
 
-function renderReport({ rows, detailsDir }) {
+function renderEvidenceStatus(status) {
+  const lines = [
+    '## Evidence Status',
+    '',
+    `- State: \`${status.state}\``,
+    `- Message: ${status.message}`,
+  ]
+  if (status.files?.length) lines.push(`- CSV files seen: ${status.files.map((file) => `\`${file}\``).join(', ')}`)
+  if (status.aggregateFiles?.length) lines.push(`- Aggregate-only files ignored: ${status.aggregateFiles.map((file) => `\`${file}\``).join(', ')}`)
+  if (status.state !== 'ok') {
+    lines.push('- Action required: export URL-level rows from each Search Console Page Indexing issue bucket before URL Inspection or noindex decisions.')
+  }
+  return lines.join('\n')
+}
+
+function renderReport({ rows, detailsDir, status }) {
   const byIssue = groupBy(rows, (row) => row.issue)
   const byTemplate = groupBy(rows, (row) => row.template)
   const repairRows = rows.filter((row) => ['other-4xx', 'not-found-404'].includes(row.issue))
@@ -232,6 +297,8 @@ Source folder: \`${detailsDir}\`
 - Template buckets: ${Object.entries(byTemplate).map(([template, templateRows]) => `${template}: ${templateRows.length}`).join(', ') || 'none'}
 
 If this report has 0 rows, the Page Indexing URL-level CSV files are still missing. Export the URL examples for each issue bucket from Search Console and save them into the source folder above.
+
+${renderEvidenceStatus(status)}
 
 ## Repair Queue: 4xx / 404
 
@@ -272,11 +339,11 @@ export function generatePageIndexingQueues({
 } = {}) {
   const resolvedDetailsDir = resolve(detailsDir)
   const performanceMap = readPerformanceMap(performanceCsv)
-  const rows = loadUrlDetails(resolvedDetailsDir, performanceMap)
-  const report = renderReport({ rows, detailsDir: resolvedDetailsDir })
+  const { rows, status } = loadUrlDetails(resolvedDetailsDir, performanceMap)
+  const report = renderReport({ rows, detailsDir: resolvedDetailsDir, status })
   mkdirSync(resolve(output, '..'), { recursive: true })
   writeFileSync(output, report)
-  return { detailsDir: resolvedDetailsDir, output, rows }
+  return { detailsDir: resolvedDetailsDir, output, rows, status }
 }
 
 function parseArgs(argv) {
@@ -292,5 +359,5 @@ function parseArgs(argv) {
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const result = generatePageIndexingQueues(parseArgs(process.argv.slice(2)))
-  process.stdout.write(`Imported ${result.rows.length} URL detail rows from ${basename(result.detailsDir)}\nWrote ${result.output}\n`)
+  process.stdout.write(`Imported ${result.rows.length} URL detail rows from ${basename(result.detailsDir)}\nEvidence status: ${result.status.state}\nWrote ${result.output}\n`)
 }

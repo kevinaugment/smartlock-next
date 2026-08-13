@@ -11,6 +11,12 @@ Source folder: `/Users/luokun/Downloads/https___www.slockhub.com_-Coverage-2026-
 
 If this report has 0 rows, the Page Indexing URL-level CSV files are still missing. Export the URL examples for each issue bucket from Search Console and save them into the source folder above.
 
+## Evidence Status
+
+- State: `missing-directory`
+- Message: The Page Indexing URL detail directory does not exist yet.
+- Action required: export URL-level rows from each Search Console Page Indexing issue bucket before URL Inspection or noindex decisions.
+
 ## Repair Queue: 4xx / 404
 
 These URLs should be repaired, redirected, or intentionally left as 404/410. Do not request indexing for these source URLs.

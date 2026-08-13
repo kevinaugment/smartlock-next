@@ -432,6 +432,7 @@ function main() {
 
   const articlePage = readFileSync('app/articles/[category]/[slug]/page.tsx', 'utf8')
   assert.match(articlePage, /resolveCalculatorRouteSlug\(toolSlug\)/, 'article pages must resolve relatedTools to crawlable calculator routes')
+  assert.match(articlePage, /getDefaultRelatedToolSlugs\(article\)/, 'article pages must fall back to category and topic calculator links when metadata is sparse')
   assert.match(articlePage, /Tools for This Topic/, 'article pages must render related tool links from article metadata')
 
   const middleware = readFileSync('middleware.ts', 'utf8')

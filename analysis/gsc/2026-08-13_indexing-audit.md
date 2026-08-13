@@ -93,6 +93,7 @@ The live smoke no longer reproduces the earlier compare 404, invalid-product 503
 5. Short resource articles remain a likely quality bucket.
    - Registry count: 119 articles; 45 resource articles; 24 resource articles under 600 words; 53 total articles under 600 words.
    - These should be upgraded, merged into stronger resource hubs, or excluded only after URL-level GSC evidence.
+   - 2026-08-14 source update: article detail pages now append category/topic fallback calculator links after any hand-authored `relatedTools`, so sparse articles still expose crawlable tool links instead of losing the "Tools for This Topic" block entirely. This improves internal discovery but does not replace the URL-level GSC evidence needed for merge/noindex decisions.
 
 ## Indexing Layer Matrix
 

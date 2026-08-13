@@ -21,6 +21,33 @@ function getPathwayTopic(article: NonNullable<ReturnType<typeof getArticleBySlug
   return 'installation';
 }
 
+const DEFAULT_RELATED_TOOLS_BY_CATEGORY: Record<string, string[]> = {
+  guides: ['compatibility', 'protocol-wizard', 'battery-life'],
+  installation: ['installation-cost', 'door-fit', 'installation-time'],
+  protocols: ['protocol-wizard', 'signal-strength', 'mesh-planner'],
+  security: ['security-compliance', 'pin-strength', 'cyber-risk'],
+  integration: ['protocol-wizard', 'network-bandwidth', 'offline-resilience'],
+  'use-cases': ['lock-tco', 'str-roi', 'credential-planner'],
+  resources: ['lock-compare', 'compatibility', 'installation-cost'],
+};
+
+function getDefaultRelatedToolSlugs(article: NonNullable<ReturnType<typeof getArticleBySlug>>): string[] {
+  if (article.slug.includes('battery')) return ['battery-life', 'signal-strength', 'lock-tco'];
+  if (article.slug.includes('wifi') || article.slug.includes('zigbee') || article.slug.includes('z-wave') || article.slug.includes('thread') || article.slug.includes('matter')) {
+    return ['protocol-wizard', 'signal-strength', 'mesh-planner'];
+  }
+  if (article.slug.includes('rental') || article.slug.includes('airbnb') || article.slug.includes('hotel')) {
+    return ['str-roi', 'guest-code', 'lock-tco'];
+  }
+  if (article.slug.includes('privacy') || article.slug.includes('compliance')) {
+    return ['privacy-compliance', 'security-compliance', 'cyber-risk'];
+  }
+  if (article.slug.includes('install') || article.slug.includes('door') || article.slug.includes('retrofit')) {
+    return ['compatibility', 'door-fit', 'installation-cost'];
+  }
+  return DEFAULT_RELATED_TOOLS_BY_CATEGORY[article.category] || DEFAULT_RELATED_TOOLS_BY_CATEGORY.guides;
+}
+
 function getArticleStructuredData(article: NonNullable<ReturnType<typeof getArticleBySlug>>, categoryName: string) {
   const articleUrl = `https://www.slockhub.com/articles/${article.category}/${article.slug}`;
   const baseSchemas = [
@@ -227,7 +254,8 @@ export default async function ArticlePage({
   const categoryInfo = CATEGORIES[article.category];
   const pathwayTopic = getPathwayTopic(article);
   const showCompatibilityReport = article.slug === 'door-compatibility-guide';
-  const relatedTools = (article.relatedTools || [])
+  const relatedToolSlugs = [...(article.relatedTools || []), ...getDefaultRelatedToolSlugs(article)];
+  const relatedTools = relatedToolSlugs
     .map((toolSlug) => {
       const routeSlug = resolveCalculatorRouteSlug(toolSlug);
       if (!routeSlug) return null;

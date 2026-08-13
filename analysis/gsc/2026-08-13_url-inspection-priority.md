@@ -1,8 +1,19 @@
 # SLockHub URL Inspection Priority Queue
 
-- Date: 2026-08-13
+- Generated: 2026-08-13
 - Rule: submit a small number of high-value and diagnostic URLs only. Do not bulk-submit all compare long-tail URLs.
-- Evidence base: local source review, Coverage aggregate counts, and 2026-08-06 GSC Performance URL rows.
+- Evidence base: local source review, Coverage aggregate counts, and GSC Performance URL rows.
+- Performance CSV: `/Users/luokun/Downloads/https___www.slockhub.com_-Performance-on-Search-2026-08-06/网页.csv`
+
+## Summary
+
+- Performance URL rows imported: 1000
+- Compare performance rows: 648
+- Canonical compare groups: 606
+- Non-canonical compare variants in performance export: 153
+- Product rows with performance visibility: 141
+- Short resource articles under 600 words: 24
+- Short resource articles with performance visibility: 7
 
 ## Batch 0: Deployment And Technical Verification
 
@@ -25,20 +36,20 @@ Stop if any of these return Cloudflare 503, unexpected 404, wrong canonical, or 
 
 Purpose: preserve existing compare demand while consolidating non-canonical variants.
 
-Submit canonical URLs only after Batch 0 passes.
+Submit canonical URLs only after Batch 0 passes and URL Inspection says the canonical URL is not indexed.
 
-| Priority | URL | Performance signal |
-|---:|---|---|
-| 1 | `https://www.slockhub.com/compare/nuki-vs-tedee` | 1360 impressions, 24 clicks |
-| 2 | `https://www.slockhub.com/compare/schlage-vs-weiser` | 1231 grouped impressions, 4 grouped clicks |
-| 3 | `https://www.slockhub.com/compare/defiant-vs-schlage` | 966 grouped impressions, 1 grouped click |
-| 4 | `https://www.slockhub.com/compare/defiant-vs-kwikset` | 607 grouped impressions, 5 grouped clicks |
-| 5 | `https://www.slockhub.com/compare/kwikset-vs-weiser` | 580 impressions, 1 click |
-| 6 | `https://www.slockhub.com/compare/schlage-vs-veise` | 550 grouped impressions, 14 grouped clicks |
-| 7 | `https://www.slockhub.com/compare/hafele-vs-yale` | 435 grouped impressions, 6 grouped clicks |
-| 8 | `https://www.slockhub.com/compare/lockly-vs-schlage` | 427 grouped impressions, 5 grouped clicks |
-| 9 | `https://www.slockhub.com/compare/nuki-vs-yale` | 403 grouped impressions, 2 grouped clicks |
-| 10 | `https://www.slockhub.com/compare/brinks-vs-kwikset` | 400 grouped impressions, 4 grouped clicks |
+| Priority | URL | Performance signal | Non-canonical variant seen |
+|---:|---|---|---|
+| 1 | `https://www.slockhub.com/compare/nuki-vs-tedee` | 1360 grouped impressions, 24 grouped clicks | - |
+| 2 | `https://www.slockhub.com/compare/schlage-vs-weiser` | 1231 grouped impressions, 4 grouped clicks | `https://www.slockhub.com/compare/weiser-vs-schlage` |
+| 3 | `https://www.slockhub.com/compare/schlage-vs-defiant` | 966 grouped impressions, 1 grouped click | - |
+| 4 | `https://www.slockhub.com/compare/kwikset-vs-defiant` | 607 grouped impressions, 5 grouped clicks | - |
+| 5 | `https://www.slockhub.com/compare/kwikset-vs-weiser` | 580 grouped impressions, 1 grouped click | - |
+| 6 | `https://www.slockhub.com/compare/veise-vs-schlage` | 550 grouped impressions, 14 grouped clicks | `https://www.slockhub.com/compare/schlage-vs-veise` |
+| 7 | `https://www.slockhub.com/compare/yale-vs-hafele` | 435 grouped impressions, 6 grouped clicks | `https://www.slockhub.com/compare/hafele-vs-yale` |
+| 8 | `https://www.slockhub.com/compare/lockly-vs-schlage` | 427 grouped impressions, 5 grouped clicks | `https://www.slockhub.com/compare/schlage-vs-lockly` |
+| 9 | `https://www.slockhub.com/compare/yale-vs-nuki` | 403 grouped impressions, 2 grouped clicks | `https://www.slockhub.com/compare/nuki-vs-yale` |
+| 10 | `https://www.slockhub.com/compare/kwikset-vs-brinks` | 400 grouped impressions, 4 grouped clicks | - |
 
 ## Batch 2: Non-Canonical Compare Consolidation Checks
 
@@ -49,15 +60,15 @@ Use URL Inspection live test. Do not request indexing on the non-canonical sourc
 | Source URL | Expected canonical target |
 |---|---|
 | `https://www.slockhub.com/compare/weiser-vs-schlage` | `https://www.slockhub.com/compare/schlage-vs-weiser` |
-| `https://www.slockhub.com/compare/schlage-vs-defiant` | `https://www.slockhub.com/compare/defiant-vs-schlage` |
-| `https://www.slockhub.com/compare/kwikset-vs-defiant` | `https://www.slockhub.com/compare/defiant-vs-kwikset` |
-| `https://www.slockhub.com/compare/veise-vs-schlage` | `https://www.slockhub.com/compare/schlage-vs-veise` |
-| `https://www.slockhub.com/compare/yale-vs-hafele` | `https://www.slockhub.com/compare/hafele-vs-yale` |
+| `https://www.slockhub.com/compare/schlage-vs-veise` | `https://www.slockhub.com/compare/veise-vs-schlage` |
+| `https://www.slockhub.com/compare/hafele-vs-yale` | `https://www.slockhub.com/compare/yale-vs-hafele` |
 | `https://www.slockhub.com/compare/schlage-vs-lockly` | `https://www.slockhub.com/compare/lockly-vs-schlage` |
-| `https://www.slockhub.com/compare/yale-vs-nuki` | `https://www.slockhub.com/compare/nuki-vs-yale` |
-| `https://www.slockhub.com/compare/kwikset-vs-brinks` | `https://www.slockhub.com/compare/brinks-vs-kwikset` |
-| `https://www.slockhub.com/compare/lockly-vs-eufy` | `https://www.slockhub.com/compare/eufy-vs-lockly` |
+| `https://www.slockhub.com/compare/nuki-vs-yale` | `https://www.slockhub.com/compare/yale-vs-nuki` |
 | `https://www.slockhub.com/compare/switchbot-vs-nuki` | `https://www.slockhub.com/compare/nuki-vs-switchbot` |
+| `https://www.slockhub.com/compare/august-vs-yale` | `https://www.slockhub.com/compare/yale-vs-august` |
+| `https://www.slockhub.com/compare/schlage-vs-kwikset` | `https://www.slockhub.com/compare/kwikset-vs-schlage` |
+| `https://www.slockhub.com/compare/nuki-vs-august` | `https://www.slockhub.com/compare/august-vs-nuki` |
+| `https://www.slockhub.com/compare/yale-vs-aqara` | `https://www.slockhub.com/compare/aqara-vs-yale` |
 
 ## Batch 3: High-Exposure Non-Compare Pages
 
@@ -65,18 +76,18 @@ Purpose: protect useful pages with existing impressions across guides, best page
 
 Submit only if Batch 0 passes and the URL is not already indexed in URL Inspection.
 
-| Priority | URL | Performance signal |
-|---:|---|---|
-| 1 | `https://www.slockhub.com/articles/guides/door-compatibility-guide` | 933 impressions |
-| 2 | `https://www.slockhub.com/best/matter-smart-locks` | 788 impressions, 4 clicks |
-| 3 | `https://www.slockhub.com/best/z-wave-smart-locks` | 769 impressions |
-| 4 | `https://www.slockhub.com/brands/samsung/samsung-shp-dp609` | 616 impressions |
-| 5 | `https://www.slockhub.com/articles/security/smart-lock-security-complete-analysis` | 546 impressions |
-| 6 | `https://www.slockhub.com/best/homekit-smart-locks` | 501 impressions |
-| 7 | `https://www.slockhub.com/best/smart-locks-with-longest-battery-life` | 486 impressions, 2 clicks |
-| 8 | `https://www.slockhub.com/calculators/installation-cost` | 464 impressions |
-| 9 | `https://www.slockhub.com/articles/protocols/connect-lock-to-homekit` | 436 impressions, 1 click |
-| 10 | `https://www.slockhub.com/best/fingerprint-smart-locks` | 411 impressions, 1 click |
+| Priority | URL | Template | Performance signal |
+|---:|---|---|---|
+| 1 | `https://www.slockhub.com/articles/guides/door-compatibility-guide` | article | 933 impressions, 0 clicks |
+| 2 | `https://www.slockhub.com/best/matter-smart-locks` | best | 788 impressions, 4 clicks |
+| 3 | `https://www.slockhub.com/best/z-wave-smart-locks` | best | 769 impressions, 0 clicks |
+| 4 | `https://www.slockhub.com/brands/samsung/samsung-shp-dp609` | product | 616 impressions, 0 clicks |
+| 5 | `https://www.slockhub.com/articles/security/smart-lock-security-complete-analysis` | article | 546 impressions, 0 clicks |
+| 6 | `https://www.slockhub.com/best/homekit-smart-locks` | best | 501 impressions, 0 clicks |
+| 7 | `https://www.slockhub.com/best/smart-locks-with-longest-battery-life` | best | 486 impressions, 2 clicks |
+| 8 | `https://www.slockhub.com/calculators/installation-cost` | calculator | 464 impressions, 0 clicks |
+| 9 | `https://www.slockhub.com/articles/protocols/connect-lock-to-homekit` | article | 436 impressions, 1 click |
+| 10 | `https://www.slockhub.com/best/fingerprint-smart-locks` | best | 411 impressions, 1 click |
 
 ## Batch 4: Product And Brand Samples
 
@@ -85,10 +96,10 @@ Purpose: verify the product brand-slug fix and product-detail indexability acros
 | Priority | URL | Reason |
 |---:|---|---|
 | 1 | `https://www.slockhub.com/brands/samsung/samsung-shp-dp609` | Highest product exposure in performance export. |
-| 2 | `https://www.slockhub.com/brands/nuki/nuki-smart-lock-pro-4` | High product exposure and non-US retrofit demand. |
-| 3 | `https://www.slockhub.com/brands/yale/yale-assure-lock-2-wifi` | High brand/product relevance and canonical brand validation. |
-| 4 | `https://www.slockhub.com/brands/weiser/weiser-halo-touch` | Compare cluster support and Canada/Weiser demand. |
-| 5 | `https://www.slockhub.com/brands/schlage` | Brand hub sample for compare/product pathways. |
+| 2 | `https://www.slockhub.com/brands/nuki/nuki-smart-lock-pro-4` | Product detail sample with performance visibility. |
+| 3 | `https://www.slockhub.com/brands/yale/yale-assure-lock-2-wifi` | Product detail sample with performance visibility. |
+| 4 | `https://www.slockhub.com/brands/weiser/weiser-halo-touch` | Product detail sample with performance visibility. |
+| 5 | `https://www.slockhub.com/brands/nuki/nuki-smart-lock-4` | Product detail sample with performance visibility. |
 
 ## Batch 5: Short Resource Quality Samples
 
@@ -96,20 +107,20 @@ Purpose: determine whether short resource pages are being excluded for quality/t
 
 Live inspect first. Request indexing only when the page is useful, canonical, 200, and not already indexed.
 
-| URL | Word count | Reason |
-|---|---:|---|
-| `https://www.slockhub.com/articles/resources/edge-vs-cloud-guide` | 171 | Very short resource sample. |
-| `https://www.slockhub.com/articles/resources/capex-opex-access-control` | 174 | Very short resource sample. |
-| `https://www.slockhub.com/articles/resources/network-hops-glossary` | 176 | Glossary-style short resource. |
-| `https://www.slockhub.com/articles/resources/credential-rotation-guide` | 188 | Access/security resource. |
-| `https://www.slockhub.com/articles/resources/kwikset-vs-defiant-smart-locks` | 565 | Short resource with performance visibility. |
+| URL | Word count | Performance signal | Reason |
+|---|---|---|---|
+| `https://www.slockhub.com/articles/resources/kwikset-vs-defiant-smart-locks` | 565 | 145 impressions, 0 clicks | Short resource with performance visibility. |
+| `https://www.slockhub.com/articles/resources/wire-gauge-calculator-steps` | 494 | 87 impressions, 1 click | Short resource with performance visibility. |
+| `https://www.slockhub.com/articles/resources/troubleshooting-z-wave-range` | 468 | 33 impressions, 0 clicks | Short resource with performance visibility. |
+| `https://www.slockhub.com/articles/resources/fail-safe-vs-fail-secure` | 188 | 18 impressions, 0 clicks | Short resource with performance visibility. |
+| `https://www.slockhub.com/articles/resources/lock-anatomy-glossary` | 257 | 7 impressions, 0 clicks | Short resource with performance visibility. |
 
 ## Do Not Submit In Bulk
 
 Do not bulk-submit:
 
 - All 1081 compare sitemap URLs.
-- All 292 non-canonical compare variants found in the 2026-08-06 performance export.
+- All 153 non-canonical compare variants found in the performance export.
 - All 24 resource articles under 600 words.
 - Any URL from the `Other 4xx`, `404`, robots-blocked, duplicate-canonical, or noindex buckets until the URL-level Page Indexing export identifies the exact URLs.
 

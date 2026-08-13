@@ -7,10 +7,10 @@ Professional smart lock knowledge base with interactive calculators, brand compa
 ## Tech Stack
 
 - **Framework:** Next.js 14 (App Router)
-- **Database:** Turso / LibSQL
-- **Auth:** JWT (jose)
+- **Build-time data:** Turso / LibSQL
+- **Runtime:** Static HTML/CSS/JS exported by Next.js
 - **Styling:** TailwindCSS
-- **Deployment:** Vercel
+- **Deployment:** Cloudflare Pages
 
 ## Getting Started
 
@@ -47,9 +47,8 @@ Visit: http://localhost:3000
 │   ├── compare/         # Brand vs brand comparisons
 │   ├── protocols/       # Protocol pages & product matrix
 │   ├── resources/       # Resource center
-│   ├── admin/           # Admin dashboard
-│   ├── api/             # API routes
-│   ├── sitemap.ts       # Dynamic sitemap generation
+│   ├── admin/           # Noindex static admin placeholder
+│   ├── sitemap.ts       # Static sitemap generation
 │   └── robots.ts        # Robots.txt
 ├── components/          # React components
 ├── content/resources/   # Static content
@@ -62,7 +61,9 @@ Visit: http://localhost:3000
 │   ├── db/              # Database client & models
 │   ├── services/        # Business logic layer
 │   └── utils.ts         # Utility functions
-├── vercel.json          # Vercel configuration
+├── public/_redirects    # Static 301 redirects for Cloudflare Pages
+├── public/_headers      # Static response headers for Cloudflare Pages
+├── wrangler.jsonc       # Cloudflare Pages configuration
 └── next.config.mjs      # Next.js configuration
 ```
 
@@ -71,17 +72,23 @@ Visit: http://localhost:3000
 ```bash
 npm run dev      # Start development server
 npm run build    # Production build
-npm run start    # Start production server
+npm run start    # Preview the exported static site
 npm run lint     # Run ESLint
 ```
 
 ## Deployment
 
-Push to GitHub → Vercel auto-deploys.
+`npm run build` generates the static site in `out/`.
 
-Environment variables required on Vercel:
+Environment variables required during static generation:
 - `TURSO_DATABASE_URL`
 - `TURSO_AUTH_TOKEN`
+
+Deploy with:
+
+```bash
+npm run deploy
+```
 
 ## License
 

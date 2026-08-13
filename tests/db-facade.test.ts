@@ -4,33 +4,27 @@ import { constants } from 'node:fs'
 
 async function main() {
   const source = await readFile(new URL('../lib/db.ts', import.meta.url), 'utf8')
-  const reportDownloadRoute = await readFile(new URL('../app/api/reports/download/route.ts', import.meta.url), 'utf8')
   const moduleExports = await import('../lib/db')
 
   assert.equal(
     /from\s+['"]@libsql\/client['"]/.test(source),
     false,
-    'lib/db.ts must not statically import @libsql/client so OpenNext can defer DB bundling until runtime routes need it'
+    'lib/db.ts must not statically import @libsql/client so static builds can defer DB client loading until data is needed'
   )
   assert.equal(
     source.includes("@libsql/client/node"),
     false,
-    'lib/db.ts must not force @libsql/client/node because it pulls native libsql bindings into workerd'
+    'lib/db.ts must not force @libsql/client/node because it pulls native libsql bindings into browser-targeted bundles'
   )
   assert.equal(
     source.includes("import('@libsql/client')"),
     true,
-    'lib/db.ts should dynamically import @libsql/client and let runtime export conditions choose node or workerd'
+    'lib/db.ts should dynamically import @libsql/client and let export conditions choose the right implementation'
   )
   assert.equal(
     source.includes('process.env.DB'),
     false,
     'canonical DB facade must not use process.env.DB for Cloudflare bindings'
-  )
-  assert.equal(
-    reportDownloadRoute.includes('TURSO_DATABASE_URL') || reportDownloadRoute.includes('TURSO_AUTH_TOKEN'),
-    false,
-    'report lead persistence must not gate writes on Turso-specific environment variables'
   )
 
   await assert.rejects(

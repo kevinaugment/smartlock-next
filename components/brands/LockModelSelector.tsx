@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 
 interface CalculatorProduct {
     id: number
@@ -34,21 +34,8 @@ interface LockModelSelectorProps {
 
 export default function LockModelSelector({ onSelect, selectedSlug }: LockModelSelectorProps) {
     const [products, setProducts] = useState<CalculatorProduct[]>([])
-    const [loading, setLoading] = useState(true)
     const [selectedBrand, setSelectedBrand] = useState('')
     const [selectedProduct, setSelectedProduct] = useState('')
-
-    useEffect(() => {
-        fetch('/api/products?for_calculator=1')
-            .then(res => res.json())
-            .then(data => {
-                if (data.success && Array.isArray(data.data)) {
-                    setProducts(data.data)
-                }
-            })
-            .catch(() => { /* API not available */ })
-            .finally(() => setLoading(false))
-    }, [])
 
     // Group products by brand
     const brands = Array.from(new Set(products.map(p => p.brand_slug)))
@@ -73,14 +60,6 @@ export default function LockModelSelector({ onSelect, selectedSlug }: LockModelS
             onSelect(product)
         }
     }, [products, onSelect])
-
-    if (loading) {
-        return (
-            <div style={{ padding: 'var(--space-md)', background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
-                <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Loading lock models...</span>
-            </div>
-        )
-    }
 
     if (products.length === 0) return null
 

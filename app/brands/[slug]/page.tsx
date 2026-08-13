@@ -19,9 +19,7 @@ import {
 import { formatUsdCents } from '@/lib/format/price'
 import { getBrandComparisonLinks } from '@/lib/seo/priority-comparisons'
 
-export const dynamic = 'force-dynamic'
-export const dynamicParams = true
-export const revalidate = 0
+export const dynamicParams = false
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params
@@ -54,12 +52,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export async function generateStaticParams() {
-    try {
-        const brands = await BrandModel.getAll()
-        return brands.map(b => ({ slug: b.slug }))
-    } catch {
-        return []
-    }
+    const brands = await BrandModel.getAll()
+    return brands.map(b => ({ slug: b.slug }))
 }
 
 function getTopProducts(products: Product[]): Product[] {

@@ -185,6 +185,23 @@ function collectSourceFiles(dir: string): string[] {
   return files
 }
 
+function collectFiles(dir: string): string[] {
+  if (!existsSync(dir)) return []
+
+  const files: string[] = []
+  for (const entry of readdirSync(dir)) {
+    if (entry.startsWith('.')) continue
+    const path = join(dir, entry)
+    const stats = statSync(path)
+    if (stats.isDirectory()) {
+      files.push(...collectFiles(path))
+      continue
+    }
+    files.push(path)
+  }
+  return files
+}
+
 function assertInternalCompareLinksAreCanonical() {
   const sourceFiles = ['app', 'components', 'lib']
     .filter(existsSync)
@@ -435,9 +452,24 @@ function main() {
   assert.match(articlePage, /getDefaultRelatedToolSlugs\(article\)/, 'article pages must fall back to category and topic calculator links when metadata is sparse')
   assert.match(articlePage, /Tools for This Topic/, 'article pages must render related tool links from article metadata')
 
-  const middleware = readFileSync('middleware.ts', 'utf8')
-  assert.match(middleware, /getCanonicalComparisonHref\(match\[1\], match\[2\]\)/, 'middleware must canonicalize compare route direction')
-  assert.match(middleware, /NextResponse\.redirect\(new URL\(canonicalPath, request\.url\), 301\)/, 'middleware must redirect reverse compare URLs with a 301')
+  assert.equal(existsSync('middleware.ts'), false, 'static export must not rely on Next.js middleware')
+
+  const redirects = readFileSync('public/_redirects', 'utf8')
+  const redirectLines = redirects.trim().split('\n').filter(line => line && !line.startsWith('#'))
+  const wildcardUseCaseIndex = redirectLines.findIndex(line => line.startsWith('/use-cases/* '))
+  const reverseWeiserIndex = redirectLines.findIndex(line => line.startsWith('/compare/weiser-vs-schlage '))
+  const reverseVeiseIndex = redirectLines.findIndex(line => line.startsWith('/compare/schlage-vs-veise '))
+  assert.match(redirects, /\/articles\/use-cases\/long-term-rental-property-strategy \/articles\/use-cases\/long-term-rental-strategy 301/, 'static redirects must preserve the old long-term rental URL')
+  assert.match(redirects, /\/use-cases\/\* \/articles\/use-cases\/:splat 301/, 'static redirects must preserve old use-case URL patterns')
+  assert.match(redirects, /\/compare\/weiser-vs-schlage \/compare\/schlage-vs-weiser 301/, 'static redirects must canonicalize reverse comparison URLs')
+  assert.match(redirects, /\/compare\/schlage-vs-veise \/compare\/veise-vs-schlage 301/, 'static redirects must include GSC-priority reverse comparison URLs')
+  assert.equal(redirectLines.length <= 2100, true, 'Cloudflare Pages _redirects must stay within the combined 2100-rule limit')
+  assert.equal(wildcardUseCaseIndex > reverseWeiserIndex, true, 'static comparison redirects must appear before dynamic splat redirects')
+  assert.equal(wildcardUseCaseIndex > reverseVeiseIndex, true, 'static comparison redirects must appear before dynamic splat redirects')
+
+  const headers = readFileSync('public/_headers', 'utf8')
+  assert.match(headers, /X-Frame-Options: DENY/, 'static headers must preserve frame protection')
+  assert.match(headers, /Cache-Control: public, max-age=31536000, immutable/, 'static headers must preserve immutable asset caching')
 
   const glossaryLayout = readFileSync('app/resources/glossary/layout.tsx', 'utf8')
   const buyingGuideLayout = readFileSync('app/resources/buying-guide/layout.tsx', 'utf8')
@@ -456,19 +488,36 @@ function main() {
   assert.match(xmlSitemap, /priorityBestPageLinks\.map/, 'XML sitemap must include priority best-page fallback URLs')
   assert.match(xmlSitemap, /uniqueSitemapPages/, 'XML sitemap must de-duplicate static fallback and dynamic DB URLs')
   assert.match(xmlSitemap, /TopNPageModel\.getAllForSeo\(\)/, 'XML sitemap must use DB lastmod data for best pages')
-  assert.match(xmlSitemap, /SITEMAP_LKG_KV_KEY/, 'XML sitemap must define a last-known-good cache key')
-  assert.match(xmlSitemap, /getCachedSitemapPages/, 'XML sitemap must read last-known-good pages when generation fails')
-  assert.match(xmlSitemap, /getValidCachedSitemapPages/, 'XML sitemap must validate last-known-good payloads before returning them')
-  assert.match(xmlSitemap, /isValidSitemapCachePage/, 'XML sitemap must validate cached sitemap page URLs before returning them')
-  assert.match(xmlSitemap, /url\.origin !== BASE_URL/, 'XML sitemap cache validation must reject off-site cached URLs')
-  assert.match(xmlSitemap, /cacheSitemapPages\(pages\)/, 'XML sitemap must cache the full generated sitemap after successful DB-backed generation')
-  assert.match(xmlSitemap, /if \(cachedPages\) return cachedPages/, 'XML sitemap must return last-known-good pages before failing closed')
-  assert.match(xmlSitemap, /throw error/, 'XML sitemap must still fail closed when DB generation fails and no last-known-good sitemap exists')
+  assert.match(xmlSitemap, /return buildSitemapPages\(\)/, 'XML sitemap must be generated at static build time')
+  assert.doesNotMatch(xmlSitemap, /getCloudflareContext/, 'XML sitemap must not depend on Cloudflare runtime context')
+  assert.doesNotMatch(xmlSitemap, /SLOCKHUB_KV|SITEMAP_LKG_KV_KEY|getCachedSitemapPages|cacheSitemapPages/, 'XML sitemap must not depend on runtime KV fallback')
   assert.doesNotMatch(xmlSitemap, /catch \{\s*\/\/ Database not available/, 'XML sitemap must not silently publish a partial sitemap when dynamic DB reads fail')
   assert.doesNotMatch(xmlSitemap, /BUILD_DATE/, 'XML sitemap must not stamp static fallback URLs with the build date')
 
+  const nextConfig = readFileSync('next.config.mjs', 'utf8')
+  assert.match(nextConfig, /output: 'export'/, 'Next config must use static export output')
+  assert.match(nextConfig, /unoptimized: true/, 'Next config must disable runtime image optimization for static export')
+  assert.doesNotMatch(nextConfig, /redirects\(\)|headers\(\)|rewrites\(\)|outputFileTracingIncludes/, 'Next config must not rely on server-only routing or tracing features')
+
   const packageJson = readFileSync('package.json', 'utf8')
   assert.match(packageJson, /"test:seo"/, 'package scripts must expose the SEO regression test bundle')
+  assert.match(packageJson, /"build": "npm run next:build"/, 'default build must generate the static export')
+  assert.match(packageJson, /wrangler pages deploy out/, 'deploy script must publish static Pages assets')
+  assert.doesNotMatch(packageJson, /opennextjs-cloudflare build|wrangler deploy --x-autoconfig=false/, 'package scripts must not use Worker build or Worker deploy as the default path')
+
+  const wranglerConfig = readFileSync('wrangler.jsonc', 'utf8')
+  assert.match(wranglerConfig, /"pages_build_output_dir": "out"/, 'Wrangler config must target the static output directory')
+  assert.doesNotMatch(wranglerConfig, /"main"|"d1_databases"|"kv_namespaces"|"\.open-next/, 'Wrangler config must not define Worker entrypoints or runtime bindings')
+
+  const apiRouteFiles = collectFiles('app/api').filter(path => path.endsWith('route.ts'))
+  assert.deepEqual(apiRouteFiles, [], 'static export must not ship App Router API routes')
+
+  const apiFetchViolations = ['app', 'components', 'lib']
+    .filter(existsSync)
+    .flatMap(collectSourceFiles)
+    .filter(path => !path.endsWith('lib/articles/content.generated.ts'))
+    .filter(path => readFileSync(path, 'utf8').includes("fetch('/api/") || readFileSync(path, 'utf8').includes('fetch("/api/'))
+  assert.deepEqual(apiFetchViolations, [], 'static client/server source must not fetch removed /api routes')
 }
 
 main()

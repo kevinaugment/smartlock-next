@@ -6,11 +6,12 @@ Use this after indexing-related changes land on `main`.
 
 The GitHub Actions deploy job requires these repository secrets:
 
-- `CLOUDFLARE_API_TOKEN`: token with access to the Cloudflare account that owns the `smartlock-next` Worker.
-- `CLOUDFLARE_ACCOUNT_ID`: the account id used by the production Worker.
-- `CF_KV_NAMESPACE_ID`: the production `slockhub` KV namespace id used by the `SLOCKHUB_KV` binding.
+- `CLOUDFLARE_API_TOKEN`: token with access to deploy the `smartlock-next` Cloudflare Pages project.
+- `CLOUDFLARE_ACCOUNT_ID`: the Cloudflare account id used by the production Pages project.
+- `TURSO_DATABASE_URL`: build-time data source for static page and sitemap generation.
+- `TURSO_AUTH_TOKEN`: build-time data source token.
 
-The 2026-08-13 deploy run failed because all three values were empty in Actions. Local Wrangler also failed because the logged-in OAuth account did not have access to the target account used by `wrangler.jsonc`.
+The deploy must generate the static `out/` directory and publish it with `wrangler pages deploy out`. It must not build or deploy `.open-next/worker.js`.
 
 ## Production Smoke
 
@@ -32,7 +33,7 @@ Expected:
 - `/protocols/wifi`: stable `200`.
 - `/sitemap.xml`: stable XML response with the expected URL count, canonical compare URLs, and no fake build-date `lastmod`.
 
-If sitemap DB generation fails, the Worker should return the KV last-known-good sitemap from `seo:sitemap:last-known-good:v1`. If there is no cached sitemap, it should fail closed rather than return a partial sitemap.
+If static sitemap generation fails during build, fix the build-time data issue before deployment. Do not publish a partial sitemap.
 
 ## GSC URL Detail Export
 

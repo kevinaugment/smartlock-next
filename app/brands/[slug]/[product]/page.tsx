@@ -20,9 +20,7 @@ import {
     getProtocolClaimText,
 } from '@/lib/brands/fact-policy'
 
-export const dynamic = 'force-dynamic'
-export const dynamicParams = true
-export const revalidate = 0
+export const dynamicParams = false
 
 const getSeoProducts = cache(() => ProductModel.getAllForSeo())
 
@@ -71,12 +69,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export async function generateStaticParams() {
-    try {
-        const products = await getSeoProducts()
-        return products.map(p => ({ slug: p.brand_slug, product: p.slug }))
-    } catch {
-        return []
-    }
+    const products = await getSeoProducts()
+    return products.map(p => ({ slug: p.brand_slug, product: p.slug }))
 }
 
 function getPriceTier(priceUsd: number | undefined): string {

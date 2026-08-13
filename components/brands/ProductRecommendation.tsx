@@ -1,6 +1,5 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 interface RecommendedProduct {
@@ -29,36 +28,10 @@ interface ProductRecommendationProps {
 
 export default function ProductRecommendation({
     protocol,
-    batteryType,
-    maxPrice,
-    needsFingerprint,
-    needsKeypad,
 }: ProductRecommendationProps) {
-    const [products, setProducts] = useState<RecommendedProduct[]>([])
-    const [loading, setLoading] = useState(false)
+    const products: RecommendedProduct[] = []
 
-    useEffect(() => {
-        if (!protocol) return
-
-        setLoading(true)
-        const params = new URLSearchParams()
-        if (protocol) params.set('tag_type', 'protocol')
-        if (protocol) params.set('tag_value', protocol)
-        params.set('limit', '3')
-        params.set('sort_by', 'rating')
-
-        fetch(`/api/products?${params.toString()}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.success && Array.isArray(data.data)) {
-                    setProducts(data.data.slice(0, 3))
-                }
-            })
-            .catch(() => { /* API not available */ })
-            .finally(() => setLoading(false))
-    }, [protocol, batteryType, maxPrice, needsFingerprint, needsKeypad])
-
-    if (!protocol || loading || products.length === 0) return null
+    if (!protocol || products.length === 0) return null
 
     return (
         <div style={{ marginTop: 'var(--space-xl)' }}>

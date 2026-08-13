@@ -83,30 +83,21 @@ export function ReportLeadCapture({
     setError('')
 
     try {
-      const response = await fetch('/api/reports/download', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          reportType,
-          reportTitle: title,
-          email,
-          useCase,
-          doorCount: Number(doorCount),
-          sourcePath,
-          utm: collectUtmParams(),
-          context,
-        }),
-      })
-
-      if (!response.ok) {
-        throw new Error('Unable to generate the report. Please check the form and try again.')
+      const payload = {
+        reportType,
+        reportTitle: title,
+        email,
+        useCase,
+        doorCount: Number(doorCount),
+        sourcePath,
+        utm: collectUtmParams(),
+        context,
       }
-
-      const blob = await response.blob()
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `${reportType}.pdf`
+      link.download = `${reportType}.json`
       document.body.appendChild(link)
       link.click()
       link.remove()

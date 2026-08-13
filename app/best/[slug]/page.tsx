@@ -8,9 +8,7 @@ import { SeoPathways } from '@/components/seo/SeoPathways'
 import { getBestPageCalculatorPathways, getBestPageCommercialIntent, getBestPageEvidence, getBestPageFaqs, getBestPageSeoProfile } from '@/lib/seo/best-page-seo'
 import { formatUsdCents, isUsdCentsBelow } from '@/lib/format/price'
 
-export const dynamic = 'force-dynamic'
-export const dynamicParams = true
-export const revalidate = 0
+export const dynamicParams = false
 
 const CURRENT_YEAR = '2026'
 
@@ -159,12 +157,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export async function generateStaticParams() {
-    try {
-        const pages = await TopNPageModel.getAllSlugs()
-        return pages.map(p => ({ slug: p.slug }))
-    } catch {
-        return []
-    }
+    const pages = await TopNPageModel.getAllSlugs()
+    return pages.map(p => ({ slug: p.slug }))
 }
 
 

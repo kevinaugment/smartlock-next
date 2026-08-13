@@ -7,46 +7,6 @@ import { getCanonicalComparisonHref, priorityComparisonLinks } from '@/lib/seo/p
 import { priorityBestPageLinks, protocolPageLinks } from '@/lib/seo/priority-pages'
 
 const BASE_URL = 'https://www.slockhub.com'
-const SITEMAP_LKG_KV_KEY = 'seo:sitemap:last-known-good:v1'
-
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
-type SitemapKvNamespace = {
-    get(key: string): Promise<string | null>
-    put(key: string, value: string): Promise<void>
-}
-
-type SitemapCachePayload = {
-    generatedAt: string
-    pages: MetadataRoute.Sitemap
-}
-
-function isValidSitemapCachePage(page: unknown): page is MetadataRoute.Sitemap[number] {
-    if (!page || typeof page !== 'object') return false
-    const candidate = page as Partial<MetadataRoute.Sitemap[number]>
-    if (typeof candidate.url !== 'string') return false
-
-    try {
-        const url = new URL(candidate.url)
-        if (url.origin !== BASE_URL) return false
-    } catch {
-        return false
-    }
-
-    const lastModified = candidate.lastModified
-    if (lastModified && !(lastModified instanceof Date) && typeof lastModified !== 'string') return false
-
-    return true
-}
-
-function getValidCachedSitemapPages(payload: unknown): MetadataRoute.Sitemap | null {
-    if (!payload || typeof payload !== 'object') return null
-    const pages = (payload as Partial<SitemapCachePayload>).pages
-    if (!Array.isArray(pages)) return null
-    if (!pages.every(isValidSitemapCachePage)) return null
-    return pages
-}
 
 /**
  * Normalize any date string to W3C Datetime YYYY-MM-DD format for sitemaps.
@@ -71,38 +31,6 @@ function uniqueSitemapPages(pages: MetadataRoute.Sitemap): MetadataRoute.Sitemap
         byUrl.set(page.url, page)
     }
     return Array.from(byUrl.values())
-}
-
-async function getSitemapKv(): Promise<SitemapKvNamespace | null> {
-    try {
-        const { getCloudflareContext } = await import('@opennextjs/cloudflare')
-        const { env } = getCloudflareContext()
-        const kv = (env as { SLOCKHUB_KV?: SitemapKvNamespace }).SLOCKHUB_KV
-        return kv || null
-    } catch {
-        return null
-    }
-}
-
-async function getCachedSitemapPages(): Promise<MetadataRoute.Sitemap | null> {
-    const kv = await getSitemapKv()
-    if (!kv) return null
-
-    const cached = await kv.get(SITEMAP_LKG_KV_KEY)
-    if (!cached) return null
-
-    return getValidCachedSitemapPages(JSON.parse(cached))
-}
-
-async function cacheSitemapPages(pages: MetadataRoute.Sitemap): Promise<void> {
-    const kv = await getSitemapKv()
-    if (!kv) return
-
-    const payload: SitemapCachePayload = {
-        generatedAt: new Date().toISOString(),
-        pages,
-    }
-    await kv.put(SITEMAP_LKG_KV_KEY, JSON.stringify(payload))
 }
 
 async function buildSitemapPages(): Promise<MetadataRoute.Sitemap> {
@@ -342,15 +270,5 @@ async function buildSitemapPages(): Promise<MetadataRoute.Sitemap> {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    try {
-        const pages = await buildSitemapPages()
-        await cacheSitemapPages(pages).catch((error) => {
-            console.warn('[sitemap] Failed to cache last-known-good sitemap.', error)
-        })
-        return pages
-    } catch (error) {
-        const cachedPages = await getCachedSitemapPages().catch(() => null)
-        if (cachedPages) return cachedPages
-        throw error
-    }
+    return buildSitemapPages()
 }

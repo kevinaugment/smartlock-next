@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { queryOne, query } from '@/lib/db'
 import { Search, CheckCircle, XCircle, HelpCircle } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -8,9 +7,6 @@ export const metadata: Metadata = {
   description: 'Check SLockHub service status for article data, categories, database connectivity, and platform runtime.',
   robots: 'noindex',
 }
-
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
 
 interface StatusCheck {
   name: string
@@ -20,47 +16,18 @@ interface StatusCheck {
 }
 
 export default async function StatusPage() {
-  const checks: StatusCheck[] = []
-
-  // Test database connection
-  try {
-    const articlesResult = await queryOne<{ count: number }>('SELECT COUNT(*) as count FROM articles')
-    checks.push({
-      name: 'Database Connection',
+  const checks: StatusCheck[] = [
+    {
+      name: 'Static Export',
       status: 'success',
-      message: 'Database connected'
-    })
-
-    checks.push({
-      name: 'Articles Table',
-      status: 'success',
-      message: `${articlesResult?.count || 0} articles found`,
-      details: articlesResult
-    })
-  } catch (e) {
-    checks.push({
-      name: 'Database Connection',
-      status: 'error',
-      message: e instanceof Error ? e.message : 'Connection failed'
-    })
-  }
-
-  // Test categories
-  try {
-    const categories = await query('SELECT id, name, slug FROM categories ORDER BY id')
-    checks.push({
-      name: 'Categories Table',
-      status: 'success',
-      message: `${categories.length} categories found`,
-      details: { count: categories.length }
-    })
-  } catch (e) {
-    checks.push({
-      name: 'Categories Table',
-      status: 'error',
-      message: e instanceof Error ? e.message : 'Query failed'
-    })
-  }
+      message: 'Public SEO pages are generated at build time.',
+    },
+    {
+      name: 'Runtime Database',
+      status: 'unknown',
+      message: 'No runtime database probe is available on the static site.',
+    },
+  ]
 
   return (
     <div className="page-bg">
@@ -99,16 +66,16 @@ export default async function StatusPage() {
             <div style={{ marginTop: 'var(--space-xl)', paddingTop: 'var(--space-lg)', borderTop: '1px solid var(--color-border)' }}>
               <div className="grid grid-cols-2 gap-4" style={{ fontSize: '0.875rem' }}>
                 <div>
-                  <span style={{ fontWeight: 600 }}>Platform:</span> Cloudflare Workers
+                  <span style={{ fontWeight: 600 }}>Platform:</span> Static hosting
                 </div>
                 <div>
-                  <span style={{ fontWeight: 600 }}>Database:</span> D1 with Turso fallback
+                  <span style={{ fontWeight: 600 }}>Database:</span> Build-time catalog export
                 </div>
                 <div>
-                  <span style={{ fontWeight: 600 }}>Runtime:</span> Workerd / OpenNext
+                  <span style={{ fontWeight: 600 }}>Runtime:</span> Static assets
                 </div>
                 <div>
-                  <span style={{ fontWeight: 600 }}>Timestamp:</span> {new Date().toISOString()}
+                  <span style={{ fontWeight: 600 }}>Timestamp:</span> Build-time page
                 </div>
               </div>
             </div>

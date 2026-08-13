@@ -89,13 +89,20 @@ export async function getBrandBySlug(slug: string): Promise<BrandDetail | null> 
     const brand = await BrandModel.getBySlug(slug)
     if (!brand) return null
 
-    const seriesList = await ProductSeriesModel.getByBrandId(brand.id)
-    const seriesWithProducts = await Promise.all(
-        seriesList.map(async (s) => {
-            const products = await ProductModel.getBySeriesId(s.id)
-            return { ...s, products }
-        })
-    )
+    const [seriesList, products] = await Promise.all([
+        ProductSeriesModel.getByBrandId(brand.id),
+        ProductModel.getByBrandId(brand.id),
+    ])
+    const productsBySeriesId = new Map<number, Product[]>()
+    for (const product of products) {
+        const current = productsBySeriesId.get(product.series_id) || []
+        current.push(product)
+        productsBySeriesId.set(product.series_id, current)
+    }
+    const seriesWithProducts = seriesList.map((series) => ({
+        ...series,
+        products: productsBySeriesId.get(series.id) || [],
+    }))
 
     return { ...brand, series: seriesWithProducts }
 }

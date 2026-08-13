@@ -9,9 +9,7 @@ import { getComparisonSeoProfile } from '@/lib/seo/comparison-page-seo'
 import { getCanonicalComparisonHref, getRelatedComparisonLinks } from '@/lib/seo/priority-comparisons'
 import { formatUsdCents } from '@/lib/format/price'
 
-export const dynamic = 'force-dynamic'
-export const dynamicParams = true
-export const revalidate = 0
+export const dynamicParams = false
 
 // ============================================
 // 类型
@@ -101,21 +99,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export async function generateStaticParams() {
-    try {
-        const brands = await BrandModel.getAll()
-        const params: { slug: string }[] = []
+    const brands = await BrandModel.getAll()
+    const params: { slug: string }[] = []
 
-        for (let i = 0; i < brands.length; i++) {
-            for (let j = i + 1; j < brands.length; j++) {
-                const href = getCanonicalComparisonHref(brands[i].slug, brands[j].slug)
-                params.push({ slug: href.replace('/compare/', '') })
-            }
+    for (let i = 0; i < brands.length; i++) {
+        for (let j = i + 1; j < brands.length; j++) {
+            const href = getCanonicalComparisonHref(brands[i].slug, brands[j].slug)
+            params.push({ slug: href.replace('/compare/', '') })
         }
-
-        return params
-    } catch {
-        return []
     }
+
+    return params
 }
 
 // ============================================

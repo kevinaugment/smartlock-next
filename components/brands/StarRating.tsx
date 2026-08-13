@@ -1,22 +1,11 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 
 interface StarRatingProps {
     productId: number
     size?: 'sm' | 'md'
     showCount?: boolean
-}
-
-function getFingerprint(): string {
-    if (typeof window === 'undefined') return ''
-    const key = 'slockhub_fp'
-    let fp = localStorage.getItem(key)
-    if (!fp) {
-        fp = crypto.randomUUID()
-        localStorage.setItem(key, fp)
-    }
-    return fp
 }
 
 export default function StarRating({ productId, size = 'md', showCount = true }: StarRatingProps) {
@@ -25,77 +14,27 @@ export default function StarRating({ productId, size = 'md', showCount = true }:
     const [userRating, setUserRating] = useState<number | null>(null)
     const [hoverStar, setHoverStar] = useState(0)
     const [submitting, setSubmitting] = useState(false)
-    const [loaded, setLoaded] = useState(false)
 
     const starSize = size === 'sm' ? '1rem' : '1.375rem'
     const textSize = size === 'sm' ? '0.75rem' : '0.875rem'
 
-    // 加载评分数据
-    useEffect(() => {
-        const fp = getFingerprint()
-        if (!fp) return
-
-        fetch(`/api/ratings?product_id=${productId}&fingerprint=${fp}`)
-            .then(res => res.json())
-            .then(json => {
-                if (json.success) {
-                    setAverage(json.data.average)
-                    setCount(json.data.count)
-                    setUserRating(json.data.userRating)
-                }
-                setLoaded(true)
-            })
-            .catch(() => setLoaded(true))
-    }, [productId])
-
-    // 提交评分
     const handleRate = useCallback(async (rating: number) => {
         if (submitting) return
         setSubmitting(true)
 
-        const fp = getFingerprint()
         try {
-            const res = await fetch('/api/ratings', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    product_id: productId,
-                    rating,
-                    fingerprint: fp,
-                }),
-            })
-            const json = await res.json()
-            if (json.success) {
-                setAverage(json.data.average)
-                setCount(json.data.count)
-                setUserRating(json.data.userRating)
+            if (typeof window !== 'undefined') {
+                localStorage.setItem(`slockhub_product_rating_${productId}`, String(rating))
             }
+            setAverage(rating)
+            setCount(1)
+            setUserRating(rating)
         } catch {
-            // 静默失败
+            setUserRating(rating)
         } finally {
             setSubmitting(false)
         }
     }, [productId, submitting])
-
-    // 骨架加载状态
-    if (!loaded) {
-        return (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                {[1, 2, 3, 4, 5].map(i => (
-                    <span
-                        key={i}
-                        style={{
-                            fontSize: starSize,
-                            color: 'var(--color-border)',
-                            opacity: 0.5,
-                        }}
-                    >
-                        ★
-                    </span>
-                ))}
-            </div>
-        )
-    }
 
     const displayRating = hoverStar || userRating || Math.round(average)
 

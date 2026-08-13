@@ -29,7 +29,7 @@ The 2026-08-06 jump from 497 to 730 not-indexed URLs looks like a sitewide recla
 ## Confirmed Gaps Fixed In This Pass
 
 1. Non-canonical compare URLs returned 404 instead of consolidating.
-   - Fixed with `middleware.ts`, which redirects `/compare/{b}-vs-{a}` to `getCanonicalComparisonHref(a, b)` using HTTP 301.
+   - Fixed with generated static redirects in `public/_redirects`, which redirect `/compare/{b}-vs-{a}` to `getCanonicalComparisonHref(a, b)` using HTTP 301 at the static hosting layer.
    - Local production smoke: `/compare/weiser-vs-schlage` returns `301 Location: /compare/schlage-vs-weiser`; `/compare/schlage-vs-weiser` returns 200 with canonical.
 
 2. Compare pages loaded the full product catalog on each detail request.
@@ -43,8 +43,7 @@ The 2026-08-06 jump from 497 to 730 not-indexed URLs looks like a sitewide recla
 
 4. XML sitemap silently swallowed database failures and could publish a partial 200 sitemap.
    - Fixed by removing the empty catch around dynamic database reads.
-   - If dynamic reads fail, the sitemap now tries the Cloudflare KV last-known-good cache at `seo:sitemap:last-known-good:v1`.
-   - If no last-known-good sitemap exists, it fails closed instead of presenting incomplete URL discovery data as valid.
+   - In the pure static build, sitemap generation now happens at build time and fails the build instead of presenting incomplete URL discovery data as valid.
 
 5. XML sitemap used current build date as `lastmod` for many static/fallback pages.
    - Fixed by omitting `lastModified` where no real content timestamp exists.
@@ -59,9 +58,9 @@ The 2026-08-06 jump from 497 to 730 not-indexed URLs looks like a sitewide recla
    - Fixed in the article detail template using `resolveCalculatorRouteSlug()` and `calculatorTitles`.
    - Local production smoke on `/articles/guides/door-compatibility-guide` found crawlable calculator links for compatibility, door fit, and installation cost.
 
-## Live Production Verification Status
+## Static Deployment Verification Status
 
-Current source fixes are visible in the sampled live Worker responses. A 2026-08-13 live check against `https://www.slockhub.com` showed:
+Earlier sampled live responses on 2026-08-13 showed:
 
 - `/compare/weiser-vs-schlage`: `301` to `/compare/schlage-vs-weiser`.
 - `/compare/schlage-vs-weiser`: `200`.
@@ -70,7 +69,7 @@ Current source fixes are visible in the sampled live Worker responses. A 2026-08
 - `/best/homekit-smart-locks`: `200` across repeated samples.
 - `/sitemap.xml`: `200` across 5 consecutive samples, 1575 URLs, 1081 compare URLs, and 0 occurrences of `<lastmod>2026-08-13</lastmod>`.
 
-The live smoke no longer reproduces the earlier compare 404, invalid-product 503, protocol 503, or fake sitemap `lastmod` failures. The remaining production operations gap is the GitHub Actions deployment path: the latest deploy runs still fail before deployment because repository Actions secrets are missing for `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, and `CF_KV_NAMESPACE_ID`. Keep this gate fixed before the next indexing-related code change, otherwise future fixes may not reliably reach the production Worker.
+The source now targets a static Cloudflare Pages deployment. After deployment, re-run the same live checks against the static Pages site before requesting indexing. The remaining production operations gate is GitHub Actions secrets for `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `TURSO_DATABASE_URL`, and `TURSO_AUTH_TOKEN`.
 
 ## Confirmed Issues Still Requiring Non-Code Or Data Follow-Up
 
@@ -82,8 +81,8 @@ The live smoke no longer reproduces the earlier compare 404, invalid-product 503
    - This is a GEO/AI-search issue, not ordinary Googlebot blocking, unless exact Googlebot URL Inspection says otherwise.
 
 3. Dynamic route 503/Worker resource spikes were observed online under load.
-   - This pass reduced database fan-out on compare/product pages, but Cloudflare preview/production should still be smoke-tested after deployment.
-   - `/sitemap.xml` now has a KV last-known-good fallback for DB read failures, but production must prove that the deployed Worker has the `SLOCKHUB_KV` binding and can write/read the cache.
+   - This pass converts public SEO routes to static export so production should serve prebuilt files instead of reading the database per request.
+   - Cloudflare Pages should still be smoke-tested after deployment.
    - Watch `/brands/yale`, `/brands/yale/yale-assure-lock-2-plus`, `/best/homekit-smart-locks`, `/compare/schlage-vs-weiser`, `/protocols/wifi`, and `/sitemap.xml`.
 
 4. Compare page volume is still high.
@@ -101,9 +100,9 @@ This matrix is the current operating policy until URL-level Page Indexing export
 
 | Page class | Current sitemap treatment | Canonical / redirect treatment | Robots / noindex treatment | Inspection action |
 |---|---|---|---|---|
-| Core hubs: `/`, `/articles`, `/calculators`, `/brands`, `/compare`, `/protocols`, `/resources` | Included with hub-level priority; static pages do not get fake build-date `lastmod`. Sitemap generation caches a full last-known-good copy in KV after successful DB-backed generation. | Self-canonical metadata exists on major hubs; keep indexed. | Allowed by `app/robots.ts`; no intentional `noindex`. | Inspect only if a hub appears in GSC excluded/not-indexed buckets or after deploy smoke fails. |
+| Core hubs: `/`, `/articles`, `/calculators`, `/brands`, `/compare`, `/protocols`, `/resources` | Included with hub-level priority; static pages do not get fake build-date `lastmod`. Sitemap generation runs at build time and fails closed if required data is unavailable. | Self-canonical metadata exists on major hubs; keep indexed. | Allowed by `app/robots.ts`; no intentional `noindex`. | Inspect only if a hub appears in GSC excluded/not-indexed buckets or after deploy smoke fails. |
 | Priority tools and best pages | Included through shared calculator slug registry and priority best-page registry. Best pages use DB `updated_at` where available. | Self-canonical route metadata/layouts; keep indexed. | Allowed; no intentional `noindex`. | Submit representative high-exposure tools/best pages first, not every calculator or long-tail best URL. |
-| Compare pages | All canonical unordered brand-pair URLs remain in sitemap for now; priority GSC/silo pairs are explicit fallbacks. | Non-canonical directions redirect 301 in middleware; detail route also refuses reverse/non-canonical slugs. | Allowed; no blanket `noindex` until URL-level evidence separates useful vs thin pairs. | Inspect high-impression canonical pairs and historical reverse URLs that now 301; do not request indexing for all 1081 compare URLs. |
+| Compare pages | All canonical unordered brand-pair URLs remain in sitemap for now; priority GSC/silo pairs are explicit fallbacks. | Non-canonical directions redirect 301 through generated static `_redirects`; detail route also refuses reverse/non-canonical slugs. | Allowed; no blanket `noindex` until URL-level evidence separates useful vs thin pairs. | Inspect high-impression canonical pairs and historical reverse URLs that now 301; do not request indexing for all 1081 compare URLs. |
 | Product detail pages | Active products are included from `ProductModel.getAllForSeo()` with product `updated_at`. | Canonical is constrained to the product's real brand slug; wrong-brand paths 404 via `notFound()`. | 404 pages should inherit Next.js noindex behavior; no product blanket `noindex`. | Inspect a small sample across high-value brands plus any product URLs found in GSC 4xx/not-indexed details. |
 | Resource hub pages | `/resources`, `/resources/glossary`, `/resources/reference-tables`, `/resources/installation-guides`, `/resources/buying-guide` are included. | Glossary and buying-guide now have page-level metadata/canonical; other resource hubs already define metadata. | Allowed; no intentional `noindex`. | Inspect only representative hub pages unless GSC details show specific exclusions. |
 | Short resource articles | Currently included as ordinary article URLs because URL-level evidence is missing. | Article template self-canonicalizes every valid article route. | No blanket `noindex`; do not remove from sitemap until GSC URL details identify low-value clusters. | Build a URL-level queue from Page Indexing export first. Upgrade, merge, or noindex only after sample inspection confirms quality/indexability problems. |

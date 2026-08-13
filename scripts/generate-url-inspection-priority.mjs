@@ -281,7 +281,7 @@ function renderReport({ performanceCsv, performanceRows, compareRows, nonCompare
 
 ## Batch 0: Deployment And Technical Verification
 
-Purpose: verify that the deployed Cloudflare Worker is running the local fixes before requesting indexing.
+Purpose: verify that the deployed static Cloudflare Pages site is serving the generated sitemap and redirects before requesting indexing.
 
 Do not click \`Request indexing\` for diagnostic negative URLs. Use URL Inspection live test only.
 

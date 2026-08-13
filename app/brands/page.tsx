@@ -9,9 +9,6 @@ import {
   getSupportedProtocolLabels,
 } from '@/lib/brands/fact-policy'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
 export const metadata: Metadata = {
   title: 'Smart Lock Brands | Compare Protocols, Products & Use Cases',
   description: 'Compare smart lock brands by protocol support, product depth, price tier, door fit, ecosystem, and best use case.',
@@ -68,13 +65,7 @@ const brandPathways = [
 ]
 
 export default async function Brands() {
-  let brands: Awaited<ReturnType<typeof getBrands>> = []
-
-  try {
-    brands = await getBrands()
-  } catch {
-    // 数据库不可用时使用空数组，页面仍然可以渲染
-  }
+  const brands = await getBrands()
 
   const topBrands = [...brands]
     .sort((a, b) => b.product_count - a.product_count)

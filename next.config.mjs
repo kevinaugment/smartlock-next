@@ -2,9 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  output: 'export',
+  trailingSlash: false,
 
-  // Image optimization (Vercel built-in)
+  // Static export serves images as files; there is no runtime image optimizer.
   images: {
+    unoptimized: true,
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
   },
@@ -14,57 +17,6 @@ const nextConfig = {
 
   // Page extensions
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
-
-  experimental: {
-    outputFileTracingIncludes: {
-      '*': [
-        './node_modules/@libsql/client/lib-esm/web.js',
-        './node_modules/@libsql/isomorphic-ws/web.mjs',
-        './node_modules/@libsql/isomorphic-ws/web.cjs',
-      ],
-    },
-  },
-
-  // SEO: 301 redirects for consolidated/removed pages
-  async redirects() {
-    return [
-      {
-        source: '/articles/use-cases/long-term-rental-property-strategy',
-        destination: '/articles/use-cases/long-term-rental-strategy',
-        permanent: true,
-      },
-      {
-        source: '/use-cases/:path*',
-        destination: '/articles/use-cases/:path*',
-        permanent: true,
-      },
-    ]
-  },
-
-  // Security & caching headers (migrated from Cloudflare _headers)
-  async headers() {
-    return [
-      {
-        source: '/_next/static/:path*',
-        headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-          { key: 'X-Content-Type-Options', value: 'nosniff' },
-        ],
-      },
-      {
-        source: '/:path*',
-        headers: [
-          { key: 'X-Frame-Options', value: 'DENY' },
-          { key: 'X-Content-Type-Options', value: 'nosniff' },
-          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
-          { key: 'X-XSS-Protection', value: '1; mode=block' },
-          { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
-          { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://cloudflareinsights.com https://*.cloudflareinsights.com; frame-ancestors 'none'" },
-        ],
-      },
-    ]
-  },
 
 }
 

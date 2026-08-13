@@ -58,6 +58,17 @@ The 2026-08-06 jump from 497 to 730 not-indexed URLs looks like a sitewide recla
    - Fixed in the article detail template using `resolveCalculatorRouteSlug()` and `calculatorTitles`.
    - Local production smoke on `/articles/guides/door-compatibility-guide` found crawlable calculator links for compatibility, door fit, and installation cost.
 
+## Live Production Verification Gap
+
+Current code and local production smoke show the fixes above, but the live domain still needs deployment verification. A same-day live check against `https://www.slockhub.com` showed:
+
+- `/compare/weiser-vs-schlage`: `404`, not the expected `301` to `/compare/schlage-vs-weiser`.
+- `/brands/wrong-brand/yale-assure-lock-2-plus`: `503`, not the expected 404/noindex invalid-product path.
+- `/protocols/wifi`: `503` on one sampled request.
+- `/sitemap.xml`: returned both `200` and `503` across samples. The successful response had 1575 URLs and 1081 compare URLs, but still contained 1163 `<lastmod>2026-08-13</lastmod>` entries.
+
+Treat the production indexing state as not yet proven fixed until the current `main` build is deployed and the technical verification set passes on the live Worker.
+
 ## Confirmed Issues Still Requiring Non-Code Or Data Follow-Up
 
 1. GSC URL-level Coverage detail is missing.
@@ -78,6 +89,20 @@ The 2026-08-06 jump from 497 to 730 not-indexed URLs looks like a sitewide recla
 5. Short resource articles remain a likely quality bucket.
    - Registry count: 119 articles; 45 resource articles; 24 resource articles under 600 words; 53 total articles under 600 words.
    - These should be upgraded, merged into stronger resource hubs, or excluded only after URL-level GSC evidence.
+
+## Indexing Layer Matrix
+
+This matrix is the current operating policy until URL-level Page Indexing exports and URL Inspection samples prove a narrower action.
+
+| Page class | Current sitemap treatment | Canonical / redirect treatment | Robots / noindex treatment | Inspection action |
+|---|---|---|---|---|
+| Core hubs: `/`, `/articles`, `/calculators`, `/brands`, `/compare`, `/protocols`, `/resources` | Included with hub-level priority; static pages do not get fake build-date `lastmod`. | Self-canonical metadata exists on major hubs; keep indexed. | Allowed by `app/robots.ts`; no intentional `noindex`. | Inspect only if a hub appears in GSC excluded/not-indexed buckets or after deploy smoke fails. |
+| Priority tools and best pages | Included through shared calculator slug registry and priority best-page registry. Best pages use DB `updated_at` where available. | Self-canonical route metadata/layouts; keep indexed. | Allowed; no intentional `noindex`. | Submit representative high-exposure tools/best pages first, not every calculator or long-tail best URL. |
+| Compare pages | All canonical unordered brand-pair URLs remain in sitemap for now; priority GSC/silo pairs are explicit fallbacks. | Non-canonical directions redirect 301 in middleware; detail route also refuses reverse/non-canonical slugs. | Allowed; no blanket `noindex` until URL-level evidence separates useful vs thin pairs. | Inspect high-impression canonical pairs and historical reverse URLs that now 301; do not request indexing for all 1081 compare URLs. |
+| Product detail pages | Active products are included from `ProductModel.getAllForSeo()` with product `updated_at`. | Canonical is constrained to the product's real brand slug; wrong-brand paths 404 via `notFound()`. | 404 pages should inherit Next.js noindex behavior; no product blanket `noindex`. | Inspect a small sample across high-value brands plus any product URLs found in GSC 4xx/not-indexed details. |
+| Resource hub pages | `/resources`, `/resources/glossary`, `/resources/reference-tables`, `/resources/installation-guides`, `/resources/buying-guide` are included. | Glossary and buying-guide now have page-level metadata/canonical; other resource hubs already define metadata. | Allowed; no intentional `noindex`. | Inspect only representative hub pages unless GSC details show specific exclusions. |
+| Short resource articles | Currently included as ordinary article URLs because URL-level evidence is missing. | Article template self-canonicalizes every valid article route. | No blanket `noindex`; do not remove from sitemap until GSC URL details identify low-value clusters. | Build a URL-level queue from Page Indexing export first. Upgrade, merge, or noindex only after sample inspection confirms quality/indexability problems. |
+| Admin/API/status | Excluded from discovery by robots where applicable. | Not intended as indexable content. | `app/robots.ts` disallows `/admin/`, `/api/`, `/status/`; admin/status layouts also use noindex where present. | Confirm the 3 robots-blocked and 1 noindex GSC URLs are these intentional surfaces before taking action. |
 
 ## URL Inspection Priority Queue
 

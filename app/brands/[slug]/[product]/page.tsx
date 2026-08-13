@@ -9,6 +9,7 @@ import { ProductModel, ProductSeriesModel, type ProductWithBrand } from '@/lib/d
 import { SeoPathways } from '@/components/seo/SeoPathways'
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture'
 import { formatUsdCents, formatUsdCentsForSchema, isUsdCentsBelow, usdCentsToDollars } from '@/lib/format/price'
+import { getCanonicalComparisonHref } from '@/lib/seo/priority-comparisons'
 import {
     brandFactLastVerified,
     brandFactReviewCadence,
@@ -179,7 +180,7 @@ function getCompareHref(product: ProductDetail): { href: string; label: string }
     const competitor = candidates.find(candidate => candidate !== product.brand_slug) || 'yale'
     const titleName = competitor.charAt(0).toUpperCase() + competitor.slice(1)
     return {
-        href: `/compare/${product.brand_slug}-vs-${competitor}`,
+        href: getCanonicalComparisonHref(product.brand_slug, competitor),
         label: `${product.brand_name} vs ${titleName}`,
     }
 }

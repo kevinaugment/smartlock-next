@@ -24,18 +24,12 @@ export const dynamicParams = true
 export const revalidate = 0
 
 const getSeoProducts = cache(() => ProductModel.getAllForSeo())
-const getProductsForDetail = cache(() => ProductModel.getAllForComparison())
-const getSeriesForDetail = cache(() => ProductSeriesModel.getAllForSeo())
 
-async function getProductDetail(productSlug: string): Promise<ProductDetail | null> {
-    const [products, seriesList] = await Promise.all([
-        getProductsForDetail(),
-        getSeriesForDetail(),
-    ])
-    const product = products.find((item) => item.slug === productSlug)
+async function getProductDetail(brandSlug: string, productSlug: string): Promise<ProductDetail | null> {
+    const product = await ProductModel.getByBrandAndSlug(brandSlug, productSlug)
     if (!product) return null
 
-    const series = seriesList.find((item) => item.id === product.series_id)
+    const series = await ProductSeriesModel.getById(product.series_id)
     let ecosystems: string[] = []
     if (product.ecosystems_json) {
         try {
@@ -49,8 +43,8 @@ async function getProductDetail(productSlug: string): Promise<ProductDetail | nu
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; product: string }> }): Promise<Metadata> {
-    const { product: productSlug } = await params
-    const product = await getProductDetail(productSlug)
+    const { slug: brandSlug, product: productSlug } = await params
+    const product = await getProductDetail(brandSlug, productSlug)
     if (!product) return { title: 'Product Not Found' }
 
     const title = product.meta_title || `${product.name} Smart Lock | Specs, Protocol & Door Fit`
@@ -204,11 +198,11 @@ function getSiblingProducts(products: ProductWithBrand[], currentSlug: string): 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string; product: string }> }) {
     const { slug: brandSlug, product: productSlug } = await params
     const [product, allProducts] = await Promise.all([
-        getProductDetail(productSlug),
-        getProductsForDetail(),
+        getProductDetail(brandSlug, productSlug),
+        ProductModel.getByBrandSlug(brandSlug),
     ])
 
-    if (!product || product.brand_slug !== brandSlug) notFound()
+    if (!product) notFound()
 
     const ecosystems = product.ecosystems
     const productFactDisplays = buildProductFactDisplays(product)
@@ -218,7 +212,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     const matterFact = getProtocolFact(productProtocolFacts, 'Matter')
     const protocolFactText = getProtocolClaimText(productProtocolFacts)
     const siblingProducts = getSiblingProducts(
-        allProducts.filter(item => item.brand_slug === product.brand_slug),
+        allProducts,
         product.slug
     )
     const compareLink = getCompareHref(product)

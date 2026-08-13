@@ -44,6 +44,17 @@ export const BrandModel = {
         )
     },
 
+    async getBySlugs(slugs: string[]): Promise<Brand[]> {
+        if (slugs.length === 0) return []
+        const placeholders = slugs.map(() => '?').join(', ')
+        return query<Brand>(
+            `SELECT * FROM brands
+             WHERE slug IN (${placeholders}) AND status = 'published'
+             ORDER BY display_order ASC`,
+            slugs
+        )
+    },
+
     async getBySlug(slug: string): Promise<Brand | null> {
         return queryOne<Brand>(
             `SELECT * FROM brands WHERE slug = ? AND status = 'published'`,
@@ -88,6 +99,13 @@ export const ProductSeriesModel = {
         return query<ProductSeries>(
             `SELECT * FROM product_series WHERE brand_id = ? AND is_active = 1 ORDER BY display_order ASC`,
             [brandId]
+        )
+    },
+
+    async getById(id: number): Promise<ProductSeries | null> {
+        return queryOne<ProductSeries>(
+            `SELECT * FROM product_series WHERE id = ? AND is_active = 1`,
+            [id]
         )
     },
 
@@ -212,6 +230,29 @@ export const ProductModel = {
         )
     },
 
+    async getForComparisonByBrandSlugs(brandSlugs: string[]): Promise<ProductWithBrand[]> {
+        if (brandSlugs.length === 0) return []
+        const placeholders = brandSlugs.map(() => '?').join(', ')
+        return query<ProductWithBrand>(
+            `SELECT p.*, b.name AS brand_name, b.slug AS brand_slug
+             FROM products p
+             JOIN brands b ON p.brand_id = b.id
+             WHERE b.slug IN (${placeholders}) AND p.is_active = 1
+             ORDER BY b.display_order ASC, p.display_order ASC, p.rating DESC`,
+            brandSlugs
+        )
+    },
+
+    async getByBrandAndSlug(brandSlug: string, productSlug: string): Promise<ProductWithBrand | null> {
+        return queryOne<ProductWithBrand>(
+            `SELECT p.*, b.name AS brand_name, b.slug AS brand_slug
+             FROM products p
+             JOIN brands b ON p.brand_id = b.id
+             WHERE b.slug = ? AND p.slug = ? AND p.is_active = 1`,
+            [brandSlug, productSlug]
+        )
+    },
+
     async getBySlug(slug: string): Promise<ProductWithBrand | null> {
         return queryOne<ProductWithBrand>(
             `SELECT p.*, b.name AS brand_name, b.slug AS brand_slug
@@ -326,6 +367,11 @@ export interface TopNPage {
     updated_at: string
 }
 
+export interface TopNPageSeoEntry {
+    slug: string
+    updated_at: string
+}
+
 export const TopNPageModel = {
     async getAll(): Promise<TopNPage[]> {
         return query<TopNPage>(
@@ -343,6 +389,15 @@ export const TopNPageModel = {
     async getAllSlugs(): Promise<Array<{ slug: string }>> {
         return query<{ slug: string }>(
             `SELECT slug FROM top_n_pages WHERE status = 'published'`
+        )
+    },
+
+    async getAllForSeo(): Promise<TopNPageSeoEntry[]> {
+        return query<TopNPageSeoEntry>(
+            `SELECT slug, updated_at
+             FROM top_n_pages
+             WHERE status = 'published'
+             ORDER BY display_order ASC`
         )
     },
 }

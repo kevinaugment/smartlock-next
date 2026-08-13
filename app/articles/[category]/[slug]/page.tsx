@@ -12,6 +12,7 @@ import { SeoPathways } from '@/components/seo/SeoPathways';
 import { ReportLeadCapture } from '@/components/seo/ReportLeadCapture';
 import TableOfContents from '@/components/TableOfContents';
 import { extractHeadings } from '@/lib/markdown';
+import { calculatorTitles, resolveCalculatorRouteSlug } from '@/lib/calculators/slugs';
 
 function getPathwayTopic(article: NonNullable<ReturnType<typeof getArticleBySlug>>) {
   if (article.slug.includes('homekit')) return 'homekit';
@@ -226,6 +227,18 @@ export default async function ArticlePage({
   const categoryInfo = CATEGORIES[article.category];
   const pathwayTopic = getPathwayTopic(article);
   const showCompatibilityReport = article.slug === 'door-compatibility-guide';
+  const relatedTools = (article.relatedTools || [])
+    .map((toolSlug) => {
+      const routeSlug = resolveCalculatorRouteSlug(toolSlug);
+      if (!routeSlug) return null;
+      return {
+        href: `/calculators/${routeSlug}`,
+        title: calculatorTitles[routeSlug],
+      };
+    })
+    .filter((tool): tool is { href: string; title: string } => Boolean(tool))
+    .filter((tool, index, tools) => tools.findIndex((candidate) => candidate.href === tool.href) === index)
+    .slice(0, 5);
   const headings = extractHeadings(content);
   const structuredData = getArticleStructuredData(article, categoryInfo.name);
 
@@ -293,6 +306,20 @@ export default async function ArticlePage({
         <BeTechRecommendation />
 
         <SeoPathways topic={pathwayTopic} title="Next Tools and Guides" />
+
+        {relatedTools.length > 0 && (
+          <section style={{ marginTop: 'var(--space-3xl)' }}>
+            <h2 className="section-title">Tools for This Topic</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {relatedTools.map((tool) => (
+                <Link key={tool.href} href={tool.href} className="link-card" prefetch={false}>
+                  <h3 className="link-card__title">{tool.title}</h3>
+                  <p className="link-card__desc">Use this calculator or checker to turn the guide into a practical decision.</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* 相关文章 */}
         {relatedArticles.length > 0 && (

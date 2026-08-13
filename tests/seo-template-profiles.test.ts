@@ -405,6 +405,7 @@ function main() {
   assert.match(comparePage, /getCanonicalComparisonHref/, 'compare static params must use canonical comparison URLs')
   assert.match(comparePage, /const canonicalSlug = getCanonicalComparisonHref\(parsed\.slug1, parsed\.slug2\)\.replace\('\/compare\/', ''\)/, 'compare detail route must calculate the canonical slug before rendering')
   assert.match(comparePage, /if \(canonicalSlug !== slug\) return null/, 'compare detail route must 404 reverse-direction duplicate URLs')
+  assert.match(comparePage, /ProductModel\.getForComparisonByBrandSlugs\(brandSlugs\)/, 'compare detail route must avoid loading the full product catalog per request')
   assert.match(comparePage, /Best For, Avoid If, Evidence Needed/, 'compare page must render commercial intent block')
   assert.match(comparePage, /Validate This Comparison With Tools/, 'compare page must render calculator pathways above product list')
   assert.match(comparePage, /commercialIntent\.map/, 'compare page must render configured commercial intent blocks')
@@ -419,9 +420,27 @@ function main() {
   const brandPage = readFileSync('app/brands/[slug]/page.tsx', 'utf8')
   assert.match(brandPage, /getBrandComparisonLinks\(brandSlug, 3\)/, 'brand pages must use shared priority comparison links')
 
+  const productPage = readFileSync('app/brands/[slug]/[product]/page.tsx', 'utf8')
+  assert.match(productPage, /ProductModel\.getByBrandAndSlug\(brandSlug, productSlug\)/, 'product detail metadata and page body must query products with the brand slug constraint')
+  assert.match(productPage, /ProductModel\.getByBrandSlug\(brandSlug\)/, 'product detail pages must query only sibling products for the active brand')
+  assert.doesNotMatch(productPage, /getProductsForDetail = cache\(\(\) => ProductModel\.getAllForComparison\(\)\)/, 'product detail pages must not load the full comparison product catalog per request')
+
   const seoPathways = readFileSync('components/seo/SeoPathways.tsx', 'utf8')
   assert.match(seoPathways, /strategicSeoPathwayLinks/, 'SeoPathways must render shared strategic SEO pathways')
   assert.match(seoPathways, /Research Hubs/, 'SeoPathways must label shared research hub links')
+
+  const articlePage = readFileSync('app/articles/[category]/[slug]/page.tsx', 'utf8')
+  assert.match(articlePage, /resolveCalculatorRouteSlug\(toolSlug\)/, 'article pages must resolve relatedTools to crawlable calculator routes')
+  assert.match(articlePage, /Tools for This Topic/, 'article pages must render related tool links from article metadata')
+
+  const middleware = readFileSync('middleware.ts', 'utf8')
+  assert.match(middleware, /getCanonicalComparisonHref\(match\[1\], match\[2\]\)/, 'middleware must canonicalize compare route direction')
+  assert.match(middleware, /NextResponse\.redirect\(new URL\(canonicalPath, request\.url\), 301\)/, 'middleware must redirect reverse compare URLs with a 301')
+
+  const glossaryLayout = readFileSync('app/resources/glossary/layout.tsx', 'utf8')
+  const buyingGuideLayout = readFileSync('app/resources/buying-guide/layout.tsx', 'utf8')
+  assert.match(glossaryLayout, /canonical: '\/resources\/glossary'/, 'glossary resource page must declare its own canonical')
+  assert.match(buyingGuideLayout, /canonical: '\/resources\/buying-guide'/, 'buying guide resource page must declare its own canonical')
 
   const humanSitemap = readFileSync('app/sitemap/page.tsx', 'utf8')
   assert.match(humanSitemap, /Priority Brand Comparisons/, 'human sitemap must expose priority comparison links')
@@ -434,6 +453,9 @@ function main() {
   assert.match(xmlSitemap, /priorityComparisonLinks\.map/, 'XML sitemap must include priority comparison fallback URLs')
   assert.match(xmlSitemap, /priorityBestPageLinks\.map/, 'XML sitemap must include priority best-page fallback URLs')
   assert.match(xmlSitemap, /uniqueSitemapPages/, 'XML sitemap must de-duplicate static fallback and dynamic DB URLs')
+  assert.match(xmlSitemap, /TopNPageModel\.getAllForSeo\(\)/, 'XML sitemap must use DB lastmod data for best pages')
+  assert.doesNotMatch(xmlSitemap, /catch \{\s*\/\/ Database not available/, 'XML sitemap must not silently publish a partial sitemap when dynamic DB reads fail')
+  assert.doesNotMatch(xmlSitemap, /BUILD_DATE/, 'XML sitemap must not stamp static fallback URLs with the build date')
 
   const packageJson = readFileSync('package.json', 'utf8')
   assert.match(packageJson, /"test:seo"/, 'package scripts must expose the SEO regression test bundle')

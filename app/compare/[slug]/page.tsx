@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { cache } from 'react'
 import { CheckCircle, ArrowRight, GitCompareArrows, Shield, Wifi, Battery, DollarSign, Fingerprint, Star } from 'lucide-react'
 import { BrandModel, ProductModel, type Brand, type ProductWithBrand } from '@/lib/db/brand-models'
 import { SeoPathways } from '@/components/seo/SeoPathways'
@@ -26,8 +25,6 @@ interface ComparisonData {
 }
 
 const CURRENT_YEAR = '2026'
-const getBrandsForComparison = cache(() => BrandModel.getAll())
-const getProductsForComparison = cache(() => ProductModel.getAllForComparison())
 
 // ============================================
 // 数据获取
@@ -54,9 +51,10 @@ async function getComparisonData(slug: string): Promise<ComparisonData | null> {
     const canonicalSlug = getCanonicalComparisonHref(parsed.slug1, parsed.slug2).replace('/compare/', '')
     if (canonicalSlug !== slug) return null
 
+    const brandSlugs = [parsed.slug1, parsed.slug2]
     const [brands, products] = await Promise.all([
-        getBrandsForComparison(),
-        getProductsForComparison(),
+        BrandModel.getBySlugs(brandSlugs),
+        ProductModel.getForComparisonByBrandSlugs(brandSlugs),
     ])
 
     const brand1 = brands.find((brand) => brand.slug === parsed.slug1)
@@ -104,7 +102,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export async function generateStaticParams() {
     try {
-        const brands = await getBrandsForComparison()
+        const brands = await BrandModel.getAll()
         const params: { slug: string }[] = []
 
         for (let i = 0; i < brands.length; i++) {

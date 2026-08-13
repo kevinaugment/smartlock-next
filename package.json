@@ -17,7 +17,7 @@
     "cf:d1:import": "wrangler d1 execute slockhub --remote --file database/d1-import-ordered.sql",
     "cf:d1:counts": "wrangler d1 execute slockhub --remote --command \"SELECT 'brands' AS table_name, COUNT(*) AS count FROM brands UNION ALL SELECT 'products', COUNT(*) FROM products UNION ALL SELECT 'product_series', COUNT(*) FROM product_series UNION ALL SELECT 'top_n_pages', COUNT(*) FROM top_n_pages\"",
     "test:db-facade": "tsx tests/db-facade.test.ts",
-    "test:seo": "tsx tests/seo-content-consistency.test.ts && tsx tests/seo-template-profiles.test.ts"
+    "test:seo": "tsx tests/seo-content-consistency.test.ts && tsx tests/seo-template-profiles.test.ts && tsx tests/gsc-page-indexing-queues.test.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.15.15",

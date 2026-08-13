@@ -59,16 +59,18 @@ The 2026-08-06 jump from 497 to 730 not-indexed URLs looks like a sitewide recla
    - Fixed in the article detail template using `resolveCalculatorRouteSlug()` and `calculatorTitles`.
    - Local production smoke on `/articles/guides/door-compatibility-guide` found crawlable calculator links for compatibility, door fit, and installation cost.
 
-## Live Production Verification Gap
+## Live Production Verification Status
 
-Current code and local production smoke show the fixes above, but the live domain still needs deployment verification. A same-day live check against `https://www.slockhub.com` showed:
+Current source fixes are visible in the sampled live Worker responses. A 2026-08-13 live check against `https://www.slockhub.com` showed:
 
-- `/compare/weiser-vs-schlage`: `404`, not the expected `301` to `/compare/schlage-vs-weiser`.
-- `/brands/wrong-brand/yale-assure-lock-2-plus`: `503`, not the expected 404/noindex invalid-product path.
-- `/protocols/wifi`: `503` on one sampled request.
-- `/sitemap.xml`: returned both `200` and `503` across samples. The successful response had 1575 URLs and 1081 compare URLs, but still contained 1163 `<lastmod>2026-08-13</lastmod>` entries.
+- `/compare/weiser-vs-schlage`: `301` to `/compare/schlage-vs-weiser`.
+- `/compare/schlage-vs-weiser`: `200`.
+- `/brands/wrong-brand/yale-assure-lock-2-plus`: `404`.
+- `/protocols/wifi`: `200` across repeated samples.
+- `/best/homekit-smart-locks`: `200` across repeated samples.
+- `/sitemap.xml`: `200` across 5 consecutive samples, 1575 URLs, 1081 compare URLs, and 0 occurrences of `<lastmod>2026-08-13</lastmod>`.
 
-Treat the production indexing state as not yet proven fixed until the current `main` build is deployed and the technical verification set passes on the live Worker.
+The live smoke no longer reproduces the earlier compare 404, invalid-product 503, protocol 503, or fake sitemap `lastmod` failures. The remaining production operations gap is the GitHub Actions deployment path: the latest deploy runs still fail before deployment because repository Actions secrets are missing for `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, and `CF_KV_NAMESPACE_ID`. Keep this gate fixed before the next indexing-related code change, otherwise future fixes may not reliably reach the production Worker.
 
 ## Confirmed Issues Still Requiring Non-Code Or Data Follow-Up
 

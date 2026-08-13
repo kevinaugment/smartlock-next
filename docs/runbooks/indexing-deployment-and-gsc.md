@@ -68,3 +68,20 @@ Use:
 - `analysis/gsc/2026-08-13_url-inspection-priority.md`
 
 Do not bulk-submit all compare long-tail URLs. Start with Batch 0 live tests, then submit only canonical high-value URLs that return `200`, have correct canonical metadata, and are not already indexed.
+
+## When URL-Level Page Indexing Files Arrive
+
+Place the exported CSV files in:
+
+`/Users/luokun/Downloads/https___www.slockhub.com_-Coverage-2026-08-13-url-details/`
+
+Then generate the working queue:
+
+```bash
+node scripts/generate-gsc-page-indexing-queues.mjs \
+  --details-dir /Users/luokun/Downloads/https___www.slockhub.com_-Coverage-2026-08-13-url-details/ \
+  --performance-csv /Users/luokun/Downloads/https___www.slockhub.com_-Performance-on-Search-2026-08-06/网页.csv \
+  --output analysis/gsc/2026-08-13_page-indexing-url-queues.md
+```
+
+That output is the queue input for URL Inspection and repair prioritization. It should not be treated as proof of indexing; it only organizes the URL-level Page Indexing rows that you export from Search Console.

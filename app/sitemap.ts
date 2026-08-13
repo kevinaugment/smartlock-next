@@ -22,6 +22,32 @@ type SitemapCachePayload = {
     pages: MetadataRoute.Sitemap
 }
 
+function isValidSitemapCachePage(page: unknown): page is MetadataRoute.Sitemap[number] {
+    if (!page || typeof page !== 'object') return false
+    const candidate = page as Partial<MetadataRoute.Sitemap[number]>
+    if (typeof candidate.url !== 'string') return false
+
+    try {
+        const url = new URL(candidate.url)
+        if (url.origin !== BASE_URL) return false
+    } catch {
+        return false
+    }
+
+    const lastModified = candidate.lastModified
+    if (lastModified && !(lastModified instanceof Date) && typeof lastModified !== 'string') return false
+
+    return true
+}
+
+function getValidCachedSitemapPages(payload: unknown): MetadataRoute.Sitemap | null {
+    if (!payload || typeof payload !== 'object') return null
+    const pages = (payload as Partial<SitemapCachePayload>).pages
+    if (!Array.isArray(pages)) return null
+    if (!pages.every(isValidSitemapCachePage)) return null
+    return pages
+}
+
 /**
  * Normalize any date string to W3C Datetime YYYY-MM-DD format for sitemaps.
  * Handles: ISO strings, space-separated DB timestamps, plain YYYY-MM-DD.
@@ -65,9 +91,7 @@ async function getCachedSitemapPages(): Promise<MetadataRoute.Sitemap | null> {
     const cached = await kv.get(SITEMAP_LKG_KV_KEY)
     if (!cached) return null
 
-    const payload = JSON.parse(cached) as SitemapCachePayload
-    if (!Array.isArray(payload.pages)) return null
-    return payload.pages
+    return getValidCachedSitemapPages(JSON.parse(cached))
 }
 
 async function cacheSitemapPages(pages: MetadataRoute.Sitemap): Promise<void> {

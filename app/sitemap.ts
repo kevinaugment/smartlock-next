@@ -7,9 +7,20 @@ import { getCanonicalComparisonHref, priorityComparisonLinks } from '@/lib/seo/p
 import { priorityBestPageLinks, protocolPageLinks } from '@/lib/seo/priority-pages'
 
 const BASE_URL = 'https://www.slockhub.com'
+const SITEMAP_LKG_KV_KEY = 'seo:sitemap:last-known-good:v1'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
+type SitemapKvNamespace = {
+    get(key: string): Promise<string | null>
+    put(key: string, value: string): Promise<void>
+}
+
+type SitemapCachePayload = {
+    generatedAt: string
+    pages: MetadataRoute.Sitemap
+}
 
 /**
  * Normalize any date string to W3C Datetime YYYY-MM-DD format for sitemaps.
@@ -36,7 +47,41 @@ function uniqueSitemapPages(pages: MetadataRoute.Sitemap): MetadataRoute.Sitemap
     return Array.from(byUrl.values())
 }
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+async function getSitemapKv(): Promise<SitemapKvNamespace | null> {
+    try {
+        const { getCloudflareContext } = await import('@opennextjs/cloudflare')
+        const { env } = getCloudflareContext()
+        const kv = (env as { SLOCKHUB_KV?: SitemapKvNamespace }).SLOCKHUB_KV
+        return kv || null
+    } catch {
+        return null
+    }
+}
+
+async function getCachedSitemapPages(): Promise<MetadataRoute.Sitemap | null> {
+    const kv = await getSitemapKv()
+    if (!kv) return null
+
+    const cached = await kv.get(SITEMAP_LKG_KV_KEY)
+    if (!cached) return null
+
+    const payload = JSON.parse(cached) as SitemapCachePayload
+    if (!Array.isArray(payload.pages)) return null
+    return payload.pages
+}
+
+async function cacheSitemapPages(pages: MetadataRoute.Sitemap): Promise<void> {
+    const kv = await getSitemapKv()
+    if (!kv) return
+
+    const payload: SitemapCachePayload = {
+        generatedAt: new Date().toISOString(),
+        pages,
+    }
+    await kv.put(SITEMAP_LKG_KV_KEY, JSON.stringify(payload))
+}
+
+async function buildSitemapPages(): Promise<MetadataRoute.Sitemap> {
     const articles = getAllArticles()
 
     // Static pages
@@ -270,4 +315,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...productPages,
         ...bestPages,
     ])
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+    try {
+        const pages = await buildSitemapPages()
+        await cacheSitemapPages(pages).catch((error) => {
+            console.warn('[sitemap] Failed to cache last-known-good sitemap.', error)
+        })
+        return pages
+    } catch (error) {
+        const cachedPages = await getCachedSitemapPages().catch(() => null)
+        if (cachedPages) return cachedPages
+        throw error
+    }
 }

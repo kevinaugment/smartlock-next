@@ -455,6 +455,11 @@ function main() {
   assert.match(xmlSitemap, /priorityBestPageLinks\.map/, 'XML sitemap must include priority best-page fallback URLs')
   assert.match(xmlSitemap, /uniqueSitemapPages/, 'XML sitemap must de-duplicate static fallback and dynamic DB URLs')
   assert.match(xmlSitemap, /TopNPageModel\.getAllForSeo\(\)/, 'XML sitemap must use DB lastmod data for best pages')
+  assert.match(xmlSitemap, /SITEMAP_LKG_KV_KEY/, 'XML sitemap must define a last-known-good cache key')
+  assert.match(xmlSitemap, /getCachedSitemapPages/, 'XML sitemap must read last-known-good pages when generation fails')
+  assert.match(xmlSitemap, /cacheSitemapPages\(pages\)/, 'XML sitemap must cache the full generated sitemap after successful DB-backed generation')
+  assert.match(xmlSitemap, /if \(cachedPages\) return cachedPages/, 'XML sitemap must return last-known-good pages before failing closed')
+  assert.match(xmlSitemap, /throw error/, 'XML sitemap must still fail closed when DB generation fails and no last-known-good sitemap exists')
   assert.doesNotMatch(xmlSitemap, /catch \{\s*\/\/ Database not available/, 'XML sitemap must not silently publish a partial sitemap when dynamic DB reads fail')
   assert.doesNotMatch(xmlSitemap, /BUILD_DATE/, 'XML sitemap must not stamp static fallback URLs with the build date')
 

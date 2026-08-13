@@ -43,7 +43,8 @@ The 2026-08-06 jump from 497 to 730 not-indexed URLs looks like a sitewide recla
 
 4. XML sitemap silently swallowed database failures and could publish a partial 200 sitemap.
    - Fixed by removing the empty catch around dynamic database reads.
-   - If dynamic reads fail, the sitemap fails closed instead of presenting incomplete URL discovery data as valid.
+   - If dynamic reads fail, the sitemap now tries the Cloudflare KV last-known-good cache at `seo:sitemap:last-known-good:v1`.
+   - If no last-known-good sitemap exists, it fails closed instead of presenting incomplete URL discovery data as valid.
 
 5. XML sitemap used current build date as `lastmod` for many static/fallback pages.
    - Fixed by omitting `lastModified` where no real content timestamp exists.
@@ -80,6 +81,7 @@ Treat the production indexing state as not yet proven fixed until the current `m
 
 3. Dynamic route 503/Worker resource spikes were observed online under load.
    - This pass reduced database fan-out on compare/product pages, but Cloudflare preview/production should still be smoke-tested after deployment.
+   - `/sitemap.xml` now has a KV last-known-good fallback for DB read failures, but production must prove that the deployed Worker has the `SLOCKHUB_KV` binding and can write/read the cache.
    - Watch `/brands/yale`, `/brands/yale/yale-assure-lock-2-plus`, `/best/homekit-smart-locks`, `/compare/schlage-vs-weiser`, `/protocols/wifi`, and `/sitemap.xml`.
 
 4. Compare page volume is still high.
@@ -96,7 +98,7 @@ This matrix is the current operating policy until URL-level Page Indexing export
 
 | Page class | Current sitemap treatment | Canonical / redirect treatment | Robots / noindex treatment | Inspection action |
 |---|---|---|---|---|
-| Core hubs: `/`, `/articles`, `/calculators`, `/brands`, `/compare`, `/protocols`, `/resources` | Included with hub-level priority; static pages do not get fake build-date `lastmod`. | Self-canonical metadata exists on major hubs; keep indexed. | Allowed by `app/robots.ts`; no intentional `noindex`. | Inspect only if a hub appears in GSC excluded/not-indexed buckets or after deploy smoke fails. |
+| Core hubs: `/`, `/articles`, `/calculators`, `/brands`, `/compare`, `/protocols`, `/resources` | Included with hub-level priority; static pages do not get fake build-date `lastmod`. Sitemap generation caches a full last-known-good copy in KV after successful DB-backed generation. | Self-canonical metadata exists on major hubs; keep indexed. | Allowed by `app/robots.ts`; no intentional `noindex`. | Inspect only if a hub appears in GSC excluded/not-indexed buckets or after deploy smoke fails. |
 | Priority tools and best pages | Included through shared calculator slug registry and priority best-page registry. Best pages use DB `updated_at` where available. | Self-canonical route metadata/layouts; keep indexed. | Allowed; no intentional `noindex`. | Submit representative high-exposure tools/best pages first, not every calculator or long-tail best URL. |
 | Compare pages | All canonical unordered brand-pair URLs remain in sitemap for now; priority GSC/silo pairs are explicit fallbacks. | Non-canonical directions redirect 301 in middleware; detail route also refuses reverse/non-canonical slugs. | Allowed; no blanket `noindex` until URL-level evidence separates useful vs thin pairs. | Inspect high-impression canonical pairs and historical reverse URLs that now 301; do not request indexing for all 1081 compare URLs. |
 | Product detail pages | Active products are included from `ProductModel.getAllForSeo()` with product `updated_at`. | Canonical is constrained to the product's real brand slug; wrong-brand paths 404 via `notFound()`. | 404 pages should inherit Next.js noindex behavior; no product blanket `noindex`. | Inspect a small sample across high-value brands plus any product URLs found in GSC 4xx/not-indexed details. |
